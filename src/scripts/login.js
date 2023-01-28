@@ -1,8 +1,6 @@
 import { Input } from "@mui/material";
 import swal from "@sweetalert/with-react";
 
-//este ejemplo es con sweetalert pero lo elimine :v asi que si se retoma hay que volver a instalar sweetalert.
-
 export const ForgetPsswrd = () => {
   swal({
     buttons: {
