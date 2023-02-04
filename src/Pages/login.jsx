@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"; /**Este hook ayuda a redireccion
 a una pagina diferente mediante el "path" */
 
 const urlLogin =
-  "http://localhost/Multioptica/Users/controller/user.php?op=user";
+  "http://localhost/Multioptica/login/controller/user.php?op=user";
 
 const sendData = async (urlAPI, data) => {
   //De aqui
@@ -54,7 +54,7 @@ export const Login = (props) => {
     <Container maxWidth="lg" id="login">
       <Grid container spacing={8}>
         <Grid item xs={6} md={4}>
-            <img src={logo}  width="400px"/>
+            <img src={logo} alt="logo"  width="400px"/>
         </Grid>
         <Grid item xs={6}>
           <Grid container spacing={0.5}>

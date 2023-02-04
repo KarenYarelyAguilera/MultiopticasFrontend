@@ -1,8 +1,21 @@
 import'../Styles/Home.css'
-export const BarraHorizontal = () => {
+import { Link} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import logo from '../IMG/Multioptica.png'
+
+export const BarraHorizontal = (props) => {
+
+    const navegate = useNavigate();
+    const logout = () => {
+        props.access("inactivo");
+        props.user("");
+        navegate("/");
+      };
+
     return (
         <div className="BarraHorizontal">
-            <p align="right">Nombre de Usuario</p>
+            <Link to="/Home"> <img src={logo} alt="logo" id='logoBarra'/> </Link>
+            <div className='derecha'><p id="usuario">{props.user}</p></div>            
         </div>
     )
 }

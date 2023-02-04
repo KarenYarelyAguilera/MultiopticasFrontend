@@ -1,11 +1,12 @@
 import'../Styles/Home.css'
 import {Link} from 'react-router-dom'
+
 export const BarraLateral = () => {
     return (
         <div className="BarraLateral">
             <ul>
                 <li>
-                    <Link to=""> INVENTARIO</Link>
+                    <Link to="/inventario"> INVENTARIO</Link>
                 </li>
                 <li>
                     <Link to=""> CLIENTES</Link>
