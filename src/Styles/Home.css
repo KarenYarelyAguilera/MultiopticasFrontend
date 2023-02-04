@@ -1,0 +1,50 @@
+ @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Rubik', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: rgb(253, 254, 255) ;
+    }
+.BarraHorizontal{
+    background-color:#35957E ;
+    padding: 2rem 2rem;
+    border-bottom: 0px solid #ffffff;
+
+}
+
+.BarraLateral{
+    width: 14 rems;
+    height: calc(103vh - 103px);
+    border-right: 1px;
+    border-bottom: 0px solid #ffffff;
+   
+    }
+
+.BarraLateral{
+    list-style:none ;
+    padding:0 ;
+    background: rgb(113, 162, 219) ;
+    width:100% ;
+    max-width:200px ;
+    line-height: 1.7;
+        
+       }
+       
+.BarraLateral li a {
+    text-decoration: none ;
+    color: white ;
+    padding: 20px ;
+    display: block ;
+       
+       }
+       
+.BarraLateral li a:hover{
+    background:#2E8CEB;
+       }
+    

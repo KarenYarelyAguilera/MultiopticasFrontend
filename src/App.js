@@ -1,8 +1,10 @@
 import { Home } from "./Pages/Home.jsx";
 import { ProtectedRoute } from "./Components/ProtectedRoute.jsx";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; //Sirven para invocar componentes segun la ruta que se especifique
-import { Login } from "./Pages/Login";
+import { BrowserRouter, Routes, Route, Router } from "react-router-dom"; //Sirven para invocar componentes segun la ruta que se especifique
+import { Login } from "./Pages/login";
 import { useState } from "react";
+import { BarraHorizontal } from "./Components/BarraHorizontal.jsx";
+import { BarraLateral } from "./Components/BarraLateral.jsx";
 
 function App() {
   const [usuario, setUsuario] = useState("")
@@ -15,27 +17,36 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
   return (
     <div>
-    <BrowserRouter>
-      {/**este componente es el que almacena las rutas segun
+      <BrowserRouter>
+        {/**este componente es el que almacena las rutas segun
        * el historial del navegador.
        */}
-      <Routes>
-        {/**Es un conjunto de rutas */}
-        <Route index element={<Login access={access} user={user} />} />
-        {/**Son las rutas
+        <Routes>
+          {/**Es un conjunto de rutas */}
+          <Route index element={<Login access={access} user={user} />} />
+          {/**Son las rutas
          * a las que podemos acceder segun el "path" de navegacion
          */}
-        <Route
-          path="/Home"
-          element={
-            <ProtectedRoute activo={activo}>
-              <Home user={usuario} access={access}/>
-            </ProtectedRoute>
-          }
-        />
-        
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/Home"
+            element={
+              <ProtectedRoute activo={activo}>
+                <Home user={usuario} access={access} />
+              </ProtectedRoute>
+            }
+
+          />
+          <Route path="/prueba" element={<> <BarraHorizontal />
+            <div className="flex">
+              <BarraLateral />
+              <div className="content">
+              </div>
+            </div></>}>
+
+          </Route>
+        </Routes>
+      </BrowserRouter>
+
     </div>
   );
 }
