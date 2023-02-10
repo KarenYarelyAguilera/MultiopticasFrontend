@@ -13,7 +13,7 @@ export const Home = (props) => {
 
   return (
     <>
-      <img src={logo} alt="logo" id="loguito" />
+     {/* <img src={logo} alt="logo" id="loguito" /> */}
     </>  
     
   );
