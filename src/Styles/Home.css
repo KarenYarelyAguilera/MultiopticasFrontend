@@ -275,4 +275,10 @@
 .list-web {
   display: block;
 }
+
+.cont-main {
+  overflow-y: none;
+  overflow-x: none;
+  top: -15px !important;
+}
 /* DropDown */

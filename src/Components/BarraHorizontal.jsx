@@ -38,8 +38,8 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
   };
 
   return (
-    <div>
-      <div className="BarraHorizontal">
+    <div className="BarraHorizontal">
+      <div>
         {info.length ? (
           info.map((infor, index) => (
             <div key={index}>
@@ -71,6 +71,9 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
             borderRadius: 100,
             cursor: 'pointer',
             color: '#005F7F',
+            position: 'absolute',
+            right: '45px',
+            top: '75%',
           }}
         />
       </div>
@@ -144,9 +147,9 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
             {info.length ? (
               info.map((persona, index) => (
                 <div key={index}>
-                  <div className="flex-cols-miprofile">
-                    <div className="row-span-3">
-                      <div className="rounded-full img-avatar-profile ml-4">
+                  <div className="cols-miprofile">
+                    <div className="rowsspan">
+                      <div className="img-avatar-profile">
                         {persona.imagen ? (
                           <img src={persona.imagen} alt="" />
                         ) : (
