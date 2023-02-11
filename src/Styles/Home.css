@@ -260,12 +260,6 @@
   margin-bottom: 15px;
 }
 
-.card-profile-titulos {
-  display: grid;
-  grid-template-rows: 45% 10%;
-  grid-gap: 0;
-}
-
 .grid-list-drop {
   height: 61px;
   display: grid;
@@ -276,9 +270,64 @@
   display: block;
 }
 
+.list-web .MenuItem {
+  font-size: 20px;
+  transition: 0.5s ease-in;
+}
+
+.list-web .MenuItem:hover {
+  background-color: rgba(239, 239, 239, 0.148);
+}
+
+.list-web .iconDrop {
+  font-size: 30px;
+  color: black;
+}
+
+.list-web .linkDropDown {
+  text-decoration: none;
+  color: black;
+  margin-left: 15px;
+}
+
 .cont-main {
   overflow-y: none;
   overflow-x: none;
-  top: -15px !important;
+  top: -10px !important;
 }
+
+.BarraHorizontal .card-profile .tituloProfile h1 {
+  margin-top: 20px;
+  font-size: 15px !important;
+}
+
+.BarraHorizontal .card-profile .tituloProfile h2 {
+  font-size: 30px;
+  display: none;
+}
+
+.cols-miprofile {
+  display: grid;
+  grid-template-columns: 55% 40%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.5s ease;
+  font-size: 12px;
+}
+
+.imgavatar-profile {
+  color: #ffffff;
+  width: 85px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(38, 103, 177);
+  font-size: 40px;
+  border-radius: 100%;
+  border: none;
+  text-transform: uppercase;
+}
+
 /* DropDown */

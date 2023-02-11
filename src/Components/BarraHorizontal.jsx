@@ -1,6 +1,6 @@
 import '../Styles/Home.css';
-import React, { useState, useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 //muiMaterial
@@ -8,7 +8,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { List } from '@mui/material';
+
+//FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 export const BarraHorizontal = ({ onChange = () => null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -16,13 +19,13 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
   const info = [
     {
       username: 'Michael Sosa',
-      imagen: '',
+      imagen:
+        'https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg',
       iniciales: 'MS',
     },
   ];
 
   const navigate = useNavigate();
-  const location = useLocation();
   const open = Boolean(anchorEl);
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +52,7 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
                   <h2>MultiOpticas</h2>
                 </div>
 
-                <div className="cont-imgprofile">
+                <div className="cont-imgprofile" onClick={handleClick}>
                   <div className="img-profile">
                     {infor.imagen ? (
                       <img className="photo" src={infor.imagen} alt="" />
@@ -70,7 +73,7 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
             backgroundColor: '#ECF6FA',
             borderRadius: 100,
             cursor: 'pointer',
-            color: '#005F7F',
+            color: 'rgb(38, 103, 177)',
             position: 'absolute',
             right: '45px',
             top: '75%',
@@ -149,40 +152,40 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
                 <div key={index}>
                   <div className="cols-miprofile">
                     <div className="rowsspan">
-                      <div className="img-avatar-profile">
+                      <div className="imgavatar-profile">
                         {persona.imagen ? (
-                          <img src={persona.imagen} alt="" />
+                          <img className="photo" src={persona.imagen} alt="" />
                         ) : (
-                          persona.inicial
+                          persona.iniciales
                         )}
                       </div>
                     </div>
 
-                    <div className="pl-4">
+                    <div className="tituloProfile">
                       <h1>Hola</h1>
-                      <br></br>
                       <h2>{persona.username}</h2>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="flex justify-center items-center opacity-50 pt-12"></div>
+              <div className=""></div>
             )}
           </div>
           {/* <Avatar /> Profile */}
         </MenuItem>
         <div className="list-web">
           <MenuItem
-            className=" fontLRegular pl-10 text-[#707070] hover:bg-[#ecf6fa] hover:text-[#005f7f]"
+            className="MenuItem"
             style={{ borderTop: '1px solid #EFEFEF', height: '62px' }}
             onClick={''}
           >
             <ListItemIcon>
-              <Link className=" w-5 h-5" to="">
-                Perfil
-              </Link>
+              <FontAwesomeIcon className="iconDrop" icon={faCircleUser} />
             </ListItemIcon>
+            <Link className="linkDropDown" to="">
+              Perfil
+            </Link>
           </MenuItem>
         </div>
       </Menu>
