@@ -9,25 +9,25 @@ export const BarraLateral = () => {
                     <Link to="/inventario"> INVENTARIO</Link>
                 </li>
                 <li>
-                    <Link to=""> CLIENTES</Link>
+                    <Link to="/clientes"> CLIENTES</Link>
                 </li>
                 <li>
-                    <Link to=""> VENTAS</Link>
+                    <Link to="/ventas"> VENTAS</Link>
                 </li>
                 <li>
-                    <Link to=""> RECORDATORIOS</Link>
+                    <Link to="/recordatorios"> RECORDATORIOS</Link>
                 </li>
                 <li>
-                    <Link to=""> USUARIOS</Link>
+                    <Link to="/usuarios"> USUARIOS</Link>
                 </li>
                 <li>
-                    <Link to=""> REPORTES</Link>
+                    <Link to="/reporte"> REPORTES</Link>
                 </li>
                 <li>
-                    <Link to=""> SEGURIDAD</Link>
+                    <Link to="/seguridad"> SEGURIDAD</Link>
                 </li>
                 <li>
-                    <Link to=""> CONFIGURACION</Link>
+                    <Link to="/config"> CONFIGURACION</Link>
                 </li>
             </ul>
         </div>

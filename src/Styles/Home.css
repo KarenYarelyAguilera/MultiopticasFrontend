@@ -48,7 +48,9 @@ body{
 .flex{
     display: flex;
 }
-
+.inlineB{
+    display: inline-block;
+}
 .content{
     display: flex;
     flex-direction: column;
@@ -72,4 +74,37 @@ body{
 
 #loguito{
     width: 1000px;
+}
+
+.LinkStyleNone{
+    text-decoration: none;
+    color: #000000;
+}
+.Enlace{
+    text-align: center;
+    margin-top: 40px;
+    color: #000000;
+    transition: .4s;
+}
+.Enlace:hover{
+    transition: 0.4s;
+    color:#35957E;
+}
+.titulo{
+    margin-bottom: 50px;
+}
+.siguiente{
+    color: #ffffff;
+    font-size: 30px;
+    padding: 20px;
+    background-color: #2E8CEB ;
+    border-radius: 50%;
+}
+.siguiente:hover{
+    transition: .5s;
+    background-color: #35957E;
+    translate:2px ;
+    transition: .4s;
+    translate:-2px ;
+    
 }

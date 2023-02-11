@@ -45,7 +45,7 @@ export const Login = (props) => {
     console.log("Respuesta desde el evento ", respJson[0].Estado_Usuario);
     props.access(respJson[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
     props.user(respJson[0].Nombre_Usuario);
-    if (respJson[0].Estado_Usuario === "activo") {
+    if (respJson[0].Estado_Usuario === "Activo") {
       navegate("/Home");
     }
   };
