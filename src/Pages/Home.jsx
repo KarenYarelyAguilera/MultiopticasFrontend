@@ -1,21 +1,18 @@
-import { useNavigate } from "react-router-dom";
-import logo from '../IMG/Multioptica.png'
-import '../Styles/Home.css'
+import "../Styles/Home.css";
 
-export const Home = (props) => {
-  const navegate = useNavigate();
+import { BarraLateral, BarraHorizontal } from "../Components";
 
-  const logout = () => {
-    props.access("inactivo");
-    props.user("");
-    navegate("/");
-  };
+//Imagenes
+import RegistroInventory from "../IMG/RegistroInventory.jpg";
 
+export const Home = () => {
   return (
-    <>
-      <img src={logo} alt="logo" id="loguito" />
-    </>  
-    
+    <div className="contInventory">
+      <BarraLateral />
+      <BarraHorizontal />
+      <div>
+        <img className="imgCard" src={RegistroInventory} alt="" />
+      </div>
+    </div>
   );
 };
-
