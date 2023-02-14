@@ -44,11 +44,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             index
             element={
               <div className="flex">
-                <BarraLateral />
-                <BarraHorizontal />
-                <div className="content">
-                  <Home></Home>
-                </div>
+                <Home />
               </div>
             }
           ></Route>
