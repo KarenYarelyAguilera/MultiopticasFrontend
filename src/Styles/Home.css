@@ -41,6 +41,21 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.26);
 }
 
+.inlineB {
+  display: inline-block;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  width: 100%;
+}
+.derecha {
+  float: right;
+}
+
 .logoBarraLateral {
   width: 250px;
   height: 80px;
@@ -352,3 +367,38 @@
   height: 100px;
 }
 /* Inventario */
+#loguito {
+  width: 1000px;
+}
+
+.LinkStyleNone {
+  text-decoration: none;
+  color: #000000;
+}
+.Enlace {
+  text-align: center;
+  margin-top: 40px;
+  color: #000000;
+  transition: 0.4s;
+}
+.Enlace:hover {
+  transition: 0.4s;
+  color: #35957e;
+}
+.titulo {
+  margin-bottom: 50px;
+}
+.siguiente {
+  color: #ffffff;
+  font-size: 30px;
+  padding: 20px;
+  background-color: #2e8ceb;
+  border-radius: 50%;
+}
+.siguiente:hover {
+  transition: 0.5s;
+  background-color: #35957e;
+  translate: 2px;
+  transition: 0.4s;
+  translate: -2px;
+}

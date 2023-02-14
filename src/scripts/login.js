@@ -46,20 +46,34 @@ export const ForgetPsswrd = () => {
         //hacer esto una funcion aparte.
         swal(
           <div>
-            <h1>Responda sus preguntas de seguridad: </h1>
-            <p>Pregunta 1: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
-            <p>Respuesta: <Input id="resp1"/></p>
-            <p>Pregunta 2: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
-            <p>Respuesta: <Input id="resp2"/></p>
+            <h1>Preguntas de seguridad</h1>
+            <p>Ingrese su correo para mostrar sus preguntas de seguridad</p>
+            <Input id="correo"></Input>
           </div>
-        ).then(()=>{
-          let resp1,resp2
-          resp1=document.getElementById('resp1').value
-          resp2=document.getElementById('resp2').value
-          alert("resp1: "+resp1+"\nresp2: "+resp2)
-          //desues de validar con la base
-          RestablecerContrasenia()
-        })
+        )
+          .then((correo) => {
+            correo = document.getElementById("correo").value;
+            alert(correo);
+          })
+          .then(()=>{
+            swal(
+              <div>
+                <h1>Responda sus preguntas de seguridad: </h1>
+                <p>Pregunta 1: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
+                <p>Respuesta: <Input id="resp1"/></p>
+                <p>Pregunta 2: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
+                <p>Respuesta: <Input id="resp2"/></p>
+              </div>
+            ).then(()=>{
+              let resp1,resp2
+              resp1=document.getElementById('resp1').value
+              resp2=document.getElementById('resp2').value
+              alert("resp1: "+resp1+"\nresp2: "+resp2)
+              //desues de validar con la base
+              RestablecerContrasenia()
+            })
+          })
+        
         break;
       case "cancel":
         swal("cancel");
