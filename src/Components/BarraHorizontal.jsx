@@ -27,7 +27,7 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
 
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -36,7 +36,7 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
 
   //
   const handleProfile = () => {
-    navigate('/dashboard/profile');
+    navigate("/dashboard/profile");
     onChange();
   };
 

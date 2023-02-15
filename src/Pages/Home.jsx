@@ -5,6 +5,7 @@ import { BarraLateral, BarraHorizontal } from '../Components';
 //Imagenes
 import RegistroInventory from '../IMG/RegistroInventory.jpg';
 
+
 export const Home = () => {
   return (
     <div className="contInventory">

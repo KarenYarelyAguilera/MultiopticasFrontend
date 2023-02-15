@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 export const ProtectedRoute = ({activo,children}) =>{
-    if (activo!=="activo") {
+    if (activo!=="Activo") {
         return <Navigate to='/'/>
     }
     return children

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import MulltiOptica from '../IMG/MultiopticaBlanco.png';
 import MulltiOpticaOjo from '../IMG/MultiopticaOjo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   faClipboardList,
   faPeopleRoof,
