@@ -1,27 +1,27 @@
-import "../Styles/Home.css";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import '../Styles/Home.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //muiMaterial
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
 
 //FontAwesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 export const BarraHorizontal = ({ onChange = () => null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const info = [
     {
-      username: "Michael Sosa",
+      username: 'Michael Sosa',
       imagen:
-        "https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg",
-      iniciales: "MS",
+        'https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg',
+      iniciales: 'MS',
     },
   ];
 
@@ -70,13 +70,13 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
         <KeyboardArrowDownIcon
           onClick={handleClick}
           style={{
-            backgroundColor: "#ECF6FA",
+            backgroundColor: '#ECF6FA',
             borderRadius: 100,
-            cursor: "pointer",
-            color: "rgb(38, 103, 177)",
-            position: "absolute",
-            right: "45px",
-            top: "75%",
+            cursor: 'pointer',
+            color: 'rgb(38, 103, 177)',
+            position: 'absolute',
+            right: '45px',
+            top: '75%',
           }}
         />
       </div>
@@ -90,7 +90,7 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
         PaperProps={{
           elevation: 0,
           sx: {
-            boxShadow: "1px 1px 10px #D2E4EA",
+            boxShadow: '1px 1px 10px #D2E4EA',
             mt: {
               xs: 3,
               sm: 2.5,
@@ -100,48 +100,48 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
               sm: 1,
             },
             width: {
-              xs: "100%",
+              xs: '100%',
               sm: 350,
             },
             maxWidth: {
-              xs: "calc(100% - 0px)",
-              sm: "calc(100% - 32px)",
+              xs: 'calc(100% - 0px)',
+              sm: 'calc(100% - 32px)',
             },
             height: {
-              xs: "calc(100% - 87px)",
-              sm: "auto",
+              xs: 'calc(100% - 87px)',
+              sm: 'auto',
             },
             borderRadius: {
               xs: 0,
               sm: 2,
             },
             opacity: 1,
-            "& .MuiAvatar-root": {
+            '& .MuiAvatar-root': {
               width: 32,
               height: 32,
               ml: -0.5,
               mr: 1,
             },
-            "&:before": {
+            '&:before': {
               content: '""',
-              display: "block",
-              position: "absolute",
+              display: 'block',
+              position: 'absolute',
               top: 0,
               right: 14,
               width: 10,
               height: 10,
-              bgcolor: "background.paper",
-              transform: "translateY(-50%) rotate(45deg)",
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
               zIndex: 0,
             },
           },
         }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem
           style={{
-            backgroundColor: "transparent",
+            backgroundColor: 'transparent',
             paddingTop: 0,
             paddingBottom: 0,
           }}
@@ -177,8 +177,8 @@ export const BarraHorizontal = ({ onChange = () => null }) => {
         <div className="list-web">
           <MenuItem
             className="MenuItem"
-            style={{ borderTop: "1px solid #EFEFEF", height: "62px" }}
-            onClick={""}
+            style={{ borderTop: '1px solid #EFEFEF', height: '62px' }}
+            onClick={''}
           >
             <ListItemIcon>
               <FontAwesomeIcon className="iconDrop" icon={faCircleUser} />

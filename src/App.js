@@ -17,8 +17,8 @@ function App() {
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
 
-  const access = (acceder) => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
-  const user = (usr) => setUsuario(usr);
+  const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
+  const user = usr => setUsuario(usr);
 
   return (
     <div>
@@ -28,26 +28,31 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
          */}
         <Routes>
           {/**Es un conjunto de rutas */}
-          <Route index element={<Login access={access} user={user} />} />
+          {/* <Route index element={<Login access={access} user={user} />} /> */}
           {/**Son las rutas
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
+          {/* <Route path="/Home" element={<ProtectedRoute activo={activo}>
+          <BarraHorizontal user={usuario} />
+            <div className="flex">
+              <BarraLateral />
+              <div className="content">
+                <Home></Home>
+                
+              </div>
+            </div></ProtectedRoute>}>
+          </Route> */}
+
           <Route
-            path="/Home"
+            index
             element={
-              <ProtectedRoute activo={activo}>
-                <BarraHorizontal user={usuario} />
-                <div className="flex">
-                  <BarraLateral />
-                  <div className="content">
-                    <Home></Home>
-                  </div>
-                </div>
-              </ProtectedRoute>
+              <div className="flex">
+                <Home />
+              </div>
             }
           ></Route>
-
+          
           <Route
             path="/inventario"
             element={
@@ -115,8 +120,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             </ProtectedRoute>
             }
           ></Route>
-
-
         </Routes>
       </BrowserRouter>
     </div>

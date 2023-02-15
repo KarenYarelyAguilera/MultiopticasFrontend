@@ -1,9 +1,10 @@
-import "../Styles/Home.css";
+import '../Styles/Home.css';
 
-import { BarraLateral, BarraHorizontal } from "../Components";
+import { BarraLateral, BarraHorizontal } from '../Components';
 
 //Imagenes
-import RegistroInventory from "../IMG/RegistroInventory.jpg";
+import RegistroInventory from '../IMG/RegistroInventory.jpg';
+
 
 export const Home = () => {
   return (
