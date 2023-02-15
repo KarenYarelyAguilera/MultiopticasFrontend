@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
-
 * {
   margin: 0;
   padding: 0;
@@ -41,7 +40,6 @@
   margin-top: 15px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.26);
 }
-
 
 .inlineB {
   display: inline-block;
@@ -360,7 +358,7 @@
 }
 
 .BarraLateral.close ~ .contInventory {
-  left: 100px;
+  left: 135px;
   width: calc(97.3% - 88px);
 }
 
