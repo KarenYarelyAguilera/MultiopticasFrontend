@@ -1,5 +1,6 @@
 import { Input } from "@mui/material";
 import swal from "@sweetalert/with-react";
+import { sendData } from "./sendData";
 
 export const ForgetPsswrd = () => {
   swal({
@@ -24,11 +25,11 @@ export const ForgetPsswrd = () => {
             <Input id="correo"></Input>
           </div>
         )
-          .then((correo) => {
+          .then( (correo) => {
             correo = document.getElementById("correo").value;
-            alert(correo);
+
           })
-          .then(() => {
+          .then((data) => {
             swal(
               <div>
                 <h1>Ingrese el codigo que se le proporcionó</h1>
@@ -51,26 +52,48 @@ export const ForgetPsswrd = () => {
             <Input id="correo"></Input>
           </div>
         )
-          .then((correo) => {
+          .then(async (correo) => {
             correo = document.getElementById("correo").value;
-            alert(correo);
+            const urlPreguntas ="http://localhost/Multioptica/login/controller/user.php?op=preguntas"
+            let data = {
+              correo:correo
+            }
+            const respJson = await sendData(urlPreguntas, data);
+
+            if (respJson.length===0){
+              swal("Correo no valido")
+              ForgetPsswrd()
+            }
+
+
+            return respJson
+
+
           })
-          .then(()=>{
+          .then((data)=>{
             swal(
               <div>
                 <h1>Responda sus preguntas de seguridad: </h1>
-                <p>Pregunta 1: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
+                <p>Pregunta 1: {data[0].Pregunta}</p>
                 <p>Respuesta: <Input id="resp1"/></p>
-                <p>Pregunta 2: {console.log("Aqui se hace fetch de la pregunta para colocar el texto :v")}</p>
+                <p>Pregunta 2: {data[1].Pregunta}</p>
                 <p>Respuesta: <Input id="resp2"/></p>
               </div>
             ).then(()=>{
               let resp1,resp2
               resp1=document.getElementById('resp1').value
               resp2=document.getElementById('resp2').value
-              alert("resp1: "+resp1+"\nresp2: "+resp2)
-              //desues de validar con la base
-              RestablecerContrasenia()
+
+              if (resp1 ==="" || resp2 ==="") {
+                swal("No deje espacios en blanco")
+                ForgetPsswrd()
+              }else if (resp1!==data[0].Respuesta || resp2 !==data[1].Respuesta) {
+                alert("Error")
+                ForgetPsswrd()
+              }else{
+                RestablecerContrasenia(data[0].Id_Usuario)
+              }
+              
             })
           })
         
@@ -85,7 +108,7 @@ export const ForgetPsswrd = () => {
   });
 };
 
-const RestablecerContrasenia = () => {
+const RestablecerContrasenia = (dataa) => {
   swal(
     <div>
       <h1>Restablezca su contraseña</h1>
@@ -100,22 +123,29 @@ const RestablecerContrasenia = () => {
         Confirme su contraseña: <Input id="newPasswrdConfirm"></Input>
       </p>
     </div>
-  ).then(() => {
+  ).then(async () => {
     let newPssword, newPsswordConfirm;
 
     newPssword = document.getElementById("newPasswrd").value;
     newPsswordConfirm = document.getElementById("newPasswrdConfirm").value;
 
     if (newPssword === "" || newPsswordConfirm === "") {
-      swal("Debe llenar ambos campos", "", "error").then(() =>
-        RestablecerContrasenia()
-      );
+      swal("Debe llenar ambos campos", "", "error")
+      RestablecerContrasenia(dataa)
     } else {
       if (newPssword === newPsswordConfirm) {
         swal("Contraseña actualizada con exito.", "", "success");
+        
+        const urlChangePsswrd = "http://localhost/Multioptica/login/controller/user.php?op=changepassword"
+        let data = {
+          password:newPssword,
+          id:dataa
+        }
+        const respJson = await sendData(urlChangePsswrd, data);
+        alert(respJson)
       } else {
         swal("Las contraseñas deben coincidir", "", "error").then(() =>
-          RestablecerContrasenia()
+        RestablecerContrasenia(dataa)
         );
       }
     }
