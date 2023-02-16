@@ -95,6 +95,7 @@
 
 .BarraLateral nav ul li,
 .BarraLateral .logout ul li {
+  width: 80%;
   cursor: pointer;
   list-style: none;
   margin-top: 10px;
@@ -110,10 +111,6 @@
 
 .BarraLateral.close .logout .ul li {
   display: flex;
-}
-
-.BarraLateral nav ul li {
-  width: 80%;
 }
 
 .BarraLateral .logout ul li {

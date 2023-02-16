@@ -13,12 +13,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
-export const BarraHorizontal = (props,{ onChange = () => null }) => {
+export const BarraHorizontal = (props, { onChange = () => null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const info = [
     {
-      username: props.user,
+      // username: props.user,
+      username: 'Michael Sosa',
       imagen:
         'https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg',
       iniciales: 'MS',
@@ -27,7 +28,7 @@ export const BarraHorizontal = (props,{ onChange = () => null }) => {
 
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -36,7 +37,7 @@ export const BarraHorizontal = (props,{ onChange = () => null }) => {
 
   //
   const handleProfile = () => {
-    navigate("/dashboard/profile");
+    navigate('/dashboard/profile');
     onChange();
   };
 
