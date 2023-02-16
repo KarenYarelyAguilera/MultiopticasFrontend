@@ -9,8 +9,8 @@ import RegistroInventory from '../IMG/RegistroInventory.jpg';
 export const Home = () => {
   return (
     <div className="">
-      <BarraLateral />
-      <BarraHorizontal />
+      {/* <BarraLateral /> */}
+      {/* <BarraHorizontal /> */}
       <div className="contInventory"></div>
     </div>
   );
