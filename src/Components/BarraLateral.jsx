@@ -29,8 +29,12 @@ export const BarraLateral = () => {
   return (
     <div className="BarraLateral close">
       <div className="imglogo">
-        <img src={MulltiOptica} alt="logo" className="logoBarraLateral" />
-        <img src={MulltiOpticaOjo} alt="logo" className="logoOjo" />
+        <Link to="/">
+          <img src={MulltiOptica} alt="logo" className="logoBarraLateral" />
+        </Link>
+        <Link to="/">
+          <img src={MulltiOpticaOjo} alt="logo" className="logoOjo" />
+        </Link>
         <FontAwesomeIcon
           onClick={handleClick}
           className="iconClose"
@@ -42,59 +46,54 @@ export const BarraLateral = () => {
         <nav>
           <ul>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
               <Link className="link" to="/inventario">
-                {' '}
-                INVENTARIO
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />{' '}
+                <h1>INVENTARIO</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
               <Link className="link" to="">
-                {' '}
-                CLIENTES
+                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
+                <h1>CLIENTES</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faHandHoldingDollar} />
               <Link className="link" to="">
-                {' '}
-                VENTAS
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faHandHoldingDollar}
+                />
+                <h1>VENTAS</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faCalendar} />
               <Link className="link" to="">
-                {' '}
-                RECORDATORIOS
+                <FontAwesomeIcon className="iconLi" icon={faCalendar} />
+                <h1>RECORDATORIOS</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faUsers} />
               <Link className="link" to="">
-                {' '}
-                USUARIOS
+                <FontAwesomeIcon className="iconLi" icon={faUsers} />
+                <h1>USUARIOS</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faFileLines} />
               <Link className="link" to="">
-                {' '}
-                REPORTES
+                <FontAwesomeIcon className="iconLi" icon={faFileLines} />
+                <h1>REPORTES</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
               <Link className="link" to="">
-                {' '}
-                SEGURIDAD
+                <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
+                <h1>SEGURIDAD</h1>
               </Link>
             </li>
             <li>
-              <FontAwesomeIcon className="iconLi" icon={faGear} />
               <Link className="link" to="">
-                {' '}
-                CONFIGURACION
+                <FontAwesomeIcon className="iconLi" icon={faGear} />
+                <h1>CONFIGURACION</h1>
               </Link>
             </li>
           </ul>
@@ -104,10 +103,9 @@ export const BarraLateral = () => {
       <div className="logout">
         <ul>
           <li>
-            <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
             <Link className="linkLogout" to="">
-              {' '}
-              CERRAR SESIÓN
+              <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
+              <h1>CERRAR SESIÓN</h1>
             </Link>
           </li>
         </ul>

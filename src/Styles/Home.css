@@ -35,10 +35,14 @@
 }
 
 .imglogo {
-  width: 100%;
+  width: 95%;
   height: 80px;
   margin-top: 15px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.26);
+}
+
+.BarraLateral.close .imgLogo {
+  width: 80%;
 }
 
 .inlineB {
@@ -70,7 +74,6 @@
   width: 70px;
   height: 80px;
   transition: 0.5s;
-  margin-left: -5%;
   display: none;
 }
 
@@ -85,10 +88,9 @@
 }
 
 .BarraLateral.close nav {
-  width: 100%;
+  width: 50%;
   margin-left: 0;
   transition: 0.5s;
-  margin-left: -5px;
 }
 
 .BarraLateral nav ul li,
@@ -110,15 +112,31 @@
   display: flex;
 }
 
+.BarraLateral nav ul li {
+  width: 80%;
+}
+
+.BarraLateral .logout ul li {
+  width: 80%;
+}
+
 .BarraLateral nav ul li .link {
   text-decoration: none;
   color: white;
-  margin-left: 10px;
   white-space: nowrap;
   opacity: 1;
+
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  align-items: center;
 }
 
-.BarraLateral.close nav ul li .link {
+.BarraLateral nav ul li .link h1 {
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.BarraLateral.close nav ul li .link h1 {
   display: none;
 }
 
@@ -134,18 +152,25 @@
 }
 
 .BarraLateral.close .logout {
-  width: 100%;
-  margin-left: -5px;
+  width: 50%;
   transition: 0.5s;
 }
 
 .BarraLateral .logout ul li .linkLogout {
   text-decoration: none;
   color: white;
+
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  align-items: center;
+}
+
+.BarraLateral ul li .linkLogout h1 {
+  font-size: 15px;
   margin-left: 10px;
 }
 
-.BarraLateral.close .logout ul li .linkLogout {
+.BarraLateral.close .logout ul li .linkLogout h1 {
   display: none;
 }
 

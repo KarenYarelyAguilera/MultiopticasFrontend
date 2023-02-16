@@ -1,19 +1,19 @@
-import { Home } from "./Pages/Home.jsx";
-import { ProtectedRoute } from "./Components/ProtectedRoute.jsx";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; //Sirven para invocar componentes segun la ruta que se especifique
-import { Login } from "./Pages/login";
-import { useState } from "react";
-import { BarraHorizontal } from "./Components/BarraHorizontal.jsx";
-import { BarraLateral } from "./Components/BarraLateral.jsx";
-import { Inventario } from "./Pages/Inventario.jsx";
+import { Home } from './Pages/Home.jsx';
+import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para invocar componentes segun la ruta que se especifique
+import { Login } from './Pages/login';
+import { useState } from 'react';
+import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
+import { BarraLateral } from './Components/BarraLateral.jsx';
+import { Inventario } from './Pages/Inventario.jsx';
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
-import { MenuVentas } from "./Pages/MenuVentas.jsx";
-import { NuevaVenta } from "./Pages/NuevaVenta.jsx";
-import { DetalleVenta } from "./Pages/DetalleVenta.jsx";
+import { MenuVentas } from './Pages/MenuVentas.jsx';
+import { NuevaVenta } from './Pages/NuevaVenta.jsx';
+import { DetalleVenta } from './Pages/DetalleVenta.jsx';
 
 function App() {
-  const [usuario, setUsuario] = useState("");
-  const [activo, setActivo] = useState("inactivo"); /**Hook usState:
+  const [usuario, setUsuario] = useState('');
+  const [activo, setActivo] = useState('inactivo'); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
 
@@ -45,6 +45,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           </Route> */}
 
           <Route
+            // path="/Home"
             index
             element={
               <div className="flex">
@@ -52,21 +53,21 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
             }
           ></Route>
-          
+
           <Route
             path="/inventario"
             element={
-              <ProtectedRoute activo={activo}>
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral />
                 <BarraHorizontal user={usuario} />
-                <div className="flex">
-                  <BarraLateral />
-                  <div className="content">
-                    <div className="flex_content">
-                      <Inventario></Inventario>
-                    </div>
+                <div className="content">
+                  <div className="flex_content">
+                    <Inventario></Inventario>
                   </div>
                 </div>
-              </ProtectedRoute>
+              </div>
+              // </ProtectedRoute>
             }
           ></Route>
 
@@ -91,33 +92,33 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/ventas/nuevaventa"
             element={
               <ProtectedRoute activo={activo}>
-              <BarraHorizontal user={usuario} />
-              <div className="flex">
-                <BarraLateral />
-                <div className="content">
-                  <div className="flex_content">
-                    <NuevaVenta/>
+                <BarraHorizontal user={usuario} />
+                <div className="flex">
+                  <BarraLateral />
+                  <div className="content">
+                    <div className="flex_content">
+                      <NuevaVenta />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ProtectedRoute>
+              </ProtectedRoute>
             }
           ></Route>
 
-           <Route
+          <Route
             path="/ventas/reportes"
             element={
               <ProtectedRoute>
-              <BarraHorizontal user={usuario} />
-              <div className="flex">
-                <BarraLateral />
-                <div className="content">
-                  <div className="flex_content">
-                    <DetalleVenta/>
+                <BarraHorizontal user={usuario} />
+                <div className="flex">
+                  <BarraLateral />
+                  <div className="content">
+                    <div className="flex_content">
+                      <DetalleVenta />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ProtectedRoute>
+              </ProtectedRoute>
             }
           ></Route>
         </Routes>
