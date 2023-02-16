@@ -54,7 +54,7 @@ export const ForgetPsswrd = () => {
         )
           .then(async (correo) => {
             correo = document.getElementById("correo").value;
-            const urlPreguntas ="http://localhost/Multioptica/login/controller/user.php?op=preguntas"
+            const urlPreguntas ="http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
             let data = {
               correo:correo
             }
@@ -136,7 +136,7 @@ const RestablecerContrasenia = (dataa) => {
       if (newPssword === newPsswordConfirm) {
         swal("Contraseña actualizada con exito.", "", "success");
         
-        const urlChangePsswrd = "http://localhost/Multioptica/login/controller/user.php?op=changepassword"
+        const urlChangePsswrd = "http://localhost/APIS-Multioptica/login/controller/user.php?op=changepassword"
         let data = {
           password:newPssword,
           id:dataa

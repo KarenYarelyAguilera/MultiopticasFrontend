@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"; /**Este hook ayuda a redireccion
 a una pagina diferente mediante el "path" */
 
 const urlLogin =
-  "http://localhost/Multioptica/login/controller/user.php?op=user";
+  "http://localhost/APIS-Multioptica/login/controller/user.php?op=user";
 
 const sendData = async (urlAPI, data) => {
   //De aqui

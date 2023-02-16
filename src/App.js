@@ -33,12 +33,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
-          {/* <Route index element={<Login access={access} user={user} />} /> */}
+           <Route index element={<Login access={access} user={user} />} /> 
 
           <Route
-            index
+            path='/HOME'
             element={
-              // <ProtectedRoute activo={activo}>
+              <ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral />
                 <BarraHorizontal user={usuario} />
@@ -46,7 +46,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <Home></Home>
                 </div>
               </div>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           ></Route>
 
