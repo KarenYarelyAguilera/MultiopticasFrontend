@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
 import { Inventario } from './Pages/Inventario.jsx';
+import { RegistroInventario } from './Pages/RegistroInventario.jsx';
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
 import { MenuVentas } from './Pages/MenuVentas.jsx';
 import { NuevaVenta } from './Pages/NuevaVenta.jsx';
@@ -57,11 +58,20 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <div className="flex">
                 <BarraLateral />
                 <BarraHorizontal user={usuario} />
-                <div className="content">
-                  <div className="flex_content">
-                    <Inventario></Inventario>
-                  </div>
-                </div>
+                <Inventario></Inventario>
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/registroInventario"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral />
+                <BarraHorizontal user={usuario} />
+                <RegistroInventario></RegistroInventario>
               </div>
               // </ProtectedRoute>
             }

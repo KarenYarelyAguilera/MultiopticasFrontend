@@ -241,7 +241,7 @@
 }
 
 .BarraLateral.close ~ .BarraHorizontal .cont-primary .titulo h1 {
-  margin-top: 0;
+  margin-top: 20px;
   font-size: 25px;
 }
 
@@ -370,23 +370,62 @@
 /* DropDown */
 
 /* Inventario */
-.contInventory {
+
+.CardInventario {
   position: relative;
-  height: 115px;
+  top: 50px;
   left: 355px;
   width: calc(94.5% - 250px);
-  border-bottom: 2px solid rgba(209, 209, 209, 0.545);
+  height: auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 50px;
   transition: 0.5s ease;
 }
 
-.BarraLateral.close ~ .contInventory {
-  left: 135px;
-  width: calc(97.3% - 88px);
+.BarraLateral.close ~ .CardInventario {
+  left: 205px;
+  width: calc(90% - 20px);
 }
 
-.imgCard {
-  width: 100px;
-  height: 100px;
+.CardInventario .contCard {
+  width: 80%;
+  height: 350px;
+  border-radius: 25px;
+  box-shadow: 5px 5px 10px -5px rgba(164, 164, 164, 0.75);
+
+  display: grid;
+  grid-template-rows: 75% 20%;
+  justify-items: center;
+  align-items: center;
+}
+
+.CardInventario .contCard .imgCard {
+  width: 45%;
+  height: auto;
+}
+
+.CardInventario .contCard .btnCard {
+  width: 60%;
+  height: 50px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CardInventario .contCard .btnCard h1 {
+  font-size: 16px;
+  color: white;
 }
 /* Inventario */
 
