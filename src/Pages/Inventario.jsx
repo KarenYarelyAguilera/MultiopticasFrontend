@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 //Styles
 import '../Styles/Home.css';
+
+//FontAwesome
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 
 import RegistroInventario from '../IMG/RegistroInventario.jpg';
 import InventarioDisponible from '../IMG/InventarioDisponible.jpg';
@@ -41,25 +45,29 @@ export const Inventario = props => {
 
   return (
     <div className="CardInventario">
-      {datos.length ? (
-        datos.map((datas, index) => (
-          <div key={index}>
-            <div className="contCard">
-              <img
-                src={datas.imagen}
-                className="imgCard"
-                alt="No se encontro la imagen"
-              />
-
-              <Link className="btnCard" to={datas.vinculo}>
-                <h1>{datas.titulo}</h1>
-              </Link>
+      <div className="contPrimary">
+        {datos.length ? (
+          datos.map((datas, index) => (
+            <div key={index}>
+              <div className="contCard">
+                {datas.imagen ? (
+                  <img src={datas.imagen} className="imgCard" alt="" />
+                ) : (
+                  <div>
+                    <FontAwesomeIcon className="ErroImg" icon={faImage} />
+                    <h1>Error al mostrar la imagen</h1>
+                  </div>
+                )}
+                <Link className="btnCard" to={datas.vinculo}>
+                  <h1>{datas.titulo}</h1>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <div className="NoInformation">Informacion no encontrada</div>
-      )}
+          ))
+        ) : (
+          <div className="NoInformation">Error al mostrar la información</div>
+        )}
+      </div>
     </div>
   );
 };
