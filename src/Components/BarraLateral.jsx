@@ -52,7 +52,7 @@ export const BarraLateral = () => {
               </Link>
             </li>
             <li>
-              <Link className="link" to="">
+              <Link className="link" to="/recuperacionPassword">
                 <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
                 <h1>CLIENTES</h1>
               </Link>

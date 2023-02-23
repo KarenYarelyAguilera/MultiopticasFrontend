@@ -16,6 +16,7 @@ import { Inventario } from './Pages/Inventario.jsx';
 import { RegistroInventario } from './Pages/RegistroInventario.jsx';
 import { Usuarios } from './Pages/Usuarios.jsx';
 import { AddUsers } from './Pages/AddUsers.jsx';
+import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
 
 function App() {
   const [usuario, setUsuario] = useState('');
@@ -103,6 +104,19 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraLateral />
                 <BarraHorizontal user={usuario} />
                 <AddUsers></AddUsers>
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/recuperacionPassword"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex" style={{ width: '99.9%' }}>
+                <BarraLateral />
+                <BarraHorizontal user={usuario} />
+                <RecuperacionPassword></RecuperacionPassword>
               </div>
               // </ProtectedRoute>
             }
