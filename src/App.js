@@ -1,16 +1,21 @@
-import { Home } from './Pages/Home.jsx';
-import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para invocar componentes segun la ruta que se especifique
-import { Login } from './Pages/login';
 import { useState } from 'react';
+
+//Components
+import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
-import { Inventario } from './Pages/Inventario.jsx';
-import { RegistroInventario } from './Pages/RegistroInventario.jsx';
+
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
+import { Login } from './Pages/login';
+import { Home } from './Pages/Home.jsx';
 import { MenuVentas } from './Pages/MenuVentas.jsx';
 import { NuevaVenta } from './Pages/NuevaVenta.jsx';
 import { DetalleVenta } from './Pages/DetalleVenta.jsx';
+import { Inventario } from './Pages/Inventario.jsx';
+import { RegistroInventario } from './Pages/RegistroInventario.jsx';
+import { Usuarios } from './Pages/Usuarios.jsx';
+import { AddUsers } from './Pages/AddUsers.jsx';
 
 function App() {
   const [usuario, setUsuario] = useState('');
@@ -72,6 +77,32 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraLateral />
                 <BarraHorizontal user={usuario} />
                 <RegistroInventario></RegistroInventario>
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/usuarios"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral />
+                <BarraHorizontal user={usuario} />
+                <Usuarios></Usuarios>
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/addUsers"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral />
+                <BarraHorizontal user={usuario} />
+                <AddUsers></AddUsers>
               </div>
               // </ProtectedRoute>
             }
