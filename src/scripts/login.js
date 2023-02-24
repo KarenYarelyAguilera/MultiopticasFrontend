@@ -1,13 +1,13 @@
-import { Input } from "@mui/material";
-import swal from "@sweetalert/with-react";
-import { sendData } from "./sendData";
+import { Input, TextField } from '@mui/material';
+import swal from '@sweetalert/with-react';
+import { sendData } from './sendData';
 
 export const ForgetPsswrd = () => {
   swal({
     buttons: {
-      codigo: "Codigo de recuperacion via email",
-      preguntas: "Preguntas secretas",
-      cancel: "cancel",
+      codigo: 'Codigo de recuperacion via email',
+      preguntas: 'Preguntas secretas',
+      cancel: 'cancel',
     },
     content: (
       <div>
@@ -15,91 +15,78 @@ export const ForgetPsswrd = () => {
         <p>Selecciona una opción de recuperación</p>
       </div>
     ),
-  }).then((a) => {
+  }).then(a => {
     switch (a) {
-      case "codigo":
+      case 'codigo':
         swal(
           <div>
             <h1>Codigo de recuperacion</h1>
             <p>Ingrese su correo para recibir un codigo de verificacion</p>
             <Input id="correo"></Input>
-          </div>
+          </div>,
         )
-          .then( (correo) => {
-            correo = document.getElementById("correo").value;
-
+          .then(correo => {
+            correo = document.getElementById('correo').value;
           })
-          .then((data) => {
+          .then(data => {
             swal(
               <div>
                 <h1>Ingrese el codigo que se le proporcionó</h1>
                 <Input id="codigoVerificacion"></Input>
-              </div>
+              </div>,
             )
-              .then((codigo) => {
-                codigo = document.getElementById("codigoVerificacion").value;
+              .then(codigo => {
+                codigo = document.getElementById('codigoVerificacion').value;
                 alert(codigo);
               })
               .then(() => RestablecerContrasenia());
           });
         break;
-      case "preguntas":
+      case 'preguntas':
         //hacer esto una funcion aparte.
         swal(
           <div>
             <h1>Preguntas de seguridad</h1>
             <p>Ingrese su correo para mostrar sus preguntas de seguridad</p>
             <Input id="correo"></Input>
-          </div>
+          </div>,
         )
-          .then(async (correo) => {
-            correo = document.getElementById("correo").value;
-            const urlPreguntas ="http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
-            let data = {
-              correo:correo
-            }
-            const respJson = await sendData(urlPreguntas, data);
-
-            if (respJson.length===0){
-              swal("Correo no valido")
-              ForgetPsswrd()
-            }
-
-
-            return respJson
-
-
+          .then(correo => {
+            correo = document.getElementById('correo').value;
+            return correo;
           })
-          .then((data)=>{
+          .then(async data => {
+            let correo = {
+              correo: data,
+            };
+
+            let urlGPreguntas =
+              'http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas';
+            let preguntas = await sendData(urlGPreguntas, correo);
+            console.log(preguntas)
             swal(
               <div>
-                <h1>Responda sus preguntas de seguridad: </h1>
-                <p>Pregunta 1: {data[0].Pregunta}</p>
-                <p>Respuesta: <Input id="resp1"/></p>
-                <p>Pregunta 2: {data[1].Pregunta}</p>
-                <p>Respuesta: <Input id="resp2"/></p>
-              </div>
-            ).then(()=>{
-              let resp1,resp2
-              resp1=document.getElementById('resp1').value
-              resp2=document.getElementById('resp2').value
+                <h1>Responda su pregunta de seguridad: </h1>
+                <br />
+                <p>
+                  Pregunta:
+                  <select name="select" id="preguntas">
+                    <option>x</option>
+                    <option>y</option>
+                  </select>
+                </p>
+                <br />
+                <p>
+                  Respuesta:
+                  <TextField id="respuesta" label="" value={''} size="small" />
+                </p>
+              </div>,
+            ).then(() => {});
+          });
 
-              if (resp1 ==="" || resp2 ==="") {
-                swal("No deje espacios en blanco")
-                ForgetPsswrd()
-              }else if (resp1!==data[0].Respuesta || resp2 !==data[1].Respuesta) {
-                alert("Error")
-                ForgetPsswrd()
-              }else{
-                RestablecerContrasenia(data[0].Id_Usuario)
-              }
-              
-            })
-          })
-        
         break;
-      case "cancel":
-        swal("cancel");
+      case 'cancel':
+        swal('cancel');
         break;
 
       default:
@@ -108,7 +95,7 @@ export const ForgetPsswrd = () => {
   });
 };
 
-const RestablecerContrasenia = (dataa) => {
+const RestablecerContrasenia = dataa => {
   swal(
     <div>
       <h1>Restablezca su contraseña</h1>
@@ -122,30 +109,31 @@ const RestablecerContrasenia = (dataa) => {
       <p>
         Confirme su contraseña: <Input id="newPasswrdConfirm"></Input>
       </p>
-    </div>
+    </div>,
   ).then(async () => {
     let newPssword, newPsswordConfirm;
 
-    newPssword = document.getElementById("newPasswrd").value;
-    newPsswordConfirm = document.getElementById("newPasswrdConfirm").value;
+    newPssword = document.getElementById('newPasswrd').value;
+    newPsswordConfirm = document.getElementById('newPasswrdConfirm').value;
 
-    if (newPssword === "" || newPsswordConfirm === "") {
-      swal("Debe llenar ambos campos", "", "error")
-      RestablecerContrasenia(dataa)
+    if (newPssword === '' || newPsswordConfirm === '') {
+      swal('Debe llenar ambos campos', '', 'error');
+      RestablecerContrasenia(dataa);
     } else {
       if (newPssword === newPsswordConfirm) {
-        swal("Contraseña actualizada con exito.", "", "success");
-        
-        const urlChangePsswrd = "http://localhost/APIS-Multioptica/login/controller/user.php?op=changepassword"
+        swal('Contraseña actualizada con exito.', '', 'success');
+
+        const urlChangePsswrd =
+          'http://localhost/APIS-Multioptica/login/controller/user.php?op=changepassword';
         let data = {
-          password:newPssword,
-          id:dataa
-        }
+          password: newPssword,
+          id: dataa,
+        };
         const respJson = await sendData(urlChangePsswrd, data);
-        alert(respJson)
+        alert(respJson);
       } else {
-        swal("Las contraseñas deben coincidir", "", "error").then(() =>
-        RestablecerContrasenia(dataa)
+        swal('Las contraseñas deben coincidir', '', 'error').then(() =>
+          RestablecerContrasenia(dataa),
         );
       }
     }
