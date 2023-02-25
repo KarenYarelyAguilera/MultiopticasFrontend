@@ -62,10 +62,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/inventario"
             element={
               <ProtectedRoute activo={activo}>
-                <BarraHorizontal user={usuario} />
-                <Inventario></Inventario>
-              </div>
-              // </ProtectedRoute>
+                <div>
+                  <BarraHorizontal user={usuario} />
+                  <Inventario></Inventario>
+                </div>
+              </ProtectedRoute>
             }
           ></Route>
 
@@ -131,7 +132,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <RecuperacionPassword></RecuperacionPassword>
               </div>
               // </ProtectedRoute>
-
             }
           ></Route>
 
