@@ -21,6 +21,11 @@ export const Usuarios = () => {
       vinculo: '/addUsers',
     },
     {
+      imagen: InforUsers,
+      titulo: 'Datos generales',
+      vinculo: '/datosEmpleado',
+    },
+    {
       imagen: ListUsers,
       titulo: 'Lista de empleados',
       vinculo: '',

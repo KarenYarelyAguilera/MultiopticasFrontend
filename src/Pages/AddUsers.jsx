@@ -16,15 +16,15 @@ export const AddUsers = ({
   warning = false,
   props,
 }) => {
-  const [activeStep, setActiveStep] = React.useState(0);
+  // const [activeStep, setActiveStep] = React.useState(0);
 
-  const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  };
+  // const handleNext = () => {
+  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
+  // };
 
-  const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  };
+  // const handleBack = () => {
+  //   setActiveStep(prevActiveStep => prevActiveStep - 1);
+  // };
 
   return (
     <div className="ContUsuarios">
@@ -34,7 +34,7 @@ export const AddUsers = ({
       </div>
 
       <div className="infoAddUser">
-        <VerticalStepper activeStep={activeStep}></VerticalStepper>
+        {/* <VerticalStepper activeStep={activeStep}></VerticalStepper> */}
         <div className="PanelInfo">
           <div className="InputContPrincipal">
             <div className="contInput">
@@ -80,21 +80,70 @@ export const AddUsers = ({
                 //       ? '316ee6'
                 //       : warning
                 //       ? '0cb106'
-                //       : 'gray',
+                //       : 'gray',1
                 // }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="PanelInfo">
+          <div className="InputContPrincipal">
+            <div className="contInput">
+              <TextCustom
+                text="Pregunta de seguridad 1"
+                className="titleInput"
+              />
+              <input
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Pregunta"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom
+                text="Pregunta de seguridad 2"
+                className="titleInput"
+              />
+              <input
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Pregunta"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Respuesta 1" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Respuesta"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Respuesta 2" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Respuesta"
               />
             </div>
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                // onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
               </Button>
-              <Button onClick={handleBack} className="btnStepper">
+              {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
