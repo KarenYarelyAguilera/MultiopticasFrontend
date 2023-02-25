@@ -13,13 +13,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
+
 export const BarraHorizontal = (props, { onChange = () => null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const info = [
     {
-      // username: props.user,
-      username: 'Michael Sosa',
+      username: props.user,
       imagen:
         'https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg',
       iniciales: 'MS',
@@ -49,7 +49,7 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
             <div key={index}>
               <div className="cont-primary">
                 <div className="titulo">
-                  <h1>{infor.username}</h1>
+                  <h1>{info.username}</h1>
                   <h2>MultiOpticas</h2>
                 </div>
 

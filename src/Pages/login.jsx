@@ -1,5 +1,5 @@
-import {Container,Grid,TextField,Button} from "@mui/material";
-import {ForgetPsswrd}  from "../scripts/login"
+import { Container, Grid, TextField, Button } from "@mui/material";
+import { ForgetPsswrd } from "../scripts/login"
 import '../Styles/login.css'
 import logo from '../IMG/Multioptica.png'
 
@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom"; /**Este hook ayuda a redireccion
 a una pagina diferente mediante el "path" */
 
 const urlLogin =
-  "http://localhost/Multioptica/login/controller/user.php?op=user";
+  "http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd";
+
+const urlDUsuario = "http://localhost/APIS-Multioptica/login/controller/user.php?op=user";
 
 const sendData = async (urlAPI, data) => {
   //De aqui
@@ -36,17 +38,28 @@ export const Login = (props) => {
   const refContrasenia = useRef(null);
 
   const handleLogin = async () => {
+
     const data = {
-      usuario: refUsuario.current.value,
+      correo: refUsuario.current.value,
       clave: refContrasenia.current.value,
     };
-    const respJson = await sendData(urlLogin, data);
 
-    console.log("Respuesta desde el evento ", respJson[0].Estado_Usuario);
-    props.access(respJson[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
-    props.user(respJson[0].Nombre_Usuario);
-    if (respJson[0].Estado_Usuario === "Activo") {
-      navegate("/Home");
+    const data2 = {
+      correo: refUsuario.current.value
+    }
+
+    
+    try {
+      const respJsonPss = await sendData(urlLogin, data);
+      const respJsonUsr = await sendData(urlDUsuario, data2)
+
+      if (respJsonPss) {
+        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
+        props.user(respJsonUsr[0].Nombre_Usuario);
+        navegate("/Home");
+      }
+    } catch (error) {
+
     }
   };
 
@@ -54,7 +67,7 @@ export const Login = (props) => {
     <Container maxWidth="lg" id="login">
       <Grid container spacing={8}>
         <Grid item xs={6} md={4}>
-            <img src={logo} alt="logo"  width="400px"/>
+          <img src={logo} alt="logo" width="400px" />
         </Grid>
         <Grid item xs={6}>
           <Grid container spacing={0.5}>
@@ -62,16 +75,16 @@ export const Login = (props) => {
               <div id="loginContent">
                 <h2>Iniciar Sesion</h2>
                 <div className="espacio">
-                  <TextField label="Usuario" size="small" margin="dense"  inputRef={refUsuario}/>
+                  <TextField label="Usuario" size="small" margin="dense" inputRef={refUsuario} />
                 </div>
                 <div className="espacio">
-                <TextField label="Contraseña" size="small" margin="normal"type="password" inputRef={refContrasenia}/>
+                  <TextField label="Contraseña" size="small" margin="normal" type="password" inputRef={refContrasenia} />
                 </div>
                 <div className="espacio">
-                <Button variant="contained" onClick={handleLogin}>Iniciar sesion</Button>
+                  <Button variant="contained" onClick={handleLogin}>Iniciar sesion</Button>
                 </div>
                 <div className="espacio">
-                <Button onClick={ForgetPsswrd} variant="contained">¿Olvidaste tu contraseña?</Button>
+                  <Button onClick={ForgetPsswrd} variant="contained">¿Olvidaste tu contraseña?</Button>
                 </div>
               </div>
             </Grid>
