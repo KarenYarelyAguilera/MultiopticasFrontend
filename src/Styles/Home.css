@@ -241,7 +241,7 @@
 }
 
 .BarraLateral.close ~ .BarraHorizontal .cont-primary .titulo h1 {
-  margin-top: 0;
+  margin-top: 20px;
   font-size: 25px;
 }
 
@@ -285,7 +285,15 @@
 }
 
 .NoInformation {
-  color: black;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  background-color: rgb(38, 103, 177);
+  border-radius: 25px;
+  color: white;
   font-size: 30px;
 }
 /* BARRA HORIZONTAL */
@@ -370,23 +378,95 @@
 /* DropDown */
 
 /* Inventario */
-.contInventory {
+
+.CardInventario {
   position: relative;
-  height: 115px;
+  top: 50px;
   left: 355px;
   width: calc(94.5% - 250px);
-  border-bottom: 2px solid rgba(209, 209, 209, 0.545);
+  height: auto;
+
   transition: 0.5s ease;
 }
 
-.BarraLateral.close ~ .contInventory {
-  left: 135px;
-  width: calc(97.3% - 88px);
+.BarraLateral.close ~ .CardInventario {
+  left: 205px;
+  width: calc(90% - 20px);
 }
 
-.imgCard {
-  width: 100px;
-  height: 100px;
+.CardInventario .contPrimary {
+  width: 70%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 30px;
+
+  position: relative;
+  left: 12%;
+}
+
+.CardInventario .contCard {
+  width: 95%;
+  height: 350px;
+  border-radius: 25px;
+  border: 3px solid rgb(225, 225, 225);
+
+  display: grid;
+  grid-template-rows: 75% 20%;
+  justify-items: center;
+  align-items: center;
+  transition: 0.5s ease;
+}
+
+.CardInventario .contCard div {
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 50px);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.CardInventario .contCard .ErroImg {
+  width: 100%;
+  color: gray;
+  font-size: 40px;
+}
+
+.CardInventario .contCard h1 {
+  font-size: 18px;
+  color: gray;
+}
+
+.CardInventario .contCard:hover {
+  box-shadow: 5px 5px 10px -5px rgba(164, 164, 164, 0.75);
+}
+
+.CardInventario .contCard .imgCard {
+  width: 60%;
+  height: auto;
+}
+
+.CardInventario .contCard .btnCard {
+  width: 80%;
+  height: 50px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CardInventario .contCard .btnCard h1 {
+  font-size: 16px;
+  color: white;
 }
 /* Inventario */
 

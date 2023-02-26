@@ -47,12 +47,12 @@ export const BarraLateral = () => {
           <ul>
             <li>
               <Link className="link" to="/inventario">
-                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />{' '}
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
                 <h1>INVENTARIO</h1>
               </Link>
             </li>
             <li>
-              <Link className="link" to="">
+              <Link className="link" to="/recuperacionPassword">
                 <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
                 <h1>CLIENTES</h1>
               </Link>
@@ -73,7 +73,7 @@ export const BarraLateral = () => {
               </Link>
             </li>
             <li>
-              <Link className="link" to="">
+              <Link className="link" to="/usuarios">
                 <FontAwesomeIcon className="iconLi" icon={faUsers} />
                 <h1>USUARIOS</h1>
               </Link>
