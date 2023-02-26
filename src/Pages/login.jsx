@@ -1,5 +1,5 @@
 import { Container, Grid, TextField, Button } from "@mui/material";
-import { ForgetPsswrd } from "../scripts/login"
+//import { ForgetPsswrd } from "../scripts/login"
 import '../Styles/login.css'
 import logo from '../IMG/Multioptica.png'
 
@@ -7,6 +7,7 @@ import { useRef } from "react"; /**Este hook ayuda a referenciar un componente
 sin necesidad del getElementById */
 import { useNavigate } from "react-router-dom"; /**Este hook ayuda a redireccionar
 a una pagina diferente mediante el "path" */
+
 
 const urlLogin =
   "http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd";
@@ -84,7 +85,9 @@ export const Login = (props) => {
                   <Button variant="contained" onClick={handleLogin}>Iniciar sesion</Button>
                 </div>
                 <div className="espacio">
-                  <Button onClick={ForgetPsswrd} variant="contained">¿Olvidaste tu contraseña?</Button>
+                  <Button onClick={()=>{
+                    navegate("/recuperacion")
+                  }} variant="contained">¿Olvidaste tu contraseña?</Button>
                 </div>
               </div>
             </Grid>

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
-import dataPreguntas from '../scripts/preguntas.json';
+import { sendData } from '../scripts/sendData';
 
 //MuiMaterial-Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -9,10 +9,18 @@ import WarningIcon from '@mui/icons-material/Warning';
 //Styles
 import '../Styles/RecuperacionPassword.css';
 
-export const RecuperacionPassword = () => {
+export const RecuperacionPassword =  (props) => {
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
+  
+  const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
+  const  data = {
+    correo:props.correo
+  }
 
+  const dataPreguntas = sendData(urlPreguntas,data)
+
+  console.log(dataPreguntas)
   // const dataPreguntas = [
   //   {
   //     idUsuario: '1',
@@ -63,7 +71,7 @@ export const RecuperacionPassword = () => {
       <div className="sectionRecuPassword">
         {dataPreguntas.length ? (
           dataPreguntas.map(preguntas => (
-            <div key={preguntas.idPregunta}>
+            <div key={preguntas.Id_Pregunta}>
               <div className="contPrincipalRecu">
                 <div className="contInput">
                   <TextCustom
@@ -73,7 +81,7 @@ export const RecuperacionPassword = () => {
                   <select name="" className="selectCustom">
                     {dataPreguntas.length ? (
                       dataPreguntas.map(pre => (
-                        <option key={pre.idPregunta} value={pre.pregunta}>
+                        <option key={pre.Id_Pregunta} value={pre.Pregunta}>
                           {pre.pregunta}
                         </option>
                       ))
