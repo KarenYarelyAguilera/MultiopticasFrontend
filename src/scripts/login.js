@@ -1,8 +1,10 @@
-import { Input, TextField } from '@mui/material';
+import { Input} from '@mui/material';
 import swal from '@sweetalert/with-react';
+
 import { sendData } from './sendData';
 
-export const ForgetPsswrd = () => {
+
+export const ForgetPsswrd = (props) => {
   swal({
     buttons: {
       codigo: 'Codigo de recuperacion via email',
@@ -55,33 +57,8 @@ export const ForgetPsswrd = () => {
             correo = document.getElementById('correo').value;
             return correo;
           })
-          .then(async data => {
-            let correo = {
-              correo: data,
-            };
-
-            let urlGPreguntas =
-              'http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas';
-            let preguntas = await sendData(urlGPreguntas, correo);
-            console.log(preguntas)
-            swal(
-              <div>
-                <h1>Responda su pregunta de seguridad: </h1>
-                <br />
-                <p>
-                  Pregunta:
-                  <select name="select" id="preguntas">
-                    <option>x</option>
-                    <option>y</option>
-                  </select>
-                </p>
-                <br />
-                <p>
-                  Respuesta:
-                  <TextField id="respuesta" label="" value={''} size="small" />
-                </p>
-              </div>,
-            ).then(() => {});
+          .then(data => {
+            window.location="http://localhost:3000/recuperacion"
           });
 
         break;
