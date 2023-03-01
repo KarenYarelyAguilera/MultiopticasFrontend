@@ -21,6 +21,7 @@ import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
 import { Metodos } from './Pages/Metodos.jsx';
 
 function App() {
+  
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [activo, setActivo] = useState('inactivo'); /**Hook usState:
@@ -30,7 +31,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
   const user = usr => setUsuario(usr);
   const mail = ml => setCorreo(ml);
-
+  
   return (
     <div>
       <BrowserRouter>
@@ -71,7 +72,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
           <Route
             path="/recuperacion/preguntas"
-            element={<RecuperacionPassword correo={correo}></RecuperacionPassword>}
+            element={<RecuperacionPassword correo={correo} ></RecuperacionPassword>}
           ></Route>
 
           <Route
