@@ -18,8 +18,11 @@ import { Usuarios } from './Pages/Usuarios.jsx';
 import { AddUsers } from './Pages/AddUsers.jsx';
 import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
 import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
+import { Metodos } from './Pages/Metodos.jsx';
 
 function App() {
+  
+  const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [activo, setActivo] = useState('inactivo'); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -27,7 +30,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
   const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
   const user = usr => setUsuario(usr);
-
+  const mail = ml => setCorreo(ml);
+  
   return (
     <div>
       <BrowserRouter>
@@ -41,7 +45,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
-          <Route index element={<Login access={access} user={user} />} />
+          <Route
+            index
+            element={<Login access={access} user={user} correo={mail} />}
+          />
 
           <Route
             path="/Home"
@@ -56,6 +63,16 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 </div>
               </ProtectedRoute>
             }
+          ></Route>
+
+          <Route
+            path="/recuperacion"
+            element={<Metodos correo={mail}></Metodos>}
+          ></Route>
+
+          <Route
+            path="/recuperacion/preguntas"
+            element={<RecuperacionPassword correo={correo} ></RecuperacionPassword>}
           ></Route>
 
           <Route
