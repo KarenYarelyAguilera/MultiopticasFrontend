@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* CardUsuario-Menu */
+
+.CardUsuarios {
+  position: relative;
+  top: 180px;
+  left: 355px;
+  width: calc(94.5% - 250px);
+  height: auto;
+
+  transition: 0.5s ease;
+}
+
+.BarraLateral.close ~ .CardUsuarios {
+  left: 205px;
+  width: calc(90% - 20px);
+}
+
+.CardUsuarios .contPrimary {
+  width: 70%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 30px;
+
+  position: relative;
+  left: 15%;
+}
+
+.CardUsuarios .contCard {
+  width: 95%;
+  height: 450px;
+  border-radius: 25px;
+  border: 3px solid rgb(225, 225, 225);
+
+  display: grid;
+  grid-template-rows: 75% 20%;
+  justify-items: center;
+  align-items: center;
+  transition: 0.5s ease;
+}
+
+.CardUsuarios .contCard div {
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 50px);
+
+  justify-content: center;
+  align-items: center;
+}
+
+.CardUsuarios .contCard .ErroImg {
+  width: 100%;
+  color: gray;
+  font-size: 40px;
+}
+
+.CardUsuarios .contCard h1 {
+  font-size: 18px;
+  color: gray;
+}
+
+.CardUsuarios .contCard:hover {
+  box-shadow: 5px 5px 10px -5px rgba(164, 164, 164, 0.75);
+}
+
+.CardUsuarios .contCard .imgCard {
+  width: 65%;
+  height: auto;
+}
+
+.CardUsuarios .contCard .btnCard {
+  width: 80%;
+  height: 50px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CardUsuarios .contCard .btnCard h1 {
+  font-size: 16px;
+  color: white;
+}
+/* CardUsuario-Menu */
+
+/* AddNewUser */
+.ContUsuarios {
+  position: relative;
+  top: 50px;
+  left: 355px;
+  width: calc(92% - 250px);
+  height: auto;
+
+  display: grid;
+  grid-template-rows: 15% 80%;
+  grid-gap: 50px;
+
+  transition: 0.5s ease;
+}
+
+.BarraLateral.close ~ .ContUsuarios {
+  left: 145px;
+  width: calc(90% - 20px);
+}
+
+.ContUsuarios .titleAddUser {
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-template-rows: repeat(2, 70px);
+  justify-items: center;
+}
+
+.ContUsuarios .titleAddUser h2 {
+  font-size: 55px;
+  color: #316ee6;
+}
+
+.ContUsuarios .titleAddUser h3 {
+  font-size: 16px;
+  color: gray;
+}
+
+.infoAddUser {
+  width: 70%;
+  height: auto;
+  padding-left: 20%;
+
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  align-items: center;
+}
+
+.infoAddUser .PanelInfo {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 50px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal1 {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 50px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard {
+  position: relative;
+  left: 60%;
+  width: 80%;
+  height: 50px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard h1 {
+  font-size: 16px;
+  color: white;
+}
+
+.infoAddUser .PanelInfo .contInput {
+  width: 50%;
+  height: auto;
+
+  display: grid;
+  grid-template-rows: 30% 70%;
+  grid-gap: 5px;
+  position: relative;
+}
+
+.infoAddUser .PanelInfo .contInput .inputCustom {
+  width: 300px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.infoAddUser .PanelInfo .contInput .selectCustom {
+  width: 325px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.infoAddUser .PanelInfo .contInput .inputCustom:focus-visible {
+  outline: none;
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal .contInput .titleInput {
+  color: gray;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.css-ahj2mt-MuiTypography-root {
+  font-size: 14px !important;
+  font-family: 'Rubik', sans-serif !important;
+}
+
+.css-1hv8oq8-MuiStepLabel-label {
+  font-size: 20px !important;
+}
+
+/* Stepper */
+.contBtnStepper {
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  justify-content: center;
+  align-items: center;
+}
+
+.contBtnStepper .btnStepper {
+  width: 95%;
+  height: 40px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contBtnStepper .btnStepper h1 {
+  font-size: 15px;
+  color: white;
+}
+/* Stepper */
+
+/* AddNewUser */
