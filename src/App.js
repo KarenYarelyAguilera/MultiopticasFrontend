@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
-
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
 import { Login } from './Pages/login';
 import { Home } from './Pages/Home.jsx';
@@ -19,9 +18,10 @@ import { AddUsers } from './Pages/AddUsers.jsx';
 import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
 import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
 import { Metodos } from './Pages/Metodos.jsx';
+import { ListEmpleados } from './Pages/LiestaEmpleados.jsx';
+
 
 function App() {
-  
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [activo, setActivo] = useState('inactivo'); /**Hook usState:
@@ -31,7 +31,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
   const user = usr => setUsuario(usr);
   const mail = ml => setCorreo(ml);
-  
+
   return (
     <div>
       <BrowserRouter>
@@ -47,7 +47,23 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
           <Route
             index
-            element={<Login access={access} user={user} correo={mail} />}
+            element={<Login access={access} user={user} correo={mail} />
+            }
+          />
+
+          <Route
+            path='/empleados/lista'
+            element={
+              <ProtectedRoute activo={activo}>
+                <BarraHorizontal user={usuario} />
+                <div className="flex">
+                  <BarraLateral />
+                  <div className="content">
+                    <ListEmpleados></ListEmpleados>
+                  </div>
+                </div>
+              </ProtectedRoute>
+            }
           />
 
           <Route
@@ -70,7 +86,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
           <Route
             path="/recuperacion/preguntas"
-            element={<RecuperacionPassword correo={correo} ></RecuperacionPassword>}
+            element={
+              <RecuperacionPassword correo={correo}></RecuperacionPassword>
+            }
           ></Route>
 
           <Route
@@ -112,20 +130,24 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/addUsers"
+            path="/usuarios/crearusuario"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
-                <BarraLateral />
+               <BarraLateral />
+               
                 <BarraHorizontal user={usuario} />
+                <div className="content">
                 <AddUsers></AddUsers>
+                   
+                  </div>
               </div>
               // </ProtectedRoute>
             }
           ></Route>
 
           <Route
-            path="/datosEmpleado"
+            path="/usuarios/crearempleado"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">

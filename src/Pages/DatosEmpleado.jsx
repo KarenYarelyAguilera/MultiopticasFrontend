@@ -47,7 +47,7 @@ export const DatosEmpleado = ({
 
     if (sendData(urlIEmpleado,data)) {
       swal('Empleado agregado con exito','','success').then((result) => {
-        navegate("/empleados")
+        navegate("/empleados/lista")
       })
         ;
     }
