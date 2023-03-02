@@ -18,17 +18,17 @@ export const Usuarios = () => {
     {
       imagen: AddUser,
       titulo: 'Nuevo usuario',
-      vinculo: '/addUsers',
+      vinculo: '/usuarios/crearusuario',
     },
     {
       imagen: InforUsers,
       titulo: 'Datos generales',
-      vinculo: '/datosEmpleado',
+      vinculo: '/usuarios/crearempleado',
     },
     {
       imagen: ListUsers,
       titulo: 'Lista de empleados',
-      vinculo: '',
+      vinculo: '/empleados/lista',
     },
   ];
 
