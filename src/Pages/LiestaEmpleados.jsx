@@ -1,14 +1,46 @@
+import { DataGrid } from '@mui/x-data-grid';
+import { useState, useEffect } from 'react';
+
+export const ListEmpleados = () => {
 
 
-export const ListEmpleados= ()=>{
+    const urlEmployees = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
 
-    const urlEmployees ="http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
-    const respjsonEmployees = fetch(urlEmployees)
 
-    function loadEmployees(empleados) {
+    const [tableData, setTableData] = useState([])
+
+    useEffect(() => {
+        fetch(urlEmployees).then(response => response.json()).then(data => setTableData(data))
+    },[])
+
+    for (let i = 0; i < tableData.length; i++) {
+        tableData[i].boton = <button>asdas</button>
         
     }
 
+    const columns = [
+        { field: 'IdEmpleado', headerName: 'ID', width: 130 },
+        { field: 'IdCargo', headerName: 'ID Cargo', width: 130 },
+        { field: 'nombre', headerName: 'Nombre', width: 130 },
+        { field: 'apellido', headerName: 'Apellido', width: 130 },
+        { field: 'telefonoEmpleado', headerName: 'Telefono', width: 130 },
+        { field: 'IdSucursal', headerName: 'ID Sucursal', width: 130 },
+        { field: 'IdGenero', headerName: 'ID Genero', width: 130 },
+        { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
+        { field: 'boton', headerName: 'Accion', width: 130 },
+        
+    ]
+
+    return (
+        <div style={{ height: 400, width: '70%' }}>
+            <DataGrid getRowId={(tableData)=>tableData.IdEmpleado} 
+                rows={tableData}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}   
+            />
+        </div>
+    )
 
 
 }

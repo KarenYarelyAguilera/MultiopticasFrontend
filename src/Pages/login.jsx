@@ -1,8 +1,14 @@
 import { Container, Grid, TextField, Button } from '@mui/material';
+import { FilledInput } from "@mui/material"
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 //import { ForgetPsswrd } from "../scripts/login"
 import '../Styles/login.css';
 import logo from '../IMG/Multioptica.png';
-
+import swal from '@sweetalert/with-react';
+import { useState } from 'react';
 import { useRef } from 'react'; /**Este hook ayuda a referenciar un componente
 sin necesidad del getElementById */
 import { useNavigate } from 'react-router-dom'; /**Este hook ayuda a redireccionar
@@ -18,6 +24,16 @@ const urlFechaExpiracion =
 
 
 export const Login = props => {
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const [contador, setContador] = useState(0)
   const navegate = useNavigate();
   const refUsuario = useRef(null);
   const refContrasenia = useRef(null);
@@ -32,19 +48,22 @@ export const Login = props => {
       correo: refUsuario.current.value,
     };
 
-    try{
-    const respJsonPss = await sendData(urlLogin, data);
+    try {
+      const respJsonPss = await sendData(urlLogin, data);
       const respJsonUsr = await sendData(urlDUsuario, data2);
       const respJsonFec = await sendData(urlFechaExpiracion, data2);
       console.log(respJsonFec)
-      
+
       if (respJsonPss) {
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
         navegate('/Home');
       }
-    }catch(error){}
-   
+    } catch (error) {
+      swal('El usuario que ingreso no existe o\nIngreso credenciales erroneas', '', 'error')
+      setContador(contador + 1)
+    }
+
   };
 
   return (
@@ -67,12 +86,22 @@ export const Login = props => {
                   />
                 </div>
                 <div className="espacio">
-                  <TextField
-                    label="Contraseña"
-                    size="small"
-                    margin="normal"
-                    type="password"
+                  <FilledInput
+                    id="filled-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
                     inputRef={refContrasenia}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
                   />
                 </div>
                 <div className="espacio">
