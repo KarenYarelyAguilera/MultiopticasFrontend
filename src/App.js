@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
-
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
 import { Login } from './Pages/login';
 import { Home } from './Pages/Home.jsx';
@@ -20,7 +19,7 @@ import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
 import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
 import { Metodos } from './Pages/Metodos.jsx';
 import { ListEmpleados } from './Pages/LiestaEmpleados.jsx';
-import { Prueba } from './Pages/Prueba.jsx';
+
 
 function App() {
   const [correo, setCorreo] = useState('');
@@ -137,9 +136,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
-                <BarraLateral />
+               <BarraLateral />
+               
                 <BarraHorizontal user={usuario} />
+                <div className="content">
                 <AddUsers></AddUsers>
+                   
+                  </div>
               </div>
               // </ProtectedRoute>
             }

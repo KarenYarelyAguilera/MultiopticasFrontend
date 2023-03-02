@@ -54,11 +54,17 @@ export const Login = props => {
       const respJsonFec = await sendData(urlFechaExpiracion, data2);
       console.log(respJsonFec)
 
-      if (respJsonPss) {
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
         navegate('/Home');
       }
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
+        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
+        props.user(respJsonUsr[0].Nombre_Usuario);
+        navegate('/Preguntas');
+      }
+
     } catch (error) {
       swal('El usuario que ingreso no existe o\nIngreso credenciales erroneas', '', 'error')
       setContador(contador + 1)

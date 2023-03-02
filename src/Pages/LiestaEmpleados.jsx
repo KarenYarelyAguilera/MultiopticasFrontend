@@ -20,12 +20,12 @@ export const ListEmpleados = () => {
 
     const columns = [
         { field: 'IdEmpleado', headerName: 'ID', width: 130 },
-        { field: 'IdCargo', headerName: 'ID Cargo', width: 130 },
-        { field: 'nombre', headerName: 'Nombre', width: 130 },
+        { field: 'descripcion', headerName: 'Cargo', width: 130 },
+        { field: 'Nombre', headerName: 'Nombre', width: 130 },
         { field: 'apellido', headerName: 'Apellido', width: 130 },
-        { field: 'telefonoEmpleado', headerName: 'Telefono', width: 130 },
-        { field: 'IdSucursal', headerName: 'ID Sucursal', width: 130 },
-        { field: 'IdGenero', headerName: 'ID Genero', width: 130 },
+        { field: 'Telefono', headerName: 'Telefono', width: 130 },
+        { field: 'departamento', headerName: 'Sucursal', width: 130 },
+        { field: 'genero', headerName: 'Genero', width: 130 },
         { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
         { field: 'boton', headerName: 'Accion', width: 130 },
         
