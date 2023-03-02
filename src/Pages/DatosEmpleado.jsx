@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { sendData } from '../scripts/sendData';
+import { useNavigate } from 'react-router-dom';
 
 //Styles
 import '../Styles/Usuarios.css';
@@ -9,7 +11,9 @@ import '../Styles/Usuarios.css';
 //Components
 import VerticalStepper from '../Components/VerticalStepper.jsx';
 import { TextCustom } from '../Components/TextCustom.jsx';
+import swal from '@sweetalert/with-react';
 
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
 export const DatosEmpleado = ({
   msgError = '',
   success = false,
@@ -17,14 +21,38 @@ export const DatosEmpleado = ({
   props,
 }) => {
   // const [activeStep, setActiveStep] = React.useState(0);
-
+  
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
+  
+  const navegate = useNavigate()
+  const handleNext = () => {
+    let identidad = document.getElementById("Nidentidad").value
+    let nombres = document.getElementById("nombre").value
+    let apellidos = document.getElementById("apellido").value
+    let telefono = document.getElementById("phone").value
+    let genero = parseInt(document.getElementById("genero").value)
+    let sucursal = parseInt(document.getElementById("sucursal").value)
+      let cargo = parseInt(document.getElementById("cargo").value)
+      let data = {
+        "cargo":cargo,
+        "nombres":nombres,
+        "apellidos": apellidos,
+        "phone":telefono,
+        "sucursal":sucursal,
+        "genero":genero,
+        "identidad":identidad
+    }
 
-  // const handleBack = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep - 1);
-  // };
+    if (sendData(urlIEmpleado,data)) {
+      swal('Empleado agregado con exito','','success').then((result) => {
+        navegate("/empleados")
+      })
+        ;
+    }
+    
+   };
 
   return (
     <div className="ContUsuarios">
@@ -40,12 +68,13 @@ export const DatosEmpleado = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Numero de Identidad" className="titleInput"  />
               <input
                 type="text"
                 name=""
                 className="inputCustom"
                 placeholder="Identidad"
+                id="Nidentidad"
               />
             </div>
 
@@ -56,6 +85,7 @@ export const DatosEmpleado = ({
                 name=""
                 className="inputCustom"
                 placeholder="Nombre"
+                id="nombre"
               />
             </div>
 
@@ -66,14 +96,15 @@ export const DatosEmpleado = ({
                 name=""
                 className="inputCustom"
                 placeholder="Apellido"
+                id="apellido"
               />
             </div>
 
             <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom">
-                <option value="Masculino">Masculino</option>
-                <option value="Femenino">Femenino</option>
+              <select name="" className="selectCustom" id='genero'>
+                <option value={1}>Masculino</option>
+                <option value={2}>Femenino</option>
               </select>
             </div>
 
@@ -84,22 +115,23 @@ export const DatosEmpleado = ({
                 name=""
                 className="inputCustom"
                 placeholder="Telefono"
+                id="phone"
               />
             </div>
 
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
-              <select name="" className="selectCustom">
-                <option value="1">1</option>
-                <option value="2">2</option>
+              <select name="" className="selectCustom" id="sucursal">
+                <option value={1}>1</option>
+                <option value={2}>2</option>
               </select>
             </div>
 
             <div className="contInput">
               <TextCustom text="Cargo" className="titleInput" />
-              <select name="" className="selectCustom">
-                <option value="1">1</option>
-                <option value="2">2</option>
+              <select name="" className="selectCustom" id='cargo'>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
               </select>
             </div>
 
@@ -107,7 +139,7 @@ export const DatosEmpleado = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                // onClick={handleNext}
+                onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
               </Button>

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router"
-import { sendData } from '../scripts/sendData';
 
 export const Metodos = (props)=>{
     const navegate = useNavigate()
