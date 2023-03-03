@@ -66,7 +66,7 @@ export const AddUsers = () => {
         {Empleado.length ? (
           Empleado.map(pre => (
             <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-              {pre.nombre}
+              {pre.Nombre}
             </option>
           ))
         ) : (
