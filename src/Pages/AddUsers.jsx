@@ -108,6 +108,7 @@ export const AddUsers = () => {
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
                 id="filled-adornment-password"
+                placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
                 inputRef={refContrasenia}

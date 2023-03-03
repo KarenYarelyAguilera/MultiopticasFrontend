@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router';
 import React, {useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { sendData } from '../scripts/sendData';
@@ -10,6 +11,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import '../Styles/RecuperacionPassword.css';
 
 export const RecuperacionPassword =  (props) => {
+  const navegate = useNavigate();
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
   
@@ -48,6 +50,13 @@ export const RecuperacionPassword =  (props) => {
     } else {
       seterrorMessage('Respuesta incorrecta');
     }
+  };
+
+  const newPassword = () => {
+    // let correo = document.getElementById('correo').value;
+    // props.correo(correo);
+
+    navegate('/recuperacion/preguntas/newPassword');
   };
 
   const handleChange = event => {
@@ -113,19 +122,20 @@ export const RecuperacionPassword =  (props) => {
           <Button
             className="btnSubmitpre"
             variant="container"
-            onClick={e => validate(e.target.value)}
+            // onClick={e => validate(e.target.value)}
+            onClick={newPassword}
           >
             Comprobar
           </Button>
         </div>
-        {errorMessage === '' ? null : (
+        {/* {errorMessage === '' ? null : (
           <div className="ErrorMessage">
             <WarningIcon
               style={{ paddingRight: 15, fontSize: 35, color: 'white' }}
             />
             {errorMessage}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

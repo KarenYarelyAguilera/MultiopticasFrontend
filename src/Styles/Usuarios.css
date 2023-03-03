@@ -222,14 +222,32 @@
 }
 
 .infoAddUser .PanelInfo .contInput .inputCustomPass {
-  width: 320px;
+  width: 320px !important;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 10px !important;
   background-color: rgba(208, 208, 208, 0.349);
-  border: 2px solid gray;
+  border: 2px solid gray !important;
   font-weight: bold;
-  font-size: 15px;
-  padding-bottom: 5px;
+  font-size: 15px !important;
+  font-weight: bold !important;
+
+  line-height: none !important;
+  letter-spacing: none !important;
+  box-sizing: none !important;
+}
+
+
+
+.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input{
+  padding-top: 10px !important;
+}
+.infoAddUser .PanelInfo .contInput 
+.inputCustomPass:before{
+  border-bottom: none !important;
+}
+
+.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after{
+  border-bottom: none !important;
 }
 
 .infoAddUser .PanelInfo .contInput .selectCustom {
