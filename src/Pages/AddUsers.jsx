@@ -97,6 +97,7 @@ export const AddUsers = () => {
               <TextCustom text="Nombre de Usuario" className="titleInput" />
               <input
                 type="text"
+                id="usuario"
                 name=""
                 className="inputCustom"
                 placeholder="Usuario"
@@ -130,6 +131,7 @@ export const AddUsers = () => {
               <input
                 type="text"
                 name=""
+                id="correo"
                 className="inputCustom"
                 placeholder="Correo Electronico"
               />
