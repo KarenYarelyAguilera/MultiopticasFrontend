@@ -12,9 +12,12 @@ export const Metodos = (props)=>{
         navegate("/recuperacion/preguntas")
     }
 
-    return <>
-    <input type="text" id="correo" />
-    <button >Correo de verificacion</button>
-    <button onClick={PreguntasCorreo}>Preguntas de seguridad</button>
-    </>
+    return (
+        <div>
+        <input type="text" id="correo" />
+        <button >Correo de verificacion</button>
+        <button onClick={PreguntasCorreo}>Preguntas de seguridad</button>
+        </div>
+    )
+   
 }
