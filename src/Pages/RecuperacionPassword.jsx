@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { useNavigate } from 'react-router';
 import React, {useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { sendData } from '../scripts/sendData';
@@ -10,37 +11,37 @@ import WarningIcon from '@mui/icons-material/Warning';
 import '../Styles/RecuperacionPassword.css';
 
 export const RecuperacionPassword =  (props) => {
+  const navegate = useNavigate();
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
   
-  const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
-  const  data = {
-    correo:props.correo
-  }
+  // const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
+  // const  data = {
+  //   correo:props.correo
+  // }
 
-  const dataPreguntas = sendData(urlPreguntas,data)
+  // const dataPreguntas = sendData(urlPreguntas,data)
 
-  console.log(dataPreguntas)
-  // const dataPreguntas = [
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llamaba su amigo de la infancia?',
-  //     respuesta: 'Michael',
-  //     idPregunta: '1',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llama tu padre?',
-  //     respuesta: 'Manuel',
-  //     idPregunta: '2',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-  //     respuesta: 'Iphone 13',
-  //     idPregunta: '3',
-  //   },
-  // ];
+  const dataPreguntas = [
+    {
+      idUsuario: '1',
+      pregunta: '¿Como se llamaba su amigo de la infancia?',
+      respuesta: 'Michael',
+      idPregunta: '1',
+    },
+    {
+      idUsuario: '1',
+      pregunta: '¿Como se llama tu padre?',
+      respuesta: 'Manuel',
+      idPregunta: '2',
+    },
+    {
+      idUsuario: '1',
+      pregunta: '¿Cual fue el ultimo celula que obtuvister?',
+      respuesta: 'Iphone 13',
+      idPregunta: '3',
+    },
+  ];
 
   const validate = () => {
     console.log(respuesta);
@@ -49,6 +50,13 @@ export const RecuperacionPassword =  (props) => {
     } else {
       seterrorMessage('Respuesta incorrecta');
     }
+  };
+
+  const newPassword = () => {
+    // let correo = document.getElementById('correo').value;
+    // props.correo(correo);
+
+    navegate('/recuperacion/preguntas/newPassword');
   };
 
   const handleChange = event => {
@@ -71,7 +79,7 @@ export const RecuperacionPassword =  (props) => {
       <div className="sectionRecuPassword">
         {dataPreguntas.length ? (
           dataPreguntas.map(preguntas => (
-            <div key={preguntas.Id_Pregunta}>
+            <div key={preguntas.idPregunta}>
               <div className="contPrincipalRecu">
                 <div className="contInput">
                   <TextCustom
@@ -81,7 +89,7 @@ export const RecuperacionPassword =  (props) => {
                   <select name="" className="selectCustom">
                     {dataPreguntas.length ? (
                       dataPreguntas.map(pre => (
-                        <option key={pre.Id_Pregunta} value={pre.Pregunta}>
+                        <option key={pre.idPregunta} value={pre.pregunta}>
                           {pre.pregunta}
                         </option>
                       ))
@@ -110,23 +118,24 @@ export const RecuperacionPassword =  (props) => {
         ) : (
           <div className="NoInformatio">No existe información</div>
         )}
-        <div className="contBtn">
+        <div className="contBtnPre">
           <Button
-            className="btnSubmit"
+            className="btnSubmitpre"
             variant="container"
-            onClick={e => validate(e.target.value)}
+            // onClick={e => validate(e.target.value)}
+            onClick={newPassword}
           >
             Comprobar
           </Button>
         </div>
-        {errorMessage === '' ? null : (
+        {/* {errorMessage === '' ? null : (
           <div className="ErrorMessage">
             <WarningIcon
               style={{ paddingRight: 15, fontSize: 35, color: 'white' }}
             />
             {errorMessage}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
