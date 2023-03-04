@@ -57,6 +57,8 @@ export const Login = props => {
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
+        props.rol(respJsonUsr[0].Rol)
+        props.mail(respJsonUsr[0].Correo_Electronico)
         navegate('/Home');
       }
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
@@ -88,6 +90,8 @@ export const Login = props => {
                     label="Usuario"
                     size="small"
                     margin="dense"
+                    autoComplete='off'
+                    inputProps={{maxLength:50}}
                     inputRef={refUsuario}
                   />
                 </div>

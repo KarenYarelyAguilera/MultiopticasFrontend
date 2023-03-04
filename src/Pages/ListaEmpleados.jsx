@@ -1,11 +1,14 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
+import swal from '@sweetalert/with-react';
+import { sendData } from '../scripts/sendData';
+import { useNavigate } from 'react-router';
 
 export const ListEmpleados = () => {
 
+    
 
     const urlEmployees = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
-
 
     const [tableData, setTableData] = useState([])
 
@@ -29,7 +32,7 @@ export const ListEmpleados = () => {
         { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
         { field: 'boton', headerName: 'Accion', width: 130 },
         
-    ]
+    ]   
 
     return (
         <div style={{ height: 400, width: '70%' }}>

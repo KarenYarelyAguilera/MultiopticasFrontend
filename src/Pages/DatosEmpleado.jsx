@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 
+import InforUsers from '../IMG/InforUsers.jpg';
+
 //Styles
 import '../Styles/Usuarios.css';
 
@@ -37,8 +39,8 @@ export const DatosEmpleado = ({
       let cargo = parseInt(document.getElementById("cargo").value)
       let data = {
         "cargo":cargo,
-        "nombres":nombres,
-        "apellidos": apellidos,
+        "nombres":nombres.toUpperCase(),
+        "apellidos": apellidos.toUpperCase(),
         "phone":telefono,
         "sucursal":sucursal,
         "genero":genero,
@@ -64,7 +66,6 @@ export const DatosEmpleado = ({
       </div>
 
       <div className="infoAddUser">
-        {/* <VerticalStepper activeStep={activeStep}></VerticalStepper> */}
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
@@ -149,6 +150,9 @@ export const DatosEmpleado = ({
             </div>
           </div>
         </div>
+
+        <img src={InforUsers} alt="No se encuentro la imagen" />
+        
       </div>
     </div>
   );
