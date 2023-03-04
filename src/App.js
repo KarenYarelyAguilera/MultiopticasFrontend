@@ -60,8 +60,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral />
+
                   <BarraHorizontal user={usuario} />
                   <Home></Home>
+
                 </div>
               </ProtectedRoute>
             }
