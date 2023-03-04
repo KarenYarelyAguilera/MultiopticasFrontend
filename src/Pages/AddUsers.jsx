@@ -1,153 +1,115 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState, useEffect } from "react"
+import { FilledInput } from "@mui/material"
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useRef } from "react";
+import { sendData } from "../scripts/sendData";
+import swal from '@sweetalert/with-react';
 
-//Styles
-import '../Styles/Usuarios.css';
+export const AddUsers = () => {
 
-//Components
-import VerticalStepper from '../Components/VerticalStepper.jsx';
-import { TextCustom } from '../Components/TextCustom.jsx';
+  const refContrasenia = useRef(null);
 
-export const AddUsers = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  // const handleBack = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep - 1);
-  // };
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const urlEmployees = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
+  const urlCargos = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cargos"
+  const urlInsert = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=insertUsuario"
+
+  const [Empleado, setIdEmpleado] = useState([])
+  const [Cargo,setCargo] = useState([])
+
+  useEffect(() => {
+    fetch(urlEmployees).then(response => response.json()).then(data => setIdEmpleado(data))
+    fetch(urlCargos).then(response => response.json()).then(data => setCargo(data))
+  }, [])
+
+ 
+
+
+  const insertar = async () =>{
+
+    let id = document.getElementById("empleado").value
+    let usuario = document.getElementById("empleado").options[document.getElementById("empleado").selectedIndex].text
+    let user = String(usuario)
+    let nombre = document.getElementById("usuario").value
+    let correo = document.getElementById("correo").value
+    let rol = document.getElementById("cargo").value
+
+
+
+    let data ={
+      id:id,
+     usuario:user,
+     nombre:nombre,
+    clave:refContrasenia.current.value,
+    correo:correo,
+    rol:rol
+    }
+    if (await  sendData(urlInsert,data)) {
+      swal('Usuario creado exitosamente.','','success')
+    }
+    
+  }
 
   return (
-    <div className="ContUsuarios">
-      <div className="titleAddUser">
-        <h2>Registro de Usuario</h2>
-        <h3>Complete todos los puntos para poder registrar el usuario</h3>
-      </div>
+    <>
+      <label>Empleado:  <select id="empleado">
+        {Empleado.length ? (
+          Empleado.map(pre => (
+            <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
+              {pre.Nombre}
+            </option>
+          ))
+        ) : (
+          <option value="No existe informacion">
+            No existe informacion
+          </option>
+        )}
+      </select></label>
+      <label htmlFor="">Nombre de usuario <input type="text" id="usuario" /> </label>
+      <label htmlFor="">Contraseña : <FilledInput
+        id="filled-adornment-password"
+        type={showPassword ? 'text' : 'password'}
+        inputRef={refContrasenia}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
+        }
+      /></label>
+      <label>Correo Electronico: <input type="email" id="correo" /></label>
+      <label>Rol: <select id="cargo">
+        {Cargo.length ? (
+          Cargo.map(pre => (
+            <option key={pre.IdCargo} value={pre.IdCargo}>
+              {pre.descripcion}
+            </option>
+          ))
+        ) : (
+          <option value="No existe informacion">
+            No existe informacion
+          </option>
+        )}
+      </select></label>
 
-      <div className="infoAddUser">
-        {/* <VerticalStepper activeStep={activeStep}></VerticalStepper> */}
-        <div className="PanelInfo">
-          <div className="InputContPrincipal">
-            <div className="contInput">
-              <TextCustom text="Nombre" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Nombre"
-              />
-            </div>
 
-            <div className="contInput">
-              <TextCustom text="Contraseña" className="titleInput" />
-              <input
-                type="password"
-                name=""
-                className="inputCustom"
-                placeholder="Contrasenia"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Rol" className="titleInput" />
-              <select name="" className="selectCustom">
-                <option value="Administrador">Administrador</option>
-                <option value="Administrador">Empleado</option>
-              </select>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Correo Electronico " className="titleInput" />
-              <input
-                type="email"
-                name=""
-                className="inputCustom"
-                placeholder="Correo Electronico"
-                // sx={{
-                //   color:
-                //     msgError.length > 0
-                //       ? 'ff0000'
-                //       : success
-                //       ? '316ee6'
-                //       : warning
-                //       ? '0cb106'
-                //       : 'gray',1
-                // }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="PanelInfo">
-          <div className="InputContPrincipal">
-            <div className="contInput">
-              <TextCustom
-                text="Pregunta de seguridad 1"
-                className="titleInput"
-              />
-              <input
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Pregunta"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom
-                text="Pregunta de seguridad 2"
-                className="titleInput"
-              />
-              <input
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Pregunta"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Respuesta 1" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Respuesta"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Respuesta 2" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Respuesta"
-              />
-            </div>
-            <div className="contBtnStepper">
-              <Button
-                variant="contained"
-                className="btnStepper"
-                // onClick={handleNext}
-              >
-                <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
-              </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+      <button onClick={insertar} >Crear usuario</button>
+    </>
+  )
+}

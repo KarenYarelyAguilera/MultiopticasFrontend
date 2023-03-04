@@ -1,66 +1,77 @@
-import { Container, Grid, TextField, Button } from "@mui/material";
-import { ForgetPsswrd } from "../scripts/login"
-import '../Styles/login.css'
-import logo from '../IMG/Multioptica.png'
-
-import { useRef } from "react"; /**Este hook ayuda a referenciar un componente
+import { Container, Grid, TextField, Button } from '@mui/material';
+import { FilledInput } from "@mui/material"
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+//import { ForgetPsswrd } from "../scripts/login"
+import '../Styles/login.css';
+import logo from '../IMG/Multioptica.png';
+import swal from '@sweetalert/with-react';
+import { useState } from 'react';
+import { useRef } from 'react'; /**Este hook ayuda a referenciar un componente
 sin necesidad del getElementById */
-import { useNavigate } from "react-router-dom"; /**Este hook ayuda a redireccionar
+import { useNavigate } from 'react-router-dom'; /**Este hook ayuda a redireccionar
 a una pagina diferente mediante el "path" */
+import { sendData } from '../scripts/sendData';
 
 const urlLogin =
-  "http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd";
+  'http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd';
+const urlDUsuario =
+  'http://localhost/APIS-Multioptica/login/controller/user.php?op=user';
+const urlFechaExpiracion =
+  'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
-const urlDUsuario = "http://localhost/APIS-Multioptica/login/controller/user.php?op=user";
 
-const sendData = async (urlAPI, data) => {
-  //De aqui
-  const resp = await fetch(urlAPI, {
-    //Realiza una peticion asincrona fetch para consumir una API segun su URL
-    method: "post", //Se le indica el metodo a utilizar (sino se hace esto, el fetch toma el metodo "Get" por default)
-    body: JSON.stringify(data), //Se le manda el data con el que se consumira el API
-    headers: {
-      //Se le especifica que enviara un json.
-      "Content-Type": "application/json",
-    },
-  }); //A aqui!!!!
-  //console.log(resp)
-  const json = await resp.json(); //Retorna los datos de la API y los convierte a json para utilizarlos despues
-  //console.log(json)
+export const Login = props => {
 
-  return json;
-  //SIEMPRE que se realiza una consulta a la bdd los metodos deben ser async
-};
+  const [showPassword, setShowPassword] = useState(false);
 
-export const Login = (props) => {
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const [contador, setContador] = useState(0)
   const navegate = useNavigate();
   const refUsuario = useRef(null);
   const refContrasenia = useRef(null);
 
   const handleLogin = async () => {
-
     const data = {
       correo: refUsuario.current.value,
       clave: refContrasenia.current.value,
     };
 
     const data2 = {
-      correo: refUsuario.current.value
-    }
+      correo: refUsuario.current.value,
+    };
 
-    
     try {
       const respJsonPss = await sendData(urlLogin, data);
-      const respJsonUsr = await sendData(urlDUsuario, data2)
+      const respJsonUsr = await sendData(urlDUsuario, data2);
+      const respJsonFec = await sendData(urlFechaExpiracion, data2);
+      console.log(respJsonFec)
 
-      if (respJsonPss) {
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
-        navegate("/Home");
+        props.rol(respJsonUsr[0].Rol)
+        props.correo(respJsonUsr[0].Correo_Electronico)
+        navegate('/Home');
       }
-    } catch (error) {
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
+        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
+        props.user(respJsonUsr[0].Nombre_Usuario);
+        navegate('/Preguntas');
+      }
 
+    } catch (error) {
+      swal('El usuario que ingreso no existe o\nIngreso credenciales erroneas', '', 'error')
+      setContador(contador + 1)
     }
+
   };
 
   return (
@@ -75,16 +86,49 @@ export const Login = (props) => {
               <div id="loginContent">
                 <h2>Iniciar Sesion</h2>
                 <div className="espacio">
-                  <TextField label="Usuario" size="small" margin="dense" inputRef={refUsuario} />
+                  <TextField
+                    label="Usuario"
+                    size="small"
+                    margin="dense"
+                    required
+                    autoComplete='off'
+                    inputProps={{maxLength:50}}
+                    inputRef={refUsuario}
+                  />
                 </div>
                 <div className="espacio">
-                  <TextField label="Contraseña" size="small" margin="normal" type="password" inputRef={refContrasenia} />
+                  <FilledInput
+                    id="filled-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    inputRef={refContrasenia}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
                 </div>
                 <div className="espacio">
-                  <Button variant="contained" onClick={handleLogin}>Iniciar sesion</Button>
+                  <Button variant="contained" onClick={handleLogin}>
+                    Iniciar sesion
+                  </Button>
                 </div>
                 <div className="espacio">
-                  <Button onClick={ForgetPsswrd} variant="contained">¿Olvidaste tu contraseña?</Button>
+                  <Button
+                    onClick={() => {
+                      navegate('/recuperacion');
+                    }}
+                    variant="contained"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </Button>
                 </div>
               </div>
             </Grid>

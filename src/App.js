@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
-
 //Modulos/paginas de ventas. ⬇️⬇️⬇️
 import { Login } from './Pages/login';
 import { Home } from './Pages/Home.jsx';
@@ -18,8 +17,13 @@ import { Usuarios } from './Pages/Usuarios.jsx';
 import { AddUsers } from './Pages/AddUsers.jsx';
 import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
 import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
+import { Metodos } from './Pages/Metodos.jsx';
+import { ListEmpleados } from './Pages/ListaEmpleados.jsx';
+import { ListUsuarios } from './Pages/ListaUsuarios.jsx';
 
 function App() {
+  const [Rol,setRol] = useState('')
+  const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [activo, setActivo] = useState('inactivo'); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -27,6 +31,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
   const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
   const user = usr => setUsuario(usr);
+  const mail = ml => setCorreo(ml);
+  const rol = rl => setRol(rl)
 
   return (
     <div>
@@ -41,7 +47,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
-          {/* <Route index element={<Login access={access} user={user} />} /> */}
+
 
           <Route
             index
@@ -53,6 +59,18 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <Home></Home>
               </div>
               // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/recuperacion"
+            element={<Metodos correo={mail}></Metodos>}
+          ></Route>
+
+          <Route
+            path="/recuperacion/preguntas"
+            element={
+              <RecuperacionPassword correo={correo}></RecuperacionPassword>
             }
           ></Route>
 
@@ -87,28 +105,31 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               // <ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral />
-                <BarraHorizontal user={usuario} />
-                <Usuarios></Usuarios>
+                <BarraHorizontal user={usuario}  />
+                <Usuarios rol={Rol}></Usuarios>
               </div>
               // </ProtectedRoute>
             }
           ></Route>
 
           <Route
-            path="/addUsers"
+            path="/usuarios/crearusuario"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral />
+
                 <BarraHorizontal user={usuario} />
-                <AddUsers></AddUsers>
+                <div className="content">
+                  <AddUsers></AddUsers>
+                </div>
               </div>
               // </ProtectedRoute>
             }
           ></Route>
 
           <Route
-            path="/datosEmpleado"
+            path="/usuarios/crearempleado"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
