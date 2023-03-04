@@ -47,53 +47,18 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
+
+
           <Route
             index
-            element={<Login access={access} user={user} correo={mail} rol={rol}/>}
-          />
-
-          <Route
-            path="/empleados/lista"
             element={
-              <ProtectedRoute activo={activo}>
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral />
                 <BarraHorizontal user={usuario} />
-                <div className="flex">
-                  <BarraLateral />
-                  <div className="content">
-                    <ListEmpleados></ListEmpleados>
-                  </div>
-                </div>
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/usuarios/lista"
-            element={
-              <ProtectedRoute activo={activo}>
-                <BarraHorizontal user={usuario} />
-                <div className="flex">
-                  <BarraLateral />
-                  <div className="content">
-                    <ListUsuarios/>
-                  </div>
-                </div>
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/Home"
-            element={
-              <ProtectedRoute activo={activo}>
-                <BarraHorizontal user={usuario} />
-                <div className="flex">
-                  <BarraLateral />
-                  <div className="content">
-                    <Home></Home>
-                  </div>
-                </div>
-              </ProtectedRoute>
+                <Home></Home>
+              </div>
+              // </ProtectedRoute>
             }
           ></Route>
 
