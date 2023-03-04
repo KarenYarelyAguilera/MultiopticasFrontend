@@ -39,8 +39,8 @@ export const DatosEmpleado = ({
       let cargo = parseInt(document.getElementById("cargo").value)
       let data = {
         "cargo":cargo,
-        "nombres":nombres,
-        "apellidos": apellidos,
+        "nombres":nombres.toUpperCase(),
+        "apellidos": apellidos.toUpperCase(),
         "phone":telefono,
         "sucursal":sucursal,
         "genero":genero,
