@@ -45,27 +45,18 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
          */}
         <Routes>
           {/**Es un conjunto de rutas */}
-          {/* <Route index element={<Login access={access} user={user} />} /> */}
           {/**Son las rutas
            * a las que podemos acceder segun el "path" de navegacion
            */}
 
-
-
-
-
           <Route
             index
             element={
-              // <ProtectedRoute activo={activo}>
-              <div className="flex">
-                <BarraLateral />
-                <BarraHorizontal user={usuario} />
-                <Home></Home>
-              </div>
-              // </ProtectedRoute>
+              <Login access={access} user={user} rol={rol} mail={mail} />
+            }
+          />
 
-<<<<<<< HEAD
+
           <Route
             path="/empleados/lista"
             element={
@@ -92,18 +83,19 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
+
           <Route
             path="/Home"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral />
+
                   <BarraHorizontal user={usuario} />
                   <Home></Home>
                 </div>
               </ProtectedRoute>
-=======
->>>>>>> db93ba9e523fd213f1147ef4893b9d4bd83dc182
+
             }
           ></Route>
 
@@ -181,6 +173,36 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraLateral />
                   <BarraHorizontal user={usuario} />
                   <AddUsers></AddUsers>
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/usuarios/lista"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral />
+                  <BarraHorizontal user={usuario} />
+                  <div className="content">
+                    <ListUsuarios />
+                  </div>
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/empleados/lista"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral />
+                  <BarraHorizontal user={usuario} />
+                  <div className="content">
+                    <ListEmpleados />
+                  </div>
                 </div>
               </ProtectedRoute>
             }

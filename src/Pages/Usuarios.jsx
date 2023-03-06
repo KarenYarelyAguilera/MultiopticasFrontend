@@ -38,7 +38,7 @@ export const Usuarios = (props) => {
 
   ];
 
-  if (props.rol!=="Admin") {
+  if (props.rol!=="ADMIN") {
      usuario = [
       {
         imagen: AddUser,

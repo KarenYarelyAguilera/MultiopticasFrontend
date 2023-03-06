@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import React, {useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { sendData } from '../scripts/sendData';
+import { useEffect } from 'react';
 
 //MuiMaterial-Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -15,33 +16,14 @@ export const RecuperacionPassword =  (props) => {
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
   
-  // const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
-  // const  data = {
-  //   correo:props.correo
-  // }
+  const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
+   const  data = {
+    correo:props.correo
+   }
 
-  // const dataPreguntas = sendData(urlPreguntas,data)
+const dataPreguntas = sendData(urlPreguntas,data)
 
-  const dataPreguntas = [
-    {
-      idUsuario: '1',
-      pregunta: '¿Como se llamaba su amigo de la infancia?',
-      respuesta: 'Michael',
-      idPregunta: '1',
-    },
-    {
-      idUsuario: '1',
-      pregunta: '¿Como se llama tu padre?',
-      respuesta: 'Manuel',
-      idPregunta: '2',
-    },
-    {
-      idUsuario: '1',
-      pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-      respuesta: 'Iphone 13',
-      idPregunta: '3',
-    },
-  ];
+ 
 
   const validate = () => {
     console.log(respuesta);

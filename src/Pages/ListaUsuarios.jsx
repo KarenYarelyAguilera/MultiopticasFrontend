@@ -15,10 +15,10 @@ export const ListUsuarios = () => {
 
 
     const columns = [
-        { field: 'idEmpleado', headerName: 'ID', width: 130 },
+        { field: 'id_Usuario', headerName: 'ID', width: 130 },
         { field: 'Usuario', headerName: 'Usuario', width: 130 },
         { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-        { field: 'descripcion', headerName: 'Cargo', width: 130 },
+        { field: 'rol', headerName: 'Rol', width: 130 },
         { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
         { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
         { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
@@ -29,7 +29,7 @@ export const ListUsuarios = () => {
 
     return (
         <div style={{ height: 400, width: '70%' }}>
-            <DataGrid getRowId={(tableData)=>tableData.idEmpleado} 
+            <DataGrid getRowId={(tableData)=>tableData.id_Usuario} 
                 rows={tableData}
                 columns={columns}
                 pageSize={5}

@@ -6,6 +6,10 @@
   font-family: 'Rubik', sans-serif;
 }
 
+.error{
+  color: red;
+}
+
 /* CardUsuario-Menu */
 
 .CardUsuarios {
