@@ -104,7 +104,7 @@ export const Login = props => {
                 <div className="espacio">
                   <TextField
 
-                   onChange={(e) =>{
+                   onKeyDown={(e) =>{
                   
                     setUsuario(e.target.value);
                 
@@ -153,15 +153,15 @@ export const Login = props => {
 
                   <FilledInput
 
-                    onChange= {(e) =>{
+                    onKeyDown= {(e) =>{
                       setContra(e.target.value);
-                      if (contra==""){
+                      if (contra===""){
                         setErrorContra(true);
                         setMsj("Los campos no deben estar vacios");
                       }
                       else{
-                        setErrorContra(false);
                         setMsj("");
+                        setErrorContra(false);
                       }
                     }}
                     error={errorContra}
@@ -184,6 +184,7 @@ export const Login = props => {
                       </InputAdornment>
                     }
                   />
+                  <p>{msj}</p>
                 </div>
               
 
