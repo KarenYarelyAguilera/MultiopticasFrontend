@@ -26,26 +26,7 @@ export const RecuperacionPassword =  (props) => {
 
   // const dataPreguntas = sendData(urlPreguntas,data)
 
-  const dataPreguntas = [
-    {
-      idUsuario: '1',
-      pregunta: '¿Como se llamaba su amigo de la infancia?',
-      respuesta: 'Michael',
-      idPregunta: '1',
-    },
-    {
-      idUsuario: '1',
-      pregunta: '¿Como se llama tu padre?',
-      respuesta: 'Manuel',
-      idPregunta: '2',
-    },
-    {
-      idUsuario: '1',
-      pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-      respuesta: 'Iphone 13',
-      idPregunta: '3',
-    },
-  ];
+ 
 
   // const cargarDatos = sendData(urlPreguntas,data)
 
