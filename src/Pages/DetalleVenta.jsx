@@ -14,4 +14,5 @@ export const DetalleVenta = () =>{
             </Grid>
         </Container>
     )
+    
 }
