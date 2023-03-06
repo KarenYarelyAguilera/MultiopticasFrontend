@@ -9,7 +9,7 @@ export const sendData = async (urlAPI, data) => {
         //Se le especifica que enviara un json.
         "Content-Type": "application/json",
       },
-    }); //A aqui!!!!
+    }); //A aqui!!!!´
     //console.log(resp)
     const json = await resp.json(); //Retorna los datos de la API y los convierte a json para utilizarlos despues
     //console.log(json)
@@ -17,3 +17,10 @@ export const sendData = async (urlAPI, data) => {
     return json;
     //SIEMPRE que se realiza una consulta a la bdd los metodos deben ser async
   };
+
+
+
+
+
+
+

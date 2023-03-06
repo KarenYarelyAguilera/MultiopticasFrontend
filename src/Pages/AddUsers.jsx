@@ -25,21 +25,21 @@ export const AddUsers = () => {
 
   const urlEmployees =
     'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
-  const urlCargos =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cargos';
+  const urlRoles =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
   const urlInsert =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=insertUsuario';
 
   const [Empleado, setIdEmpleado] = useState([]);
-  const [Cargo, setCargo] = useState([]);
+  const [Rol, setRol] = useState([]);
 
   useEffect(() => {
     fetch(urlEmployees)
       .then(response => response.json())
       .then(data => setIdEmpleado(data));
-    fetch(urlCargos)
+    fetch(urlRoles)
       .then(response => response.json())
-      .then(data => setCargo(data));
+      .then(data => setRol(data));
   }, []);
 
   const insertar = async () => {
@@ -141,10 +141,10 @@ export const AddUsers = () => {
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
               <select id="cargo" className="selectCustom">
-                {Cargo.length ? (
-                  Cargo.map(pre => (
-                    <option key={pre.IdCargo} value={pre.IdCargo}>
-                      {pre.descripcion}
+                {Rol.length ? (
+                  Rol.map(pre => (
+                    <option key={pre.Id_Rol} value={pre.Id_Rol}>
+                      {pre.Rol}
                     </option>
                   ))
                 ) : (
