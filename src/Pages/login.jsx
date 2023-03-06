@@ -26,6 +26,15 @@ const urlBitacoraLogin = "http://localhost/APIS-Multioptica/bitacora/controller/
 
 export const Login = props => {
 
+  const [usuario, setUsuario]= useState("");
+    const [prueba, setprueba]= useState("");
+    const [errorUsuario, setErrorUsuario]= useState(false);
+
+    const [contra, setContra]= useState("");
+    const [msj, setMsj]= useState("");
+    const [errorContra, setErrorContra]= useState(false);
+
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -94,21 +103,76 @@ export const Login = props => {
                 <h2>Iniciar Sesion</h2>
                 <div className="espacio">
                   <TextField
-                    label="Usuario"
-                    size="small"
-                    margin="dense"
-                    autoComplete='off'
-                    inputProps={{maxLength:50}}
-                    inputRef={refUsuario}
+
+                   onChange={(e) =>{
+                  
+                    setUsuario(e.target.value);
+                
+                    if(usuario.length>47 ){
+                      setErrorUsuario(true);
+                      setprueba("A excedido al numero de caracteres");
+                      
+                    }
+                    else{
+                      setErrorUsuario(false);
+                      var expresion = /^[a-zA-Z0-9_!#$%&'\*+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/;
+                      if (!expresion.test(usuario)){
+                        setErrorUsuario(true)
+                        setprueba("Formato invalido");
+                         }
+                         else{
+                          setErrorUsuario(false);
+                          setprueba("");
+  
+                      }
+                   }
+                  }
+                 }
+                  onClick= {(e) =>{
+                    setUsuario(e.target.value);
+                    if (usuario==""){
+                      setErrorUsuario(true);
+                      setprueba("Los campos no deben estar vacios");
+                    }
+                    else{
+                      setErrorUsuario(false);
+                      setprueba("");
+                    }
+                  }}
+                  error={errorUsuario}
+                  label="Usuario"
+                  helperText={prueba}
+                  variant="standard"
+                  inputProps={{maxLength:50}}
+                  inputRef={refUsuario}
+                
                   />
                 </div>
                 <div className="espacio">
+                
+
                   <FilledInput
+
+                    onChange= {(e) =>{
+                      setContra(e.target.value);
+                      if (contra==""){
+                        setErrorContra(true);
+                        setMsj("Los campos no deben estar vacios");
+                      }
+                      else{
+                        setErrorContra(false);
+                        setMsj("");
+                      }
+                    }}
+                    error={errorContra}
+                    helperText={msj}
                     id="filled-adornment-password"
+                    inputProps={{maxLength:150}}
                     type={showPassword ? 'text' : 'password'}
                     inputRef={refContrasenia}
                     endAdornment={
                       <InputAdornment position="end">
+                         
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
@@ -121,6 +185,10 @@ export const Login = props => {
                     }
                   />
                 </div>
+              
+
+
+
                 <div className="espacio">
                   <Button variant="contained" onClick={handleLogin}>
                     Iniciar sesion
