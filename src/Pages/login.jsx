@@ -22,6 +22,7 @@ const urlDUsuario =
 const urlFechaExpiracion =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
+const urlBitacoraLogin = "http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=login";
 
 export const Login = props => {
 
@@ -57,13 +58,19 @@ export const Login = props => {
       correo: refUsuario.current.value,
     };
 
+    
+
     try {
       const respJsonPss = await sendData(urlLogin, data);
       const respJsonUsr = await sendData(urlDUsuario, data2);
       const respJsonFec = await sendData(urlFechaExpiracion, data2);
+      const dataBitacora = {
+        Id:respJsonUsr[0].Id_Usuario
+      }
       console.log(respJsonFec)
 
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
+        sendData(urlBitacoraLogin,dataBitacora)
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
         props.rol(respJsonUsr[0].Rol)

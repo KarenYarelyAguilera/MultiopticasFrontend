@@ -34,10 +34,11 @@ export const DatosEmpleado = (
 
 ) => {
   // const [activeStep, setActiveStep] = React.useState(0);
-  
+
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
+
   const [iIdentidad, setiIdentidad]= React.useState("");
     const [leyenda, setleyenda]= React.useState("");
     const [errorIdentidad, setErrorIdentidad]= React.useState(false);
@@ -54,6 +55,7 @@ export const DatosEmpleado = (
     const [errorTelefono, setErrorTelefono]= React.useState(false);
     const [texto, setTexto]= React.useState(false);
 
+
   const navegate = useNavigate()
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
@@ -62,25 +64,25 @@ export const DatosEmpleado = (
     let telefono = document.getElementById("phone").value
     let genero = parseInt(document.getElementById("genero").value)
     let sucursal = parseInt(document.getElementById("sucursal").value)
-      let cargo = parseInt(document.getElementById("cargo").value)
-      let data = {
-        "cargo":cargo,
-        "nombres":nombres.toUpperCase(),
-        "apellidos": apellidos.toUpperCase(),
-        "phone":telefono,
-        "sucursal":sucursal,
-        "genero":genero,
-        "identidad":identidad
-    }
+    let cargo = parseInt(document.getElementById("cargo").value)
 
-    if (sendData(urlIEmpleado,data)) {
-      swal('Empleado agregado con exito','','success').then((result) => {
+    let data = {
+      "cargo": cargo,
+      "nombres": nombres.toUpperCase(),
+      "apellidos": apellidos.toUpperCase(),
+      "phone": telefono,
+      "genero": genero,
+      "sucursal": sucursal,
+      "identidad": identidad
+    }
+    if (sendData(urlIEmpleado, data)) {
+      swal('Empleado agregado con exito', '', 'success').then((result) => {
         navegate("/empleados/lista")
       })
         ;
     }
-    
-   };
+
+  };
 
   return (
     <div className="ContUsuarios">
@@ -94,6 +96,7 @@ export const DatosEmpleado = (
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
+
               <TextCustom 
               onChange= {(e) =>{
                 setiIdentidad(e.target.value);
@@ -115,6 +118,9 @@ export const DatosEmpleado = (
               }}
               text="Numero de Identidad" className="titleInput" 
                />
+
+              <TextCustom text="Numero de Identidad" className="titleInput" />
+
               <input
                 error={errorIdentidad}
                 type="text"
@@ -122,6 +128,7 @@ export const DatosEmpleado = (
                 name=""
                 maxLength={13}
                 className="inputCustom"
+                
                 placeholder="Identidad"
                 id="Nidentidad"
               />
@@ -271,7 +278,7 @@ export const DatosEmpleado = (
         </div>
 
         <img src={InforUsers} alt="No se encuentro la imagen" />
-        
+
       </div>
     </div>
   );
