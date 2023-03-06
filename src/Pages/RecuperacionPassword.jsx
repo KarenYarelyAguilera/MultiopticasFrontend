@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import React, {useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { sendData } from '../scripts/sendData';
+import { useEffect } from 'react';
 
 //MuiMaterial-Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -18,10 +19,10 @@ export const RecuperacionPassword =  (props) => {
   const [dataPreguntas, setdataPreguntas] = useState([]);
 
   
-  // const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
-  // const  data = {
-  //   correo:props.correo
-  // }
+  const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
+   const  data = {
+    correo:props.correo
+   }
 
 
   // const dataPreguntas = sendData(urlPreguntas,data)

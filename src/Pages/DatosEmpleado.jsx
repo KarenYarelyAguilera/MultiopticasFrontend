@@ -74,6 +74,7 @@ export const DatosEmpleado = ({
                 type="text"
                 name=""
                 className="inputCustom"
+                
                 placeholder="Identidad"
                 id="Nidentidad"
               />
