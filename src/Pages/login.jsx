@@ -104,7 +104,7 @@ export const Login = props => {
                 <div className="espacio">
                   <TextField
 
-                   onChange={(e) =>{
+                   onKeyDown={(e) =>{
                   
                     setUsuario(e.target.value);
                 
@@ -153,7 +153,7 @@ export const Login = props => {
 
                   <FilledInput
 
-                    onChange= {(e) =>{
+                    onKeyDown= {(e) =>{
                       setContra(e.target.value);
                       if (contra==""){
                         setErrorContra(true);

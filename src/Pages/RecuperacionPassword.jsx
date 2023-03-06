@@ -21,7 +21,7 @@ export const RecuperacionPassword =  (props) => {
     correo:props.correo
    }
 
-  // const dataPreguntas = sendData(urlPreguntas,data)
+const dataPreguntas = sendData(urlPreguntas,data)
 
  
 
