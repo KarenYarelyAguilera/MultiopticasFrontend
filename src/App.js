@@ -16,9 +16,11 @@ import { RegistroInventario } from './Pages/RegistroInventario.jsx';
 import { Usuarios } from './Pages/Usuarios.jsx';
 import { AddUsers } from './Pages/AddUsers.jsx';
 import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
+import { PreguntasSeguridad } from './Pages/PreguntasSeguridad.jsx';
+import { ConfirmarPassword } from './Pages/ConfirmarPassword.jsx';
 import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
 import { Metodos } from './Pages/Metodos.jsx';
-import { ListEmpleados } from './Pages/ListaEmpleados.jsx';
+import { ListaEmpleados } from './Pages/ListaEmpleados.jsx';
 import { ListUsuarios } from './Pages/ListaUsuarios.jsx';
 import { Metodos1 } from './Pages/Metodos1.jsx';
 
@@ -54,6 +56,34 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
+
+          <Route
+            path="/empleados/lista"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral />
+                  <BarraHorizontal user={usuario} />
+                  <ListaEmpleados></ListaEmpleados>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/usuarios/lista"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral />
+                  <BarraHorizontal user={usuario} />
+                  <ListUsuarios />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+
           <Route
             path="/Home"
             element={
@@ -63,9 +93,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
                   <BarraHorizontal user={usuario} />
                   <Home></Home>
-
                 </div>
               </ProtectedRoute>
+
             }
           ></Route>
 
@@ -77,6 +107,16 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/recuperacion/preguntas/newPassword"
             element={<Metodos1></Metodos1>}
+          ></Route>
+
+          <Route
+            path="/preguntasSeguridad"
+            element={<PreguntasSeguridad/>}
+          ></Route>
+
+          <Route
+            path="/preguntasSeguridad/confirmarPassword"
+            element={<ConfirmarPassword/>}
           ></Route>
 
           <Route
