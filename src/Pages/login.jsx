@@ -155,13 +155,13 @@ export const Login = props => {
 
                     onKeyDown= {(e) =>{
                       setContra(e.target.value);
-                      if (contra==""){
+                      if (contra===""){
                         setErrorContra(true);
                         setMsj("Los campos no deben estar vacios");
                       }
                       else{
-                        setErrorContra(false);
                         setMsj("");
+                        setErrorContra(false);
                       }
                     }}
                     error={errorContra}
@@ -184,6 +184,7 @@ export const Login = props => {
                       </InputAdornment>
                     }
                   />
+                  <p>{msj}</p>
                 </div>
               
 
