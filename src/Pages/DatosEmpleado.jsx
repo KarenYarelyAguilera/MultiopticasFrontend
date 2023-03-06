@@ -136,9 +136,7 @@ export const DatosEmpleado = (
 
             <div className="contInput">
               <TextCustom
-
-
-
+              
                 text="Nombre" />
               <input
                 onKeyDown={(e) => {
