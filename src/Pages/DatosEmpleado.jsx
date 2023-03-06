@@ -27,8 +27,12 @@ export const DatosEmpleado = ({
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
-  
-  const navegate = useNavigate()
+
+  const [iIdentidad, setiIdentidad]= React.useState("");
+  const [leyenda, setleyenda]= React.useState("");
+  const [errorIdentidad, setErrorIdentidad]= React.useState(false);
+  const navegate = useNavigate();
+
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
     let nombres = document.getElementById("nombre").value
@@ -70,13 +74,35 @@ export const DatosEmpleado = ({
           <div className="InputContPrincipal1">
             <div className="contInput">
               <TextCustom text="Numero de Identidad" className="titleInput"  />
+                
+              
               <input
+              onChange = {(e) =>{
+                setiIdentidad(e.target.value);
+                if (iIdentidad==""){
+                  setErrorIdentidad(true);
+                  setleyenda("Los campos no deben estar vacios");
+                }
+                else{
+                  setErrorIdentidad(false)
+                  var preg_match= '/^[0-9]+$/';
+                  if(!preg_match.test(iIdentidad)){
+                   setErrorIdentidad(true)
+                   setleyenda("Solo debe de ingresar numeros")
+} else{
+                  setErrorIdentidad(false);
+                  setleyenda("");
+                }
+              }
+              }}
                 type="text"
                 name=""
+                maxLength={13}
                 className="inputCustom"
                 placeholder="Identidad"
                 id="Nidentidad"
               />
+
             </div>
 
             <div className="contInput">

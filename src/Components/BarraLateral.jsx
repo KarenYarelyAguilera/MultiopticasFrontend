@@ -79,7 +79,7 @@ export const BarraLateral = () => {
               </Link>
             </li>
             <li>
-              <Link className="link" to="">
+              <Link className="link" to="/preguntasSeguridad">
                 <FontAwesomeIcon className="iconLi" icon={faFileLines} />
                 <h1>REPORTES</h1>
               </Link>

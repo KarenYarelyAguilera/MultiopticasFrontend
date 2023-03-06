@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 
-export const ListEmpleados = () => {
+export const ListaEmpleados = () => {
 
 
     const urlEmployees = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
@@ -15,6 +15,7 @@ export const ListEmpleados = () => {
 
     for (let i = 0; i < tableData.length; i++) {
         tableData[i].boton = <button>asdas</button>
+        console.log(tableData[i].departamento);
         
     }
 
