@@ -8,23 +8,36 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRef, useState } from 'react';
-
 export const Metodos1 = props => {
-    const refContrasenia = useRef(null);
-    const navegate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
-  
-    const handleClickShowPassword = () => setShowPassword(show => !show);
-  
-    const handleMouseDownPassword = event => {
-      event.preventDefault();
-    };
+  const refContrasenia = useRef(null);
+  const refContrasenia2 = useRef(null);
+  const navegate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
+  const handleClickShowPassword = () => setShowPassword(show => !show);
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
+  
   const Guardar = () => {
-    // let correo = document.getElementById('correo').value;
-    // props.correo(correo);
 
-    navegate('/');
+    alert(refContrasenia+"\n"+refContrasenia2)
+    // const urlCambio = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cambiarClave"
+    // let data ={
+    //   clave:refContrasenia,
+    //   correo:props.correo
+    // }
+    // if (refContrasenia===refContrasenia2) {
+    //   sendData(urlCambio,data)
+    //   navegate('/');
+    // }else if (refContrasenia!==refContrasenia2) {
+    //   swal(<h1>Las contraseñas no coinciden</h1>,"","error")
+    //   refContrasenia = ""
+    //   refContrasenia2 = ""
+    // }
+
+
   };
 
   return (
@@ -69,7 +82,7 @@ export const Metodos1 = props => {
               id="filled-adornment-password"
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
-              inputRef={refContrasenia}
+              inputRef={refContrasenia2}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton

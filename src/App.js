@@ -28,7 +28,7 @@ function App() {
   const [Rol, setRol] = useState('');
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
-  const [activo, setActivo] = useState('inactivo'); /**Hook usState:
+  const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
 
@@ -64,7 +64,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <div className="flex">
                   <BarraLateral />
                   <BarraHorizontal user={usuario} />
+                  <div className='content'>
                   <ListaEmpleados></ListaEmpleados>
+
+                  </div>
                 </div>
               </ProtectedRoute>
             }
@@ -77,7 +80,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <div className="flex">
                   <BarraLateral />
                   <BarraHorizontal user={usuario} />
+                  <div className='content'>
                   <ListUsuarios />
+                  </div>
+
                 </div>
               </ProtectedRoute>
             }
@@ -111,12 +117,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
           <Route
             path="/preguntasSeguridad"
-            element={<PreguntasSeguridad/>}
+            element={<PreguntasSeguridad activo={activo} user={usuario} mail={correo}/>}
           ></Route>
 
           <Route
             path="/preguntasSeguridad/confirmarPassword"
-            element={<ConfirmarPassword/>}
+            element={<ConfirmarPassword correo={correo}/>}
           ></Route>
 
           <Route
@@ -201,7 +207,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraLateral />
                   <BarraHorizontal user={usuario} />
                   <div className="content">
-                    <ListEmpleados />
+                    <ListaEmpleados />
                   </div>
                 </div>
               </ProtectedRoute>

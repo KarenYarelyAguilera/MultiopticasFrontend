@@ -17,7 +17,7 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 
 
 export const DatosEmpleado = (
@@ -58,7 +58,6 @@ export const DatosEmpleado = (
 
 
   const navegate = useNavigate()
-
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
     let nombres = document.getElementById("nombre").value
@@ -69,13 +68,13 @@ export const DatosEmpleado = (
     let cargo = parseInt(document.getElementById("cargo").value)
 
     let data = {
-      "cargo": cargo,
-      "nombres": nombres.toUpperCase(),
-      "apellidos": apellidos.toUpperCase(),
-      "phone": telefono,
-      "genero": genero,
-      "sucursal": sucursal,
-      "identidad": identidad
+      cargo: cargo,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      phone: telefono,
+      genero: genero,
+      sucursal: sucursal,
+      identidad: identidad
     }
     if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then((result) => {
@@ -99,29 +98,14 @@ export const DatosEmpleado = (
           <div className="InputContPrincipal1">
             <div className="contInput">
 
-              <TextCustom text="Numero de Identidad" className="titleInput"  />
-                
-              
-              <input
-              onChange = {(e) =>{
-                setiIdentidad(e.target.value);
-                if (iIdentidad==""){
-                  setErrorIdentidad(true);
-                  setleyenda("Los campos no deben estar vacios");
-                }
-                else{
-                  setErrorIdentidad(false)
-                  var preg_match= '/^[0-9]+$/';
-                  if(!preg_match.test(iIdentidad)){
-                   setErrorIdentidad(true)
-                   setleyenda("Solo debe de ingresar numeros")
-} else{
-                  setErrorIdentidad(false);
-                  setleyenda("");
-                }
-              }
-              }}
+              <TextCustom
 
+                text="Numero de Identidad" className="titleInput"
+              />
+
+
+              <input
+                error={errorIdentidad}
                 type="text"
                 name=""
                 maxLength={13}
@@ -148,9 +132,7 @@ export const DatosEmpleado = (
                 placeholder="Identidad"
                 id="Nidentidad"
               />
-
               <p class="error">{leyenda}</p>
-
             </div>
 
             <div className="contInput">
