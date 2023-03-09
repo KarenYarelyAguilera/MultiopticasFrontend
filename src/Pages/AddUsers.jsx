@@ -55,7 +55,7 @@ export const AddUsers = () => {
 
     let data = {
       id: id,
-      usuario: user,
+      usuario: user.toUpperCase(),
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,

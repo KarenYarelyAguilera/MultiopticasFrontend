@@ -4,8 +4,8 @@ import swal from '@sweetalert/with-react';
 import { sendData } from '../scripts/sendData';
 
 
+export const ListaEmpleados = () => {
 
-export const ListEmpleados = () => {
     const[cargos,setCargos] = useState([])
     const[generos,setGeneros] = useState([])
     const[sucursales,setSucursales] = useState([])

@@ -12,78 +12,18 @@ import WarningIcon from '@mui/icons-material/Warning';
 import '../Styles/RecuperacionPassword.css';
 
 export const RecuperacionPassword =  (props) => {
-
   const navegate = useNavigate();
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
-  const [dataPreguntas, setdataPreguntas] = useState([]);
-
   
   const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
    const  data = {
     correo:props.correo
    }
 
-
-  // const dataPreguntas = sendData(urlPreguntas,data)
+const dataPreguntas = sendData(urlPreguntas,data)
 
  
-
-  // const cargarDatos = sendData(urlPreguntas,data)
-
- useEffect(() => {
-  const fetchDatos = async () => {
-
-    const postPreguntas = await sendData(urlPreguntas,data);
-
-    if (postPreguntas) {
-      setdataPreguntas([{
-        Id_Pregunta : postPreguntas[0].Id_Pregunta,
-        Pregunta : postPreguntas[0].Pregunta,
-      }])
-    }
-
-    }
-    
-    fetchDatos();
-    // cargarDatos();
-    
-  },[])
-  
-
-  // const cargarDatos = () => {
-  //   setdataPreguntas([{
-  //     Id_Pregunta : idPregunta,
-  //     Pregunta : pregunta,
-  //   }])
-  //   console.log(dataPreguntas)
-  // }
-  
-
-
-  // const dataPreguntas = [
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llamaba su amigo de la infancia?',
-  //     respuesta: 'Michael',
-  //     idPregunta: '1',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llama tu padre?',
-  //     respuesta: 'Manuel',
-  //     idPregunta: '2',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-  //     respuesta: 'Iphone 13',
-  //     idPregunta: '3',
-  //   },
-  // ];
-  // console.log(dataPreguntas[0].Pregunta);
-
-
 
   const validate = () => {
     console.log(respuesta);
@@ -120,10 +60,8 @@ export const RecuperacionPassword =  (props) => {
 
       <div className="sectionRecuPassword">
         {dataPreguntas.length ? (
-
           dataPreguntas.map(preguntas => (
             <div key={preguntas.idPregunta}>
-
               <div className="contPrincipalRecu">
                 <div className="contInput">
                   <TextCustom
@@ -132,11 +70,9 @@ export const RecuperacionPassword =  (props) => {
                   />
                   <select name="" className="selectCustom">
                     {dataPreguntas.length ? (
-
                       dataPreguntas.map(pre => (
                         <option key={pre.idPregunta} value={pre.pregunta}>
                           {pre.pregunta}
-
                         </option>
                       ))
                     ) : (
