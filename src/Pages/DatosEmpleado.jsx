@@ -1,36 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
-
-
 import InforUsers from '../IMG/InforUsers.jpg';
-
+import { useState, useEffect } from 'react';
 //Styles
 import '../Styles/Usuarios.css';
 
 //Components
-import VerticalStepper from '../Components/VerticalStepper.jsx';
 import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-import { TextField } from '@mui/material';
 
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
-
+const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
+const urlRoles = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles"
 
 export const DatosEmpleado = (
-  {
-    msgError = '',
-    success = false,
-    warning = false,
-    props,
 
-
-
-
-  }
 
 ) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -38,23 +24,29 @@ export const DatosEmpleado = (
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
+  const [sucursales, setSucursales] = useState([])
+  const [roles, setRoles] = useState([])
 
-
-  const [iIdentidad, setiIdentidad] = React.useState("");
+  const [iIdentidad, setiIdentidad] = useState("");
   const [leyenda, setleyenda] = React.useState("");
-  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
+  const [errorIdentidad, setErrorIdentidad] = useState(false);
 
-  const [Nombre, setNombre] = React.useState("");
-  const [errorNombre, setErrorNombre] = React.useState(false);
+  const [Nombre, setNombre] = useState("");
+  const [errorNombre, setErrorNombre] = useState(false);
   const [Msj, setMsj] = React.useState(false);
 
   const [Apellido, setApellido] = React.useState("");
-  const [errorApellido, setErrorApellido] = React.useState(false);
+  const [errorApellido, setErrorApellido] = useState(false);
   const [aviso, setAviso] = React.useState(false);
 
-  const [Telefono, setTelefono] = React.useState("");
-  const [errorTelefono, setErrorTelefono] = React.useState(false);
-  const [texto, setTexto] = React.useState(false);
+  const [Telefono, setTelefono] = useState("");
+  const [errorTelefono, setErrorTelefono] = useState(false);
+  const [texto, setTexto] = useState(false);
+
+  useEffect(() => {
+    fetch(urlSucursales).then(response => response.json()).then(data => setSucursales(data))
+    fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
+  }, [])
 
 
   const navegate = useNavigate()
@@ -220,27 +212,27 @@ export const DatosEmpleado = (
 
             <div className="contInput">
               <TextCustom
-                
+
                 text="Telefono" className="titleInput" />
               <input
-              onKeyDown={(e) => {
-                setTelefono(e.target.value);
-                if (Telefono == "") {
-                  setTexto("Los campos no deben estar vacios");
-                  setErrorTelefono(true);
-                }
-                else {
-                  setErrorTelefono(false)
-                  var preg_match = /^[0-9]+$/;
-                  if (!preg_match.test(Telefono)) {
-                    setErrorTelefono(true)
-                    setTexto("Solo deben de ingresar numeros")
-                  } else {
-                    setErrorTelefono(false);
-                    setTexto("");
+                onKeyDown={(e) => {
+                  setTelefono(e.target.value);
+                  if (Telefono == "") {
+                    setTexto("Los campos no deben estar vacios");
+                    setErrorTelefono(true);
                   }
-                }
-              }}
+                  else {
+                    setErrorTelefono(false)
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(Telefono)) {
+                      setErrorTelefono(true)
+                      setTexto("Solo deben de ingresar numeros")
+                    } else {
+                      setErrorTelefono(false);
+                      setTexto("");
+                    }
+                  }
+                }}
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -256,16 +248,34 @@ export const DatosEmpleado = (
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
               <select name="" className="selectCustom" id="sucursal">
-                <option value={1}>1</option>
-                <option value={2}>2</option>
+              {sucursales.length ? (
+                  sucursales.map(pre => (
+                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                      {pre.departamento}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
             <div className="contInput">
               <TextCustom text="Cargo" className="titleInput" />
               <select name="" className="selectCustom" id='cargo'>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
+              {roles.length ? (
+                  roles.map(pre => (
+                    <option key={pre.Id_Rol} value={pre.Id_Rol}>
+                      {pre.Rol}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
@@ -273,10 +283,10 @@ export const DatosEmpleado = (
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={()=>{
-                  if(document.getElementById("Nidentidad").value=="" || document.getElementById("nombre").value == ""|| document.getElementById("apellido").value =="" ){
-                     swal("No deje campos vacios.","","error")
-                  }else{
+                onClick={() => {
+                  if (document.getElementById("Nidentidad").value == "" || document.getElementById("nombre").value == "" || document.getElementById("apellido").value == "") {
+                    swal("No deje campos vacios.", "", "error")
+                  } else {
                     handleNext()
                   }
                 }}

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import MulltiOptica from '../IMG/MultiopticaBlanco.png';
 import MulltiOpticaOjo from '../IMG/MultiopticaOjo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState, useEffect } from 'react';
 
 import {
   faClipboardList,
@@ -16,8 +17,55 @@ import {
   faRightFromBracket,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { sendData } from '../scripts/sendData';
 
-export const BarraLateral = () => {
+const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
+
+export const BarraLateral = (props) => {
+
+  const data = {
+  rol: props.Rol
+  }
+  const [permisos, setPermisos] = useState([])
+
+  useEffect(() => {
+    fetch(urlP, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => setPermisos(data))
+  }, [])
+
+
+  let pantallas = Object.values(permisos).map(({ Id_Objeto }) => parseInt(Id_Objeto)) //permite acceder a la propiedad del objeto y aislarla a un array aparte
+  let consulta = Object.values(permisos).map(({ Permiso_Consultar }) => Permiso_Consultar)
+
+ 
+
+  const Usuario = () =>{
+    if (consulta[1]=="s"&&pantallas[1]==2) {
+      return(
+        <li>
+        <Link className="link" to="/usuarios">
+          <FontAwesomeIcon className="iconLi" icon={faUsers} />
+          <h1>USUARIOS</h1>
+        </Link>
+      </li>)   
+    }
+    
+  }
+
+  const logout = () => {
+    props.mail("")
+    props.user("")
+    props.access("inactivo")
+    props.rol("")
+  }
+
   const handleClick = event => {
     const sidebar = document.querySelector('.BarraLateral');
     const toggle = document.querySelector('.iconClose');
@@ -42,9 +90,12 @@ export const BarraLateral = () => {
         />
       </div>
 
+
+
       <div className="navPrincipal">
         <nav>
           <ul>
+            <Usuario></Usuario>
             <li>
               <Link className="link" to="/inventario">
                 <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
@@ -52,6 +103,7 @@ export const BarraLateral = () => {
               </Link>
             </li>
             <li>
+
               <Link className="link" to="/recuperacionPassword">
                 <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
                 <h1>CLIENTES</h1>
@@ -62,7 +114,7 @@ export const BarraLateral = () => {
                 <FontAwesomeIcon
                   className="iconLi"
                   icon={faHandHoldingDollar}
-                />
+                  />
                 <h1>VENTAS</h1>
               </Link>
             </li>
@@ -72,12 +124,7 @@ export const BarraLateral = () => {
                 <h1>RECORDATORIOS</h1>
               </Link>
             </li>
-            <li>
-              <Link className="link" to="/usuarios">
-                <FontAwesomeIcon className="iconLi" icon={faUsers} />
-                <h1>USUARIOS</h1>
-              </Link>
-            </li>
+
             <li>
               <Link className="link" to="/preguntasSeguridad">
                 <FontAwesomeIcon className="iconLi" icon={faFileLines} />
@@ -99,11 +146,12 @@ export const BarraLateral = () => {
           </ul>
         </nav>
       </div>
+      
 
       <div className="logout">
         <ul>
           <li>
-            <Link className="linkLogout" to="">
+            <Link className="linkLogout" to="/" onClick={logout}>
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
               <h1>CERRAR SESIÓN</h1>
             </Link>

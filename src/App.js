@@ -95,7 +95,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
-                  <BarraLateral />
+                  <BarraLateral user={user} rol={rol} mail={mail} estado={access} Rol={Rol}/>
 
                   <BarraHorizontal user={usuario} />
                   <Home></Home>

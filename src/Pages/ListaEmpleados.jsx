@@ -26,8 +26,6 @@ export const ListaEmpleados = () => {
         fetch(urlsucursales).then(response => response.json()).then(data => setSucursales(data))
     },[])
 
-    
-
     for (let i = 0; i < tableData.length; i++) {
         tableData[i].boton = <button>asdas</button>
 
