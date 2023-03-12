@@ -146,6 +146,7 @@ export const Login = props => {
                   inputRef={refUsuario}
                 
                   />
+                  <p>{prueba}</p>
                 </div>
                 <div className="espacio">
                 
