@@ -13,6 +13,19 @@ import swal from '@sweetalert/with-react';
 import AddUser from '../IMG/AddUser.jpg';
 
 export const AddUsers = () => {
+
+  const [Nombreusuario, setNombreusuario] = useState("");
+  const [errorNombreusuario, setErrorNombreusuario] = useState(false);
+  const [mensaje, setMensaje] = useState(false);
+
+  const [contra, setContra]= useState("");
+    const [msj, setMsj]= useState("");
+    const [errorContra, setErrorContra]= useState(false);
+
+    const [correo, setCorreo]= useState("");
+    const [texto, setTexto]= useState("");
+    const [errorCorreo, setErrorCorreo]= useState(false);
+
   const refContrasenia = useRef(null);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -94,27 +107,78 @@ export const AddUsers = () => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Nombre de Usuario" className="titleInput" />
+              <TextCustom text="Nombre de Usuario"
+               className="titleInput" />
               <input
-                type="text"
-                id="usuario"
-                name=""
-                className="inputCustom"
-                placeholder="Usuario"
+              onKeyDown={(e) => {
+                setNombreusuario(e.target.value);
+                if (Nombreusuario == "") {
+                  setErrorNombreusuario(true);
+                  setMensaje("Los campos no deben estar vacios");
+                }
+                else {
+                  setErrorNombreusuario(false)
+                  var preg_match = /^[a-zA-Z]+$/;
+                  if (!preg_match.test(Nombreusuario)) {
+                    setErrorNombreusuario(true)
+                    setMensaje("Solo debe de ingresar letras")
+                  } else {
+                    setErrorNombreusuario(false);
+                    setMensaje("");
+                  }
+                }
+              }}
+              error={errorNombreusuario}
+              type="text"
+              helperText={mensaje}
+              name=""
+              className="inputCustom"
+              maxLength={15}
+              placeholder="Nombre"
+              variant="standard"
+              id="nombre"
+              label="Usuario"
               />
+              <p className='error'>{mensaje}</p>
             </div>
+           
 
             <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
+
+               onKeyDown= {(e) =>{
+                setContra(e.target.value);
+                if (contra===""){
+                  setErrorContra(true);
+                  setMsj("Los campos no deben estar vacios");
+                }
+                else{
+                  setErrorContra(false)
+                  var regularExpression  = /^[a-zA-Z0-9!@#$%^&*]$/;
+                  if (!regularExpression.test(contra)){
+                    setErrorContra(true)
+                    setMsj("");
+                     }
+                     else{
+                  setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
+                  setErrorContra(false);
+                }
+              }
+              }}
+
                 id="filled-adornment-password"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
+                inputProps={{maxLength:20}}
                 inputRef={refContrasenia}
                 endAdornment={
+                 
                   <InputAdornment position="end">
                     <IconButton
+                    maxLength={30}
+              
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
@@ -125,17 +189,34 @@ export const AddUsers = () => {
                   </InputAdornment>
                 }
               ></FilledInput>
+              <p className='error'>{msj}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
+                onKeyDown={(e) =>{
+                var expresion = /^[a-zA-Z0-9_!#$%&'\*+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/; 
+                if (!expresion.test(correo)){
+                  setErrorCorreo(true)
+                  setTexto("Formato invalido");
+                   }
+                   else{
+                    setErrorCorreo(false);
+                    setTexto("");
+                   }
+                }}
                 type="text"
                 name=""
                 id="correo"
                 className="inputCustom"
                 placeholder="Correo Electronico"
+                error={errorCorreo}
+                helperText={texto}
+                maxLength={30}
+              
               />
+              <p className='error'>{texto}</p>
             </div>
 
             <div className="contInput">
@@ -159,7 +240,18 @@ export const AddUsers = () => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={insertar}
+                onClick={()=>{
+                  if(document.getElementById("nombre").value=="" ){
+                    swal("No deje campos vacios.","","error")
+                 }
+                 else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                  swal("El campo nombre solo acepta letras","","error")
+                }  
+                else{
+                 insertar()
+                }
+                }}
+                
               >
                 <h1>{'Finish' ? 'Crear Usuario' : 'Finish'}</h1>
               </Button>

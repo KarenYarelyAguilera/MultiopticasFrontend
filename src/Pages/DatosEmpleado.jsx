@@ -129,9 +129,7 @@ export const DatosEmpleado = (
 
             <div className="contInput">
               <TextCustom
-
-
-
+              
                 text="Nombre" />
               <input
                 onKeyDown={(e) => {
@@ -180,10 +178,10 @@ export const DatosEmpleado = (
                   }
                   else {
                     setErrorApellido(false)
-                    var preg_match = /^[a-zA-Z]+$/;
+                    var preg_match = /^[A-Z]+$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true)
-                      setAviso("Solo deben de ingresar letras")
+                      setAviso("Solo se debe ingresar letras mayusculas")
                     } else {
                       setErrorApellido(false);
                       setAviso("");
@@ -283,10 +281,23 @@ export const DatosEmpleado = (
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  if (document.getElementById("Nidentidad").value == "" || document.getElementById("nombre").value == "" || document.getElementById("apellido").value == "") {
-                    swal("No deje campos vacios.", "", "error")
-                  } else {
+                onClick={()=>{
+                  if(document.getElementById("Nidentidad").value=="" || document.getElementById("nombre").value == ""|| document.getElementById("apellido").value =="" ){
+                     swal("No deje campos vacios.","","error")
+                  }
+                  else if(typeof(parseInt(document.getElementById("Nidentidad").value) !== 'number') )      {
+                    swal("El campo identidad solo acepta numeros","","error")
+                  }     
+                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                    swal("El campo nombre solo acepta letras","","error")
+                  }  
+                  else if(typeof(document.getElementById("apellido").value) !== 'string')       {
+                    swal("El campo apellido solo acepta letras","","error")
+                  }  
+                  else if(typeof(parseInt(document.getElementById("phone").value) !== 'number') )      {
+                    swal("El campo telefono solo acepta numeros","","error")
+                  }     
+                   else{
                     handleNext()
                   }
                 }}
