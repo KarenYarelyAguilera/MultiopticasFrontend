@@ -43,6 +43,9 @@ export const DatosEmpleado = (
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
+  const [Identidad, setIdentidad] = useState(0)
+  const [Telefonoc, setTelefonoc] = useState(0)
+
   useEffect(() => {
     fetch(urlSucursales).then(response => response.json()).then(data => setSucursales(data))
     fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
@@ -104,6 +107,7 @@ export const DatosEmpleado = (
                 className="inputCustom"
                 onKeyDown={(e) => {
                   setiIdentidad(e.target.value);
+                   setIdentidad(parseInt(e.target.value))
                   if (iIdentidad === "") {
                     setErrorIdentidad(true);
                     setleyenda("Los campos no deben estar vacios");
@@ -215,6 +219,7 @@ export const DatosEmpleado = (
               <input
                 onKeyDown={(e) => {
                   setTelefono(e.target.value);
+                  setTelefonoc(parseInt(e.target.value))
                   if (Telefono == "") {
                     setTexto("Los campos no deben estar vacios");
                     setErrorTelefono(true);
@@ -285,21 +290,22 @@ export const DatosEmpleado = (
                   if(document.getElementById("Nidentidad").value=="" || document.getElementById("nombre").value == ""|| document.getElementById("apellido").value =="" ){
                      swal("No deje campos vacios.","","error")
                   }
-                  else if(typeof(parseInt(document.getElementById("Nidentidad").value) !== 'number') )      {
-                    swal("El campo identidad solo acepta numeros","","error")
-                  }     
-                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                  if(typeof(document.getElementById("nombre").value) !== 'string')       {
                     swal("El campo nombre solo acepta letras","","error")
                   }  
-                  else if(typeof(document.getElementById("apellido").value) !== 'string')       {
+                  if(typeof(document.getElementById("apellido").value) !== 'string')       {
                     swal("El campo apellido solo acepta letras","","error")
                   }  
-                  else if(typeof(parseInt(document.getElementById("phone").value) !== 'number') )      {
-                    swal("El campo telefono solo acepta numeros","","error")
-                  }     
-                   else{
+                  if(isNaN(Telefonoc) || isNaN(Identidad))      {
+                    swal("Corrija los campos Erroneos","","error")
+                  } else{
                     handleNext()
-                  }
+                  }    
+                 
+              
+                   
+                    
+                  
                 }}
               >
                 <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
