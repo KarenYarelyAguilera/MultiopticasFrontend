@@ -70,6 +70,11 @@ export const Login = props => {
       }
       console.log(respJsonFec)
 
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
+        props.mail(respJsonUsr[0].Correo_Electronico)
+        props.user(respJsonUsr[0].Nombre_Usuario);
+        navegate('/preguntasSeguridad');
+      }
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
         sendData(urlBitacoraLogin,dataBitacora)
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
@@ -77,11 +82,6 @@ export const Login = props => {
         props.rol(respJsonUsr[0].Rol)
         props.mail(respJsonUsr[0].Correo_Electronico)
         navegate('/Home');
-      }
-      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
-        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
-        props.user(respJsonUsr[0].Nombre_Usuario);
-        navegate('/Preguntas');
       }
 
     } catch (error) {
@@ -116,7 +116,7 @@ export const Login = props => {
                     }
                     else{
                       setErrorUsuario(false);
-                      var expresion = /^[a-zA-Z0-9_!#$%&'\*+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/;
+                      var expresion = /^[a-zA-Z0-9_!#$%&'+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/;
                       if (!expresion.test(usuario)){
                         setErrorUsuario(true)
                         setprueba("Formato invalido");
@@ -131,7 +131,7 @@ export const Login = props => {
                  }
                   onClick= {(e) =>{
                     setUsuario(e.target.value);
-                    if (usuario==""){
+                    if (usuario===""){
                       setErrorUsuario(true);
                       setprueba("Los campos no deben estar vacios");
                     }
@@ -142,12 +142,12 @@ export const Login = props => {
                   }}
                   error={errorUsuario}
                   label="Usuario"
-                  helperText={prueba}
                   variant="standard"
                   inputProps={{maxLength:50}}
                   inputRef={refUsuario}
                 
                   />
+                  <p>{prueba}</p>
                 </div>
                 <div className="espacio">
                 
@@ -166,7 +166,7 @@ export const Login = props => {
                       }
                     }}
                     error={errorContra}
-                    helperText={msj}
+                   
                     id="filled-adornment-password"
                     inputProps={{maxLength:150}}
                     type={showPassword ? 'text' : 'password'}

@@ -4,8 +4,8 @@ import swal from '@sweetalert/with-react';
 import { sendData } from '../scripts/sendData';
 
 
+export const ListaEmpleados = () => {
 
-export const ListEmpleados = () => {
     const[cargos,setCargos] = useState([])
     const[generos,setGeneros] = useState([])
     const[sucursales,setSucursales] = useState([])
@@ -25,8 +25,6 @@ export const ListEmpleados = () => {
         fetch(urlgeneros).then(response => response.json()).then(data => setGeneros(data))
         fetch(urlsucursales).then(response => response.json()).then(data => setSucursales(data))
     },[])
-
-    
 
     for (let i = 0; i < tableData.length; i++) {
         tableData[i].boton = <button>asdas</button>
