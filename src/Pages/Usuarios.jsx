@@ -15,16 +15,15 @@ import InforUsers from '../IMG/InforUsers.jpg';
 import ListUsers from '../IMG/ListUsers.jpg';
 
 export const Usuarios = (props) => {
-  const urlP="http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=subobjetos"
 
-  const [pantallas,setPantallas]=useState([])
+  const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=Pobjetos"
+  const [Permisos, setPermisos] = useState([])
 
   const data = {
-    rol:props.rol,
-    idObj:props.obj
-}
+    idObj:props.obj,
+    rol:props.rol
+  }
 
-console.log(data)
   useEffect(()=>{
     fetch(urlP, {
       method: "POST",
@@ -34,36 +33,29 @@ console.log(data)
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => setPantallas(data))
+      .then((data) => setPermisos(data))
   },[])
-  let cards = Object.values(pantallas).map(({ Id_subObjeto }) => parseInt(Id_subObjeto)) //permite acceder a la propiedad del objeto y aislarla a un array aparte
-  let consulta = Object.values(pantallas).map(({ Permiso_Consultar }) => Permiso_Consultar)
-
   
   let usuario = [
     {
-      id:1,
-      consulta:"s",
+      insert:"s",
       imagen: AddUser,
       titulo: 'Nuevo usuario',
       vinculo: '/usuarios/crearusuario',
     },
     {
-      id:2,
-      consulta:"s",
+      insert:"s",
       imagen: InforUsers,
       titulo: 'Datos generales',
       vinculo: '/usuarios/crearempleado',
     },
     {
-      id:3,
       consulta:"s",
       imagen: ListUsers,
       titulo: 'Lista de empleados',
       vinculo: '/empleados/lista',
     },
     {
-      id:4,
       consulta:"s",
       imagen: ListUsers,
       titulo: 'Lista de usuarios',
@@ -71,14 +63,19 @@ console.log(data)
     },
     
   ];
- 
-  let mostrar = []
-  for (let  i= 0; i < usuario.length; i++) {
-    if (cards[i]===usuario[i].id &&consulta[i]===usuario[i].consulta) {
-      mostrar.push(usuario[i])
-    }
+
+  let mostrar=[]
+  for (let i = 0; i < usuario.length; i++) {
+      if (Permisos.Permiso_Consultar===usuario[i].consulta) {
+        mostrar.push(usuario[i])
+      }else if (Permisos.Permiso_Insercion===usuario[i].insert) {
+        mostrar.push(usuario[i])
+      }
+    
   }
+
   
+ 
   return (
     <div className="CardUsuarios">
       <div className="contPrimary">
