@@ -240,7 +240,18 @@ export const AddUsers = () => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={insertar}
+                onClick={()=>{
+                  if(document.getElementById("nombre").value=="" ){
+                    swal("No deje campos vacios.","","error")
+                 }
+                 else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                  swal("El campo nombre solo acepta letras","","error")
+                }  
+                else{
+                 insertar()
+                }
+                }}
+                
               >
                 <h1>{'Finish' ? 'Crear Usuario' : 'Finish'}</h1>
               </Button>
