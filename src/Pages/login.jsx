@@ -146,6 +146,7 @@ export const Login = props => {
                   inputRef={refUsuario}
                 
                   />
+                  <p>{prueba}</p>
                 </div>
                 <div className="espacio">
                 
@@ -183,7 +184,7 @@ export const Login = props => {
                       </InputAdornment>
                     }
                   />
-                  <p>{msj}</p>
+                  <p>{msj} </p>
                 </div>
               
 
