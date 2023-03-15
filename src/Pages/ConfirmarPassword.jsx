@@ -7,24 +7,48 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useRef, useState } from 'react';
+import { useRef, useState,useEffect } from 'react';
+import { sendData } from '../scripts/sendData.js'
+import swal from '@sweetalert/with-react';
 
 export const ConfirmarPassword = props => {
-    const refContrasenia = useRef(null);
-    const navegate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
-  
-    const handleClickShowPassword = () => setShowPassword(show => !show);
-  
-    const handleMouseDownPassword = event => {
-      event.preventDefault();
-    };
+  const refContrasenia = useRef(null);
+  const refContrasenia2 = useRef(null);
+  const navegate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(show => !show);
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
 
   const Guardar = () => {
-    // let correo = document.getElementById('correo').value;
-    // props.correo(correo);
+    const urlAct = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=estado"
+    const urlCambio = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cambiarClave"
 
-    navegate('/');
+    let data = {
+      clave: refContrasenia.current.value,
+      correo: props.correo
+    }
+
+    let correo={
+      correo:props.correo
+    }
+
+    if (refContrasenia.current.value === refContrasenia2.current.value) {
+      sendData(urlAct,correo)
+      sendData(urlCambio, data)
+      navegate('/');
+    } else if (refContrasenia.current.value !== refContrasenia2.current.value) {
+      swal("Las contraseñas deben coincidir", "", "error")
+      refContrasenia.current.value = ""
+      refContrasenia2.current.value = ""
+    }else if (refContrasenia.current.value===""||refContrasenia2.current.value==="") {
+      
+    }
+
+
   };
 
   return (
@@ -69,7 +93,7 @@ export const ConfirmarPassword = props => {
               id="filled-adornment-password"
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
-              inputRef={refContrasenia}
+              inputRef={refContrasenia2}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
