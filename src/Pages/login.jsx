@@ -84,6 +84,7 @@ export const Login = props => {
       }
 
     } catch (error) {
+      console.log(error)
       swal('El usuario que ingreso no existe o\nIngreso credenciales erroneas', '', 'error')
       setContador(contador + 1)
     }
