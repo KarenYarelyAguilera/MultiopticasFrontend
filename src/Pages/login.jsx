@@ -57,7 +57,7 @@ export const Login = props => {
     const data2 = {
       correo: refUsuario.current.value,
     };
-
+   
     
 
     try {
@@ -100,7 +100,7 @@ export const Login = props => {
           <Grid container spacing={0.5}>
             <Grid item md={10} xs={12}>
               <div id="loginContent">
-                <h2>Iniciar Sesion</h2>
+                <h2>Iniciar Sesión</h2>
                 <div className="espacio">
                   <TextField
 
@@ -115,7 +115,7 @@ export const Login = props => {
                     }
                     else{
                       setErrorUsuario(false);
-                      var expresion = /^[a-zA-Z0-9_!#$%&'+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/;
+                      var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                       if (!expresion.test(usuario)){
                         setErrorUsuario(true)
                         setprueba("Formato invalido");

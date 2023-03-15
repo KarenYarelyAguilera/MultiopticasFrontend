@@ -1,21 +1,40 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
+
+
 import InforUsers from '../IMG/InforUsers.jpg';
-import { useState, useEffect } from 'react';
+
 //Styles
 import '../Styles/Usuarios.css';
 
 //Components
+import VerticalStepper from '../Components/VerticalStepper.jsx';
 import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import { TextField } from '@mui/material';
+
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
+
 
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
 
-export const DatosEmpleado = (
 
+export const DatosEmpleado = (
+  {
+    msgError = '',
+    success = false,
+    warning = false,
+    props,
+
+
+
+
+  }
 
 ) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -25,17 +44,22 @@ export const DatosEmpleado = (
   // };
   const [sucursales, setSucursales] = useState([])
 
-  const [iIdentidad, setiIdentidad] = useState("");
-  const [leyenda, setleyenda] = React.useState("");
-  const [errorIdentidad, setErrorIdentidad] = useState(false);
 
-  const [Nombre, setNombre] = useState("");
-  const [errorNombre, setErrorNombre] = useState(false);
+  const [iIdentidad, setiIdentidad] = React.useState("");
+  const [leyenda, setleyenda] = React.useState("");
+  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
+
+  const [Nombre, setNombre] = React.useState("");
+  const [errorNombre, setErrorNombre] = React.useState(false);
   const [Msj, setMsj] = React.useState(false);
 
   const [Apellido, setApellido] = React.useState("");
-  const [errorApellido, setErrorApellido] = useState(false);
+  const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
+
+
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
 
   const [Telefono, setTelefono] = useState("");
   const [errorTelefono, setErrorTelefono] = useState(false);
@@ -177,10 +201,10 @@ export const DatosEmpleado = (
                   }
                   else {
                     setErrorApellido(false)
-                    var preg_match = /^[A-Z]+$/;
+                    var preg_match = /^[a-zA-Z]+$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true)
-                      setAviso("Solo se debe ingresar letras mayusculas")
+                      setAviso("Solo deben de ingresar letras")
                     } else {
                       setErrorApellido(false);
                       setAviso("");
@@ -209,28 +233,28 @@ export const DatosEmpleado = (
 
             <div className="contInput">
               <TextCustom
-
+                
                 text="Telefono" className="titleInput" />
               <input
-                onKeyDown={(e) => {
-                  setTelefono(e.target.value);
-                  setTelefonoc(parseInt(e.target.value))
-                  if (Telefono == "") {
-                    setTexto("Los campos no deben estar vacios");
-                    setErrorTelefono(true);
+
+              onKeyDown={(e) => {
+                setTelefono(e.target.value);
+                if (Telefono == "") {
+                  setTexto("Los campos no deben estar vacios");
+                  setErrorTelefono(true);
+                }
+                else {
+                  setErrorTelefono(false)
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(Telefono)) {
+                    setErrorTelefono(true)
+                    setTexto("Solo deben de ingresar numeros")
+                  } else {
+                    setErrorTelefono(false);
+                    setTexto("");
                   }
-                  else {
-                    setErrorTelefono(false)
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true)
-                      setTexto("Solo deben de ingresar numeros")
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto("");
-                    }
-                  }
-                }}
+                }
+              }}
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -246,20 +270,18 @@ export const DatosEmpleado = (
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
               <select name="" className="selectCustom" id="sucursal">
-              {sucursales.length ? (
-                  sucursales.map(pre => (
-                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                      {pre.departamento}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
+                <option value={1}>1</option>
+                <option value={2}>2</option>
               </select>
             </div>
 
+            <div className="contInput">
+              <TextCustom text="Cargo" className="titleInput" />
+              <select name="" className="selectCustom" id='cargo'>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+              </select>
+            </div>
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -268,7 +290,11 @@ export const DatosEmpleado = (
                   if(document.getElementById("Nidentidad").value=="" || document.getElementById("nombre").value == ""|| document.getElementById("apellido").value =="" ){
                      swal("No deje campos vacios.","","error")
                   }
-                  if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                  else if(typeof(parseInt(document.getElementById("Nidentidad").value) !== 'number') )      {
+                    swal("El campo identidad solo acepta numeros","","error")
+                  }    
+                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+
                     swal("El campo nombre solo acepta letras","","error")
                   }  
                   if(typeof(document.getElementById("apellido").value) !== 'string')       {
@@ -281,8 +307,6 @@ export const DatosEmpleado = (
                   }    
                  
               
-                   
-                    
                   
                 }}
               >
