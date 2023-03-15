@@ -13,7 +13,6 @@ import swal from '@sweetalert/with-react';
 
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
-const urlRoles = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles"
 
 export const DatosEmpleado = (
 
@@ -25,7 +24,6 @@ export const DatosEmpleado = (
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([])
-  const [roles, setRoles] = useState([])
 
   const [iIdentidad, setiIdentidad] = useState("");
   const [leyenda, setleyenda] = React.useState("");
@@ -48,7 +46,6 @@ export const DatosEmpleado = (
 
   useEffect(() => {
     fetch(urlSucursales).then(response => response.json()).then(data => setSucursales(data))
-    fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
   }, [])
 
 
@@ -60,10 +57,8 @@ export const DatosEmpleado = (
     let telefono = document.getElementById("phone").value
     let genero = parseInt(document.getElementById("genero").value)
     let sucursal = parseInt(document.getElementById("sucursal").value)
-    let cargo = parseInt(document.getElementById("cargo").value)
 
     let data = {
-      cargo: cargo,
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
       phone: telefono,
@@ -255,23 +250,6 @@ export const DatosEmpleado = (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
                       {pre.departamento}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Cargo" className="titleInput" />
-              <select name="" className="selectCustom" id='cargo'>
-              {roles.length ? (
-                  roles.map(pre => (
-                    <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                      {pre.Rol}
                     </option>
                   ))
                 ) : (

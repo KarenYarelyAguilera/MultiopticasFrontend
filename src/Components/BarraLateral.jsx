@@ -126,7 +126,7 @@ export const BarraLateral = (props) => {
     if (consulta[6] === "s" && pantallas[6] === 8) {
       return(
      <li>
-        <Link className="link" to="">
+        <Link className="link" to="/config">
           <FontAwesomeIcon className="iconLi" icon={faGear} />
           <h1>CONFIGURACION</h1>
         </Link>
@@ -191,9 +191,9 @@ export const BarraLateral = (props) => {
             <Inventario />
             <Clientes />
             <Reportes/>
+            <Configuracion/>
             <Recordatorios />
             <Seguridad/>
-            <Configuracion/>
           </ul>
         </nav>
       </div>
