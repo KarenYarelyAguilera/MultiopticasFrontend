@@ -22,8 +22,18 @@ const urlDUsuario =
 const urlFechaExpiracion =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
+const urlBitacoraLogin = "http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=login";
 
 export const Login = props => {
+
+  const [usuario, setUsuario]= useState("");
+    const [prueba, setprueba]= useState("");
+    const [errorUsuario, setErrorUsuario]= useState(false);
+
+    const [contra, setContra]= useState("");
+    const [msj, setMsj]= useState("");
+    const [errorContra, setErrorContra]= useState(false);
+
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -47,24 +57,30 @@ export const Login = props => {
     const data2 = {
       correo: refUsuario.current.value,
     };
+   
+    
 
     try {
       const respJsonPss = await sendData(urlLogin, data);
       const respJsonUsr = await sendData(urlDUsuario, data2);
       const respJsonFec = await sendData(urlFechaExpiracion, data2);
+      const dataBitacora = {
+        Id:respJsonUsr[0].Id_Usuario
+      }
       console.log(respJsonFec)
 
+      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
+        props.mail(respJsonUsr[0].Correo_Electronico)
+        props.user(respJsonUsr[0].Nombre_Usuario);
+        navegate('/preguntasSeguridad');
+      }
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Activo") {
+        sendData(urlBitacoraLogin,dataBitacora)
         props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr[0].Nombre_Usuario);
         props.rol(respJsonUsr[0].Rol)
-        props.correo(respJsonUsr[0].Correo_Electronico)
+        props.mail(respJsonUsr[0].Correo_Electronico)
         navegate('/Home');
-      }
-      if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
-        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
-        props.user(respJsonUsr[0].Nombre_Usuario);
-        navegate('/Preguntas');
       }
 
     } catch (error) {
@@ -84,25 +100,79 @@ export const Login = props => {
           <Grid container spacing={0.5}>
             <Grid item md={10} xs={12}>
               <div id="loginContent">
-                <h2>Iniciar Sesion</h2>
+                <h2>Iniciar Sesión</h2>
                 <div className="espacio">
                   <TextField
-                    label="Usuario"
-                    size="small"
-                    margin="dense"
-                    required
-                    autoComplete='off'
-                    inputProps={{maxLength:50}}
-                    inputRef={refUsuario}
+
+                   onKeyDown={(e) =>{
+                  
+                    setUsuario(e.target.value);
+                
+                    if(usuario.length>47 ){
+                      setErrorUsuario(true);
+                      setprueba("A excedido al numero de caracteres");
+                      
+                    }
+                    else{
+                      setErrorUsuario(false);
+                      var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                      if (!expresion.test(usuario)){
+                        setErrorUsuario(true)
+                        setprueba("Formato invalido");
+                         }
+                         else{
+                          setErrorUsuario(false);
+                          setprueba("");
+  
+                      }
+                   }
+                  }
+                 }
+                  onClick= {(e) =>{
+                    setUsuario(e.target.value);
+                    if (usuario===""){
+                      setErrorUsuario(true);
+                      setprueba("Los campos no deben estar vacios");
+                    }
+                    else{
+                      setErrorUsuario(false);
+                      setprueba("");
+                    }
+                  }}
+                  error={errorUsuario}
+                  label="Usuario"
+                  variant="standard"
+                  inputProps={{maxLength:50}}
+                  inputRef={refUsuario}
+                
                   />
+                  <p>{prueba}</p>
                 </div>
                 <div className="espacio">
+                
+
                   <FilledInput
+
+                    onKeyDown= {(e) =>{
+                      setContra(e.target.value);
+                      if (contra===""){
+                        setErrorContra(true);
+                        setMsj("Los campos no deben estar vacios");
+                      }
+                      else{
+                        setMsj("");
+                        setErrorContra(false);
+                      }
+                    }}
+                    error={errorContra}
+                   
                     id="filled-adornment-password"
+                    inputProps={{maxLength:150}}
                     type={showPassword ? 'text' : 'password'}
                     inputRef={refContrasenia}
                     endAdornment={
                       <InputAdornment position="end">
+                         
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
@@ -114,7 +184,12 @@ export const Login = props => {
                       </InputAdornment>
                     }
                   />
+                  <p>{msj} </p>
                 </div>
+              
+
+
+
                 <div className="espacio">
                   <Button variant="contained" onClick={handleLogin}>
                     Iniciar sesion
