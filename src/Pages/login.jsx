@@ -14,7 +14,6 @@ sin necesidad del getElementById */
 import { useNavigate } from 'react-router-dom'; /**Este hook ayuda a redireccionar
 a una pagina diferente mediante el "path" */
 import { sendData } from '../scripts/sendData';
-import { red } from '@mui/material/colors';
 
 const urlLogin =
   'http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd';

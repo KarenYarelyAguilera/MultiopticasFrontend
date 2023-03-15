@@ -61,9 +61,10 @@ export const AddUsers = () => {
       document.getElementById('empleado').options[
         document.getElementById('empleado').selectedIndex
       ].text;
+
     let user = String(usuario);
-    let nombre = document.getElementById('usuario').value;
-    let correo = document.getElementById('correo').value;
+    let nombre = document.getElementById('nombre').value;
+    let correo = document.getElementById('correo ').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {

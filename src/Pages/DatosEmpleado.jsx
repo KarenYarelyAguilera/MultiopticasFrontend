@@ -20,6 +20,10 @@ import { TextField } from '@mui/material';
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
 
 
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
+const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
+
+
 export const DatosEmpleado = (
   {
     msgError = '',
@@ -38,6 +42,8 @@ export const DatosEmpleado = (
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
+  const [sucursales, setSucursales] = useState([])
+
 
   const [iIdentidad, setiIdentidad] = React.useState("");
   const [leyenda, setleyenda] = React.useState("");
@@ -51,9 +57,20 @@ export const DatosEmpleado = (
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
-  const [Telefono, setTelefono] = React.useState("");
+
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
+
+  const [Telefono, setTelefono] = useState("");
+  const [errorTelefono, setErrorTelefono] = useState(false);
+  const [texto, setTexto] = useState(false);
+
+  const [Identidad, setIdentidad] = useState(0)
+  const [Telefonoc, setTelefonoc] = useState(0)
+
+  useEffect(() => {
+    fetch(urlSucursales).then(response => response.json()).then(data => setSucursales(data))
+  }, [])
 
 
   const navegate = useNavigate()
@@ -64,16 +81,14 @@ export const DatosEmpleado = (
     let telefono = document.getElementById("phone").value
     let genero = parseInt(document.getElementById("genero").value)
     let sucursal = parseInt(document.getElementById("sucursal").value)
-    let cargo = parseInt(document.getElementById("cargo").value)
 
     let data = {
-      "cargo": cargo,
-      "nombres": nombres.toUpperCase(),
-      "apellidos": apellidos.toUpperCase(),
-      "phone": telefono,
-      "genero": genero,
-      "sucursal": sucursal,
-      "identidad": identidad
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      phone: telefono,
+      genero: genero,
+      sucursal: sucursal,
+      identidad: identidad
     }
     if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then((result) => {
@@ -111,6 +126,7 @@ export const DatosEmpleado = (
                 className="inputCustom"
                 onKeyDown={(e) => {
                   setiIdentidad(e.target.value);
+                   setIdentidad(parseInt(e.target.value))
                   if (iIdentidad === "") {
                     setErrorIdentidad(true);
                     setleyenda("Los campos no deben estar vacios");
@@ -220,6 +236,7 @@ export const DatosEmpleado = (
                 
                 text="Telefono" className="titleInput" />
               <input
+
               onKeyDown={(e) => {
                 setTelefono(e.target.value);
                 if (Telefono == "") {
@@ -265,7 +282,6 @@ export const DatosEmpleado = (
                 <option value={2}>2</option>
               </select>
             </div>
-
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -278,17 +294,20 @@ export const DatosEmpleado = (
                     swal("El campo identidad solo acepta numeros","","error")
                   }    
                   else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+
                     swal("El campo nombre solo acepta letras","","error")
                   }  
-                  else if(typeof(document.getElementById("apellido").value) !== 'string')       {
+                  if(typeof(document.getElementById("apellido").value) !== 'string')       {
                     swal("El campo apellido solo acepta letras","","error")
                   }  
-                  else if(typeof(parseInt(document.getElementById("phone").value) !== 'number') )      {
-                    swal("El campo telefono solo acepta numeros","","error")
-                  }     
-                   else{
+                  if(isNaN(Telefonoc) || isNaN(Identidad))      {
+                    swal("Corrija los campos Erroneos","","error")
+                  } else{
                     handleNext()
-                  }
+                  }    
+                 
+              
+                  
                 }}
               >
                 <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
