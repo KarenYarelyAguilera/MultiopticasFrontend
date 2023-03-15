@@ -6,6 +6,10 @@
   font-family: 'Rubik', sans-serif;
 }
 
+.error{
+  color: red;
+}
+
 /* CardUsuario-Menu */
 
 .CardUsuarios {
@@ -27,7 +31,7 @@
   width: 70%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  grid-template-columns: repeat(3, 3fr);
   grid-gap: 30px;
 
   position: relative;
@@ -141,10 +145,11 @@
 .infoAddUser {
   width: 70%;
   height: auto;
-  padding-left: 15%;
+  padding-left: 10%;
 
   display: grid;
-  grid-template-columns: 22% 70%;
+  grid-template-columns: 50% 50%;
+  grid-gap: 20%;
 
   align-items: center;
 }
@@ -161,9 +166,18 @@
   width: 100%;
   height: auto;
   display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 50px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal1 {
+  width: 100%;
+  height: auto;
+  display: grid;
   grid-template-columns: repeat(2, 2fr);
   grid-gap: 50px;
-  padding: 40px;
+  /* padding: 40px; */
 }
 
 .infoAddUser .PanelInfo .InputContPrincipal .btnCard {
@@ -211,9 +225,38 @@
   font-size: 15px;
 }
 
+.infoAddUser .PanelInfo .contInput .inputCustomPass {
+  width: 320px !important;
+  height: 40px;
+  border-radius: 10px !important;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray !important;
+  font-weight: bold;
+  font-size: 15px !important;
+  font-weight: bold !important;
+
+  line-height: none !important;
+  letter-spacing: none !important;
+  box-sizing: none !important;
+}
+
+
+
+.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input{
+  padding-top: 10px !important;
+}
+.infoAddUser .PanelInfo .contInput 
+.inputCustomPass:before{
+  border-bottom: none !important;
+}
+
+.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after{
+  border-bottom: none !important;
+}
+
 .infoAddUser .PanelInfo .contInput .selectCustom {
   width: 325px;
-  height: 40px;
+  height: 45px;
   padding: 10px;
   border-radius: 10px;
   background-color: rgba(208, 208, 208, 0.349);
@@ -245,15 +288,14 @@
 .contBtnStepper {
   width: 100%;
   height: auto;
-
-  display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .contBtnStepper .btnStepper {
-  width: 95%;
+  width: 70%;
   height: 40px;
   border-radius: 25px;
   background: rgb(38, 103, 177);

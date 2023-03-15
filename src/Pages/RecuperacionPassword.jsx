@@ -1,7 +1,9 @@
 import { Button } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import React, {useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
-import dataPreguntas from '../scripts/preguntas.json';
+import { sendData } from '../scripts/sendData';
+import { useEffect } from 'react';
 
 //MuiMaterial-Icons
 import WarningIcon from '@mui/icons-material/Warning';
@@ -9,30 +11,19 @@ import WarningIcon from '@mui/icons-material/Warning';
 //Styles
 import '../Styles/RecuperacionPassword.css';
 
-export const RecuperacionPassword = () => {
+export const RecuperacionPassword =  (props) => {
+  const navegate = useNavigate();
   const [errorMessage, seterrorMessage] = useState('');
   const [respuesta, setrespuesta] = useState('');
+  
+  const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
+   const  data = {
+    correo:props.correo
+   }
 
-  // const dataPreguntas = [
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llamaba su amigo de la infancia?',
-  //     respuesta: 'Michael',
-  //     idPregunta: '1',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llama tu padre?',
-  //     respuesta: 'Manuel',
-  //     idPregunta: '2',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-  //     respuesta: 'Iphone 13',
-  //     idPregunta: '3',
-  //   },
-  // ];
+const dataPreguntas = sendData(urlPreguntas,data)
+
+ 
 
   const validate = () => {
     console.log(respuesta);
@@ -41,6 +32,13 @@ export const RecuperacionPassword = () => {
     } else {
       seterrorMessage('Respuesta incorrecta');
     }
+  };
+
+  const newPassword = () => {
+    // let correo = document.getElementById('correo').value;
+    // props.correo(correo);
+
+    navegate('/recuperacion/preguntas/newPassword');
   };
 
   const handleChange = event => {
@@ -102,23 +100,24 @@ export const RecuperacionPassword = () => {
         ) : (
           <div className="NoInformatio">No existe información</div>
         )}
-        <div className="contBtn">
+        <div className="contBtnPre">
           <Button
-            className="btnSubmit"
+            className="btnSubmitpre"
             variant="container"
-            onClick={e => validate(e.target.value)}
+            // onClick={e => validate(e.target.value)}
+            onClick={newPassword}
           >
             Comprobar
           </Button>
         </div>
-        {errorMessage === '' ? null : (
+        {/* {errorMessage === '' ? null : (
           <div className="ErrorMessage">
             <WarningIcon
               style={{ paddingRight: 15, fontSize: 35, color: 'white' }}
             />
             {errorMessage}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
