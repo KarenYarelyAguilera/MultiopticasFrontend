@@ -58,7 +58,7 @@ export const BarraLateral = () => {
               </Link>
             </li>
             <li>
-              <Link className="link" to="">
+              <Link className="link" to="/ventas">
                 <FontAwesomeIcon
                   className="iconLi"
                   icon={faHandHoldingDollar}
