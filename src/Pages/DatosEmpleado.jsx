@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
-
+import { useState,useEffect } from 'react';
 
 import InforUsers from '../IMG/InforUsers.jpg';
 
@@ -16,8 +16,6 @@ import VerticalStepper from '../Components/VerticalStepper.jsx';
 import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
-
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
 
 
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
@@ -62,8 +60,6 @@ export const DatosEmpleado = (
   const [texto, setTexto] = React.useState(false);
 
   const [Telefono, setTelefono] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
 
   const [Identidad, setIdentidad] = useState(0)
   const [Telefonoc, setTelefonoc] = useState(0)
@@ -270,18 +266,20 @@ export const DatosEmpleado = (
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
               <select name="" className="selectCustom" id="sucursal">
-                <option value={1}>1</option>
-                <option value={2}>2</option>
+              {sucursales.length ? (
+                  sucursales.map(pre => (
+                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                      {pre.departamento}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Cargo" className="titleInput" />
-              <select name="" className="selectCustom" id='cargo'>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-              </select>
-            </div>
             <div className="contBtnStepper">
               <Button
                 variant="contained"

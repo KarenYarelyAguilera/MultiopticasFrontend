@@ -32,6 +32,7 @@ function App() {
   const [Rol, setRol] = useState('');
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
+  const [idUsuario,setIdUsuario] = useState(0)
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
@@ -41,6 +42,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const mail = ml => setCorreo(ml);
   const rol = rl => setRol(rl);
   const cObjeto = obb => setobj(obb);
+  const id = idd=>setIdUsuario(idd)
 
   return (
     <div>
@@ -57,7 +59,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             index
             element={
-              <Login access={access} user={user} rol={rol} mail={mail} />
+              <Login access={access} user={user} rol={rol} mail={mail}/>
             }
           />
 
@@ -210,6 +212,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    id={idUsuario}
                   />
                   <BarraHorizontal user={usuario} />
                   <Usuarios rol={Rol} obj={obj}></Usuarios>

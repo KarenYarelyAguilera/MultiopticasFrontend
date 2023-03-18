@@ -64,7 +64,7 @@ export const AddUsers = () => {
 
     let user = String(usuario);
     let nombre = document.getElementById('nombre').value;
-    let correo = document.getElementById('correo ').value;
+    let correo = document.getElementById('correo').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {

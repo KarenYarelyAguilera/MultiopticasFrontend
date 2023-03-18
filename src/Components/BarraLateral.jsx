@@ -17,14 +17,22 @@ import {
   faRightFromBracket,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { sendData } from '../scripts/sendData';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
+const urlBitacoraUsuario ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Usuario"
+
 
 export const BarraLateral = (props) => {
   
   const data = {
     rol: props.Rol
   }
+
+  const dataB = {
+    Id:props.idUsuario
+  }
+
   const [permisos, setPermisos] = useState([])
   
   useEffect(() => {
@@ -49,7 +57,15 @@ export const BarraLateral = (props) => {
       
       return (
         <li>
-          <Link className="link" to="/usuarios" onClick={()=>props.obj(2)}>
+          <Link className="link" to="/usuarios" onClick={()=>{
+            fetch(urlBitacoraUsuario, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(dataB),
+            })
+            props.obj(2)}}>
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
             <h1>USUARIOS</h1>
           </Link>

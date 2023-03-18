@@ -21,7 +21,7 @@ export const ListaEmpleados = () => {
         fetch(urlEmployees).then(response => response.json()).then(data => setTableData(data))
         fetch(urlgeneros).then(response => response.json()).then(data => setGeneros(data))
         fetch(urlsucursales).then(response => response.json()).then(data => setSucursales(data))
-    },[])
+    })
 
 
     const columns = [
@@ -46,7 +46,6 @@ export const ListaEmpleados = () => {
                     swal({
                         buttons: {
                             update: 'Actualizar',
-                            delete: 'Eliminar',
                             cancel: 'cancel',
                         },
                         content: (
@@ -92,7 +91,6 @@ export const ListaEmpleados = () => {
                                     </select>
                                 </form>).then(()=>{
                                     let data = {
-                                        IdCargo:document.getElementById("cargo").value,
                                         nombre: document.getElementById("nombre").value,
                                         apellido: document.getElementById("apellido").value,
                                         telefonoEmpleado: document.getElementById("telefono").value,
@@ -108,9 +106,6 @@ export const ListaEmpleados = () => {
                                     
                                 })
                                 break;
-                            case "delete":
-                                swal("elimina")
-                                break
                             default:
                                 break;
                         }

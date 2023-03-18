@@ -64,10 +64,11 @@ export const Login = props => {
       const respJsonPss = await sendData(urlLogin, data);
       const respJsonUsr = await sendData(urlDUsuario, data2);
       const respJsonFec = await sendData(urlFechaExpiracion, data2);
+
       const dataBitacora = {
         Id:respJsonUsr[0].Id_Usuario
       }
-      console.log(respJsonFec)
+
 
       if (respJsonPss && respJsonUsr[0].Estado_Usuario==="Nuevo") {
         props.mail(respJsonUsr[0].Correo_Electronico)
