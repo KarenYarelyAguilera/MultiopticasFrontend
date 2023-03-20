@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para invocar componentes segun la ruta que se especifique
 import { useState } from 'react';
+import React from 'react';
 
 //Components
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
-
+import { useState, useEffect } from 'react';
 
 import InforUsers from '../IMG/InforUsers.jpg';
 
@@ -20,7 +20,7 @@ import { TextField } from '@mui/material';
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
 
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
+
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
 
 
@@ -62,8 +62,7 @@ export const DatosEmpleado = (
   const [texto, setTexto] = React.useState(false);
 
   const [Telefono, setTelefono] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
+ 
 
   const [Identidad, setIdentidad] = useState(0)
   const [Telefonoc, setTelefonoc] = useState(0)
