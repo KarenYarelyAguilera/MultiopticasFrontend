@@ -70,14 +70,15 @@ export const AddUsers = () => {
       document.getElementById('empleado').options[
         document.getElementById('empleado').selectedIndex
       ].text;
+
     let user = String(usuario);
-    let nombre = document.getElementById('usuario').value;
+    let nombre = document.getElementById('nombre').value;
     let correo = document.getElementById('correo').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {
       id: id,
-      usuario: user.toUpperCase(),
+      usuario: user.toLocaleUpperCase(),
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,
@@ -214,7 +215,7 @@ export const AddUsers = () => {
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
                 onKeyDown={(e) =>{
-                var expresion = /^[a-zA-Z0-9_!#$%&'\*+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/; 
+                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
                 if (!expresion.test(correo)){
                   setErrorCorreo(true)
                   setTexto("Formato invalido");
@@ -259,11 +260,18 @@ export const AddUsers = () => {
                 variant="contained"
                 className="btnStepper"
                 onClick={()=>{
-                  if(document.getElementById("nombre").value=="" ){
+              
+                if(document.getElementById("nombre").value=="" || document.getElementById("filled-adornment-password").value == ""|| document.getElementById("correo").value == ""){
                     swal("No deje campos vacios.","","error")
                  }
                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
                   swal("El campo nombre solo acepta letras","","error")
+                }  
+                else if(typeof(document.getElementById("filled-adornment-password").value) !== 'string')       {
+                  swal("El campo contraseña debe de incluir letras, numeros y caracteres especiales","","error")
+                }  
+                else if(typeof(document.getElementById("correo").value) !== 'string')       {
+                  swal("El campo correo debe de incluir un correo","","error")
                 }  
                 else{
                  insertar()
