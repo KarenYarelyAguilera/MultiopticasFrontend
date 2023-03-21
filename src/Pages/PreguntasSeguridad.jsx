@@ -1,48 +1,70 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
-import React, { useState } from 'react';
+import React from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { sendData } from '../scripts/sendData';
 
 //MuiMaterial-Icons
-import WarningIcon from '@mui/icons-material/Warning';
+//import WarningIcon from '@mui/icons-material/Warning';
 
 //Styles
 import '../Styles/RecuperacionPassword.css';
+import swal from '@sweetalert/with-react';
 
 export const PreguntasSeguridad = (props) => {
   const navegate = useNavigate();
-//   const [errorMessage, seterrorMessage] = useState('');
-//   const [respuesta, setrespuesta] = useState('');
+  // const [errorMessage, seterrorMessage] = useState('');
+  // const [respuesta, setrespuesta] = useState('');
 
-  // const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
-  // const  data = {
-  //   correo:props.correo
-  // }
+  var today = new Date()
+  var dateFormat = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate()
+  const urlIPreguntas = "http://localhost/APIS-Multioptica/preguntas/controller/preguntas.php?op=nuevaPregunta"
+  const urlUser = "http://localhost/APIS-Multioptica/login/controller/user.php?op=user"
+  const urlIResp = "http://localhost/APIS-Multioptica/preguntas/controller/preguntas.php?op=nuevaRespuesta"
 
-  // const dataPreguntas = sendData(urlPreguntas,data)
+  const datausr = {
+    correo: props.mail
+  }
 
-//   const validate = () => {
-//     console.log(respuesta);
-//     if (respuesta === dataPreguntas.pregunta) {
-//       seterrorMessage('Respuesta correcta');
-//     } else {
-//       seterrorMessage('Respuesta incorrecta');
-//     }
-//   };
+  const Avanzar = async () => {
+    const respJson = await sendData(urlUser, datausr)
+    console.log(respJson[0].Id_Usuario)
 
-  const confirmarPassword = () => {
-    // let correo = document.getElementById('correo').value;
-    // props.correo(correo);
 
-    navegate('/preguntasSeguridad/confirmarPassword');
+    const data = {
+      pregunta: document.getElementById("pregunta").value,
+      autor: props.user,
+      fechaActual: dateFormat
+    }
+
+    const dataR = {
+      idautor: respJson[0].Id_Usuario,
+      respuesta: document.getElementById("resp").value,
+      autor: props.user,
+      fechaActual: dateFormat
+    }
+
+    if (document.getElementById("pregunta").value !== "" && document.getElementById("resp").value !== "") {
+      if (await sendData(urlIPreguntas, data) && await sendData(urlIResp, dataR)) {
+        alert("Pregunta guardada con exito")
+        navegate('/preguntasSeguridad/confirmarPassword');
+    }
+    
+
+    } else {
+      swal("Ocurrio un error", "", "error")
+    }
+
+
+
+
   };
 
-//   const handleChange = event => {
-//     setrespuesta(event.target.value);
+  //   const handleChange = event => {
+  //     setrespuesta(event.target.value);
 
-//     console.log('value is:', event.target.value);
-//   };
+  //     console.log('value is:', event.target.value);
+  //   };
 
   return (
     <div className="contRecuperaPassword">
@@ -65,8 +87,7 @@ export const PreguntasSeguridad = (props) => {
               name=""
               className="inputCustom"
               placeholder="Pregunta"
-              // onChange={handleChange}
-              // value={respuesta}
+              id='pregunta'
             />
           </div>
 
@@ -77,8 +98,9 @@ export const PreguntasSeguridad = (props) => {
               name=""
               className="inputCustom"
               placeholder="Respuesta"
-              // onChange={handleChange}
-              // value={respuesta}
+              id='resp'
+            // onChange={handleChange}
+            // value={respuesta}
             />
           </div>
         </div>
@@ -87,7 +109,7 @@ export const PreguntasSeguridad = (props) => {
             className="btnSubmitpre"
             variant="container"
             // onClick={e => validate(e.target.value)}
-            onClick={confirmarPassword}
+            onClick={Avanzar}
           >
             Comprobar
           </Button>

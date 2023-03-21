@@ -19,7 +19,6 @@ import "../Styles/Home.css";
 export const NuevaVenta = () => {
   const navegate = useNavigate();
 
-
   const Empleado = [
     {
       IdEmpleado:'1',
@@ -41,8 +40,11 @@ export const NuevaVenta = () => {
   const handleBack = () => {
     navegate('/ventas');
   }
+
+  const handleDetalleVenta = () => {
+    navegate('/ventas/reportes');
+  };
   return (
-    
     <div className="ContUsuarios">
       <Button 
       className='btnBack'
@@ -58,87 +60,86 @@ export const NuevaVenta = () => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
+              <TextCustom text="Codigo de Venta" className="titleInput" />
+              <input
+                type="text"
+                id="codigo"
+                name=""
+                className="inputCustom"
+                placeholder="Codigo"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Cliente" className="titleInput" />
+              <input
+                type="text"
+                id="cliente"
+                name=""
+                className="inputCustom"
+                placeholder="Cliente"
+              />
+            </div>
+
+            <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-              <select id="empleado" className="selectCustom">
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.Nombre}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Nombre de Usuario" className="titleInput" />
               <input
                 type="text"
-                id="usuario"
+                id="empleado"
                 name=""
                 className="inputCustom"
-                placeholder="Usuario"
+                placeholder="Empleado"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Contraseña" className="titleInput" />
+              <TextCustom text="Fecha de Venta" className="titleInput" />
               <input
                 type="text"
-                id="usuario"
                 name=""
+                id="fechaVenta"
                 className="inputCustom"
-                placeholder="Usuario"
+                placeholder="Fecha"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Correo Electronico" className="titleInput" />
+              <TextCustom text="RTN" className="titleInput" />
               <input
                 type="text"
                 name=""
-                id="correo"
+                id="RTN"
                 className="inputCustom"
-                placeholder="Correo Electronico"
+                placeholder="RTN"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom">
-                {Rol.length ? (
-                  Rol.map(pre => (
-                    <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                      {pre.Rol}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
+              <TextCustom text="CAI" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                id="CAI"
+                className="inputCustom"
+                placeholder="CAI"
+              />
             </div>
 
-            <div className="contBtnStepper">
+            <div className="contBtnSventa">
               <Button
                 variant="contained"
-                className="btnStepper"
-                // onClick={insertar}
+                className="btnSVenta"
+                startIcon={<NavigateNextIcon />}
+                onClick={handleDetalleVenta}
               >
-                <h1>{'Finish' ? 'Crear Usuario' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
             </div>
           </div>
         </div>
-        
-        <img src={AddUser} alt="" />
+
+        <img className="imgCont" src={Venta} alt="" />
       </div>
     </div>
-
   );
 };

@@ -6,7 +6,7 @@
   font-family: 'Rubik', sans-serif;
 }
 
-.error{
+.error {
   color: red;
 }
 
@@ -255,17 +255,14 @@
   box-sizing: none !important;
 }
 
-
-
-.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input{
+.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
   padding-top: 10px !important;
 }
-.infoAddUser .PanelInfo .contInput 
-.inputCustomPass:before{
+.infoAddUser .PanelInfo .contInput .inputCustomPass:before {
   border-bottom: none !important;
 }
 
-.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after{
+.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after {
   border-bottom: none !important;
 }
 
@@ -303,13 +300,22 @@
 .contBtnStepper {
   width: 100%;
   height: auto;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.contBtnStepper .btnStepper {
+.contBtnSventa {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.contBtnStepper .btnStepper,
+.contBtnSventa .btnSVenta {
   width: 70%;
   height: 40px;
   border-radius: 25px;
@@ -326,9 +332,15 @@
   align-items: center;
 }
 
-.contBtnStepper .btnStepper h1 {
+.contBtnStepper .btnStepper h1,
+.contBtnSventa .btnSVenta h1 {
   font-size: 15px;
   color: white;
+}
+
+.imgCont {
+  width: 90%;
+  border-left: 1px solid rgb(211, 211, 211);
 }
 /* Stepper */
 
