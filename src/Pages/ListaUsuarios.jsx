@@ -12,14 +12,19 @@ export const ListUsuarios = () => {
     const urlUpdateUser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario";
     const urlRoles = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles";
  
-
     const [tableData, setTableData] = useState([])
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         fetch(urlUsers).then(response => response.json()).then(data => setTableData(data))
         fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
     },[])
 
+    const filteredData = tableData.filter((row) =>
+    Object.values(row).some(
+      (value) => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+    )
+  );
 
     const columns = [
         { field: 'id_Usuario', headerName: 'ID', width: 130 },
@@ -35,9 +40,13 @@ export const ListUsuarios = () => {
     ]
 
     return (
+        <>
+         <div className='buscador'>
+                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            </div>
         <div style={{ height: 400, width: '70%' }}>
             <DataGrid getRowId={(tableData)=>tableData.id_Usuario} 
-                rows={tableData}
+                rows={filteredData}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]} 
@@ -100,6 +109,7 @@ export const ListUsuarios = () => {
                 }}  
             />
         </div>
+        </>
     )
 
 
