@@ -1,19 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+//MuiMaterial
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useRef } from 'react';
-import { TextCustom } from '../Components/TextCustom.jsx';
 import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+//Components
+import { TextCustom } from '../Components/TextCustom.jsx';
+
+//Scripts
 import { sendData } from '../scripts/sendData';
 import swal from '@sweetalert/with-react';
 
+//Images
 import AddUser from '../IMG/AddUser.jpg';
+import { useNavigate } from 'react-router';
 
 export const AddUsers = () => {
   const refContrasenia = useRef(null);
+  const navegate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -66,8 +75,17 @@ export const AddUsers = () => {
     }
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+                  <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
       <div className="titleAddUser">
         <h2>Registro de Usuario</h2>
         <h3>Complete todos los puntos para poder registrar el usuario</h3>

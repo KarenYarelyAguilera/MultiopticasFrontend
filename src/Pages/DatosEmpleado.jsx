@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
@@ -33,6 +34,7 @@ export const DatosEmpleado = (
   }
 
 ) => {
+
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
@@ -57,7 +59,7 @@ export const DatosEmpleado = (
   const [texto, setTexto] = React.useState(false);
 
 
-  const navegate = useNavigate()
+  const navegate = useNavigate();
 
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
@@ -86,8 +88,17 @@ export const DatosEmpleado = (
 
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+            <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>
         <h3>

@@ -118,6 +118,21 @@
   transition: 0.5s ease;
 }
 
+.ContUsuarios .btnBack{
+  position: absolute;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: none !important;
+}
+
+.ContUsuarios .btnBack .iconBack{
+  font-size: 50px;
+  color: white;
+}
+
 .BarraLateral.close ~ .ContUsuarios {
   left: 145px;
   width: calc(90% - 20px);
