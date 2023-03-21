@@ -35,6 +35,7 @@ export const DatosEmpleado = (
   }
 
 ) => {
+
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
@@ -70,6 +71,7 @@ export const DatosEmpleado = (
 
 
   const navegate = useNavigate()
+
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
     let nombres = document.getElementById("nombre").value
@@ -95,8 +97,17 @@ export const DatosEmpleado = (
 
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+            <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>
         <h3>

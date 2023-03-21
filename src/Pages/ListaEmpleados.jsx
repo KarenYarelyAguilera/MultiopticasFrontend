@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../scripts/sendData';
 
-
 export const ListaEmpleados = () => {
 
     const [generos, setGeneros] = useState([])
