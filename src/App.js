@@ -136,13 +136,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/usuarios/crearusuario"
             element={
-              <ProtectedRoute activo={activo}>
+              // <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral />
                   <BarraHorizontal user={usuario} />
                   <AddUsers></AddUsers>
                 </div>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           ></Route>
 
