@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import '../Styles/Botones.css';
-import { Link } from 'react-router-dom';
+
 
 
 export const ListUsuarios = () => {
@@ -29,27 +29,24 @@ export const ListUsuarios = () => {
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
     { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    { field: 'Fecha_Ultima_Conexion', headerName: 'Ultima Conexion', width: 200 },
+    { field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 130 },
     {
       field: 'borrar',
       headerName: '',
-      width: 290,
+      width: 190,
 
       renderCell: (params) => (
 
         <div>
-          
+
           <Button variant="contained" color="primary" onClick={() => handleButtonClick(params.row.id)}>Editar</Button>
           <Button variant="contained" color="primary" onClick={() => handleButtonClick(params.row.id)}>Borrar</Button>
-          <Button variant="contained" color="primary" onClick={() => handleButtonClick(params.row.id)}>Reporte</Button>
+
         </div>
 
       ),
     },
-    { field: 'Fecha_Ultima_Conexion', headerName: 'Ultima Conexion', width: 200 },
-    { field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 130 },
-
-
-    
   ]
 
 
@@ -75,7 +72,7 @@ export const ListUsuarios = () => {
 
 
   return (
-    
+
     <div style={{ height: 400, width: '66%' }}>
       <DataGrid getRowId={(tableData) => tableData.id_Usuario}
         rows={tableData}
@@ -83,11 +80,6 @@ export const ListUsuarios = () => {
         pageSize={5}
         rowsPerPageOptions={[5]}
       />
-
-<Link to="/usuarios/crearempleado">
-    <button className="Boton" >Crear Usuario</button>
-  </Link>
-
     </div>
   )
 

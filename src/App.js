@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para i
 import { useState } from 'react';
 import React from 'react';
 
+
 //Components
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
@@ -26,7 +27,9 @@ import { ListUsuarios } from './Pages/ListaUsuarios.jsx';
 import { Metodos1 } from './Pages/Metodos1.jsx';
 import { Configuracion } from './Pages/Config.jsx';
 import { ConfigRol } from './Pages/ConfRol.jsx';
-import {ListaPermisos} from './Pages/ListaPermisos.jsx';
+import { ListaPermisos } from './Pages/ListaPermisos.jsx';
+import { Recordatorio } from './Pages/Recordatorio.jsx';
+
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -45,6 +48,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
   return (
     <div>
+       
+
+
       <BrowserRouter>
         {/**este componente es el que almacena las rutas segun
          * el historial del navegador.
@@ -436,14 +442,38 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                <div className='content'>
-                  <ListaPermisos/>
+                  <div className='content'>
+                    <ListaPermisos />
 
-                </div>
+                  </div>
                 </div>
               </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="/recordatorio"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <div className='content'>
+                  <Recordatorio></Recordatorio>
+                  </div>
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+
         </Routes>
       </BrowserRouter>
     </div>
