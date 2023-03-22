@@ -1,7 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
 import swal from '@sweetalert/with-react';
 import { useState, useEffect } from 'react';
+
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+
 import { sendData } from '../scripts/sendData';
+
 
 
 export const ListUsuarios = () => {
@@ -20,11 +25,15 @@ export const ListUsuarios = () => {
         fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
     },[])
 
+    const navegate = useNavigate()
+
+
     const filteredData = tableData.filter((row) =>
     Object.values(row).some(
       (value) => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
     )
   );
+
 
     const columns = [
         { field: 'id_Usuario', headerName: 'ID', width: 130 },
@@ -45,6 +54,29 @@ export const ListUsuarios = () => {
                 <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
         <div style={{ height: 400, width: '70%' }}>
+            <h2>Lista de Usuarios</h2>
+            <br>
+            </br>
+            <Button
+                variant="contained"
+                color="success"
+                
+                onClick={()=>
+                    {
+                    navegate("/usuarios/crearusuario")
+                    }
+                }
+                >
+                    Crear Usuario
+              </Button>
+              <Button variant="contained" color="secondary">
+                Generar reporte
+            </Button>
+
+            <br>
+            </br>
+            <br></br>
+            <br></br>
             <DataGrid getRowId={(tableData)=>tableData.id_Usuario} 
                 rows={filteredData}
                 columns={columns}
