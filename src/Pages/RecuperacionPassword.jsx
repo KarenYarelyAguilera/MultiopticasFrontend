@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
 import { useEffect } from 'react';
 
@@ -12,7 +12,7 @@ import WarningIcon from '@mui/icons-material/Warning';
 import '../Styles/RecuperacionPassword.css';
 import swal from '@sweetalert/with-react';
 
-export const RecuperacionPassword =  (props) => {
+export const RecuperacionPassword = props => {
   const navegate = useNavigate();
 
   const [preguntas,setPreguntas]=useState([])
@@ -34,7 +34,7 @@ useEffect(() => {
     .then(data => setPreguntas(data));
   
 }, [] );
- 
+
 
   const validate = () => {
     const respuesta = document.getElementById("respuesta").value

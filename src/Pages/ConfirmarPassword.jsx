@@ -12,10 +12,15 @@ import { sendData } from '../scripts/sendData.js'
 import swal from '@sweetalert/with-react';
 
 export const ConfirmarPassword = props => {
+  const urlHist = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=histContra"
+  const urlUser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=user"
+
+
   const refContrasenia = useRef(null);
   const refContrasenia2 = useRef(null);
   const navegate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [Usuario, setUsuario] = useState([])
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -23,22 +28,40 @@ export const ConfirmarPassword = props => {
     event.preventDefault();
   };
 
+  const correo = {
+    correo:props.correo
+  }
+  useEffect(()=>{
+    fetch(urlUser,{
+      method: "POST",
+      body: JSON.stringify(correo),
+      headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(response => response.json()) 
+    .then(data => setUsuario(data)); 
+    
+  },[])
+
   const Guardar = () => {
     const urlAct = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=estado"
     const urlCambio = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cambiarClave"
+   
+
+    const hist={
+      id:Usuario[0].Id_Usuario,
+      contra:refContrasenia.current.value,
+      autor:Usuario[0].Usuario
+    }
 
     let data = {
       clave: refContrasenia.current.value,
       correo: props.correo
     }
 
-    let correo={
-      correo:props.correo
-    }
-
     if (refContrasenia.current.value === refContrasenia2.current.value) {
       sendData(urlAct,correo)
       sendData(urlCambio, data)
+      sendData(urlHist,hist)
       navegate('/');
     } else if (refContrasenia.current.value !== refContrasenia2.current.value) {
       swal("Las contraseñas deben coincidir", "", "error")

@@ -17,14 +17,22 @@ import {
   faRightFromBracket,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { sendData } from '../scripts/sendData';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
+const urlBitacoraUsuario ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Usuario"
+
 
 export const BarraLateral = (props) => {
   
   const data = {
     rol: props.Rol
   }
+
+  const dataB = {
+    Id:props.idUsuario
+  }
+
   const [permisos, setPermisos] = useState([])
   
   useEffect(() => {
@@ -49,7 +57,15 @@ export const BarraLateral = (props) => {
       
       return (
         <li>
-          <Link className="link" to="/usuarios" onClick={()=>props.obj(2)}>
+          <Link className="link" to="/usuarios" onClick={()=>{
+            fetch(urlBitacoraUsuario, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(dataB),
+            })
+            props.obj(2)}}>
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
             <h1>USUARIOS</h1>
           </Link>
@@ -186,14 +202,57 @@ export const BarraLateral = (props) => {
       <div className="navPrincipal">
         <nav>
           <ul>
-            <Usuario />
-            <Ventas/>
-            <Inventario />
-            <Clientes />
-            <Reportes/>
-            <Configuracion/>
-            <Recordatorios />
-            <Seguridad/>
+            <li>
+              <Link className="link" to="/inventario">
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
+                <h1>INVENTARIO</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/recuperacionPassword">
+                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
+                <h1>CLIENTES</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/ventas">
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faHandHoldingDollar}
+                />
+                <h1>VENTAS</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="">
+                <FontAwesomeIcon className="iconLi" icon={faCalendar} />
+                <h1>RECORDATORIOS</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/usuarios">
+                <FontAwesomeIcon className="iconLi" icon={faUsers} />
+                <h1>USUARIOS</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/preguntasSeguridad">
+                <FontAwesomeIcon className="iconLi" icon={faFileLines} />
+                <h1>REPORTES</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="">
+                <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
+                <h1>SEGURIDAD</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="">
+                <FontAwesomeIcon className="iconLi" icon={faGear} />
+                <h1>CONFIGURACION</h1>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
