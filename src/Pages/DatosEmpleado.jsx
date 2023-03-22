@@ -8,7 +8,6 @@ import { useState,useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
-
 import InforUsers from '../IMG/InforUsers.jpg';
 
 //Styles
@@ -21,7 +20,7 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
+
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
 const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
 

@@ -17,8 +17,17 @@ body{
 }
 .espacio{
     background-color: aliceblue;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
+
+
+.espacio2{
+    background-color: aliceblue;
+    margin-bottom: 20px;
+}
+
+
+
 
 p{
     color:red;

@@ -359,3 +359,9 @@ button{
 /* Stepper */
 
 /* AddNewUser */
+.my-button-class {
+  /* Estilos personalizados aquí */
+  color:red; 
+   
+}
+
