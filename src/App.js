@@ -111,7 +111,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           />
 
           <Route
-           index
+           path='/home'
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -239,7 +239,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <AddUsers></AddUsers>
                 </div>
-              </ProtectedRoute>
+             // </ProtectedRoute>
             }
           ></Route>
 
@@ -284,6 +284,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   </div>
                 </div>
               </ProtectedRoute>
+            }
           ></Route>
 
           <Route
