@@ -8,6 +8,7 @@ import { useState,useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
+
 import InforUsers from '../IMG/InforUsers.jpg';
 
 //Styles
@@ -59,6 +60,8 @@ export const DatosEmpleado = (
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
 
   
 
@@ -285,13 +288,13 @@ export const DatosEmpleado = (
                 error={errorTelefono}
                 type="phone"
                 name=""
-                helperText={texto}
+               helperText={texto}
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
               />
-              <p className='error'>{texto}</p>
+              {<p className='error'>{texto}</p> }
             </div>
 
             <div className="contInput">
