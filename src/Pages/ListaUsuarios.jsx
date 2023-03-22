@@ -3,12 +3,7 @@ import swal from '@sweetalert/with-react';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import '../Styles/Botones.css';
-
-
-
-import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
-
 import { sendData } from '../scripts/sendData';
 
 
@@ -39,7 +34,7 @@ export const ListUsuarios = () => {
     )
   );
 
-
+  const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 130 },
     { field: 'Usuario', headerName: 'Usuario', width: 130 },
     { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
@@ -90,17 +85,17 @@ export const ListUsuarios = () => {
   }
 
 
-  return (
+  // return (
 
-    <div style={{ height: 400, width: '66%' }}>
-      <DataGrid getRowId={(tableData) => tableData.id_Usuario}
-        rows={tableData}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
-    </div>
-  )
+  //   <div style={{ height: 400, width: '66%' }}>
+  //     <DataGrid getRowId={(tableData) => tableData.id_Usuario}
+  //       rows={tableData}
+  //       columns={columns}
+  //       pageSize={5}
+  //       rowsPerPageOptions={[5]}
+  //     />
+  //   </div>
+  // )
 
 
     return (

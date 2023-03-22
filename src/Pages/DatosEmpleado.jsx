@@ -23,7 +23,7 @@ import { TextField } from '@mui/material';
 
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
 const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
-
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 
 export const DatosEmpleado = (
   {

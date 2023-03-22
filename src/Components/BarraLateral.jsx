@@ -60,14 +60,14 @@ export const BarraLateral = (props) => {
 
           <Link className="link" to="/usuarios" onClick={() => props.obj(2)}>
           
-            fetch(urlBitacoraUsuario, {
+            {/* fetch(urlBitacoraUsuario, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(dataB),
             })
-            props.obj(2)}}>
+            props.obj(2)}}> */}
 
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
             <h1>USUARIOS</h1>
@@ -206,14 +206,14 @@ export const BarraLateral = (props) => {
         <nav>
           <ul>
 
-            <Usuario />
+            {/* <Usuario />
             <Ventas />
             <Inventario />
             <Clientes />
             <Reportes />
             <Configuracion />
             <Recordatorios />
-            <Seguridad />
+            <Seguridad /> */}
 
             <li>
               <Link className="link" to="/inventario">
