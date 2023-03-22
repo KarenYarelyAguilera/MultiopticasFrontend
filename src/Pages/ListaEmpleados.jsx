@@ -64,47 +64,42 @@ export const ListaEmpleados = () => {
     ]
 
     return (
-        <>
-            <div className='buscador'>
-                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            </div>
-            <div style={{ height: 400, width: '70%' }}>
-                <DataGrid getRowId={(tableData) => tableData.IdEmpleado}
-                    rows={filteredData}
-                    columns={columns}
-                    pageSize={5}
-                    onRowClick={(empleado) => {
 
-                        swal({
-                            buttons: {
-                                update: 'Actualizar',
-                                cancel: 'cancel',
-                            },
-                            content: (
-                                <>
-                                    <h1>Que accion desea realizar con el empleado: {empleado.row.Nombre} </h1>
-                                </>
-                            )
+        <div style={{ height: 400, width: '70%' }}>
+            <h2>Lista de Empleados</h2>
+            <DataGrid getRowId={(tableData) => tableData.IdEmpleado}
+                rows={tableData}
+                columns={columns}
+                pageSize={5}
+                onRowClick={(empleado) => {
 
-                        }).then(op => {
-                            switch (op) {
-                                case 'update':
-                                    swal(<form>
-                                        <label htmlFor="">Nombre: <input type="text" id='nombre' value={empleado.row.Nombre} /></label><br />
-                                        <label htmlFor="">Apellido: <input type="text" id='apellido' value={empleado.row.apellido} /></label><br />
-                                        <label htmlFor="">Telefono: <input type="text" id='telefono' value={empleado.row.Telefono} /></label><br />
-                                        <label htmlFor="">Numero de identidad: <input type="text" id='identidad' value={empleado.row.numeroIdentidad} /></label><br />
+                    swal({
+                        buttons: {
+                            update: 'Actualizar',
+                            delete: 'Eliminar',
+                            cancel: 'cancel',
+                        },
+                        content: (
+                            <>
+                                <h1>Que accion desea realizar con el empleado: {empleado.row.Nombre} </h1>
+                            </>
+                        )
 
-                                        <select id="sucursal" className="selectCustom">
-                                            {sucursales.length ? (
-                                                sucursales.map(pre => (
-                                                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                                                        {pre.departamento}
-                                                    </option>
-                                                ))
-                                            ) : (
-                                                <option value="No existe informacion">
-                                                    No existe informacion
+                    }).then(op => {
+                        switch (op) {
+                            case 'update':
+                                swal(<form>
+                                    <label htmlFor="">Nombre: <input type="text" id='nombre' value={empleado.row.Nombre} /></label><br />
+                                    <label htmlFor="">Apellido: <input type="text" id='apellido' value={empleado.row.apellido}  /></label><br />
+                                    <label htmlFor="">Telefono: <input type="text" id='telefono' value={empleado.row.Telefono} /></label><br />
+                                    <label htmlFor="">Numero de identidad: <input type="text" id='identidad' value={empleado.row.numeroIdentidad} /></label><br />
+                                  
+                                    <select id="sucursal" className="selectCustom">
+                                        {sucursales.length ? (
+                                            sucursales.map(pre => (
+                                                <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                                                    {pre.departamento}
+
                                                 </option>
                                             )}
                                         </select> <br />

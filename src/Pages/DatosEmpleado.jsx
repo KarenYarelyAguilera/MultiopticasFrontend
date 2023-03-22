@@ -6,6 +6,7 @@ import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 
+
 import InforUsers from '../IMG/InforUsers.jpg';
 
 //Styles
@@ -20,6 +21,7 @@ import { TextField } from '@mui/material';
 
 const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
+const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
 
 
 export const DatosEmpleado = (
@@ -57,8 +59,7 @@ export const DatosEmpleado = (
   const [aviso, setAviso] = React.useState(false);
 
 
-  const [errorTelefono, setErrorTelefono] = React.useState(false);
-  const [texto, setTexto] = React.useState(false);
+  
 
   const [Telefono, setTelefono] = useState("");
 
@@ -90,9 +91,27 @@ export const DatosEmpleado = (
     }
     if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then((result) => {
+
+        swal({
+          title: "¿Desea crearle un usuario al empleado agregado?",
+          icon:'question',
+          buttons: true,
+          dangerMode: true,
+          buttons: ['Cancelar', 'Aceptar'],
+        }).then((result) => {
+          if(result)
+          navegate("/usuarios/crearusuario")
+          else{
+            navegate("/empleados/lista")
+          }
+
+        }  
+        );
+
+
         navegate("/empleados/lista")
       })
-        ;
+     ;
     }
 
   };
@@ -266,7 +285,7 @@ export const DatosEmpleado = (
                 type="phone"
                 name=""
                 helperText={texto}
-                maxLength={12}
+                maxLength={8}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
@@ -319,7 +338,7 @@ export const DatosEmpleado = (
                   
                 }}
               >
-                <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
