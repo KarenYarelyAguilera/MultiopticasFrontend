@@ -4,7 +4,9 @@ import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState,useEffect } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 import InforUsers from '../IMG/InforUsers.jpg';
 
@@ -17,11 +19,10 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=insertEmployee"
-
 
 
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
+const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
 
 
 export const DatosEmpleado = (
@@ -37,6 +38,7 @@ export const DatosEmpleado = (
   }
 
 ) => {
+
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
@@ -57,12 +59,12 @@ export const DatosEmpleado = (
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
-
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
 
+  
+
   const [Telefono, setTelefono] = useState("");
- 
 
   const [Identidad, setIdentidad] = useState(0)
   const [Telefonoc, setTelefonoc] = useState(0)
@@ -73,6 +75,7 @@ export const DatosEmpleado = (
 
 
   const navegate = useNavigate()
+
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
     let nombres = document.getElementById("nombre").value
@@ -91,15 +94,42 @@ export const DatosEmpleado = (
     }
     if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then((result) => {
+
+        swal({
+          title: "¿Desea crearle un usuario al empleado agregado?",
+          icon:'question',
+          buttons: true,
+          dangerMode: true,
+          buttons: ['Cancelar', 'Aceptar'],
+        }).then((result) => {
+          if(result)
+          navegate("/usuarios/crearusuario")
+          else{
+            navegate("/empleados/lista")
+          }
+
+        }  
+        );
+
+
         navegate("/empleados/lista")
       })
-        ;
+     ;
     }
 
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+            <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>
         <h3>
@@ -257,30 +287,32 @@ export const DatosEmpleado = (
                 error={errorTelefono}
                 type="phone"
                 name=""
-                helperText={texto}
-                maxLength={12}
+               helperText={texto}
+                maxLength={8}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
               />
-              <p className='error'>{texto}</p>
+              {<p className='error'>{texto}</p> }
             </div>
 
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
               <select name="" className="selectCustom" id="sucursal">
-                <option value={1}>1</option>
-                <option value={2}>2</option>
+              {sucursales.length ? (
+                  sucursales.map(pre => (
+                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                      {pre.departamento}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Cargo" className="titleInput" />
-              <select name="" className="selectCustom" id='cargo'>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-              </select>
-            </div>
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -309,7 +341,7 @@ export const DatosEmpleado = (
                   
                 }}
               >
-                <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

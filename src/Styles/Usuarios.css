@@ -6,7 +6,7 @@
   font-family: 'Rubik', sans-serif;
 }
 
-.error{
+.error {
   color: red;
 }
 
@@ -116,6 +116,21 @@
   grid-gap: 50px;
 
   transition: 0.5s ease;
+}
+
+.ContUsuarios .btnBack{
+  position: absolute;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: none !important;
+}
+
+.ContUsuarios .btnBack .iconBack{
+  font-size: 50px;
+  color: white;
 }
 
 .BarraLateral.close ~ .ContUsuarios {
@@ -240,17 +255,14 @@
   box-sizing: none !important;
 }
 
-
-
-.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input{
+.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
   padding-top: 10px !important;
 }
-.infoAddUser .PanelInfo .contInput 
-.inputCustomPass:before{
+.infoAddUser .PanelInfo .contInput .inputCustomPass:before {
   border-bottom: none !important;
 }
 
-.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after{
+.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after {
   border-bottom: none !important;
 }
 
@@ -288,13 +300,22 @@
 .contBtnStepper {
   width: 100%;
   height: auto;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.contBtnStepper .btnStepper {
+.contBtnSventa {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.contBtnStepper .btnStepper,
+.contBtnSventa .btnSVenta {
   width: 70%;
   height: 40px;
   border-radius: 25px;
@@ -311,10 +332,30 @@
   align-items: center;
 }
 
-.contBtnStepper .btnStepper h1 {
+.contBtnStepper .btnStepper h1,
+.contBtnSventa .btnSVenta h1 {
   font-size: 15px;
   color: white;
 }
+
+h2{
+  font-size: 55px;
+  color: #316ee6;
+  text-align: center;
+  
+}
+button{
+  margin-right: 10px;
+}
+
+
+
+
+.imgCont {
+  width: 90%;
+  border-left: 1px solid rgb(211, 211, 211);
+}
+
 /* Stepper */
 
 /* AddNewUser */
