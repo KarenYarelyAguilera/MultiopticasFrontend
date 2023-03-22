@@ -37,6 +37,7 @@ export const ListaEmpleados = () => {
 
     return (
         <div style={{ height: 400, width: '70%' }}>
+            <h2>Lista de Empleados</h2>
             <DataGrid getRowId={(tableData) => tableData.IdEmpleado}
                 rows={tableData}
                 columns={columns}

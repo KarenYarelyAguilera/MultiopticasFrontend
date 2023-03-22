@@ -315,6 +315,17 @@
   font-size: 15px;
   color: white;
 }
+h2{
+  font-size: 55px;
+  color: #316ee6;
+  text-align: center;
+  
+}
+button{
+  margin-right: 10px;
+}
+
+
 /* Stepper */
 
 /* AddNewUser */
