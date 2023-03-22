@@ -24,6 +24,7 @@ export const MenuVentas = () => {
       imagen: registro,
       vinculo: "/ventas/reportes", 
     }
+    
   ]
 
   return (

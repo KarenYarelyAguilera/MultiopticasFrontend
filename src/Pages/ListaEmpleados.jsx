@@ -2,6 +2,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../scripts/sendData';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 export const ListaEmpleados = () => {
 
@@ -19,7 +21,7 @@ export const ListaEmpleados = () => {
     const [tableData, setTableData] = useState([])
 
     useEffect(() => {
-
+        
         fetch(urlEmployees).then(response => response.json()).then(data => setTableData(data))
         fetch(urlgeneros).then(response => response.json()).then(data => setGeneros(data))
         fetch(urlsucursales).then(response => response.json()).then(data => setSucursales(data))
@@ -51,7 +53,7 @@ export const ListaEmpleados = () => {
         )
     );
 
-
+    
     const columns = [
         { field: 'IdEmpleado', headerName: 'ID', width: 130 },
         { field: 'Nombre', headerName: 'Nombre', width: 130 },
@@ -62,13 +64,24 @@ export const ListaEmpleados = () => {
         { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 }
 
     ]
+    // const handleBack = () => {
+    //     navegate('/usuarios');
+    // }
 
     return (
         <>
             <div className='buscador'>
+            {/* <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button> */}
                 <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
             <div style={{ height: 400, width: '70%' }}>
+            <h2>Lista de Empleados</h2>
+            <br>
+            </br>
                 <DataGrid getRowId={(tableData) => tableData.IdEmpleado}
                     rows={filteredData}
                     columns={columns}

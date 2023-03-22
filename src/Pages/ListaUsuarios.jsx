@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import '../Styles/Botones.css';
 import { useNavigate } from 'react-router-dom';
 import { sendData } from '../scripts/sendData';
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -97,10 +97,18 @@ export const ListUsuarios = () => {
   //   </div>
   // )
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
 
     return (
         <>
          <div className='buscador'>
+         <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
                 <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
         <div style={{ height: 400, width: '70%' }}>
