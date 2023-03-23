@@ -13,27 +13,27 @@ import { Link } from 'react-router-dom';
 export const Clientes = () => {
   const dataCards = [
     {
-      titulo: 'Nuevo cliente',
+      titulo: 'Registro de Cliente',
       imagen:
         'https://static.vecteezy.com/system/resources/previews/018/030/753/non_2x/support-business-consulting-customer-man-online-consultant-service-abstract-circle-background-flat-color-icon-free-vector.jpg',
       vinculo: '/menuClientes/nuevoCliente',
     },
     {
-      titulo: 'Lista de clientes',
+      titulo: 'Lista de Clientes',
       imagen:
         'https://static.vecteezy.com/system/resources/previews/021/272/476/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-personal-data-form-free-vector.jpg',
       vinculo: '/menuClientes/lista',
     },
     {
-      titulo: 'Registro de clientes',
+      titulo: 'Datos de Expediente',
       imagen:
-        'https://static.vecteezy.com/system/resources/previews/021/272/476/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-personal-data-form-free-vector.jpg',
+        'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg',
       vinculo: '/menuClientes/registroCliente',
     },
     {
-      titulo: 'Listas expedientes',
+      titulo: 'Listas De Expedientes',
       imagen:
-        'https://static.vecteezy.com/system/resources/previews/021/272/476/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-personal-data-form-free-vector.jpg',
+        'https://static.vecteezy.com/system/resources/previews/021/238/368/non_2x/documents-icon-design-free-vector.jpg',
       vinculo: '/menuClientes/listaExpedientes',
     },
   ];

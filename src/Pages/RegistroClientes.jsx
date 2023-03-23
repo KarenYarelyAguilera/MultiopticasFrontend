@@ -110,7 +110,7 @@ export const RegistroClientes = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro del Cliente</h2>
+        <h2>Datos de Expediente</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos del cliente
         </h3>
@@ -305,7 +305,7 @@ export const RegistroClientes = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/018/030/753/non_2x/support-business-consulting-customer-man-online-consultant-service-abstract-circle-background-flat-color-icon-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

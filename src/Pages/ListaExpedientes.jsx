@@ -103,7 +103,7 @@ export const ListaExpedientes = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{color:'black', fontSize:'40px'}}>Lista Expedientes</h2>
+      <h2 style={{color:'black', fontSize:'40px'}}>Lista de Expedientes</h2>
 
       <div
         style={{
