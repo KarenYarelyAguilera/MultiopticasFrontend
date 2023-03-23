@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../scripts/sendData';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 
 export const ListaEmpleados = () => {
@@ -10,7 +12,7 @@ export const ListaEmpleados = () => {
     const [generos, setGeneros] = useState([])
     const [sucursales, setSucursales] = useState([])
     const [searchTerm, setSearchTerm] = useState("");
-
+    const navegate = useNavigate()
 
 
     const urlEmployees = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees"
@@ -61,21 +63,56 @@ export const ListaEmpleados = () => {
         { field: 'Telefono', headerName: 'Telefono', width: 130 },
         { field: 'departamento', headerName: 'Sucursal', width: 130 },
         { field: 'genero', headerName: 'Genero', width: 130 },
-        { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 }
-
+        { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
+        {
+            field: 'borrar',
+            headerName: '',
+            width: 190,
+      
+            renderCell: (params) => (
+      
+              <div>
+      
+                <Button variant="contained" color="primary" onClick={() => handleButtonClick(params.row.id)}>Editar</Button>
+                <Button variant="contained" color="primary" onClick={() => handleButtonClick(params.row.id)}>Borrar</Button>
+      
+      
+              </div>
+      
+            ),
+          },
     ]
-    // const handleBack = () => {
-    //     navegate('/usuarios');
-    // }
+
+    function handleButtonClick(id) {
+        fetch(`/api/update/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ /* los nuevos datos que se van a actualizar */ })
+        })
+          .then(response => response.json())
+          .then(data => {
+            // Aquí puedes actualizar los datos en el estado de tu aplicación
+            // para reflejar los cambios en la interfaz de usuario.
+          })
+          .catch(error => {
+            // Manejar cualquier error que pueda ocurrir durante la actualización
+          });
+      }
+     const handleBack = () => {
+         navegate('/usuarios');
+     }
 
     return (
-        <>
-            <div className='buscador'>
-            {/* <Button
+        <div className='ContUsuarios'>
+        <Button
       className='btnBack'
       onClick={handleBack}>
     	  <ArrowBackIcon className='iconBack'/>
-      </Button> */}
+      </Button> 
+            <div className='buscador'>
+            
                 <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
             <div style={{ height: 400, width: '70%' }}>
@@ -90,7 +127,7 @@ export const ListaEmpleados = () => {
 
                         swal({
                             buttons: {
-                                update: 'Actualizar',
+                                update: 'Editar',
                                 cancel: 'cancel',
                             },
                             content: (
@@ -146,8 +183,9 @@ export const ListaEmpleados = () => {
                                         }
 
                                         if (sendData(urlUpdateEmployees, data)) {
-                                            swal(<h1>Empleado Actualizado Correctamente</h1>)
+                                            swal(<h1>Empleado Editado Correctamente</h1>)
                                         }
+                                        
 
                                     })
                                     break;
@@ -159,7 +197,7 @@ export const ListaEmpleados = () => {
                     rowsPerPageOptions={[5]}
                 />
             </div>
-        </>
+        </div>
     )
 
 
