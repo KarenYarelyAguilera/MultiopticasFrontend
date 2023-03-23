@@ -218,7 +218,7 @@ export const AddClientes = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Direccion" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);

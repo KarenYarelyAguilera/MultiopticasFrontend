@@ -95,7 +95,7 @@ export const BarraLateral = (props) => {
     if (consulta[2] === "s" && pantallas[2] === 4) {
       return (
         <li>
-          <Link className="link" to="/recuperacionPassword">
+          <Link className="link" to="/menuClientes">
             <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
             <h1>CLIENTES</h1>
           </Link>
@@ -214,59 +214,14 @@ export const BarraLateral = (props) => {
             <Configuracion />
             <Recordatorios />
             <Seguridad /> */}
-
-            <li>
-              <Link className="link" to="/inventario">
-                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
-                <h1>INVENTARIO</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="/menuClientes">
-                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
-                <h1>CLIENTES</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="/ventas">
-                <FontAwesomeIcon
-                  className="iconLi"
-                  icon={faHandHoldingDollar}
-                />
-                <h1>VENTAS</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="">
-                <FontAwesomeIcon className="iconLi" icon={faCalendar} />
-                <h1>RECORDATORIOS</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="/usuarios">
-                <FontAwesomeIcon className="iconLi" icon={faUsers} />
-                <h1>USUARIOS</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="/preguntasSeguridad">
-                <FontAwesomeIcon className="iconLi" icon={faFileLines} />
-                <h1>REPORTES</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="">
-                <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
-                <h1>SEGURIDAD</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="">
-                <FontAwesomeIcon className="iconLi" icon={faGear} />
-                <h1>CONFIGURACION</h1>
-              </Link>
-            </li>
-
+            <Inventario></Inventario>
+            <Clientes></Clientes>
+            <Ventas></Ventas>
+           <Recordatorios></Recordatorios>
+            <Usuario></Usuario>
+           <Reportes></Reportes>
+            <Seguridad></Seguridad>
+            <Configuracion></Configuracion>
           </ul>
         </nav>
       </div>
