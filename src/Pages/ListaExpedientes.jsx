@@ -17,7 +17,7 @@ import { Button } from '@mui/material';
 
 import '../Styles/Usuarios.css';
 
-export const ListUsuarios = () => {
+export const ListaExpedientes = () => {
     const[roles,setRoles] = useState([])
 
     const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
@@ -95,7 +95,7 @@ export const ListUsuarios = () => {
       });
   }
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/menuClientes');
   };
 
   return (
@@ -103,7 +103,7 @@ export const ListUsuarios = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{color:'black', fontSize:'40px'}}>Lista de Usuario</h2>
+      <h2 style={{color:'black', fontSize:'40px'}}>Lista de Expedientes</h2>
 
       <div
         style={{
@@ -132,7 +132,7 @@ export const ListUsuarios = () => {
             }}
             >
               <AddIcon style={{marginRight:'5px'}}/>
-            Crear Usuario
+            Crear Cliente
           </Button>
           <Button className='btnReport'>
           <PictureAsPdfIcon style={{marginRight:'5px'}}/>
@@ -154,7 +154,7 @@ export const ListUsuarios = () => {
                         },
                         content: (
                             <>
-                                <h1>Que accion desea realizar con el usuario: {usuario.row.Usuario} </h1>
+                                <h1>Que accion desea realizar con el cliente: {usuario.row.Usuario} </h1>
                             </>
                         )
 

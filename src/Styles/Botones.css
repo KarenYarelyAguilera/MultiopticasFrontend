@@ -1,0 +1,23 @@
+.Boton {
+   
+    background-color: #CF6216;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+
+    background: linear-gradient(
+        90deg,
+        #CF6216 0%,
+        #CF6216 100%
+      );
+   
+
+      position: absolute;
+      top: 30;
+      left: 700;
+    
+      
+  }
+  

@@ -141,14 +141,14 @@ export const PreguntasSeguridad = (props) => {
   //   };
 
   return (
-    <div className="contRecuperaPassword">
-      <div className="titleRecuPassword">
-        <h2>Preguntas de Seguridad</h2>
-        <h3>
-          Estas preguntas nos ayudarán a tener una mejor seguridad al iniciar
-          sesion.
-        </h3>
-      </div>
+  <div className="contRecuperaPassword">
+  <div className="titleRecuPassword">
+  <h2>Preguntas de Seguridad</h2>
+  <h3>
+  Estas preguntas nos ayudarán a tener una mejor seguridad al iniciar
+  sesion.
+  </h3>
+   </div>
 
       <div className="sectionRecuPassword">
         <br />

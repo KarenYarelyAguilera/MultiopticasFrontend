@@ -212,6 +212,55 @@ export const AddUsers = () => {
             </div>
 
             <div className="contInput">
+              <TextCustom text="Confirme Contraseña" className="titleInput" />
+              <FilledInput
+
+               onKeyDown= {(e) =>{
+                setContra(e.target.value);
+                if (contra===""){
+                  setErrorContra(true);
+                  setMsj("Los campos no deben estar vacios");
+                }
+                else{
+                  setErrorContra(false)
+                  var regularExpression  = /^[a-zA-Z0-9!@#$%^&*]$/;
+                  if (!regularExpression.test(contra)){
+                    setErrorContra(true)
+                    setMsj("");
+                     }
+                     else{
+                  setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
+                  setErrorContra(false);
+                }
+              }
+              }}
+
+                id="filled-adornment-password"
+                placeholder='Contraseña'
+                className="inputCustomPass"
+                type={showPassword ? 'text' : 'password'}
+                inputProps={{maxLength:20}}
+                inputRef={refContrasenia}
+                endAdornment={
+                 
+                  <InputAdornment position="end">
+                    <IconButton
+                    maxLength={30}
+              
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              ></FilledInput>
+              <p className='error'>{msj}</p>
+            </div>
+
+            <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
                 onKeyDown={(e) =>{
