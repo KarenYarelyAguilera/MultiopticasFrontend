@@ -129,7 +129,7 @@ export const NuevaVenta = () => {
               <Button
                 variant="contained"
                 className="btnSVenta"
-                startIcon={<NavigateNextIcon />}
+                // startIcon={<NavigateNextIcon />}
                 onClick={handleDetalleVenta}
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
@@ -138,7 +138,7 @@ export const NuevaVenta = () => {
           </div>
         </div>
 
-        <img className="imgCont" src={Venta} alt="" />
+        {/* <img className="imgCont" src={Venta} alt="" /> */}
       </div>
     </div>
   );
