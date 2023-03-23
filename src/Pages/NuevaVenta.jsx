@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from "react-router-dom";
+//import { NavigateNextIcon } from '@mui/icons-material';
 
 //Images
 import venta from "../IMG/mano.png";
@@ -129,7 +130,7 @@ export const NuevaVenta = () => {
               <Button
                 variant="contained"
                 className="btnSVenta"
-                // startIcon={<NavigateNextIcon />}
+
                 onClick={handleDetalleVenta}
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
@@ -137,6 +138,7 @@ export const NuevaVenta = () => {
             </div>
           </div>
         </div>
+
 
         {/* <img className="imgCont" src={Venta} alt="" /> */}
       </div>

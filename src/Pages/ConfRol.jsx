@@ -3,10 +3,16 @@ import { TextCustom } from '../Components/TextCustom';
 import { Button, Switch, styled } from '@mui/material';
 import { parse } from '@fortawesome/fontawesome-svg-core';
 import { sendData } from '../scripts/sendData';
+import swal from '@sweetalert/with-react';
 
-export const ConfigRol = () => {
+export const ConfigRol = (props) => {
   const urlRoles =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles';
+
+  const urlURol =
+    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
+    const urlNRol =
+    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
 
   const urlupConsulta =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosconsultar';
@@ -28,6 +34,7 @@ export const ConfigRol = () => {
   const [seguridad, setSeguridad] = useState(false);
   const [configuracion, setConfig] = useState(false);
   const [gRol, setGRol] = useState(1);
+  const [cont,setCont]=useState(0);
 
   const data = {
     idrol: gRol,
@@ -41,6 +48,131 @@ export const ConfigRol = () => {
     config: configuracion ? 's' : 'n',
   };
 
+  const handleEditar = () => {
+    swal(<h1>¿Desea editar este rol?</h1>, {
+      buttons: {
+        defeat: "si",
+        cancel: "cancelar"
+      }
+    }).then(resp => {
+      switch (resp) {
+        case "defeat":
+          if (document.getElementById("rol").value==="1") {
+            swal("Este Rol no se puede actualizar.","","error")
+          }else{
+          swal(
+            <div>
+              <h1>Datos de Rol:</h1>
+              <div>
+                <div className="contInput">
+                  <TextCustom
+                    text="Rol: "
+                    className="titleInput"
+                  />
+                </div>
+                <div className="contSelect">
+                  <input type="text" id='Rol' />
+                </div>
+
+                <div className="contInput">
+                  <TextCustom
+                    text="Descripcion: "
+                    className="titleInput"
+                  />
+                </div>
+                <div className="contSelect">
+                  <textarea id='desc' />
+                </div>
+              </div>
+            </div>
+          ).then(() => {
+            var today = new Date()
+            let autor = document.getElementById("rol").value
+
+            var fecha = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+            let data = {
+              rol: document.getElementById("Rol").value,
+              descripcion: document.getElementById("desc").value,
+              id: autor,
+              autor: props.usuario,
+              fecha: fecha
+            }
+           
+              if (sendData(urlURol,data)) {
+                swal("Rol actualizado exitosamente","","success")
+                setCont(cont+1)
+              }
+              
+            
+          })}
+          break;
+
+      }
+
+    })
+  }
+
+  const handleNuevoRol = ()=>{
+    swal(<h1>¿Crear un nuevo rol?</h1>, {
+      buttons: {
+        defeat: "si",
+        cancel: "cancelar"
+      }
+    }).then(resp => {
+      switch (resp) {
+        case "defeat":
+          swal(
+            <div>
+              <h1>Datos de Rol:</h1>
+              <div>
+                <div className="contInput">
+                  <TextCustom
+                    text="Rol: "
+                    className="titleInput"
+                  />
+                </div>
+                <div className="contSelect">
+                  <input type="text" id='Rol' />
+                </div>
+
+                <div className="contInput">
+                  <TextCustom
+                    text="Descripcion: "
+                    className="titleInput"
+                  />
+                </div>
+                <div className="contSelect">
+                  <textarea id='desc' />
+                </div>
+              </div>
+            </div>
+          ).then(() => {
+            var today = new Date()
+            let autor = document.getElementById("rol").value
+
+            var fecha = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+            let data = {
+              rol: document.getElementById("Rol").value,
+              descripcion: document.getElementById("desc").value,
+              id: autor,
+              autor: props.usuario,
+              fecha: fecha
+            }
+           
+              if (sendData(urlNRol,data)) {
+                swal("Rol creado exitosamente","","success")
+                setCont(cont+1)
+              }
+              
+            
+          })
+          break;
+
+      }
+
+    })
+  }
+
   useEffect(() => {
     fetch(urlRoles)
       .then(response => response.json())
@@ -53,7 +185,7 @@ export const ConfigRol = () => {
     setReportes(false);
     setVentas(false);
     setSeguridad(false);
-  }, [accion]);
+  }, [accion,cont]);
   const handleUsuarioChange = () => {
     setUsuario(!usuario);
   };
@@ -222,12 +354,14 @@ export const ConfigRol = () => {
 
             <div className="contButton">
               <Button
-                onClick={() =>
+                onClick={() => {
                   setGRol(parseInt(document.getElementById('rol').value))
-                }
+                  handleEditar()
+                }}
               >
                 Editar
               </Button>
+              <Button style={{color:"green"}} onClick={handleNuevoRol}>Nuevo</Button>
             </div>
 
             <div className="contSelect">
