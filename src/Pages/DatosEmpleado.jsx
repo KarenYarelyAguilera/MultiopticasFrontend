@@ -128,7 +128,7 @@ export const DatosEmpleado = (
             <Button
       className='btnBack'
       onClick={handleBack}>
-    	  <ArrowBackIcon className='iconBack'/>
+    	  
       </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>

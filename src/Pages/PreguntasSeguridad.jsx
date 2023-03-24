@@ -61,8 +61,7 @@ export const PreguntasSeguridad = (props) => {
      if (validacionVacio(Parametro)) {
          if (await sendData(urlIPreguntas, data) && await sendData(urlIResp, dataR)) {
           await sendData(urlUpduser,datausrPL)
-           alert("Pregunta guardada con exito")
-           navegate('/preguntasSeguridad/confirmarPassword');
+           
        }else{
          swal("Ocurrio un error", "", "error")
        }
@@ -71,6 +70,8 @@ export const PreguntasSeguridad = (props) => {
      }
 
    }
+   alert("Pregunta guardada con exito")
+           navegate('/preguntasSeguridad/confirmarPassword');
   }
 
   const validacionVacio = parametro=>{

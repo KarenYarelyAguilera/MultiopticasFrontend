@@ -114,8 +114,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           />
 
           <Route
+
             path="/home"
-            element={
+       element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
@@ -342,9 +343,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaClientes />
                 </div>
+
               </ProtectedRoute>
             }
           ></Route>
+
 
 <Route
             path="/menuClientes/listaExpedientes"
@@ -519,7 +522,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
 
-                  <ConfigRol />
+                  <ConfigRol usuario={usuario} />
                 </div>
               </ProtectedRoute>
             }
