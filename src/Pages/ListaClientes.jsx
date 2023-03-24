@@ -20,7 +20,7 @@ import '../Styles/Usuarios.css';
 export const ListaClientes = () => {
     const[roles,setRoles] = useState([])
 
-    const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
+    const urlClientes = "http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes"
     const urlUpdateUser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario";
     const urlRoles = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles";
  
@@ -28,7 +28,7 @@ export const ListaClientes = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        fetch(urlUsers).then(response => response.json()).then(data => setTableData(data))
+        fetch(urlClientes).then(response => response.json()).then(data => setTableData(data))
         fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
     },[])
 
