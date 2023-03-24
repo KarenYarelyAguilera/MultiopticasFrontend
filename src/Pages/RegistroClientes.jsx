@@ -119,7 +119,7 @@ export const RegistroClientes = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="ID Expediente" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -145,14 +145,14 @@ export const RegistroClientes = ({
                     }
                   }
                 }}
-                placeholder="Identidad"
+                placeholder="Expediente"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Nombre" />
+              <TextCustom text="ID De Detalle de Expediente" />
               <input
                 onKeyDown={e => {
                   setNombre(e.target.value);
@@ -177,7 +177,7 @@ export const RegistroClientes = ({
                 name=""
                 className="inputCustom"
                 maxLength={50}
-                placeholder="Nombre"
+                placeholder="ID Expediente"
                 variant="standard"
                 id="nombre"
                 label="Usuario"
@@ -186,7 +186,7 @@ export const RegistroClientes = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Apellido" className="titleInput" />
+              <TextCustom text="Diagnostico" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setApellido(e.target.value);
@@ -211,14 +211,14 @@ export const RegistroClientes = ({
                 helperText={aviso}
                 maxLength={50}
                 className="inputCustomText"
-                placeholder="Apellido"
+                placeholder="Diagnostico"
                 id="apellido"
               />
               <p className="error">{aviso}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Historial Clinico" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
@@ -243,7 +243,7 @@ export const RegistroClientes = ({
                 helperText={texto}
                 maxLength={8}
                 className="inputCustomText"
-                placeholder="Telefono"
+                placeholder="Historial Clinico"
                 id="phone"
               />
               {<p className="error">{texto}</p>}
@@ -251,12 +251,13 @@ export const RegistroClientes = ({
 
             
             <div className="contInput">
-              <TextCustom text="Genero" className="titleInput" />
+              <TextCustom text="Estado" className="titleInput" />
               <select name="" className="selectCustom" id="genero">
-                <option value={1}>Masculino</option>
-                <option value={2}>Femenino</option>
+                <option value={1}>Actual</option>
+                <option value={2}>Historico</option>
               </select>
             </div>
+            
 
             <div className="contBtnStepper">
               <Button
