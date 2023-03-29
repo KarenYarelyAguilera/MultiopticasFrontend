@@ -16,12 +16,9 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
-const urlSucursales =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
-const urlUsers =
-  'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-const urlIEmpleado =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee';
+
+const urlCliente =
+  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
 export const AddClientes = ({
   msgError = '',
@@ -56,11 +53,6 @@ export const AddClientes = ({
   const [Identidad, setIdentidad] = useState(0);
   const [Telefonoc, setTelefonoc] = useState(0);
 
-  useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
-  }, []);
 
   const navegate = useNavigate();
 
@@ -70,32 +62,23 @@ export const AddClientes = ({
     let apellidos = document.getElementById('apellido').value;
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
-    let sucursal = parseInt(document.getElementById('sucursal').value);
+    let direccion = parseInt(document.getElementById('direccion').value);
+    let correo = document.getElementById('correo').value
+    let fechaN = document.getElementById('Fnacimiento').value
 
     let data = {
-      nombre: nombres.toUpperCase(),
-      apellido: apellidos.toUpperCase(),
-      phone: telefono,
-      genero: genero,
-      sucursal: sucursal,
-      identidad: identidad,
+      idCliente:identidad,
+      nombre:nombres,
+      apellido:apellidos,
+      idGenero:genero,
+      fechaNacimiento:fechaN,
+      direccion:direccion,
+      telefonoCliente:telefono,
+      correoElectronico:correo
     };
-    if (sendData(urlIEmpleado, data)) {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        swal({
-          title: '¿Desea crearle un usuario al empleado agregado?',
-          icon: 'question',
-          buttons: true,
-          dangerMode: true,
-          buttons: ['Cancelar', 'Aceptar'],
-        }).then(result => {
-          if (result) navegate('/usuarios/crearusuario');
-          else {
-            navegate('/empleados/lista');
-          }
-        });
-
-        navegate('/empleados/lista');
+    if (sendData(urlCliente, data)) {
+      swal('Cliente agregado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/listaClientes');
       });
     }
   };
@@ -218,7 +201,7 @@ export const AddClientes = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Direccion" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
@@ -243,8 +226,8 @@ export const AddClientes = ({
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
-                id="phone"
+                placeholder="Direccion"
+                id="direccion"
               />
               {<p className="error">{texto}</p>}
             </div>
@@ -282,7 +265,7 @@ export const AddClientes = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Correo Electronico" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
@@ -307,14 +290,14 @@ export const AddClientes = ({
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
-                id="phone"
+                placeholder="Correo Electronico"
+                id="correo"
               />
               {<p className="error">{texto}</p>}
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
@@ -339,8 +322,8 @@ export const AddClientes = ({
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
-                id="phone"
+                placeholder="Fecha de Nacimiento"
+                id="fechaN"
               />
               {<p className="error">{texto}</p>}
             </div>

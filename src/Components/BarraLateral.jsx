@@ -95,7 +95,7 @@ export const BarraLateral = (props) => {
     if (consulta[2] === "s" && pantallas[2] === 4) {
       return (
         <li>
-          <Link className="link" to="/recuperacionPassword">
+          <Link className="link" to="/menuClientes">
             <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
             <h1>CLIENTES</h1>
           </Link>
@@ -157,7 +157,7 @@ export const BarraLateral = (props) => {
     if (consulta[7] === "s" && pantallas[7] === 9) {
       return (
         <li>
-          <Link className="link" to="">
+          <Link className="link" to="/ventas">
             <FontAwesomeIcon
               className="iconLi"
               icon={faHandHoldingDollar}
@@ -206,11 +206,19 @@ export const BarraLateral = (props) => {
         <nav>
           <ul>
 
-            <Usuario></Usuario>
-            <Ventas></Ventas>
-            <Clientes></Clientes>
+            {/* <Usuario />
+            <Ventas />
+            <Inventario/>
+            <Clientes />
+            <Reportes />
+            <Configuracion />
+            <Recordatorios />
+            <Seguridad /> */}
             <Inventario></Inventario>
+           <Clientes></Clientes>
+            <Ventas></Ventas>
             <Recordatorios></Recordatorios>
+            <Usuario></Usuario>
             <Reportes></Reportes>
             <Seguridad></Seguridad>
             <Configuracion></Configuracion>
