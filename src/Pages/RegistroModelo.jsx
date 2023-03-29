@@ -16,14 +16,11 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
-const urlSucursales =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
-const urlUsers =
-  'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-const urlIEmpleado =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee';
 
-export const RegistroClientes = ({
+const urlCliente =
+  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+
+export const RegistroModelo = ({
   msgError = '',
   success = false,
   warning = false,
@@ -56,11 +53,6 @@ export const RegistroClientes = ({
   const [Identidad, setIdentidad] = useState(0);
   const [Telefonoc, setTelefonoc] = useState(0);
 
-  useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
-  }, []);
 
   const navegate = useNavigate();
 
@@ -70,38 +62,29 @@ export const RegistroClientes = ({
     let apellidos = document.getElementById('apellido').value;
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
-    let sucursal = parseInt(document.getElementById('sucursal').value);
+    let direccion = parseInt(document.getElementById('direccion').value);
+    let correo = document.getElementById('correo').value
+    let fechaN = document.getElementById('Fnacimiento').value
 
     let data = {
-      nombre: nombres.toUpperCase(),
-      apellido: apellidos.toUpperCase(),
-      phone: telefono,
-      genero: genero,
-      sucursal: sucursal,
-      identidad: identidad,
+      idCliente:identidad,
+      nombre:nombres,
+      apellido:apellidos,
+      idGenero:genero,
+      fechaNacimiento:fechaN,
+      direccion:direccion,
+      telefonoCliente:telefono,
+      correoElectronico:correo
     };
-    if (sendData(urlIEmpleado, data)) {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        swal({
-          title: '¿Desea crearle un usuario al empleado agregado?',
-          icon: 'question',
-          buttons: true,
-          dangerMode: true,
-          buttons: ['Cancelar', 'Aceptar'],
-        }).then(result => {
-          if (result) navegate('/usuarios/crearusuario');
-          else {
-            navegate('/empleados/lista');
-          }
-        });
-
-        navegate('/empleados/lista');
+    if (sendData(urlCliente, data)) {
+      swal('Cliente agregado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/listaClientes');
       });
     }
   };
 
   const handleBack = () => {
-    navegate('/menuClientes');
+    navegate('/inventario');
   };
 
   return (
@@ -110,16 +93,16 @@ export const RegistroClientes = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos de Expediente</h2>
+        <h2>Registro de Modelo</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del cliente
+          Complete todos los puntos para poder registrar los datos del modelo.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Expediente" className="titleInput" />
+              <TextCustom text="ID Modelo" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -145,44 +128,18 @@ export const RegistroClientes = ({
                     }
                   }
                 }}
-                placeholder="Expediente"
+                placeholder="ID Modelo"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="ID De Detalle de Expediente" />
-              <input
-                onKeyDown={e => {
-                  setNombre(e.target.value);
-                  if (Nombre == '') {
-                    setErrorNombre(true);
-                    setMsj('Los campos no deben estar vacios');
-                  } else {
-                    setErrorNombre(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Nombre)) {
-                      setErrorNombre(true);
-                      setMsj('Solo debe de ingresar letras');
-                    } else {
-                      setErrorNombre(false);
-                      setMsj('');
-                    }
-                  }
-                }}
-                error={errorNombre}
-                type="text"
-                helperText={Msj}
-                name=""
-                className="inputCustom"
-                maxLength={50}
-                placeholder="ID Expediente"
-                variant="standard"
-                id="nombre"
-                label="Usuario"
-              />
-              <p className="error">{Msj}</p>
+              <TextCustom text="Marca" className="titleInput" />
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>No se sabe</option>
+                <option value={2}>No se sabe</option>
+              </select>
             </div>
 
             <div className="contInput">
@@ -216,48 +173,6 @@ export const RegistroClientes = ({
               />
               <p className="error">{aviso}</p>
             </div>
-
-            <div className="contInput">
-              <TextCustom text="Historial Clinico" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
-                type="phone"
-                name=""
-                helperText={texto}
-                maxLength={8}
-                className="inputCustomText"
-                placeholder="Historial Clinico"
-                id="phone"
-              />
-              {<p className="error">{texto}</p>}
-            </div>
-
-            
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Actual</option>
-                <option value={2}>Historico</option>
-              </select>
-            </div>
-            
 
             <div className="contBtnStepper">
               <Button
@@ -306,7 +221,7 @@ export const RegistroClientes = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/001/890/486/non_2x/summer-sunglasses-accessory-flat-style-icon-free-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
