@@ -18,19 +18,16 @@ import { Button } from '@mui/material';
 import '../Styles/Usuarios.css';
 
 export const ListaClientes = () => {
-  const[roles,setRoles] = useState([])
 
-  const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
-  const urlUpdateUser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario";
-  const urlRoles = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles";
+  const urlClientes = "http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes"
 
   const [tableData, setTableData] = useState([])
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-      fetch(urlUsers).then(response => response.json()).then(data => setTableData(data))
-      fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
-  },[])
+      fetch(urlClientes).then(response => response.json()).then(data => setTableData(data))
+},[])
+
 
   const navegate = useNavigate()
 
@@ -42,15 +39,14 @@ export const ListaClientes = () => {
 );
 
 const columns = [
-  { field: 'id_Usuario', headerName: 'ID', width: 130 },
-  { field: 'Usuario', headerName: 'Usuario', width: 130 },
-  { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-  { field: 'rol', headerName: 'Rol', width: 130 },
-  { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-  { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-  { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-  { field: 'Fecha_Ultima_Conexion', headerName: 'Ultima Conexion', width: 200 },
-  { field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 130 },
+  { field: 'idCliente', headerName: 'ID', width: 130 },
+  { field: 'nombre', headerName: 'Nombre', width: 130 },
+  { field: 'apellido', headerName: 'Apellido', width: 130 },
+  { field: 'genero', headerName: 'Genero', width: 130 },
+  { field: 'fechaNacimiento', headerName: 'Fecha de nacimiento', width: 130 },
+  { field: 'direccion', headerName: 'direccion', width: 130 },
+  { field: 'Telefono', headerName: 'Telefono', width: 200 },
+  { field: 'Email', headerName: 'Correo electronico', width: 130 },
   {
     field: 'borrar',
     headerName: 'Acciones',
@@ -103,7 +99,7 @@ return (
     <Button className="btnBack" onClick={handleBack}>
       <ArrowBackIcon className="iconBack" />
     </Button>
-    <h2 style={{color:'black', fontSize:'40px'}}>Lista de Expedientes</h2>
+    <h2 style={{color:'black', fontSize:'40px'}}>Lista de Clientes</h2>
 
     <div
       style={{
@@ -140,68 +136,12 @@ return (
         </Button>
         </div>
       </div>
-      <DataGrid getRowId={(tableData)=>tableData.id_Usuario} 
+      <DataGrid getRowId={(tableData)=>tableData.idCliente} 
               rows={filteredData}
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]} 
-              onRowClick={(usuario) => {
-
-                  swal({
-                      buttons: {
-                          update: 'Actualizar',
-                          cancel: 'Cancel',
-                      },
-                      content: (
-                          <>
-                              <h1>Que accion desea realizar con el cliente: {usuario.row.Usuario} </h1>
-                          </>
-                      )
-
-                  }).then(op => {
-                      switch (op) {
-                          case 'update':
-                              swal(<forn>
-                                  <label htmlFor="">Usuario: <input type="text" id='nombre' value={usuario.row.Usuario} /></label><br />
-                                  <label htmlFor="">Nombre de Usuario: <input type="text" id='nombreUsuario' value={usuario.row.Nombre_Usuario} /></label><br />
-                                  <label htmlFor="">Estado: <input type="text" id='EstadoUsuario' value={usuario.row.Estado_Usuario} /></label><br />
-                                  <label htmlFor="">Contraseña: <input type="text" id='contrasenia' /></label><br />
-                                  <select id="rol" className="selectCustom"> 
-                                      {roles.length ? (
-                                          roles.map(pre => (
-                                              <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                                  {pre.Rol}
-                                              </option>
-                                          ))
-                                      ) : (
-                                          <option value="No existe informacion">
-                                              No existe informacion
-                                          </option>
-                                      )}
-                                  </select>
-                                  <label htmlFor="">Email: <input type="text" id='Email' value={usuario.row.Correo_Electronico} /></label><br />
-                              </forn>).then(()=>{
-                                  let data = {
-                                      Usuario:document.getElementById("nombre").value,
-                                      Nombre_Usuario: document.getElementById("nombreUsuario").value,
-                                      Estado_Usuario: document.getElementById("EstadoUsuario").value,
-                                      Contrasenia: document.getElementById("contrasenia").value,
-                                      Id_Rol:document.getElementById("rol").value,
-                                      Correo_Electronico:document.getElementById("Email").value,
-                                      Id_usuario:usuario.row.id_Usuario
-                                  }
-
-                                  if (sendData(urlUpdateUser,data)) {
-                                      swal(<h1>Usuario Actualizado Correctamente</h1>)
-                                  }
-                                  
-                              })
-                              break;
-                          default:
-                              break;
-                      }
-                  })
-              }}  
+              
           />
     </div>
   </div>

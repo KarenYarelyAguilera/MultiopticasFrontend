@@ -64,7 +64,9 @@ export const AddClientes = ({
     let genero = parseInt(document.getElementById('genero').value);
     let direccion = parseInt(document.getElementById('direccion').value);
     let correo = document.getElementById('correo').value
-    let fechaN = document.getElementById('Fnacimiento').value
+    let fechaN = document.getElementById('fechaN').value
+
+    
 
     let data = {
       idCliente:identidad,
@@ -76,11 +78,13 @@ export const AddClientes = ({
       telefonoCliente:telefono,
       correoElectronico:correo
     };
+
     if (sendData(urlCliente, data)) {
       swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuClientes/listaClientes');
       });
     }
+
   };
 
   const handleBack = () => {
@@ -317,7 +321,7 @@ export const AddClientes = ({
                   }
                 }}
                 error={errorTelefono}
-                type="phone"
+                type="date"
                 name=""
                 helperText={texto}
                 maxLength={8}
@@ -339,39 +343,8 @@ export const AddClientes = ({
             <div className="contBtnStepper">
               <Button
                 variant="contained"
-                className="btnStepper"
-                onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (
-                    typeof (
-                      parseInt(document.getElementById('Nidentidad').value) !==
-                      'number'
-                    )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
-                  } else {
-                    handleNext();
-                  }
-                }}
-              >
+                onClick={handleNext}
+                className="btnStepper">
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
