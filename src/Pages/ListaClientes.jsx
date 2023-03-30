@@ -27,7 +27,8 @@ export const ListaClientes = () => {
   const urlRoles =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
 
-  const urlClientes = "http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes"
+  const urlClientes =
+    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,56 +41,15 @@ export const ListaClientes = () => {
       .then(response => response.json())
       .then(data => setRoles(data));
   }, []);
-
   const navegate = useNavigate();
-
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-      fetch(urlClientes).then(response => response.json()).then(data => setTableData(data))
-},[])
-
-
-  const navegate = useNavigate()
-
-
-  const filteredData = tableData.filter((row) =>
-  Object.values(row).some(
-    (value) => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
-  )
-);
-
-const columns = [
-  { field: 'idCliente', headerName: 'ID', width: 130 },
-  { field: 'nombre', headerName: 'Nombre', width: 130 },
-  { field: 'apellido', headerName: 'Apellido', width: 130 },
-  { field: 'genero', headerName: 'Genero', width: 130 },
-  { field: 'fechaNacimiento', headerName: 'Fecha de nacimiento', width: 130 },
-  { field: 'direccion', headerName: 'direccion', width: 130 },
-  { field: 'Telefono', headerName: 'Telefono', width: 200 },
-  { field: 'Email', headerName: 'Correo electronico', width: 130 },
-  {
-    field: 'borrar',
-    headerName: 'Acciones',
-    width: 190,
-
-    renderCell: params => (
-      <div className='contActions'>
-        <Button
-          className='btnEdit'
-          onClick={() => handleButtonClick(params.row.id)}
-        >
-          <EditIcon></EditIcon>
-        </Button>
-        <Button
-          className='btnDelete'
-          onClick={() => handleButtonClick(params.row.id)}
-        >
-          <DeleteForeverIcon></DeleteForeverIcon>
-        </Button>
-      </div>
+      fetch(urlClientes)
+        .then(response => response.json())
+        .then(data => setTableData(data)),
     ),
   );
 
@@ -232,7 +192,7 @@ const columns = [
                           <input
                             type="text"
                             id="nombre"
-                            className='inputCustom'
+                            className="inputCustom"
                             value={usuario.row.Usuario}
                           />
                         </div>
@@ -245,7 +205,7 @@ const columns = [
                           <input
                             type="text"
                             id="nombreUsuario"
-                            className='inputCustom'
+                            className="inputCustom"
                             value={usuario.row.Nombre_Usuario}
                           />
                         </div>
@@ -253,7 +213,7 @@ const columns = [
                           <TextCustom text="Estado" className="titleInput" />
                           <input
                             type="text"
-                            className='inputCustom'
+                            className="inputCustom"
                             id="EstadoUsuario"
                             value={usuario.row.Estado_Usuario}
                           />
@@ -263,7 +223,11 @@ const columns = [
                             text="Contraseña"
                             className="titleInput"
                           />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
+                          <input
+                            type="text"
+                            id="contrasenia"
+                            className="inputCustom"
+                          />
                         </div>
                         <div className="contInput">
                           <TextCustom text="Rol" className="titleInput" />
@@ -286,7 +250,7 @@ const columns = [
                           <input
                             type="text"
                             id="Email"
-                            className='inputCustom'
+                            className="inputCustom"
                             value={usuario.row.Correo_Electronico}
                           />
                         </div>
@@ -318,13 +282,13 @@ const columns = [
           }}
         />
       </div>
-      <DataGrid getRowId={(tableData)=>tableData.idCliente} 
-              rows={filteredData}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]} 
-              
-          />
+      <DataGrid
+        getRowId={tableData => tableData.idCliente}
+        rows={filteredData}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+      />
     </div>
   );
 };
