@@ -909,3 +909,132 @@ font-weight: bold;
 margin-left: 5px;
 }
 /* Configuracion de Roles */
+
+/* Ventana Modal - swal */
+.swal-modal{
+  border-radius: 15px !important;
+}
+
+.swal-footer{
+  text-align: center;
+  margin-top: 0;
+}
+
+.logoModal{
+  position: relative;
+  left: -20px;
+  top: -20px;
+  width: 109.5%;
+  height: 110px;
+  background-color: #316ee6;
+  color: white;
+  text-transform: uppercase;
+  border-top-right-radius: 15px !important;
+  border-top-left-radius: 15px !important;
+
+  border-bottom: 2px solid gray;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swal-button--defeat,
+.swal-button--update{
+  width: 150px !important;
+  border: 3px solid orangered;
+  font-weight: bold;
+  color: orangered;
+  font-size: 18px;
+  background-color: transparent !important;
+  transition: 0.5s;
+}
+
+.swal-button--defeat:hover,
+.swal-button--update:hover{
+  background-color:orangered !important;
+  color: white !important;
+}
+
+.swal-button--cancel{
+  width: 150px !important;
+  background-color:red !important;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  transition: 0.5s;
+  border: 3px solid red !important;
+}
+
+.swal-button--cancel:hover{
+  background-color:red !important;
+}
+
+.contEditModal{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-gap: 40px;
+}
+
+.contEditModal .contInput{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-gap: 10px;
+  text-align: left;
+}
+
+.contEditModal .contInput .titleInput{
+  font-size: 17px;
+}
+
+.contEditModal .contInput .inputCustom{
+  width: 300px;
+  height: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.contEditModal .contInput .selectCustom{
+    width: 325px;
+    height: 45px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(208, 208, 208, 0.349);
+    border: 2px solid gray;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.contEditModal .contInput .textAreaCustom{
+  width: 400px;
+  height: 85px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.swal-button--confirm{
+  margin-top: 35px;
+  width: 150px !important;
+  background-color: #316ee6;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  transition: 0.5s;
+}
+
+.swal-button--confirm:hover{
+  background-color: #316ee6 !important;
+}
+/* Ventana Modal - swal */

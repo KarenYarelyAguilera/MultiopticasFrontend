@@ -89,10 +89,12 @@ export const ConfigRol = props => {
     config: configuracionLeer ? 's' : 'n',
   };
   const handleEditar = () => {
-    swal(<h1>¿Desea editar este rol?</h1>, {
+    swal(
+    <div className="logoModal">¿Desea editar este rol?</div>,
+     {
       buttons: {
-        defeat: 'si',
-        cancel: 'cancelar',
+        defeat: 'ACEPTAR',
+        cancel: 'CANCELAR',
       },
     }).then(resp => {
       switch (resp) {
@@ -102,20 +104,16 @@ export const ConfigRol = props => {
           } else {
             swal(
               <div>
-                <h1>Datos de Rol:</h1>
-                <div>
+                <div className='logoModal'>Datos de Rol</div>
+                <div className='contEditModal'>
                   <div className="contInput">
-                    <TextCustom text="Rol: " className="titleInput" />
-                  </div>
-                  <div className="contSelect">
-                    <input type="text" id="Rol" />
+                    <TextCustom text="Rol " className="titleInput" />
+                    <input type="text" id="Rol" className='inputCustom' />
                   </div>
 
                   <div className="contInput">
-                    <TextCustom text="Descripcion: " className="titleInput" />
-                  </div>
-                  <div className="contSelect">
-                    <textarea id="desc" />
+                    <TextCustom text="Descripcion " className="titleInput" />
+                    <textarea id="desc" className='textAreaCustom'/>
                   </div>
                 </div>
               </div>,
@@ -149,30 +147,27 @@ export const ConfigRol = props => {
   };
 
   const handleNuevoRol = () => {
-    swal(<h1>¿Crear un nuevo rol?</h1>, {
+    swal(
+    <div className='logoModal'>Crear un nuevo rol</div>, {
       buttons: {
-        defeat: 'si',
-        cancel: 'cancelar',
+        defeat: 'ACEPTAR',
+        cancel: 'CANCELAR',
       },
     }).then(resp => {
       switch (resp) {
         case 'defeat':
           swal(
             <div>
-              <h1>Datos de Rol:</h1>
-              <div>
+              <div className='logoModal'>Datos de Rol</div>
+              <div className='contEditModal'>
                 <div className="contInput">
-                  <TextCustom text="Rol: " className="titleInput" />
-                </div>
-                <div className="contSelect">
-                  <input type="text" id="Rol" />
+                  <TextCustom text="Rol" className="titleInput" />
+                  <input type="text" id="Rol" className='inputCustom' />
                 </div>
 
                 <div className="contInput">
-                  <TextCustom text="Descripcion: " className="titleInput" />
-                </div>
-                <div className="contSelect">
-                  <textarea id="desc" />
+                  <TextCustom text="Descripcion" className="titleInput" />
+                  <textarea id="desc" className='textAreaCustom'/>
                 </div>
               </div>
             </div>,

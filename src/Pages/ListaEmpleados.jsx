@@ -14,8 +14,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
-
 import '../Styles/Usuarios.css';
+import { TextCustom } from '../Components/TextCustom';
 
 export const ListaEmpleados = () => {
   const [generos, setGeneros] = useState([]);
@@ -87,15 +87,15 @@ export const ListaEmpleados = () => {
       width: 190,
 
       renderCell: params => (
-        <div className='contActions'>
+        <div className="contActions">
           <Button
-            className='btnEdit'
+            className="btnEdit"
             onClick={() => handleButtonClick(params.row.id)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
-            className='btnDelete'
+            className="btnDelete"
             onClick={() => handleButtonClick(params.row.id)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
@@ -133,7 +133,7 @@ export const ListaEmpleados = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{color:'black', fontSize:'40px'}}>Lista de Empleados</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
 
       <div
         style={{
@@ -145,29 +145,31 @@ export const ListaEmpleados = () => {
       >
         <div className="contFilter">
           {/* <div className="buscador"> */}
-          <SearchIcon style={{position:'absolute', color:'gray', paddingLeft:'10px'}}/>
-            <input
-              type="text"
-              className='inputSearch'
-              placeholder='Buscar'
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
+          <SearchIcon
+            style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+          />
+          <input
+            type="text"
+            className="inputSearch"
+            placeholder="Buscar"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
           {/* </div> */}
-          <div className='btnActionsNewReport'>
-          <Button
-            className='btnCreate'
-            onClick={() => {
+          <div className="btnActionsNewReport">
+            <Button
+              className="btnCreate"
+              onClick={() => {
                 navegate('/usuarios/crearusuario');
-            }}
+              }}
             >
-              <AddIcon style={{marginRight:'5px'}}/>
-            Crear Usuario
-          </Button>
-          <Button className='btnReport'>
-          <PictureAsPdfIcon style={{marginRight:'5px'}}/>
-            Generar reporte
-          </Button>
+              <AddIcon style={{ marginRight: '5px' }} />
+              Crear Usuario
+            </Button>
+            <Button className="btnReport">
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              Generar reporte
+            </Button>
           </div>
         </div>
         <DataGrid
@@ -178,86 +180,100 @@ export const ListaEmpleados = () => {
           onRowClick={empleado => {
             swal({
               buttons: {
-                update: 'Editar',
-                cancel: 'cancel',
+                update: 'ACTUALIZAR',
+                cancel: 'CANCELAR',
               },
               content: (
-                <>
-                  <h1>
-                    Que accion desea realizar con el empleado:{' '}
-                    {empleado.row.Nombre}{' '}
-                  </h1>
-                </>
+                <div className="logoModal">
+                  Que accion desea realizar con el empleado:{' '}
+                  {empleado.row.Nombre}{' '}
+                </div>
               ),
             }).then(op => {
               switch (op) {
                 case 'update':
                   swal(
-                    <form>
-                      <label htmlFor="">
-                        Nombre:{' '}
-                        <input
-                          type="text"
-                          id="nombre"
-                          value={empleado.row.Nombre}
-                        />
-                      </label>
-                      <br />
-                      <label htmlFor="">
-                        Apellido:{' '}
-                        <input
-                          type="text"
-                          id="apellido"
-                          value={empleado.row.apellido}
-                        />
-                      </label>
-                      <br />
-                      <label htmlFor="">
-                        Telefono:{' '}
-                        <input
-                          type="text"
-                          id="telefono"
-                          value={empleado.row.Telefono}
-                        />
-                      </label>
-                      <br />
-                      <label htmlFor="">
-                        Numero de identidad:{' '}
-                        <input
-                          type="text"
-                          id="identidad"
-                          value={empleado.row.numeroIdentidad}
-                        />
-                      </label>
-                      <br />
-                      <select id="sucursal" className="selectCustom">
-                        {sucursales.length ? (
-                          sucursales.map(pre => (
-                            <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                              {pre.departamento}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="No existe informacion">
-                            No existe informacion
-                          </option>
-                        )}
-                      </select>{' '}
-                      <br />
-                      <select id="genero" className="selectCustom">
-                        {generos.length ? (
-                          generos.map(pre => (
-                            <option key={pre.IdGenero} value={pre.IdGenero}>
-                              {pre.descripcion}
-                            </option>
-                          ))
-                        ) : (
-                          <option value="No existe informacion">
-                            No existe informacion
-                          </option>
-                        )}
-                      </select>
-                    </form>,
+                    <div>
+                      <div className="logoModal">Datos a actualizar</div>
+                      <div className="contEditModal">
+                        <div className="contInput">
+                          <TextCustom text="Nombre" className="titleInput" />
+                          <input
+                            type="text"
+                            id="nombre"
+                            className='inputCustom'
+
+                            value={empleado.row.Nombre}
+                          />
+                        </div>
+                        <div className="contInput">
+                          <TextCustom text="Apellido" className="titleInput" />
+                          <input
+                            type="text"
+                            id="apellido"
+                            className='inputCustom'
+
+                            value={empleado.row.apellido}
+                          />
+                        </div>
+                        <div className="contInput">
+                          <TextCustom text="Telefono" className="titleInput" />
+                          <input
+                            type="text"
+                            id="telefono"
+                            className='inputCustom'
+
+                            value={empleado.row.Telefono}
+                          />
+                        </div>
+                        <div className="contInput">
+                          <TextCustom text="Identidad" className="titleInput" />
+                          <input
+                            type="text"
+                            id="identidad"
+                            className='inputCustom'
+
+                            value={empleado.row.numeroIdentidad}
+                          />
+                        </div>
+                        <div className="contInput">
+                          <TextCustom text="Sucursal" className="titleInput" />
+                          <select id="sucursal" className="selectCustom">
+                            {sucursales.length ? (
+                              sucursales.map(pre => (
+                                <option
+                                  key={pre.IdSucursal}
+                                  value={pre.IdSucursal}
+                                >
+                                  {pre.departamento}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="No existe informacion">
+                                No existe informacion
+                              </option>
+                            )}
+                          </select>
+                        </div>
+
+                        <div className="contInput">
+                          <TextCustom text="Genero" className="titleInput" />
+                          <select id="genero" className="selectCustom">
+                            {generos.length ? (
+                              generos.map(pre => (
+                                <option key={pre.IdGenero} value={pre.IdGenero}>
+                                  {pre.descripcion}
+                                </option>
+                              ))
+                            ) : (
+                              <option value="No existe informacion">
+                                No existe informacion
+                              </option>
+                            )}
+                          </select>
+                        </div>
+                      </div>
+                    </div>,
                   ).then(() => {
                     let data = {
                       nombre: document.getElementById('nombre').value,
