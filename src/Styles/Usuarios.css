@@ -300,9 +300,9 @@
   font-size: 16px;
   color: gray;
 }
-
+  
 .infoAddUser {
-  width: 70%;
+    width: 70%;
   height: auto;
   padding-left: 10%;
 
@@ -598,3 +598,443 @@ button{
   display: block;
 }
 /* Buscador - Pantalla Lista [Empleados-Usuarios] */
+
+
+/* Configuracion de Roles */
+.ContConfigRol {
+  position: relative;
+  top: 50px;
+  left: 355px;
+  width: calc(92% - 250px);
+  height: auto;
+
+  display: grid;
+  grid-template-rows: 15% 80%;
+  grid-gap: 20px;
+
+  transition: 0.5s ease;
+}
+
+.ContConfigRol .btnBack{
+  position: absolute;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+/* 
+.bntBackList{
+  position: absolute;
+  z-index: 2;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+
+.iconBackList{
+  font-size: 50px;
+  color: white;
+} */
+
+.ContConfigRol .btnBack .iconBack{
+  font-size: 50px;
+  color: white;
+}
+
+.BarraLateral.close ~ .ContConfigRol {
+  left: 145px;
+  width: calc(90% - 20px);
+}
+
+.ContConfigRol .titleRol {
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-template-rows: repeat(1,0);
+  justify-items: center;
+}
+
+.ContConfigRol .titleRol h2 {
+  font-size: 45px;
+  color: black;
+}
+
+.ContConfigRol .titleRol h3 {
+  font-size: 16px;
+  color: gray;
+}
+
+.infoConfigRol {
+width: 100%;
+height: auto;
+padding-top: 45px;
+padding-bottom: 95px;
+
+display: grid;
+grid-gap: 20%;
+align-items: center;
+border-radius: 25px;
+box-shadow: 1px 1px 10px 1px rgba(132, 132, 132, 0.75);
+}
+
+.infoConfigRol .PanelConfigRol {
+width: 100%;
+height: auto;
+
+display: grid;
+grid-gap: 30px;
+}
+
+.contSelectRol{
+  width: 95%;
+  height: auto;
+  padding-left: 58px;
+
+  display: grid;
+  grid-template-columns: 65% 48%;
+  align-items: center;
+}
+
+.inputCheck{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 15% 30%;
+  grid-gap: 5px;
+}
+
+.sectionRol{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-gap: 10px;
+  padding: 15px;
+}
+
+.titlePrincipal{
+  width: 96%;
+  height: auto;
+padding-left: 65px;
+
+  display: grid;
+  grid-template-columns: 24% 8% 10% 10% 8%;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgb(168, 168, 168);
+}
+
+.infoConfigRol .PanelConfigRol .InputConfig {
+width: 96%;
+height: auto;
+display: grid;
+grid-template-columns: 25% 50%;
+padding-left: 65px;
+}
+
+.contSelect{
+  width: 75%;
+  height: auto;
+
+  display: grid;
+  grid-template-columns: repeat(4,4fr);
+
+}
+
+.contSwitchControl{
+  width: 100%;
+  height: auto;
+  display: grid;
+}
+
+.conTitleRoles{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: repeat(8,62px);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.infoConfigRol .PanelConfigRol .InputContPrincipal .btnCard {
+position: relative;
+left: 60%;
+width: 80%;
+height: 50px;
+border-radius: 25px;
+background: rgb(38, 103, 177);
+background: linear-gradient(
+  90deg,
+  rgb(38, 103, 177) 0%,
+  rgba(49, 110, 230, 1) 100%
+);
+text-decoration: none;
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.infoConfigRol .PanelConfigRol .InputContPrincipal .btnCard h1 {
+font-size: 16px;
+color: white;
+}
+
+.infoConfigRol .PanelConfigRol .contInput {
+width: 50%;
+height: auto;
+
+display: grid;
+grid-template-rows: 30% 70%;
+grid-gap: 5px;
+position: relative;
+}
+
+.infoConfigRol .PanelConfigRol .contInput .inputCustom {
+width: 300px;
+height: 20px;
+padding: 10px;
+border-radius: 10px;
+background-color: rgba(208, 208, 208, 0.349);
+border: 2px solid gray;
+font-weight: bold;
+font-size: 15px;
+}
+
+.infoConfigRol .PanelConfigRol .contInput .inputCustomText {
+width: 300px;
+height: 180px;
+padding: 10px;
+border-radius: 10px;
+background-color: rgba(208, 208, 208, 0.349);
+border: 2px solid gray;
+font-weight: bold;
+font-size: 15px;
+}
+
+
+.infoConfigRol .PanelConfigRol .contInput .inputCustomPass {
+width: 320px !important;
+height: 40px;
+border-radius: 10px !important;
+background-color: rgba(208, 208, 208, 0.349);
+border: 2px solid gray !important;
+font-weight: bold;
+font-size: 15px !important;
+font-weight: bold !important;
+
+line-height: none !important;
+letter-spacing: none !important;
+box-sizing: none !important;
+}
+
+.css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
+padding-top: 10px !important;
+}
+.infoConfigRol .PanelConfigRol .contInput .inputCustomPass:before {
+border-bottom: none !important;
+}
+
+.css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after {
+border-bottom: none !important;
+}
+
+.infoConfigRol .PanelConfigRol .contSelectRol .sectionRol .selectCustom 
+{
+  width: 325px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.infoConfigRol .PanelConfigRol .contSelectRol .contButton{
+  width: 70%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3,3fr);
+  grid-gap: 20px;
+}
+
+.contButton .btnEditRol{
+  width: 100%;
+  height: 50px;
+  border: 3px solid black;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 25px;
+  transition: 0.5s;
+}
+
+.contButton .btnEditRol:hover{
+  background-color: black !important;
+  color: white !important;
+}
+
+.contButton .btnNewRol{
+  width: 100%;
+  height: 50px;
+  background-color: orangered;
+  color: white;
+  font-size: 18px;
+  border-radius: 25px;
+}
+
+.contButton .btnNewRol:hover{
+  background-color:orangered !important;
+}
+
+.contButton .btnSaveRol{
+  width: 100%;
+  height: 50px;
+  background-color:#316ee6;
+  color: white;
+  font-size: 18px;
+  border-radius: 25px;
+}
+
+.contButton .btnSaveRol:hover{
+  background-color:#316ee6 !important;
+}
+
+.infoConfigRol .PanelConfigRol .contInput .inputCustom:focus-visible {
+outline: none;
+}
+
+.infoConfigRol .PanelConfigRol .InputContPrincipal .contInput .titleInput {
+color: gray;
+font-weight: bold;
+margin-left: 5px;
+}
+/* Configuracion de Roles */
+
+/* Ventana Modal - swal */
+.swal-modal{
+  border-radius: 15px !important;
+}
+
+.swal-footer{
+  text-align: center;
+  margin-top: 0;
+}
+
+.logoModal{
+  position: relative;
+  left: -20px;
+  top: -20px;
+  width: 109.5%;
+  height: 110px;
+  background-color: #316ee6;
+  color: white;
+  text-transform: uppercase;
+  border-top-right-radius: 15px !important;
+  border-top-left-radius: 15px !important;
+
+  border-bottom: 2px solid gray;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swal-button--defeat,
+.swal-button--update{
+  width: 150px !important;
+  border: 3px solid orangered;
+  font-weight: bold;
+  color: orangered;
+  font-size: 18px;
+  background-color: transparent !important;
+  transition: 0.5s;
+}
+
+.swal-button--defeat:hover,
+.swal-button--update:hover{
+  background-color:orangered !important;
+  color: white !important;
+}
+
+.swal-button--cancel{
+  width: 150px !important;
+  background-color:red !important;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  transition: 0.5s;
+  border: 3px solid red !important;
+}
+
+.swal-button--cancel:hover{
+  background-color:red !important;
+}
+
+.contEditModal{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-gap: 40px;
+}
+
+.contEditModal .contInput{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-gap: 10px;
+  text-align: left;
+}
+
+.contEditModal .contInput .titleInput{
+  font-size: 17px;
+}
+
+.contEditModal .contInput .inputCustom{
+  width: 300px;
+  height: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.contEditModal .contInput .selectCustom{
+    width: 325px;
+    height: 45px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(208, 208, 208, 0.349);
+    border: 2px solid gray;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.contEditModal .contInput .textAreaCustom{
+  width: 400px;
+  height: 85px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.swal-button--confirm{
+  margin-top: 35px;
+  width: 150px !important;
+  background-color: #316ee6;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  transition: 0.5s;
+}
+
+.swal-button--confirm:hover{
+  background-color: #316ee6 !important;
+}
+/* Ventana Modal - swal */
