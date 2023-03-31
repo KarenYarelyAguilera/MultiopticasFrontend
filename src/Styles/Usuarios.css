@@ -11,48 +11,54 @@
 }
 
 /* Login */
-.contPadre{
-  width: 97.9%;
+.contPadre {
+  width: 100%;
   height: 100vh;
 
   display: grid;
-  grid-template-columns: repeat(2,2fr);
+  grid-template-columns: repeat(2, 2fr);
   grid-gap: 10px;
 
   justify-content: center;
 }
 
-.contLogin{
+.contLogin {
   width: 100%;
   height: 40vh;
-  padding-top: 120px;
+  padding-top: 150px;
 
   display: grid;
-  grid-template-rows: repeat(3,200px);
+  /* grid-template-rows: repeat(4, 200px); */
+  grid-template-rows: 15% 30% 60% 55%;
   justify-items: center;
   align-items: center;
 }
 
-.contInputLogin{
+.titleHello {
+  font-size: 40px;
+}
+
+.contInputLogin {
   width: 90%;
   height: auto;
 
   display: grid;
-  grid-template-rows: 50% 75%;
+  grid-template-rows: 40% 75%;
 }
-.contInputLogin .titleInput{
+
+.contInputLogin .titleInput {
   color: gray;
   font-weight: bold;
   margin-left: 5px;
-  font-size: 20px;
+  font-size: 15px;
 }
 
-.inputCustomLogin{
+.inputCustomLogin {
   width: 100%;
   height: 45px;
   background-color: #d0d0d059;
-  border-radius: 25px;
-  padding-left: 18px;
+  border-radius: 5px;
+  padding-left: 10px;
   font-size: 18px;
   font-weight: bold;
   border: 2px solid #84848459;
@@ -61,7 +67,7 @@
 .contInputLogin .inputCustomPass {
   width: 104% !important;
   height: 49px;
-  border-radius: 25px !important;
+  border-radius: 5px !important;
   background-color: #d0d0d059;
   border: 2px solid #84848459 !important;
   font-weight: bold;
@@ -75,12 +81,11 @@
 .contInputLogin .inputCustomPass:before {
   border-bottom: none !important;
 }
-¨
-.inputCustomLogin:focus-visible{
+¨ .inputCustomLogin:focus-visible {
   outline: none !important;
 }
 
-.errorMessage{
+.errorMessage {
   font-size: 15px;
   font-weight: bold;
   margin-top: 8px;
@@ -92,29 +97,30 @@
   align-items: center;
 }
 
-.contButtons{
-  width: 65%;
+.contButtons {
+  width: 60%;
   display: grid;
-  grid-template-rows: repeat(2,50px);
-  justify-items: center;
+  grid-template-rows: repeat(2, 50px);
   margin-top: 130px;
 }
 
-.btnOlvidar{
+.btnOlvidar {
   height: 18px;
   text-decoration: none;
-  color: black;
+  color: rgb(132, 132, 132);
   font-weight: bold;
   transition: 0.5s ease;
+  text-align: right;
+  margin-right: 45px;
 }
 
-.btnOlvidar:hover{
+.btnOlvidar:hover {
   text-decoration: underline;
   color: #316ee6;
 }
 
-.btnIngresar{
-  width: 80% !important;
+.btnIngresar {
+  width: 93% !important;
   height: 60px !important;
   background: rgb(38, 103, 177);
   background: linear-gradient(
@@ -125,19 +131,26 @@
   color: white !important;
   font-weight: bold !important;
   font-size: 20px !important;
-  border-radius: 25px !important;
+  /* border-radius: 25px !important; */
 }
 
-.imgLogin{
+.contImgLogin {
+  width: 100%;
+  height: auto;
+
+  background-color: #033db0;
+}
+
+.imgLogin {
   width: 100%;
 }
 
-.contHijoLogin{
-  width:60%;
+.contHijoLogin {
+  width: 60%;
   height: 200px;
 
   display: grid;
-  grid-template-rows: repeat(2,70px);
+  grid-template-rows: repeat(2, 70px);
   grid-gap: 85px;
 }
 /* Login */
@@ -250,7 +263,7 @@
   transition: 0.5s ease;
 }
 
-.ContUsuarios .btnBack{
+.ContUsuarios .btnBack {
   position: absolute;
   background-color: #316ee6;
   border-radius: 50px;
@@ -268,11 +281,11 @@
   color: white;
 } */
 
-.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover{
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
   background-color: none !important;
 }
 
-.ContUsuarios .btnBack .iconBack{
+.ContUsuarios .btnBack .iconBack {
   font-size: 50px;
   color: white;
 }
@@ -300,9 +313,9 @@
   font-size: 16px;
   color: gray;
 }
-  
+
 .infoAddUser {
-    width: 70%;
+  width: 70%;
   height: auto;
   padding-left: 10%;
 
@@ -394,7 +407,6 @@
   font-weight: bold;
   font-size: 15px;
 }
-
 
 .infoAddUser .PanelInfo .contInput .inputCustomPass {
   width: 320px !important;
@@ -494,18 +506,14 @@
   color: white;
 }
 
-h2{
+h2 {
   font-size: 55px;
   color: #316ee6;
   text-align: center;
-  
 }
-button{
+button {
   margin-right: 10px;
 }
-
-
-
 
 .imgCont {
   width: 90%;
@@ -517,11 +525,11 @@ button{
 /* AddNewUser */
 .my-button-class {
   /* Estilos personalizados aquí */
-  color:red; 
+  color: red;
 }
 
 /* Buscador - Pantalla Lista [Empleados-Usuarios] */
-.contFilter{
+.contFilter {
   width: 100%;
   height: 70px;
 
@@ -532,7 +540,7 @@ button{
   align-items: center;
 }
 
-.inputSearch{
+.inputSearch {
   width: 60%;
   height: 35px;
   background-color: #d0d0d059;
@@ -543,62 +551,60 @@ button{
   border: 2px solid rgba(188, 188, 188, 0.59);
 }
 
-.inputSearch:focus{
+.inputSearch:focus {
   outline: none;
 }
 
-.btnActionsNewReport{
+.btnActionsNewReport {
   display: grid;
-  grid-template-columns: repeat(2,2fr);
+  grid-template-columns: repeat(2, 2fr);
   grid-gap: 20px;
 }
 
-.btnCreate{
+.btnCreate {
   background-color: coral !important;
   color: white !important;
   border-radius: 25px !important;
 }
 
-.btnReport{
+.btnReport {
   border: 2px solid black !important;
   color: black !important;
   border-radius: 25px !important;
   transition: 0.5s ease;
 }
 
-.btnReport:hover
-{
+.btnReport:hover {
   background-color: black !important;
   color: white !important;
 }
 
-.contActions{
+.contActions {
   display: grid;
-  grid-template-columns: repeat(2,2fr);
+  grid-template-columns: repeat(2, 2fr);
   grid-gap: 5px;
 
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.btnEdit{
+.btnEdit {
   background-color: #316ee6 !important;
   border-radius: 25px !important;
   color: white !important;
 }
 
-.btnDelete{
+.btnDelete {
   background-color: red !important;
   border-radius: 25px !important;
   color: white !important;
 }
 
-.buscador{
-  background-color:antiquewhite;
+.buscador {
+  background-color: antiquewhite;
   display: block;
 }
 /* Buscador - Pantalla Lista [Empleados-Usuarios] */
-
 
 /* Configuracion de Roles */
 .ContConfigRol {
@@ -615,7 +621,7 @@ button{
   transition: 0.5s ease;
 }
 
-.ContConfigRol .btnBack{
+.ContConfigRol .btnBack {
   position: absolute;
   background-color: #316ee6;
   border-radius: 50px;
@@ -633,7 +639,7 @@ button{
   color: white;
 } */
 
-.ContConfigRol .btnBack .iconBack{
+.ContConfigRol .btnBack .iconBack {
   font-size: 50px;
   color: white;
 }
@@ -648,7 +654,7 @@ button{
   height: auto;
 
   display: grid;
-  grid-template-rows: repeat(1,0);
+  grid-template-rows: repeat(1, 0);
   justify-items: center;
 }
 
@@ -663,27 +669,27 @@ button{
 }
 
 .infoConfigRol {
-width: 100%;
-height: auto;
-padding-top: 45px;
-padding-bottom: 95px;
+  width: 100%;
+  height: auto;
+  padding-top: 45px;
+  padding-bottom: 95px;
 
-display: grid;
-grid-gap: 20%;
-align-items: center;
-border-radius: 25px;
-box-shadow: 1px 1px 10px 1px rgba(132, 132, 132, 0.75);
+  display: grid;
+  grid-gap: 20%;
+  align-items: center;
+  border-radius: 25px;
+  box-shadow: 1px 1px 10px 1px rgba(132, 132, 132, 0.75);
 }
 
 .infoConfigRol .PanelConfigRol {
-width: 100%;
-height: auto;
+  width: 100%;
+  height: auto;
 
-display: grid;
-grid-gap: 30px;
+  display: grid;
+  grid-gap: 30px;
 }
 
-.contSelectRol{
+.contSelectRol {
   width: 95%;
   height: auto;
   padding-left: 58px;
@@ -693,14 +699,14 @@ grid-gap: 30px;
   align-items: center;
 }
 
-.inputCheck{
+.inputCheck {
   width: 100%;
   display: grid;
   grid-template-columns: 15% 30%;
   grid-gap: 5px;
 }
 
-.sectionRol{
+.sectionRol {
   width: 100%;
   height: auto;
 
@@ -709,10 +715,10 @@ grid-gap: 30px;
   padding: 15px;
 }
 
-.titlePrincipal{
+.titlePrincipal {
   width: 96%;
   height: auto;
-padding-left: 65px;
+  padding-left: 65px;
 
   display: grid;
   grid-template-columns: 24% 8% 10% 10% 8%;
@@ -723,122 +729,119 @@ padding-left: 65px;
 }
 
 .infoConfigRol .PanelConfigRol .InputConfig {
-width: 96%;
-height: auto;
-display: grid;
-grid-template-columns: 25% 50%;
-padding-left: 65px;
+  width: 96%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 25% 50%;
+  padding-left: 65px;
 }
 
-.contSelect{
+.contSelect {
   width: 75%;
   height: auto;
 
   display: grid;
-  grid-template-columns: repeat(4,4fr);
-
+  grid-template-columns: repeat(4, 4fr);
 }
 
-.contSwitchControl{
+.contSwitchControl {
   width: 100%;
   height: auto;
   display: grid;
 }
 
-.conTitleRoles{
+.conTitleRoles {
   width: 100%;
   height: auto;
   display: grid;
-  grid-template-rows: repeat(8,62px);
+  grid-template-rows: repeat(8, 62px);
   text-transform: uppercase;
   font-weight: bold;
 }
 
 .infoConfigRol .PanelConfigRol .InputContPrincipal .btnCard {
-position: relative;
-left: 60%;
-width: 80%;
-height: 50px;
-border-radius: 25px;
-background: rgb(38, 103, 177);
-background: linear-gradient(
-  90deg,
-  rgb(38, 103, 177) 0%,
-  rgba(49, 110, 230, 1) 100%
-);
-text-decoration: none;
+  position: relative;
+  left: 60%;
+  width: 80%;
+  height: 50px;
+  border-radius: 25px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  text-decoration: none;
 
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoConfigRol .PanelConfigRol .InputContPrincipal .btnCard h1 {
-font-size: 16px;
-color: white;
+  font-size: 16px;
+  color: white;
 }
 
 .infoConfigRol .PanelConfigRol .contInput {
-width: 50%;
-height: auto;
+  width: 50%;
+  height: auto;
 
-display: grid;
-grid-template-rows: 30% 70%;
-grid-gap: 5px;
-position: relative;
+  display: grid;
+  grid-template-rows: 30% 70%;
+  grid-gap: 5px;
+  position: relative;
 }
 
 .infoConfigRol .PanelConfigRol .contInput .inputCustom {
-width: 300px;
-height: 20px;
-padding: 10px;
-border-radius: 10px;
-background-color: rgba(208, 208, 208, 0.349);
-border: 2px solid gray;
-font-weight: bold;
-font-size: 15px;
+  width: 300px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .infoConfigRol .PanelConfigRol .contInput .inputCustomText {
-width: 300px;
-height: 180px;
-padding: 10px;
-border-radius: 10px;
-background-color: rgba(208, 208, 208, 0.349);
-border: 2px solid gray;
-font-weight: bold;
-font-size: 15px;
+  width: 300px;
+  height: 180px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
 }
 
-
 .infoConfigRol .PanelConfigRol .contInput .inputCustomPass {
-width: 320px !important;
-height: 40px;
-border-radius: 10px !important;
-background-color: rgba(208, 208, 208, 0.349);
-border: 2px solid gray !important;
-font-weight: bold;
-font-size: 15px !important;
-font-weight: bold !important;
+  width: 320px !important;
+  height: 40px;
+  border-radius: 10px !important;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray !important;
+  font-weight: bold;
+  font-size: 15px !important;
+  font-weight: bold !important;
 
-line-height: none !important;
-letter-spacing: none !important;
-box-sizing: none !important;
+  line-height: none !important;
+  letter-spacing: none !important;
+  box-sizing: none !important;
 }
 
 .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
-padding-top: 10px !important;
+  padding-top: 10px !important;
 }
 .infoConfigRol .PanelConfigRol .contInput .inputCustomPass:before {
-border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .css-zs07ro-MuiInputBase-root-MuiFilledInput-root:after {
-border-bottom: none !important;
+  border-bottom: none !important;
 }
 
-.infoConfigRol .PanelConfigRol .contSelectRol .sectionRol .selectCustom 
-{
+.infoConfigRol .PanelConfigRol .contSelectRol .sectionRol .selectCustom {
   width: 325px;
   height: 40px;
   padding: 10px;
@@ -849,15 +852,15 @@ border-bottom: none !important;
   font-size: 14px;
 }
 
-.infoConfigRol .PanelConfigRol .contSelectRol .contButton{
+.infoConfigRol .PanelConfigRol .contSelectRol .contButton {
   width: 70%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(3,3fr);
+  grid-template-columns: repeat(3, 3fr);
   grid-gap: 20px;
 }
 
-.contButton .btnEditRol{
+.contButton .btnEditRol {
   width: 100%;
   height: 50px;
   border: 3px solid black;
@@ -868,12 +871,12 @@ border-bottom: none !important;
   transition: 0.5s;
 }
 
-.contButton .btnEditRol:hover{
+.contButton .btnEditRol:hover {
   background-color: black !important;
   color: white !important;
 }
 
-.contButton .btnNewRol{
+.contButton .btnNewRol {
   width: 100%;
   height: 50px;
   background-color: orangered;
@@ -882,45 +885,45 @@ border-bottom: none !important;
   border-radius: 25px;
 }
 
-.contButton .btnNewRol:hover{
-  background-color:orangered !important;
+.contButton .btnNewRol:hover {
+  background-color: orangered !important;
 }
 
-.contButton .btnSaveRol{
+.contButton .btnSaveRol {
   width: 100%;
   height: 50px;
-  background-color:#316ee6;
+  background-color: #316ee6;
   color: white;
   font-size: 18px;
   border-radius: 25px;
 }
 
-.contButton .btnSaveRol:hover{
-  background-color:#316ee6 !important;
+.contButton .btnSaveRol:hover {
+  background-color: #316ee6 !important;
 }
 
 .infoConfigRol .PanelConfigRol .contInput .inputCustom:focus-visible {
-outline: none;
+  outline: none;
 }
 
 .infoConfigRol .PanelConfigRol .InputContPrincipal .contInput .titleInput {
-color: gray;
-font-weight: bold;
-margin-left: 5px;
+  color: gray;
+  font-weight: bold;
+  margin-left: 5px;
 }
 /* Configuracion de Roles */
 
 /* Ventana Modal - swal */
-.swal-modal{
+.swal-modal {
   border-radius: 15px !important;
 }
 
-.swal-footer{
+.swal-footer {
   text-align: center;
   margin-top: 0;
 }
 
-.logoModal{
+.logoModal {
   position: relative;
   left: -20px;
   top: -20px;
@@ -940,7 +943,7 @@ margin-left: 5px;
 }
 
 .swal-button--defeat,
-.swal-button--update{
+.swal-button--update {
   width: 150px !important;
   border: 3px solid orangered;
   font-weight: bold;
@@ -951,14 +954,14 @@ margin-left: 5px;
 }
 
 .swal-button--defeat:hover,
-.swal-button--update:hover{
-  background-color:orangered !important;
+.swal-button--update:hover {
+  background-color: orangered !important;
   color: white !important;
 }
 
-.swal-button--cancel{
+.swal-button--cancel {
   width: 150px !important;
-  background-color:red !important;
+  background-color: red !important;
   font-weight: bold;
   color: white;
   font-size: 18px;
@@ -966,11 +969,11 @@ margin-left: 5px;
   border: 3px solid red !important;
 }
 
-.swal-button--cancel:hover{
-  background-color:red !important;
+.swal-button--cancel:hover {
+  background-color: red !important;
 }
 
-.contEditModal{
+.contEditModal {
   width: 100%;
   height: auto;
 
@@ -978,7 +981,7 @@ margin-left: 5px;
   grid-gap: 40px;
 }
 
-.contEditModal .contInput{
+.contEditModal .contInput {
   width: 100%;
   height: auto;
 
@@ -987,11 +990,11 @@ margin-left: 5px;
   text-align: left;
 }
 
-.contEditModal .contInput .titleInput{
+.contEditModal .contInput .titleInput {
   font-size: 17px;
 }
 
-.contEditModal .contInput .inputCustom{
+.contEditModal .contInput .inputCustom {
   width: 300px;
   height: 15px;
   padding: 10px;
@@ -1002,18 +1005,18 @@ margin-left: 5px;
   font-size: 16px;
 }
 
-.contEditModal .contInput .selectCustom{
-    width: 325px;
-    height: 45px;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: rgba(208, 208, 208, 0.349);
-    border: 2px solid gray;
-    font-weight: bold;
-    font-size: 15px;
+.contEditModal .contInput .selectCustom {
+  width: 325px;
+  height: 45px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
 }
 
-.contEditModal .contInput .textAreaCustom{
+.contEditModal .contInput .textAreaCustom {
   width: 400px;
   height: 85px;
   padding: 10px;
@@ -1024,7 +1027,7 @@ margin-left: 5px;
   font-size: 16px;
 }
 
-.swal-button--confirm{
+.swal-button--confirm {
   margin-top: 35px;
   width: 150px !important;
   background-color: #316ee6;
@@ -1034,7 +1037,7 @@ margin-left: 5px;
   transition: 0.5s;
 }
 
-.swal-button--confirm:hover{
+.swal-button--confirm:hover {
   background-color: #316ee6 !important;
 }
 /* Ventana Modal - swal */
