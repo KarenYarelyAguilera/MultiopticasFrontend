@@ -55,9 +55,9 @@ export const ListUsuarios = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
+    { field: 'id_Usuario', headerName: 'ID', width: 70 },
     { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
+    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150 },
     { field: 'rol', headerName: 'Rol', width: 130 },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
@@ -65,12 +65,12 @@ export const ListUsuarios = () => {
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
-      width: 200,
+      width: 195,
     },
     {
       field: 'Fecha_Vencimiento',
       headerName: 'Fecha de vencimiento',
-      width: 130,
+      width: 195,
     },
     {
       field: 'borrar',
@@ -157,7 +157,7 @@ export const ListUsuarios = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nuevo Cliente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

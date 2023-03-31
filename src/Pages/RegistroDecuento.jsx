@@ -93,7 +93,7 @@ export const RegistroDescuento = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Garantia</h2>
+        <h2>Registro de Descuentos</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos del modelo.
         </h3>
@@ -226,8 +226,8 @@ export const RegistroDescuento = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/001/890/486/non_2x/summer-sunglasses-accessory-flat-style-icon-free-vector.jpg'
-          }
+           'https://static.vecteezy.com/system/resources/previews/002/302/922/non_2x/flash-sale-promos-discounts-and-purchase-bonuses-illustration-suitable-for-landing-page-ui-website-mobile-app-editorial-poster-flyer-article-and-banner-vector.jpg'
+        }
           className='imgCont'
           alt="No se encuentro la imagen"
         />
