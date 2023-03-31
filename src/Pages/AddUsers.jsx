@@ -1,16 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+//MuiMaterial
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useRef } from 'react';
-import { TextCustom } from '../Components/TextCustom.jsx';
 import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+//Components
+import { TextCustom } from '../Components/TextCustom.jsx';
+
+//Scripts
 import { sendData } from '../scripts/sendData';
 import swal from '@sweetalert/with-react';
 
+//Images
 import AddUser from '../IMG/AddUser.jpg';
+import { useNavigate } from 'react-router';
 
 export const AddUsers = () => {
 
@@ -27,6 +35,7 @@ export const AddUsers = () => {
     const [errorCorreo, setErrorCorreo]= useState(false);
 
   const refContrasenia = useRef(null);
+  const navegate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -61,14 +70,15 @@ export const AddUsers = () => {
       document.getElementById('empleado').options[
         document.getElementById('empleado').selectedIndex
       ].text;
+
     let user = String(usuario);
-    let nombre = document.getElementById('usuario').value;
+    let nombre = document.getElementById('nombre').value;
     let correo = document.getElementById('correo').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {
       id: id,
-      usuario: user.toUpperCase(),
+      usuario: user.toLocaleUpperCase(),
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,
@@ -79,8 +89,17 @@ export const AddUsers = () => {
     }
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+                  <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+      </Button>
       <div className="titleAddUser">
         <h2>Registro de Usuario</h2>
         <h3>Complete todos los puntos para poder registrar el usuario</h3>
@@ -193,10 +212,59 @@ export const AddUsers = () => {
             </div>
 
             <div className="contInput">
+              <TextCustom text="Confirme Contraseña" className="titleInput" />
+              <FilledInput
+
+               onKeyDown= {(e) =>{
+                setContra(e.target.value);
+                if (contra===""){
+                  setErrorContra(true);
+                  setMsj("Los campos no deben estar vacios");
+                }
+                else{
+                  setErrorContra(false)
+                  var regularExpression  = /^[a-zA-Z0-9!@#$%^&*]$/;
+                  if (!regularExpression.test(contra)){
+                    setErrorContra(true)
+                    setMsj("");
+                     }
+                     else{
+                  setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
+                  setErrorContra(false);
+                }
+              }
+              }}
+
+                id="filled-adornment-password"
+                placeholder='Contraseña'
+                className="inputCustomPass"
+                type={showPassword ? 'text' : 'password'}
+                inputProps={{maxLength:20}}
+                inputRef={refContrasenia}
+                endAdornment={
+                 
+                  <InputAdornment position="end">
+                    <IconButton
+                    maxLength={30}
+              
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              ></FilledInput>
+              <p className='error'>{msj}</p>
+            </div>
+
+            <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
                 onKeyDown={(e) =>{
-                var expresion = /^[a-zA-Z0-9_!#$%&'\*+/=?{|}~^.-]+@+(gmail.co||yahoo.co||outlook.co||hotmail.co)+m+$/; 
+                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
                 if (!expresion.test(correo)){
                   setErrorCorreo(true)
                   setTexto("Formato invalido");
@@ -241,11 +309,18 @@ export const AddUsers = () => {
                 variant="contained"
                 className="btnStepper"
                 onClick={()=>{
-                  if(document.getElementById("nombre").value=="" ){
+              
+                if(document.getElementById("nombre").value=="" || document.getElementById("filled-adornment-password").value == ""|| document.getElementById("correo").value == ""){
                     swal("No deje campos vacios.","","error")
                  }
                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
                   swal("El campo nombre solo acepta letras","","error")
+                }  
+                else if(typeof(document.getElementById("filled-adornment-password").value) !== 'string')       {
+                  swal("El campo contraseña debe de incluir letras, numeros y caracteres especiales","","error")
+                }  
+                else if(typeof(document.getElementById("correo").value) !== 'string')       {
+                  swal("El campo correo debe de incluir un correo","","error")
                 }  
                 else{
                  insertar()

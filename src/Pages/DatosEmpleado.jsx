@@ -1,58 +1,81 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+
 import InforUsers from '../IMG/InforUsers.jpg';
-import { useState, useEffect } from 'react';
+
 //Styles
 import '../Styles/Usuarios.css';
 
 //Components
+import VerticalStepper from '../Components/VerticalStepper.jsx';
 import { TextCustom } from '../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import { TextField } from '@mui/material';
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
+
+
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
-const urlRoles = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles"
+const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 
 export const DatosEmpleado = (
+  {
+    msgError = '',
+    success = false,
+    warning = false,
+    props,
 
+
+
+
+  }
 
 ) => {
+
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([])
-  const [roles, setRoles] = useState([])
 
-  const [iIdentidad, setiIdentidad] = useState("");
+
+  const [iIdentidad, setiIdentidad] = React.useState("");
   const [leyenda, setleyenda] = React.useState("");
-  const [errorIdentidad, setErrorIdentidad] = useState(false);
+  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
 
-  const [Nombre, setNombre] = useState("");
-  const [errorNombre, setErrorNombre] = useState(false);
+  const [Nombre, setNombre] = React.useState("");
+  const [errorNombre, setErrorNombre] = React.useState(false);
   const [Msj, setMsj] = React.useState(false);
 
   const [Apellido, setApellido] = React.useState("");
-  const [errorApellido, setErrorApellido] = useState(false);
+  const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
+
+  
+
   const [Telefono, setTelefono] = useState("");
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
 
   const [Identidad, setIdentidad] = useState(0)
   const [Telefonoc, setTelefonoc] = useState(0)
 
   useEffect(() => {
     fetch(urlSucursales).then(response => response.json()).then(data => setSucursales(data))
-    fetch(urlRoles).then(response => response.json()).then(data => setRoles(data))
   }, [])
 
 
   const navegate = useNavigate()
+
   const handleNext = () => {
     let identidad = document.getElementById("Nidentidad").value
     let nombres = document.getElementById("nombre").value
@@ -60,10 +83,8 @@ export const DatosEmpleado = (
     let telefono = document.getElementById("phone").value
     let genero = parseInt(document.getElementById("genero").value)
     let sucursal = parseInt(document.getElementById("sucursal").value)
-    let cargo = parseInt(document.getElementById("cargo").value)
 
     let data = {
-      cargo: cargo,
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
       phone: telefono,
@@ -73,15 +94,43 @@ export const DatosEmpleado = (
     }
     if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then((result) => {
+
+        swal({
+          title: "¿Desea crearle un usuario al empleado agregado?",
+          icon:'question',
+          buttons: true,
+          dangerMode: true,
+          buttons: ['Cancelar', 'Aceptar'],
+        }).then((result) => {
+          if(result)
+          navegate("/usuarios/crearusuario")
+          else{
+            navegate("/empleados/lista")
+          }
+
+        }  
+        );
+
+
         navegate("/empleados/lista")
       })
-        ;
+     ;
     }
 
   };
 
+  const handleBack = () => {
+    navegate('/usuarios');
+  }
+
   return (
     <div className="ContUsuarios">
+            <Button
+      className='btnBack'
+      onClick={handleBack}>
+    	  <ArrowBackIcon className='iconBack'/>
+    	  
+      </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>
         <h3>
@@ -182,10 +231,10 @@ export const DatosEmpleado = (
                   }
                   else {
                     setErrorApellido(false)
-                    var preg_match = /^[A-Z]+$/;
+                    var preg_match = /^[a-zA-Z]+$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true)
-                      setAviso("Solo se debe ingresar letras mayusculas")
+                      setAviso("Solo deben de ingresar letras")
                     } else {
                       setErrorApellido(false);
                       setAviso("");
@@ -214,38 +263,38 @@ export const DatosEmpleado = (
 
             <div className="contInput">
               <TextCustom
-
+                
                 text="Telefono" className="titleInput" />
               <input
-                onKeyDown={(e) => {
-                  setTelefono(e.target.value);
-                  setTelefonoc(parseInt(e.target.value))
-                  if (Telefono == "") {
-                    setTexto("Los campos no deben estar vacios");
-                    setErrorTelefono(true);
+
+              onKeyDown={(e) => {
+                setTelefono(e.target.value);
+                if (Telefono == "") {
+                  setTexto("Los campos no deben estar vacios");
+                  setErrorTelefono(true);
+                }
+                else {
+                  setErrorTelefono(false)
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(Telefono)) {
+                    setErrorTelefono(true)
+                    setTexto("Solo deben de ingresar numeros")
+                  } else {
+                    setErrorTelefono(false);
+                    setTexto("");
                   }
-                  else {
-                    setErrorTelefono(false)
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true)
-                      setTexto("Solo deben de ingresar numeros")
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto("");
-                    }
-                  }
-                }}
+                }
+              }}
                 error={errorTelefono}
                 type="phone"
                 name=""
-                helperText={texto}
-                maxLength={12}
+               helperText={texto}
+                maxLength={8}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
               />
-              <p className='error'>{texto}</p>
+              {<p className='error'>{texto}</p> }
             </div>
 
             <div className="contInput">
@@ -265,23 +314,6 @@ export const DatosEmpleado = (
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Cargo" className="titleInput" />
-              <select name="" className="selectCustom" id='cargo'>
-              {roles.length ? (
-                  roles.map(pre => (
-                    <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                      {pre.Rol}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div>
-
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -290,7 +322,11 @@ export const DatosEmpleado = (
                   if(document.getElementById("Nidentidad").value=="" || document.getElementById("nombre").value == ""|| document.getElementById("apellido").value =="" ){
                      swal("No deje campos vacios.","","error")
                   }
-                  if(typeof(document.getElementById("nombre").value) !== 'string')       {
+                  else if(typeof(parseInt(document.getElementById("Nidentidad").value) !== 'number') )      {
+                    swal("El campo identidad solo acepta numeros","","error")
+                  }    
+                  else if(typeof(document.getElementById("nombre").value) !== 'string')       {
+
                     swal("El campo nombre solo acepta letras","","error")
                   }  
                   if(typeof(document.getElementById("apellido").value) !== 'string')       {
@@ -303,12 +339,10 @@ export const DatosEmpleado = (
                   }    
                  
               
-                   
-                    
                   
                 }}
               >
-                <h1>{'Finish' ? 'Continue' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

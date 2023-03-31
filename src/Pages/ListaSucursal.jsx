@@ -17,54 +17,30 @@ import { Button } from '@mui/material';
 import '../Styles/Usuarios.css';
 import { TextCustom } from '../Components/TextCustom';
 
-export const ListaEmpleados = () => {
-  const [generos, setGeneros] = useState([]);
-  const [sucursales, setSucursales] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const navegate = useNavigate();
+export const ListaSucursal = () => {
+  const [roles, setRoles] = useState([]);
 
-  const urlEmployees =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
-  const urlgeneros =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=generos';
-  const urlsucursales =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
-  const urlUpdateEmployees =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=UpdateEmployee';
+  const urlUsers =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
+  const urlUpdateUser =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
+  const urlRoles =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
 
   const [tableData, setTableData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlEmployees)
+    fetch(urlUsers)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlgeneros)
+    fetch(urlRoles)
       .then(response => response.json())
-      .then(data => setGeneros(data));
-    fetch(urlsucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
+      .then(data => setRoles(data));
   }, []);
 
-  // const handleChange=e=>{
-  //     setBusqueda(e.target.value)
-  //     filtrar(e.target.value)
-  // }
+  const navegate = useNavigate();
 
-  // const filtrar = (termino) =>{
-  //     let resultados = tableData.filter((elemento)=>{
-  //         if (elemento.Nombre.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.apellido.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.Telefono.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.departamento.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.genero.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.numeroIdentidad.toString().toLowerCase().includes(termino.toLowerCase())
-  //         ) {
-  //             return elemento
-  //         }
-  //     })
-  //     setTableData(resultados)
-  // }
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -74,13 +50,23 @@ export const ListaEmpleados = () => {
   );
 
   const columns = [
-    { field: 'IdEmpleado', headerName: 'ID', width: 130 },
-    { field: 'Nombre', headerName: 'Nombre', width: 130 },
-    { field: 'apellido', headerName: 'Apellido', width: 130 },
-    { field: 'Telefono', headerName: 'Telefono', width: 130 },
-    { field: 'departamento', headerName: 'Sucursal', width: 130 },
-    { field: 'genero', headerName: 'Genero', width: 130 },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
+    { field: 'id_Usuario', headerName: 'ID', width: 130 },
+    { field: 'Usuario', headerName: 'Usuario', width: 130 },
+    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
+    { field: 'rol', headerName: 'Rol', width: 130 },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
+    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
+    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    {
+      field: 'Fecha_Ultima_Conexion',
+      headerName: 'Ultima Conexion',
+      width: 200,
+    },
+    {
+      field: 'Fecha_Vencimiento',
+      headerName: 'Fecha de vencimiento',
+      width: 130,
+    },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -125,7 +111,7 @@ export const ListaEmpleados = () => {
       });
   }
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/ventas');
   };
 
   return (
@@ -133,7 +119,7 @@ export const ListaEmpleados = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Sucursal</h2>
 
       <div
         style={{
@@ -164,7 +150,7 @@ export const ListaEmpleados = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Usuario
+              Crear Cliente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
@@ -173,20 +159,21 @@ export const ListaEmpleados = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdEmpleado}
+          getRowId={tableData => tableData.id_Usuario}
           rows={filteredData}
           columns={columns}
           pageSize={5}
-          onRowClick={empleado => {
+          rowsPerPageOptions={[5]}
+          onRowClick={usuario => {
             swal({
               buttons: {
-                update: 'ACTUALIZAR',
-                cancel: 'CANCELAR',
+                update: 'Actualizar',
+                cancel: 'Cancelar',
               },
               content: (
                 <div className="logoModal">
-                  Que accion desea realizar con el empleado:{' '}
-                  {empleado.row.Nombre}{' '}
+                  Que accion desea realizar con el cliente:{' '}
+                  {usuario.row.Usuario}
                 </div>
               ),
             }).then(op => {
@@ -197,55 +184,50 @@ export const ListaEmpleados = () => {
                       <div className="logoModal">Datos a actualizar</div>
                       <div className="contEditModal">
                         <div className="contInput">
-                          <TextCustom text="Nombre" className="titleInput" />
+                          <TextCustom text="Usuario" className="titleInput" />
                           <input
                             type="text"
                             id="nombre"
                             className='inputCustom'
-
-                            value={empleado.row.Nombre}
+                            value={usuario.row.Usuario}
                           />
                         </div>
+
                         <div className="contInput">
-                          <TextCustom text="Apellido" className="titleInput" />
+                          <TextCustom
+                            text="Nombre de Usuario"
+                            className="titleInput"
+                          />
                           <input
                             type="text"
-                            id="apellido"
+                            id="nombreUsuario"
                             className='inputCustom'
-
-                            value={empleado.row.apellido}
+                            value={usuario.row.Nombre_Usuario}
                           />
                         </div>
                         <div className="contInput">
-                          <TextCustom text="Telefono" className="titleInput" />
+                          <TextCustom text="Estado" className="titleInput" />
                           <input
                             type="text"
-                            id="telefono"
                             className='inputCustom'
-
-                            value={empleado.row.Telefono}
+                            id="EstadoUsuario"
+                            value={usuario.row.Estado_Usuario}
                           />
                         </div>
                         <div className="contInput">
-                          <TextCustom text="Identidad" className="titleInput" />
-                          <input
-                            type="text"
-                            id="identidad"
-                            className='inputCustom'
-
-                            value={empleado.row.numeroIdentidad}
+                          <TextCustom
+                            text="Contraseña"
+                            className="titleInput"
                           />
+                          <input type="text" id="contrasenia" className='inputCustom'/>
                         </div>
                         <div className="contInput">
-                          <TextCustom text="Sucursal" className="titleInput" />
-                          <select id="sucursal" className="selectCustom">
-                            {sucursales.length ? (
-                              sucursales.map(pre => (
-                                <option
-                                  key={pre.IdSucursal}
-                                  value={pre.IdSucursal}
-                                >
-                                  {pre.departamento}
+                          <TextCustom text="Rol" className="titleInput" />
+                          <select id="rol" className="selectCustom">
+                            {roles.length ? (
+                              roles.map(pre => (
+                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
+                                  {pre.Rol}
                                 </option>
                               ))
                             ) : (
@@ -255,40 +237,33 @@ export const ListaEmpleados = () => {
                             )}
                           </select>
                         </div>
-
                         <div className="contInput">
-                          <TextCustom text="Genero" className="titleInput" />
-                          <select id="genero" className="selectCustom">
-                            {generos.length ? (
-                              generos.map(pre => (
-                                <option key={pre.IdGenero} value={pre.IdGenero}>
-                                  {pre.descripcion}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
+                          <TextCustom text="Email" className="titleInput" />
+                          <input
+                            type="text"
+                            id="Email"
+                            className='inputCustom'
+                            value={usuario.row.Correo_Electronico}
+                          />
                         </div>
                       </div>
                     </div>,
                   ).then(() => {
                     let data = {
-                      nombre: document.getElementById('nombre').value,
-                      apellido: document.getElementById('apellido').value,
-                      telefonoEmpleado:
-                        document.getElementById('telefono').value,
-                      IdSucursal: document.getElementById('sucursal').value,
-                      IdGenero: document.getElementById('genero').value,
-                      numeroIdentidad:
-                        document.getElementById('identidad').value,
-                      IdEmpleado: empleado.row.IdEmpleado,
+                      Usuario: document.getElementById('nombre').value,
+                      Nombre_Usuario:
+                        document.getElementById('nombreUsuario').value,
+                      Estado_Usuario:
+                        document.getElementById('EstadoUsuario').value,
+                      Contrasenia: document.getElementById('contrasenia').value,
+                      Id_Rol: document.getElementById('rol').value,
+                      Correo_Electronico:
+                        document.getElementById('Email').value,
+                      Id_usuario: usuario.row.id_Usuario,
                     };
 
-                    if (sendData(urlUpdateEmployees, data)) {
-                      swal(<h1>Empleado Editado Correctamente</h1>);
+                    if (sendData(urlUpdateUser, data)) {
+                      swal(<h1>Usuario Actualizado Correctamente</h1>);
                     }
                   });
                   break;
@@ -297,7 +272,6 @@ export const ListaEmpleados = () => {
               }
             });
           }}
-          rowsPerPageOptions={[5]}
         />
       </div>
     </div>
