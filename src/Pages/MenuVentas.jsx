@@ -23,7 +23,27 @@ export const MenuVentas = () => {
       titulo: "Lista de Garantias",
       imagen: registro,
       vinculo: "/menuVentas/listaGarantias", 
-    }
+    },
+    {
+      titulo: "Registro de Sucursal",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroSucursal", 
+    },
+    {
+      titulo: "Lista de Sucursal",
+      imagen: registro,
+      vinculo: "/menuVentas/listaSucursal", 
+    },
+    {
+      titulo: "Registro de Descuento",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroDescuento", 
+    },
+    {
+      titulo: "Lista de Descuento",
+      imagen: registro,
+      vinculo: "/menuVentas/listaDescuento", 
+    },
     
   ]
 

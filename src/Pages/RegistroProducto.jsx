@@ -102,7 +102,7 @@ export const RegistroProducto = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Modelo" className="titleInput" />
+              <TextCustom text="ID Producto" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -128,7 +128,7 @@ export const RegistroProducto = ({
                     }
                   }
                 }}
-                placeholder="ID Modelo"
+                placeholder="ID Producto"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -136,7 +136,7 @@ export const RegistroProducto = ({
             
 
             <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
+              <TextCustom text="ID Modelo" className="titleInput" />
               <select name="" className="selectCustom" id="genero">
                 <option value={1}>No se sabe</option>
                 <option value={2}>No se sabe</option>
