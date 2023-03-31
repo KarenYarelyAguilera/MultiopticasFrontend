@@ -1,110 +1,58 @@
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import { TextCustom } from '../Components/TextCustom';
-import { sendData } from '../scripts/sendData';
 import { useEffect } from 'react';
+
 
 //MuiMaterial-Icons
 import WarningIcon from '@mui/icons-material/Warning';
 
 //Styles
 import '../Styles/RecuperacionPassword.css';
+import swal from '@sweetalert/with-react';
 
-export const RecuperacionPassword =  (props) => {
-
+export const RecuperacionPassword = props => {
   const navegate = useNavigate();
-  const [errorMessage, seterrorMessage] = useState('');
-  const [respuesta, setrespuesta] = useState('');
-  const [dataPreguntas, setdataPreguntas] = useState([]);
 
+  const [preguntas,setPreguntas]=useState([])
+  const [cont,setCont]=useState(0)
   
   const urlPreguntas = "http://localhost/APIS-Multioptica/login/controller/user.php?op=preguntas"
    const  data = {
     correo:props.correo
    }
 
-
-  // const dataPreguntas = sendData(urlPreguntas,data)
-
- 
-
-  // const cargarDatos = sendData(urlPreguntas,data)
-
- useEffect(() => {
-  const fetchDatos = async () => {
-
-    const postPreguntas = await sendData(urlPreguntas,data);
-
-    if (postPreguntas) {
-      setdataPreguntas([{
-        Id_Pregunta : postPreguntas[0].Id_Pregunta,
-        Pregunta : postPreguntas[0].Pregunta,
-      }])
-    }
-
-    }
-    
-    fetchDatos();
-    // cargarDatos();
-    
-  },[])
+useEffect(() => {
+  fetch(urlPreguntas,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)})
+    .then(response => response.json())
+    .then(data => setPreguntas(data));
   
-
-  // const cargarDatos = () => {
-  //   setdataPreguntas([{
-  //     Id_Pregunta : idPregunta,
-  //     Pregunta : pregunta,
-  //   }])
-  //   console.log(dataPreguntas)
-  // }
-  
-
-
-  // const dataPreguntas = [
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llamaba su amigo de la infancia?',
-  //     respuesta: 'Michael',
-  //     idPregunta: '1',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Como se llama tu padre?',
-  //     respuesta: 'Manuel',
-  //     idPregunta: '2',
-  //   },
-  //   {
-  //     idUsuario: '1',
-  //     pregunta: '¿Cual fue el ultimo celula que obtuvister?',
-  //     respuesta: 'Iphone 13',
-  //     idPregunta: '3',
-  //   },
-  // ];
-  // console.log(dataPreguntas[0].Pregunta);
-
+}, [] );
 
 
   const validate = () => {
-    console.log(respuesta);
-    if (respuesta === dataPreguntas.pregunta) {
-      seterrorMessage('Respuesta correcta');
+    const respuesta = document.getElementById("respuesta").value
+
+    if (cont==2) {
+      navegate('/')
+    }
+
+    if (respuesta === preguntas[0].Respuesta) {
+      newPassword()
     } else {
-      seterrorMessage('Respuesta incorrecta');
+      swal('Respuesta incorrecta', '', 'error');
+      setCont(cont+1)
     }
   };
 
   const newPassword = () => {
-    // let correo = document.getElementById('correo').value;
-    // props.correo(correo);
-
     navegate('/recuperacion/preguntas/newPassword');
-  };
-
-  const handleChange = event => {
-    setrespuesta(event.target.value);
-
-    console.log('value is:', event.target.value);
   };
 
   return (
@@ -112,18 +60,16 @@ export const RecuperacionPassword =  (props) => {
       <div className="titleRecuPassword">
         <h2>Preguntas de Seguridad</h2>
         <h3>
-          Seleccione de {dataPreguntas.length} preguntas de seguridad. <br />
+          Seleccione de {preguntas.length} preguntas de seguridad. <br />
           Estas preguntas nos ayudarán a verificar tu identidad si olvidaste tu
           contraseña.
         </h3>
-      </div>
+      </div><br />
 
       <div className="sectionRecuPassword">
-        {dataPreguntas.length ? (
-
-          dataPreguntas.map(preguntas => (
-            <div key={preguntas.idPregunta}>
-
+        {preguntas.length ? (
+          preguntas.map(preguntass => (
+            <div key={preguntass.Id_Pregunta}>
               <div className="contPrincipalRecu">
                 <div className="contInput">
                   <TextCustom
@@ -131,12 +77,10 @@ export const RecuperacionPassword =  (props) => {
                     className="titleInput"
                   />
                   <select name="" className="selectCustom">
-                    {dataPreguntas.length ? (
-
-                      dataPreguntas.map(pre => (
-                        <option key={pre.idPregunta} value={pre.pregunta}>
-                          {pre.pregunta}
-
+                    {preguntas.length ? (
+                      preguntas.map(pre => (
+                        <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
+                          {pre.Pregunta}
                         </option>
                       ))
                     ) : (
@@ -152,6 +96,7 @@ export const RecuperacionPassword =  (props) => {
                   <input
                     type="text"
                     name=""
+                    id="respuesta"
                     className="inputCustom"
                     placeholder="Respuesta"
                     // onChange={handleChange}
@@ -169,7 +114,7 @@ export const RecuperacionPassword =  (props) => {
             className="btnSubmitpre"
             variant="container"
             // onClick={e => validate(e.target.value)}
-            onClick={newPassword}
+            onClick={validate}
           >
             Comprobar
           </Button>

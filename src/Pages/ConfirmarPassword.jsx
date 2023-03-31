@@ -8,28 +8,29 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useRef, useState,useEffect } from 'react';
-import { sendData } from '../scripts/sendData';
+import { sendData } from '../scripts/sendData.js'
 import swal from '@sweetalert/with-react';
 
-export const Metodos1 = props => {
+export const ConfirmarPassword = props => {
   const urlHist = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=histContra"
   const urlUser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=user"
 
- 
 
-  const correo = {
-    correo:props.correo
-  }
   const refContrasenia = useRef(null);
   const refContrasenia2 = useRef(null);
   const navegate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [Usuario, setUsuario] = useState([])
+
   const handleClickShowPassword = () => setShowPassword(show => !show);
+
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
 
+  const correo = {
+    correo:props.correo
+  }
   useEffect(()=>{
     fetch(urlUser,{
       method: "POST",
@@ -41,17 +42,10 @@ export const Metodos1 = props => {
     
   },[])
 
-  
   const Guardar = () => {
+    const urlAct = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=estado"
     const urlCambio = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=cambiarClave"
    
-
-   
-
-    let data ={
-      clave:refContrasenia.current.value,
-      correo:props.correo
-    }
 
     const hist={
       id:Usuario[0].Id_Usuario,
@@ -59,18 +53,23 @@ export const Metodos1 = props => {
       autor:Usuario[0].Usuario
     }
 
-    if (refContrasenia.current.value.length<8) {
-      swal('Su contraseña no es suficientemente segura\nPara que sea segura asegure de que su contraseña tenga al menos 8 caracteres','','error')
-    }else{
-    if (refContrasenia.current.value===refContrasenia2.current.value) {
-      sendData(urlCambio,data)
+    let data = {
+      clave: refContrasenia.current.value,
+      correo: props.correo
+    }
+
+    if (refContrasenia.current.value === refContrasenia2.current.value) {
+      sendData(urlAct,correo)
+      sendData(urlCambio, data)
       sendData(urlHist,hist)
       navegate('/');
-    }else if (refContrasenia.current.value!==refContrasenia2.current.value) {
-      swal(<h1>Las contraseñas no coinciden</h1>,"","error")
-      refContrasenia = ""
-      refContrasenia2 = ""
-    }}
+    } else if (refContrasenia.current.value !== refContrasenia2.current.value) {
+      swal("Las contraseñas deben coincidir", "", "error")
+      refContrasenia.current.value = ""
+      refContrasenia2.current.value = ""
+    }else if (refContrasenia.current.value===""||refContrasenia2.current.value==="") {
+      
+    }
 
 
   };
@@ -78,18 +77,18 @@ export const Metodos1 = props => {
   return (
     <div className="contRecuperaPassword">
       <div className="titleRecuPassword">
-        <h2>Restablezca su contraseña</h2>
+        <h2>Confirmacion de contraseña</h2>
         <h3>
-          Complete los campos requeridos para poder restablecer su contraseña.
+          Complete los campos requeridos para poder confirmar su contraseña.
         </h3>
       </div>
 
       <div className="sectionRestaPassword">
         <div className="panelInfo">
           <div className="contInput">
-            <TextCustom text="Nueva Contraseña" className="titleInput" />
+            <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-              placeholder="Nueva Contraseña"
+              placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
