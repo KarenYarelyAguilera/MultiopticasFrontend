@@ -50,23 +50,12 @@ export const ListaSucursal = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 200,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 130,
-    },
+    { field: 'id_Usuario', headerName: 'ID Sucursal', width: 250 },
+    { field: 'Usuario', headerName: 'Departamento', width: 250 },
+    { field: 'Nombre_Usuario', headerName: 'Ciudad', width: 250 },
+    { field: 'rol', headerName: 'Direccion', width: 250 },
+    { field: 'Estado_Usuario', headerName: 'Telefono', width: 250 },
+   
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -146,11 +135,11 @@ export const ListaSucursal = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuVentas/RegistroSucursal');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nueva Sucursal
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
