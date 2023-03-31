@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 import InforUsers from '../IMG/InforUsers.jpg';
@@ -19,10 +20,10 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
+
 const urlSucursales = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales"
 const urlUsers = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users"
-
+const urlIEmpleado = "http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee"
 
 export const DatosEmpleado = (
   {
@@ -58,6 +59,8 @@ export const DatosEmpleado = (
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
 
   
 
@@ -126,6 +129,7 @@ export const DatosEmpleado = (
       className='btnBack'
       onClick={handleBack}>
     	  <ArrowBackIcon className='iconBack'/>
+    	  
       </Button>
       <div className="titleAddUser">
         <h2>Datos del empleado</h2>
@@ -284,13 +288,13 @@ export const DatosEmpleado = (
                 error={errorTelefono}
                 type="phone"
                 name=""
-                helperText={texto}
+               helperText={texto}
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
               />
-              <p className='error'>{texto}</p>
+              {<p className='error'>{texto}</p> }
             </div>
 
             <div className="contInput">

@@ -61,8 +61,7 @@ export const PreguntasSeguridad = (props) => {
      if (validacionVacio(Parametro)) {
          if (await sendData(urlIPreguntas, data) && await sendData(urlIResp, dataR)) {
           await sendData(urlUpduser,datausrPL)
-           alert("Pregunta guardada con exito")
-           navegate('/preguntasSeguridad/confirmarPassword');
+           
        }else{
          swal("Ocurrio un error", "", "error")
        }
@@ -71,6 +70,8 @@ export const PreguntasSeguridad = (props) => {
      }
 
    }
+   alert("Pregunta guardada con exito")
+           navegate('/preguntasSeguridad/confirmarPassword');
   }
 
   const validacionVacio = parametro=>{
@@ -140,14 +141,14 @@ export const PreguntasSeguridad = (props) => {
   //   };
 
   return (
-    <div className="contRecuperaPassword">
-      <div className="titleRecuPassword">
-        <h2>Preguntas de Seguridad</h2>
-        <h3>
-          Estas preguntas nos ayudarán a tener una mejor seguridad al iniciar
-          sesion.
-        </h3>
-      </div>
+  <div className="contRecuperaPassword">
+  <div className="titleRecuPassword">
+  <h2>Preguntas de Seguridad</h2>
+  <h3>
+  Estas preguntas nos ayudarán a tener una mejor seguridad al iniciar
+  sesion.
+  </h3>
+   </div>
 
       <div className="sectionRecuPassword">
         <br />

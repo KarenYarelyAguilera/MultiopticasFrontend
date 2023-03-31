@@ -416,6 +416,17 @@
   left: 25%;
 }
 
+.CardUsuarios .contPrimaryClientes{
+  width: 90%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 4fr);
+  grid-gap: 30px;
+
+  position: relative;
+  left: 3%;
+}
+
 .CardInventario .contCard {
   width: 95%;
   height: 350px;

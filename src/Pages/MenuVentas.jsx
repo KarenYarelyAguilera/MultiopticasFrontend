@@ -15,34 +15,39 @@ export const MenuVentas = () => {
   const dataCards = 
   [
     {
-      titulo: "Nueva venta",
+      titulo: "Registro de Garantias",
       imagen: venta,
-      vinculo: "/ventas/nuevaventa", 
+      vinculo: "/menuVentas/RegistroGarantia", 
     },
     {
-      titulo: "Registro de ventas",
+      titulo: "Lista de Garantias",
       imagen: registro,
-      vinculo: "/ventas/reportes", 
-    }
+      vinculo: "/menuVentas/listaGarantias", 
+    },
+    {
+      titulo: "Registro de Sucursal",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroSucursal", 
+    },
+    {
+      titulo: "Lista de Sucursal",
+      imagen: registro,
+      vinculo: "/menuVentas/listaSucursal", 
+    },
+    {
+      titulo: "Registro de Descuento",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroDescuento", 
+    },
+    {
+      titulo: "Lista de Descuento",
+      imagen: registro,
+      vinculo: "/menuVentas/listaDescuento", 
+    },
+    
   ]
 
   return (
-    // <Container>
-    //   <Grid container spacing={40}>
-    //     <Grid item xs={6}>
-    //       <Link className="LinkStyleNone" to="./NuevaVenta">
-    //         <img src={venta} width="200px" alt="LogoVenta" />
-    //         <h2 className="Enlace">Venta</h2>
-    //       </Link>
-    //     </Grid>
-    //     <Grid item xs={5}>
-    //       <Link className="LinkStyleNone" to="./reportes">
-    //         <img src={registro} width="200px" alt="LogoVenta" />
-    //         <h2 className="Enlace">Registro de ventas</h2>
-    //       </Link>
-    //     </Grid>
-    //   </Grid>
-    // </Container>
     <div className="CardUsuarios">
     <div className="contPrimaryVentas">
       {dataCards.length ? (
