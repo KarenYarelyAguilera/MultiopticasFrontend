@@ -15,14 +15,14 @@ export const MenuVentas = () => {
   const dataCards = 
   [
     {
-      titulo: "Nueva venta",
+      titulo: "Registro de Garantias",
       imagen: venta,
-      vinculo: "/ventas/nuevaventa", 
+      vinculo: "/menuVentas/RegistroGarantia", 
     },
     {
-      titulo: "Registro de ventas",
+      titulo: "Lista de Garantias",
       imagen: registro,
-      vinculo: "/ventas/reportes", 
+      vinculo: "/menuVentas/listaGarantias", 
     }
     
   ]
