@@ -50,23 +50,14 @@ export const ListaExpedientes = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 200,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 130,
-    },
+    { field: 'id_Usuario', headerName: 'ID Expediente', width: 190 },
+    { field: 'Usuario', headerName: 'ID Detalle Expediente', width: 190 },
+    { field: 'Nombre_Usuario', headerName: 'Cliente', width: 190 },
+    { field: 'rol', headerName: 'Creado Por', width: 190 },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 190 },
+    { field: 'Correo_Electronico', headerName: 'Fecha de Creacion', width: 190 },
+    { field: 'Contrasenia', headerName: 'Fecha de Vencimiento', width: 190 },
+   
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -146,11 +137,11 @@ export const ListaExpedientes = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuClientes/registroCliente');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nuevo Expediente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

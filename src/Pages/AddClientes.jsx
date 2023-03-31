@@ -356,7 +356,7 @@ export const AddClientes = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/018/030/753/non_2x/support-business-consulting-customer-man-online-consultant-service-abstract-circle-background-flat-color-icon-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/011/873/935/non_2x/online-voting-concept-flat-style-design-illustration-tiny-people-with-voting-poll-online-survey-working-together-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

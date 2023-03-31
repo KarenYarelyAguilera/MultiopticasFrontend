@@ -322,7 +322,7 @@ export const RegistroProducto = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/001/890/486/non_2x/summer-sunglasses-accessory-flat-style-icon-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/007/059/184/non_2x/abstract-button-icon-folder-with-documents-on-a-white-background-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

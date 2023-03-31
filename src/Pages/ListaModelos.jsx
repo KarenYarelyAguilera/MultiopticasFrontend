@@ -50,9 +50,9 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Modelo', width: 130 },
-    { field: 'Usuario', headerName: 'Marca', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Descripcion', width: 330 },
+    { field: 'id_Usuario', headerName: 'ID Modelo', width: 330 },
+    { field: 'Usuario', headerName: 'Marca', width: 330 },
+    { field: 'Nombre_Usuario', headerName: 'Descripcion', width: 630 },
     
     
     {
@@ -134,11 +134,11 @@ export const ListaModelos = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuInventario/RegistroModelo');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Crear Modelo
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
