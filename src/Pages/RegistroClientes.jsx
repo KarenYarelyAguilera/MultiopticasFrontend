@@ -306,7 +306,7 @@ export const RegistroClientes = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/002/085/434/non_2x/people-work-from-home-in-front-of-computer-with-data-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
