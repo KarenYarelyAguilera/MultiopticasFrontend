@@ -8,6 +8,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 //import { ForgetPsswrd } from "../scripts/login"
 import '../Styles/login.css';
 import logo from '../IMG/Multioptica.png';
+import ImgLogin from '../IMG/ImgLogin.png';
 import swal from '@sweetalert/with-react';
 import { useEffect, useState } from 'react';
 import { useRef } from 'react'; /**Este hook ayuda a referenciar un componente
@@ -93,20 +94,22 @@ export const Login = props => {
         navegate('/Home');
       }
     } catch (error) {
+
       swal(
         'El usuario que ingreso no existe o\nIngreso credenciales erroneas',
         '',
         'error',
       );
       setContador(contador + 1);
+
     }
   };
 
   return (
     <div className="contPadre">
       <div className="contLogin">
-        <img src={logo} alt="logo" width="400px" />
-
+        <img src={logo} alt="logo" width="270px" />
+        <h1 className="titleHello">Hola, Bienvenido</h1>
         <div className="contHijoLogin">
           <div className="contInputLogin">
             <TextCustom text="Usuario" className="titleInput" />
@@ -190,122 +193,19 @@ export const Login = props => {
             </p>
           </div>
         </div>
-        <div className='contButtons'>
-          <Link className='btnOlvidar' to={'/recuperacion'}>¿Olvidaste tu contraseña?</Link>
+        <div className="contButtons">
+          <Link className="btnOlvidar" to={'/recuperacion'}>
+            ¿Olvidaste tu contraseña?
+          </Link>
 
-          <Button className='btnIngresar' onClick={handleLogin}>
+          <Button className="btnIngresar" onClick={handleLogin}>
             Iniciar sesion
           </Button>
         </div>
       </div>
-      <img
-        src="https://static.vecteezy.com/system/resources/previews/001/991/652/non_2x/sign-in-page-flat-design-concept-illustration-icon-account-login-user-login-abstract-metaphor-can-use-for-landing-page-mobile-app-ui-posters-banners-free-vector.jpg"
-        className="imgLogin"
-        alt="No existe la imagen"
-      />
+      <div className="contImgLogin">
+        <img src={ImgLogin} className="imgLogin" alt="No existe la imagen" />
+      </div>
     </div>
-
-    // <Container maxWidth="lg" id="login">
-    //   <Grid container spacing={8}>
-    //     <Grid item xs={6} md={4}>
-    //       <img src={logo} alt="logo" width="400px" />
-    //     </Grid>
-    //     <Grid item xs={6}>
-    //       <Grid container spacing={0.5}>
-    //         <Grid item md={10} xs={12}>
-    //           <div id="loginContent">
-    //             <h2>Iniciar Sesión</h2>
-    //             <div className="espacio">
-    //               <TextField
-    //                 onKeyDown={e => {
-    //                   setUsuario(e.target.value);
-
-    //                   if (usuario.length > 47) {
-    //                     setErrorUsuario(true);
-    //                     setprueba('A excedido al numero de caracteres');
-    //                   } else {
-    //                     setErrorUsuario(false);
-    //                     var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //                     if (!expresion.test(usuario)) {
-    //                       setErrorUsuario(true);
-    //                       setprueba('Formato invalido');
-    //                     } else {
-    //                       setErrorUsuario(false);
-    //                       setprueba('');
-    //                     }
-    //                   }
-    //                 }}
-    //                 onClick={e => {
-    //                   setUsuario(e.target.value);
-    //                   if (usuario === '') {
-    //                     setErrorUsuario(true);
-    //                     setprueba('Los campos no deben estar vacios');
-    //                   } else {
-    //                     setErrorUsuario(false);
-    //                     setprueba('');
-    //                   }
-    //                 }}
-    //                 error={errorUsuario}
-    //                 label="Usuario"
-    //                 variant="standard"
-    //                 inputProps={{ maxLength: 50 }}
-    //                 inputRef={refUsuario}
-    //               />
-    //               <p>{prueba}</p>
-    //             </div>
-    //             <div className="espacio">
-    //               <FilledInput
-    //                 onKeyDown={e => {
-    //                   setContra(e.target.value);
-    //                   if (contra === '') {
-    //                     setErrorContra(true);
-    //                     setMsj('Los campos no deben estar vacios');
-    //                   } else {
-    //                     setMsj('');
-    //                     setErrorContra(false);
-    //                   }
-    //                 }}
-    //                 error={errorContra}
-    //                 id="filled-adornment-password"
-    //                 inputProps={{ maxLength: 150 }}
-    //                 type={showPassword ? 'text' : 'password'}
-    //                 inputRef={refContrasenia}
-    //                 endAdornment={
-    //                   <InputAdornment position="end">
-    //                     <IconButton
-    //                       aria-label="toggle password visibility"
-    //                       onClick={handleClickShowPassword}
-    //                       onMouseDown={handleMouseDownPassword}
-    //                       edge="end"
-    //                     >
-    //                       {showPassword ? <VisibilityOff /> : <Visibility />}
-    //                     </IconButton>
-    //                   </InputAdornment>
-    //                 }
-    //               />
-    //               <p>{msj} </p>
-    //             </div>
-
-    //             <div className="espacio">
-    //               <Button variant="contained" onClick={handleLogin}>
-    //                 Iniciar sesion
-    //               </Button>
-    //             </div>
-    //             <div className="espacio">
-    //               <Button
-    //                 onClick={() => {
-    //                   navegate('/recuperacion');
-    //                 }}
-    //                 variant="contained"
-    //               >
-    //                 ¿Olvidaste tu contraseña?
-    //               </Button>
-    //             </div>
-    //           </div>
-    //         </Grid>
-    //       </Grid>
-    //     </Grid>
-    //   </Grid>
-    // </Container>
   );
 };

@@ -20,7 +20,7 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const RegistroModelo = ({
+export const RegistroDescuento = ({
   msgError = '',
   success = false,
   warning = false,
@@ -84,7 +84,7 @@ export const RegistroModelo = ({
   };
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/ventas');
   };
 
   return (
@@ -93,7 +93,7 @@ export const RegistroModelo = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Modelo</h2>
+        <h2>Registro de Garantia</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos del modelo.
         </h3>
@@ -101,8 +101,9 @@ export const RegistroModelo = ({
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            <div className="contInput">
-              <TextCustom text="ID Modelo" className="titleInput" />
+
+          <div className="contInput">
+              <TextCustom text="Descuento del Cliente" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -128,51 +129,55 @@ export const RegistroModelo = ({
                     }
                   }
                 }}
-                placeholder="ID Modelo"
+                placeholder="Descuento del Cliente"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
+              <TextCustom text="Descuento de Empleado" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="Descuento de Empleado"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+           
+          <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
               <select name="" className="selectCustom" id="genero">
                 <option value={1}>No se sabe</option>
                 <option value={2}>No se sabe</option>
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Descripcion de Modelo" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setApellido(e.target.value);
-                  if (Apellido == '') {
-                    setErrorApellido(true);
-                    setAviso('Los campos no deben estar vacios');
-                  } else {
-                    setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Apellido)) {
-                      setErrorApellido(true);
-                      setAviso('Solo deben de ingresar letras');
-                    } else {
-                      setErrorApellido(false);
-                      setAviso('');
-                    }
-                  }
-                }}
-                error={errorApellido}
-                type="text"
-                name=""
-                helperText={aviso}
-                maxLength={50}
-                className="inputCustomText"
-                placeholder="Descripcion de Modelo"
-                id="apellido"
-              />
-              <p className="error">{aviso}</p>
-            </div>
+            
+            
 
             <div className="contBtnStepper">
               <Button

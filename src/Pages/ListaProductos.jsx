@@ -17,7 +17,7 @@ import { Button } from '@mui/material';
 import '../Styles/Usuarios.css';
 import { TextCustom } from '../Components/TextCustom';
 
-export const ListaModelos = () => {
+export const ListaProductos = () => {
   const [roles, setRoles] = useState([]);
 
   const urlUsers =
@@ -50,11 +50,23 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Modelo', width: 130 },
-    { field: 'Usuario', headerName: 'Marca', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Descripcion', width: 330 },
-    
-    
+    { field: 'id_Usuario', headerName: 'ID', width: 130 },
+    { field: 'Usuario', headerName: 'Usuario', width: 130 },
+    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
+    { field: 'rol', headerName: 'Rol', width: 130 },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
+    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
+    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    {
+      field: 'Fecha_Ultima_Conexion',
+      headerName: 'Ultima Conexion',
+      width: 200,
+    },
+    {
+      field: 'Fecha_Vencimiento',
+      headerName: 'Fecha de vencimiento',
+      width: 130,
+    },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -107,7 +119,7 @@ export const ListaModelos = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Modelos</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Productos</h2>
 
       <div
         style={{
