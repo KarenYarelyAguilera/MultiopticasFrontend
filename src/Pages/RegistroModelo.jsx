@@ -93,7 +93,7 @@ export const RegistroModelo = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Modelo</h2>
+        <h2>Registro de Modelos</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos del modelo.
         </h3>

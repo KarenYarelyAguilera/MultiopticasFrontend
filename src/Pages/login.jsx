@@ -94,12 +94,14 @@ export const Login = props => {
         navegate('/Home');
       }
     } catch (error) {
+
       swal(
         'El usuario que ingreso no existe o\nIngreso credenciales erroneas',
         '',
         'error',
       );
       setContador(contador + 1);
+
     }
   };
 

@@ -44,6 +44,12 @@ export const Usuarios = (props) => {
       vinculo: '/usuarios/crearusuario',
     },
     {
+      consulta:"s",
+      imagen: ListUsers,
+      titulo: 'Lista de usuarios',
+      vinculo: '/usuarios/lista',
+    },
+    {
       insert:"s",
       imagen: InforUsers,
       titulo: 'Datos generales',
@@ -51,16 +57,11 @@ export const Usuarios = (props) => {
     },
     {
       consulta:"s",
-      imagen: ListUsers,
+      imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/727/non_2x/career-opportunity-concept-executive-job-human-resources-find-employee-flat-modern-illustration-vector.jpg',
       titulo: 'Lista de empleados',
       vinculo: '/empleados/lista',
     },
-    {
-      consulta:"s",
-      imagen: ListUsers,
-      titulo: 'Lista de usuarios',
-      vinculo: '/usuarios/lista',
-    },
+    
     
   ];
 

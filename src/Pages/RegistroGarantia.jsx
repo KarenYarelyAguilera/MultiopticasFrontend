@@ -232,7 +232,7 @@ export const RegistroGarantia = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/001/890/486/non_2x/summer-sunglasses-accessory-flat-style-icon-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

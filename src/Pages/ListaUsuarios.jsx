@@ -1,5 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -17,8 +18,10 @@ import { Button } from '@mui/material';
 import '../Styles/Usuarios.css';
 import { TextCustom } from '../Components/TextCustom';
 
+
 export const ListUsuarios = () => {
   const [roles, setRoles] = useState([]);
+
 
   const urlUsers =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
@@ -29,6 +32,7 @@ export const ListUsuarios = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     fetch(urlUsers)
@@ -41,6 +45,7 @@ export const ListUsuarios = () => {
 
   const navegate = useNavigate();
 
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -50,9 +55,9 @@ export const ListUsuarios = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
+    { field: 'id_Usuario', headerName: 'ID', width: 70 },
     { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
+    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150 },
     { field: 'rol', headerName: 'Rol', width: 130 },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
@@ -60,12 +65,12 @@ export const ListUsuarios = () => {
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
-      width: 200,
+      width: 195,
     },
     {
       field: 'Fecha_Vencimiento',
       headerName: 'Fecha de vencimiento',
-      width: 130,
+      width: 195,
     },
     {
       field: 'borrar',
@@ -91,6 +96,7 @@ export const ListUsuarios = () => {
     },
   ];
 
+
   function handleButtonClick(id) {
     fetch(`/api/update/${id}`, {
       method: 'PUT',
@@ -113,6 +119,7 @@ export const ListUsuarios = () => {
   const handleBack = () => {
     navegate('/usuarios');
   };
+
 
   return (
     <div className="ContUsuarios">
@@ -150,13 +157,14 @@ export const ListUsuarios = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nuevo Cliente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
           </div>
+
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}

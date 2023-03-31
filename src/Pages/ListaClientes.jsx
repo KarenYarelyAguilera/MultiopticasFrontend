@@ -27,9 +27,6 @@ export const ListaClientes = () => {
   const urlRoles =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
 
-  const urlClientes =
-    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes';
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -41,36 +38,31 @@ export const ListaClientes = () => {
       .then(response => response.json())
       .then(data => setRoles(data));
   }, []);
+
   const navegate = useNavigate();
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-      fetch(urlClientes)
-        .then(response => response.json())
-        .then(data => setTableData(data)),
     ),
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    { field: 'id_Usuario', headerName: 'ID Cliente', width: 165 },
+    { field: 'Usuario', headerName: 'Nombre', width: 165 },
+    { field: 'Nombre_Usuario', headerName: 'Apellido', width: 165 },
+    { field: 'rol', headerName: 'Genero', width: 165 },
+    { field: 'Estado_Usuario', headerName: 'Fecha de Nacimiento', width: 165 },
+    { field: 'Correo_Electronico', headerName: 'Direccion', width: 165 },
+    { field: 'Contrasenia', headerName: 'Telefono', width: 165 },
     {
       field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 200,
+      headerName: 'Correo Electronico',
+      width: 165,
     },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 130,
-    },
+    
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -150,11 +142,11 @@ export const ListaClientes = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuClientes/nuevoCliente');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nuevo Cliente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
@@ -192,7 +184,7 @@ export const ListaClientes = () => {
                           <input
                             type="text"
                             id="nombre"
-                            className="inputCustom"
+                            className='inputCustom'
                             value={usuario.row.Usuario}
                           />
                         </div>
@@ -205,7 +197,7 @@ export const ListaClientes = () => {
                           <input
                             type="text"
                             id="nombreUsuario"
-                            className="inputCustom"
+                            className='inputCustom'
                             value={usuario.row.Nombre_Usuario}
                           />
                         </div>
@@ -213,7 +205,7 @@ export const ListaClientes = () => {
                           <TextCustom text="Estado" className="titleInput" />
                           <input
                             type="text"
-                            className="inputCustom"
+                            className='inputCustom'
                             id="EstadoUsuario"
                             value={usuario.row.Estado_Usuario}
                           />
@@ -223,11 +215,7 @@ export const ListaClientes = () => {
                             text="Contraseña"
                             className="titleInput"
                           />
-                          <input
-                            type="text"
-                            id="contrasenia"
-                            className="inputCustom"
-                          />
+                          <input type="text" id="contrasenia" className='inputCustom'/>
                         </div>
                         <div className="contInput">
                           <TextCustom text="Rol" className="titleInput" />
@@ -250,7 +238,7 @@ export const ListaClientes = () => {
                           <input
                             type="text"
                             id="Email"
-                            className="inputCustom"
+                            className='inputCustom'
                             value={usuario.row.Correo_Electronico}
                           />
                         </div>
@@ -282,13 +270,6 @@ export const ListaClientes = () => {
           }}
         />
       </div>
-      <DataGrid
-        getRowId={tableData => tableData.idCliente}
-        rows={filteredData}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
     </div>
   );
 };
