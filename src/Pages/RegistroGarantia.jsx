@@ -20,7 +20,7 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const RegistroModelo = ({
+export const RegistroGarantia = ({
   msgError = '',
   success = false,
   warning = false,
@@ -84,7 +84,7 @@ export const RegistroModelo = ({
   };
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/ventas');
   };
 
   return (
@@ -93,7 +93,7 @@ export const RegistroModelo = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Modelo</h2>
+        <h2>Registro de Garantia</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos del modelo.
         </h3>
@@ -101,8 +101,17 @@ export const RegistroModelo = ({
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
+           
+          <div className="contInput">
+              <TextCustom text="ID Producto" className="titleInput" />
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>No se sabe</option>
+                <option value={2}>No se sabe</option>
+              </select>
+            </div>
+
             <div className="contInput">
-              <TextCustom text="ID Modelo" className="titleInput" />
+              <TextCustom text="Meses" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -128,14 +137,15 @@ export const RegistroModelo = ({
                     }
                   }
                 }}
-                placeholder="ID Modelo"
+                placeholder="Meses"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
+            
 
             <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
+              <TextCustom text="Estado" className="titleInput" />
               <select name="" className="selectCustom" id="genero">
                 <option value={1}>No se sabe</option>
                 <option value={2}>No se sabe</option>
@@ -143,7 +153,7 @@ export const RegistroModelo = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Descripcion de Modelo" className="titleInput" />
+              <TextCustom text="Descripcion" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setApellido(e.target.value);
@@ -168,11 +178,12 @@ export const RegistroModelo = ({
                 helperText={aviso}
                 maxLength={50}
                 className="inputCustomText"
-                placeholder="Descripcion de Modelo"
+                placeholder="Descripcion"
                 id="apellido"
               />
               <p className="error">{aviso}</p>
             </div>
+            
 
             <div className="contBtnStepper">
               <Button

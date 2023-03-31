@@ -15,15 +15,35 @@ export const MenuVentas = () => {
   const dataCards = 
   [
     {
-      titulo: "Nueva venta",
+      titulo: "Registro de Garantias",
       imagen: venta,
-      vinculo: "/ventas/nuevaventa", 
+      vinculo: "/menuVentas/RegistroGarantia", 
     },
     {
-      titulo: "Registro de ventas",
+      titulo: "Lista de Garantias",
       imagen: registro,
-      vinculo: "/ventas/reportes", 
-    }
+      vinculo: "/menuVentas/listaGarantias", 
+    },
+    {
+      titulo: "Registro de Sucursal",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroSucursal", 
+    },
+    {
+      titulo: "Lista de Sucursal",
+      imagen: registro,
+      vinculo: "/menuVentas/listaSucursal", 
+    },
+    {
+      titulo: "Registro de Descuento",
+      imagen: venta,
+      vinculo: "/menuVentas/RegistroDescuento", 
+    },
+    {
+      titulo: "Lista de Descuento",
+      imagen: registro,
+      vinculo: "/menuVentas/listaDescuento", 
+    },
     
   ]
 
