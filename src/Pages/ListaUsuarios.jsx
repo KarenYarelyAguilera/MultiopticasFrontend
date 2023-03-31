@@ -1,5 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -17,8 +18,10 @@ import { Button } from '@mui/material';
 import '../Styles/Usuarios.css';
 import { TextCustom } from '../Components/TextCustom';
 
+
 export const ListUsuarios = () => {
   const [roles, setRoles] = useState([]);
+
 
   const urlUsers =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
@@ -30,6 +33,7 @@ export const ListUsuarios = () => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+
   useEffect(() => {
     fetch(urlUsers)
       .then(response => response.json())
@@ -40,6 +44,7 @@ export const ListUsuarios = () => {
   }, []);
 
   const navegate = useNavigate();
+
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -91,6 +96,7 @@ export const ListUsuarios = () => {
     },
   ];
 
+
   function handleButtonClick(id) {
     fetch(`/api/update/${id}`, {
       method: 'PUT',
@@ -113,6 +119,7 @@ export const ListUsuarios = () => {
   const handleBack = () => {
     navegate('/usuarios');
   };
+
 
   return (
     <div className="ContUsuarios">
@@ -157,6 +164,7 @@ export const ListUsuarios = () => {
               Generar reporte
             </Button>
           </div>
+
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
