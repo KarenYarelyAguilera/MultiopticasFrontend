@@ -74,13 +74,13 @@ export const ListaEmpleados = () => {
   );
 
   const columns = [
-    { field: 'IdEmpleado', headerName: 'ID', width: 130 },
-    { field: 'Nombre', headerName: 'Nombre', width: 130 },
-    { field: 'apellido', headerName: 'Apellido', width: 130 },
-    { field: 'Telefono', headerName: 'Telefono', width: 130 },
-    { field: 'departamento', headerName: 'Sucursal', width: 130 },
-    { field: 'genero', headerName: 'Genero', width: 130 },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 200 },
+    { field: 'IdEmpleado', headerName: 'ID', width: 190 },
+    { field: 'Nombre', headerName: 'Nombre', width: 190 },
+    { field: 'apellido', headerName: 'Apellido', width: 190 },
+    { field: 'Telefono', headerName: 'Telefono', width: 190 },
+    { field: 'departamento', headerName: 'Sucursal', width: 190 },
+    { field: 'genero', headerName: 'Genero', width: 190 },
+    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -160,11 +160,11 @@ export const ListaEmpleados = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/usuarios/crearempleado');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Usuario
+              Nuevo Empleado
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

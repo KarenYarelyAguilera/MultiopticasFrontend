@@ -50,23 +50,13 @@ export const ListaGarantia = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 200,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 130,
-    },
+    { field: 'id_Usuario', headerName: 'ID Garantia', width: 210 },
+    { field: 'Usuario', headerName: 'Descripcion', width: 210 },
+    { field: 'Nombre_Usuario', headerName: 'Marca', width: 210 },
+    { field: 'rol', headerName: 'Modelo', width: 210 },
+    { field: 'Estado_Usuario', headerName: 'Meses', width: 210 },
+    { field: 'Correo_Electronico', headerName: 'Estado', width: 210 },
+    
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -146,11 +136,11 @@ export const ListaGarantia = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuVentas/RegistroGarantia');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nueva Garantia
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

@@ -63,12 +63,12 @@ export const Inventario = props => {
       vinculo: '/menuInventario/ListaMarcas',
     },
     {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
+      imagen: 'https://static.vecteezy.com/system/resources/previews/008/323/514/non_2x/3d-realistic-data-folder-icon-illustration-vector.jpg',
       titulo: 'Registro de Producto',
       vinculo: '/menuInventario/RegistroProducto', 
     },
     {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
+      imagen: 'https://static.vecteezy.com/system/resources/previews/006/945/991/non_2x/my-order-list-illustration-exclusive-design-inspiration-vector.jpg',
       titulo: 'Lista de Productos',
       vinculo: '/menuInventario/ListaProductos',
     },

@@ -281,7 +281,7 @@ export const RegistroSucursal = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/001/890/486/non_2x/summer-sunglasses-accessory-flat-style-icon-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/005/005/494/non_2x/the-central-cloud-server-has-many-branch-offices-free-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

@@ -50,27 +50,13 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 130 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 130 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 200,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 130,
-    },
+    { field: 'id_Usuario', headerName: 'ID Marca', width: 600 },
+    { field: 'Usuario', headerName: 'Nombre', width: 600 },
+ 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 200,
 
       renderCell: params => (
         <div className="contActions">
@@ -146,11 +132,11 @@ export const ListaMarcas = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuInventario/RegistroMarcas');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Crear Cliente
+              Nueva Marca
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
