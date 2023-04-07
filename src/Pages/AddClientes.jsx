@@ -31,7 +31,6 @@ export const AddClientes = ({
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
-  const [sucursales, setSucursales] = useState([]);
 
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
@@ -50,8 +49,8 @@ export const AddClientes = ({
 
   const [Telefono, setTelefono] = useState('');
 
-  const [Identidad, setIdentidad] = useState(0);
-  const [Telefonoc, setTelefonoc] = useState(0);
+  const [identidad,setIdentidad] = useState("")
+
 
 
   const navegate = useNavigate();
@@ -62,18 +61,26 @@ export const AddClientes = ({
     let apellidos = document.getElementById('apellido').value;
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
-    let direccion = parseInt(document.getElementById('direccion').value);
+    let direccion = document.getElementById('direccion').value;
     let correo = document.getElementById('correo').value
     let fechaN = document.getElementById('fechaN').value
 
-    
+    let fecha = new Date(fechaN)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
+
 
     let data = {
       idCliente:identidad,
       nombre:nombres,
       apellido:apellidos,
       idGenero:genero,
-      fechaNacimiento:fechaN,
+      fechaNacimiento:fechaFormateada,
       direccion:direccion,
       telefonoCliente:telefono,
       correoElectronico:correo

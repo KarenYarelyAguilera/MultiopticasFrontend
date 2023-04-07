@@ -18,26 +18,25 @@ import '../Styles/Usuarios.css';
 import { TextCustom } from '../Components/TextCustom';
 
 export const ListaMarcas = () => {
-  const [roles, setRoles] = useState([]);
 
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
+  const [cambio, setcambio] = useState(0)
+  const [marcah, setMarcah] = useState()
+
+  const urlMarcas =
+    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
+
+  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
+  
+  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlMarcas)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
-  }, []);
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -50,9 +49,9 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Marca', width: 600 },
-    { field: 'Usuario', headerName: 'Nombre', width: 600 },
- 
+    { field: 'IdMarca', headerName: 'ID', width: 600 },
+    { field: 'descripcion', headerName: 'Marca', width: 600 },
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -62,13 +61,13 @@ export const ListaMarcas = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleUpdt(params.row.IdMarca)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+           onClick={() => handleDel(params.row.IdMarca)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -77,25 +76,88 @@ export const ListaMarcas = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  function handleUpdt(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">Datos a actualizar</div>
+          <div className="contEditModal">
+            <div className="contInput">
+              <TextCustom text="Marca" className="titleInput" />
+              <input
+                type="text"
+                id="marca"
+                className="inputCustom"
+              />
+            </div>
+          </div>
+        </div>
+      ),
+      buttons: ["Cancelar","Actualizar"]
+    }).then((op) => {
+
+      switch (op) {
+        case true:
+          let data = {
+            IdMarca: id,
+            descripcion: document.getElementById("marca").value,
+          };
+    
+          console.log(data);
+    
+    
+          if (sendData(urlUpdateMarca, data)) {
+            swal(<h1>Marca Actualizada Correctamente</h1>);
+            setcambio(cambio+1)
+          }
+          break;
+      
+        default:
+          break;
+      }
+      
+    });
+
   }
+
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">Desea Elimiar esta marca?</div>
+          <div className="contEditModal">
+            
+          </div>
+        </div>
+      ),
+      buttons: ["Eliminar","Cancelar"]
+    }).then((op) => {
+
+      switch (op) {
+        case null:
+          let data = {
+            IdMarca: id
+          };
+    
+          console.log(data);
+    
+    
+          if (sendData(urlDelMarca, data)) {
+            swal(<h1>Marca Eliminada Correctamente</h1>);
+            setcambio(cambio+1)
+          }
+          break;
+      
+        default:
+          break;
+      }
+      
+    });
+
+  }
+
+
+
   const handleBack = () => {
     navegate('/inventario');
   };
@@ -145,119 +207,11 @@ export const ListaMarcas = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.IdMarca}
           rows={filteredData}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
-
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
-
-                    if (sendData(urlUpdateUser, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
         />
       </div>
     </div>
