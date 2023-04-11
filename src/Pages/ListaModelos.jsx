@@ -184,7 +184,6 @@ export const ListaModelos = () => {
   }
 
 
-
   const handleBack = () => {
     navegate('/inventario');
   };

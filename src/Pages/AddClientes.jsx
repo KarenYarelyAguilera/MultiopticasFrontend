@@ -79,7 +79,7 @@ export const AddClientes = ({
       idCliente:identidad,
       nombre:nombres,
       apellido:apellidos,
-      idGenero:genero,
+      IdGenero:genero,
       fechaNacimiento:fechaFormateada,
       direccion:direccion,
       telefonoCliente:telefono,
@@ -88,7 +88,7 @@ export const AddClientes = ({
 
     if (sendData(urlCliente, data)) {
       swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/listaClientes');
+        navegate('/menuClientes/lista');
       });
     }
 
