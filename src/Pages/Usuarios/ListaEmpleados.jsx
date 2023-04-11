@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -158,6 +158,7 @@ export const ListaEmpleados = () => {
           getRowId={tableData => tableData.IdEmpleado}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           onRowClick={empleado => {
             swal({

@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -58,9 +58,9 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID', width: 600 },
-    { field: 'descripcion', headerName: 'Marca', width: 600 },
-    { field: 'detalle', headerName: 'Modelo', width: 600 },
+    { field: 'IdModelo', headerName: 'ID', width: 400 },
+    { field: 'descripcion', headerName: 'Marca', width: 400 },
+    { field: 'detalle', headerName: 'Modelo', width: 400 },
 
     {
       field: 'borrar',
@@ -236,6 +236,7 @@ export const ListaModelos = () => {
           getRowId={tableData => tableData.IdModelo}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
         />

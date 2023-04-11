@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -210,6 +210,7 @@ export const ListaMarcas = () => {
           getRowId={tableData => tableData.IdMarca}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
         />
