@@ -124,15 +124,18 @@ export const NuevaCompra = ({
   };
 
   const columns = [
-    { field: 'IDCompra', headerName: 'ID Compra', width: 100 },
-    { field: 'Producto', headerName: 'Producto', width: 380 },
-    { field: 'Cantidad', headerName: 'Cantidad', width: 120 },
-    { field: 'Costo', headerName: 'Costo', width: 120 },
+    { field: 'IDCompra', headerName: 'No. de Compra', width: 145 },
+    { field: 'Producto', headerName: 'Producto', width: 145 },
+    { field: 'Cantidad', headerName: 'Cantidad', width: 145 },
+    { field: 'Fecha', headerName: 'Fecha', width: 145 },
+    { field: 'Costo de la Compra', headerName: 'Costo de la Compra', width: 145 },
+    { field: 'Total', headerName: 'Total', width: 145 },
+    
     
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 150,
+      width: 180,
 
       renderCell: params => (
         <div className="contActions">
