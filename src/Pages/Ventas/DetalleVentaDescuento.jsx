@@ -94,9 +94,9 @@ export const DetalleVentaDescuento= ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Detalle de Venta Descuento</h2>
+        <h2>Detalle de Venta </h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Detalles de Venta Descuento.
+          Complete todos los puntos para poder registrar los datos de Detalles de Venta.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -104,7 +104,7 @@ export const DetalleVentaDescuento= ({
           <div className="InputContPrincipal1">
            
           <div className="contInput">
-              <TextCustom text="Numero de Venta" className="titleInput" />
+              <TextCustom text="Saldo Abonado" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -130,14 +130,14 @@ export const DetalleVentaDescuento= ({
                     }
                   }
                 }}
-                placeholder="Numero de Venta"
+                placeholder="Saldo Abonado"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Descuento" className="titleInput" />
+              <TextCustom text="Saldo Restante" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -163,14 +163,47 @@ export const DetalleVentaDescuento= ({
                     }
                   }
                 }}
-                placeholder="Descuento"
+                placeholder="Saldo Restante"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+            
+            <div className="contInput">
+              <TextCustom text="ISV" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="ISV"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Porcentaje Descuento" className="titleInput" />
+              <TextCustom text="Tipo de Pago" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -196,14 +229,47 @@ export const DetalleVentaDescuento= ({
                     }
                   }
                 }}
-                placeholder="Porcentaje Descuento"
+                placeholder="Tipo de Pago"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+            
+            <div className="contInput">
+              <TextCustom text="Sub Total" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="Sub Total"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Total Descuento" className="titleInput" />
+              <TextCustom text="Total a Pagar" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -229,7 +295,7 @@ export const DetalleVentaDescuento= ({
                     }
                   }
                 }}
-                placeholder="Total Descuento"
+                placeholder="Total a Pagar"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -282,7 +348,7 @@ export const DetalleVentaDescuento= ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/018/942/418/non_2x/business-woman-working-on-business-presentation-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

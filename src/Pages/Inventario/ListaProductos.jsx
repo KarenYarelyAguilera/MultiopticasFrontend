@@ -20,21 +20,18 @@ import { TextCustom } from '../../Components/TextCustom';
 export const ListaProductos = () => {
   const [roles, setRoles] = useState([]);
 
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
+  const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=productos";
+  const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updProducto";
+  const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=modelos"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlProducto)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
+    fetch(urlModelos)
       .then(response => response.json())
       .then(data => setRoles(data));
   }, []);
@@ -50,13 +47,12 @@ export const ListaProductos = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Producto', width: 190 },
-    { field: 'Usuario', headerName: 'Marca', width: 190 },
-    { field: 'Nombre_Usuario', headerName: 'Modelo', width: 190 },
-    { field: 'rol', headerName: 'Descripcion', width: 190 },
-    { field: 'Estado_Usuario', headerName: 'Precio', width: 190 },
-    { field: 'Correo_Electronico', headerName: 'Cantidad Minima', width: 190 },
-    { field: 'Contrasenia', headerName: 'Cantidad Maxima', width: 190 },
+    { field: 'IdProducto', headerName: 'ID Producto', width: 190 },
+    { field: 'producto', headerName: 'producto', width: 190 },
+    { field: 'modelo', headerName: 'Modelo', width: 190 },
+    { field: 'precio', headerName: 'Precio', width: 190 },
+    { field: 'cantidadMin', headerName: 'Cantidad Minima', width: 190 },
+    { field: 'cantidadMax', headerName: 'Cantidad Maxima', width: 190 },
     
     {
       field: 'borrar',
@@ -150,7 +146,7 @@ export const ListaProductos = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.IdProducto}
           rows={filteredData}
           columns={columns}
           pageSize={5}
@@ -253,7 +249,7 @@ export const ListaProductos = () => {
                       Id_usuario: usuario.row.id_Usuario,
                     };
 
-                    if (sendData(urlUpdateUser, data)) {
+                    if (sendData(urlUpdProducto, data)) {
                       swal(<h1>Usuario Actualizado Correctamente</h1>);
                     }
                   });
