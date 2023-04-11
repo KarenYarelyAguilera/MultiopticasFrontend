@@ -205,7 +205,7 @@ export const DetallePromocionMarca = ({
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
@@ -216,7 +216,7 @@ export const DetallePromocionMarca = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/013/567/472/non_2x/businessman-working-on-business-startup-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

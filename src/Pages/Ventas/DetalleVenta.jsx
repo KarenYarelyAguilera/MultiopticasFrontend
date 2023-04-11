@@ -315,7 +315,7 @@ export const DetalleVenta = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/018/942/483/non_2x/business-target-illustration-concept-on-white-background-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

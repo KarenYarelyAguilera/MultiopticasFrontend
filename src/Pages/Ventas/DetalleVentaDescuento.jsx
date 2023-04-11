@@ -282,7 +282,7 @@ export const DetalleVentaDescuento= ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/018/942/418/non_2x/business-woman-working-on-business-presentation-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

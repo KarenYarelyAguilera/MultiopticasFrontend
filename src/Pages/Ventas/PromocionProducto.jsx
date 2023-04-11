@@ -21,7 +21,7 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const DetalleVentaPromocion = ({
+export const PromocionProducto = ({
   msgError = '',
   success = false,
   warning = false,
@@ -94,9 +94,9 @@ export const DetalleVentaPromocion = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Venta Promocion</h2>
+        <h2>Registro Promocion de Producto</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Venta Promocion.
+          Complete todos los puntos para poder registrar los datos Promocion de Producto.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -104,137 +104,20 @@ export const DetalleVentaPromocion = ({
           <div className="InputContPrincipal1">
            
           <div className="contInput">
-              <TextCustom text="Numero de Venta" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Numero de Venta"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Promocion" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Promocion"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>No se sabe</option>
+                <option value={2}>No se sabe</option>
+              </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cantidad" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Cantidad"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
+              <TextCustom text="Producto" className="titleInput" />
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>No se sabe</option>
+                <option value={2}>No se sabe</option>
+              </select>
             </div>
-
-            <div className="contInput">
-              <TextCustom text="Precio de Venta Promocion" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Precio de Venta Promocion"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
 
             <div className="contBtnStepper">
               <Button
@@ -272,7 +155,7 @@ export const DetalleVentaPromocion = ({
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
@@ -283,7 +166,7 @@ export const DetalleVentaPromocion = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/018/942/411/non_2x/businessman-working-on-business-startup-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/013/590/422/non_2x/businessman-analyzing-data-illustration-concept-on-white-background-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
