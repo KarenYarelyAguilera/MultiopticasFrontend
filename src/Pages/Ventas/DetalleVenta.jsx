@@ -79,7 +79,7 @@ export const DetalleVenta = ({
     };
     if (sendData(urlCliente, data)) {
       swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/listaClientes');
+        navegate('/menuVentas/DetalleVentaDescuento');
       });
     }
   };
@@ -104,39 +104,6 @@ export const DetalleVenta = ({
           <div className="InputContPrincipal1">
            
           <div className="contInput">
-              <TextCustom text="Numero de Venta" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Numero de Venta"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Producto" className="titleInput" />
 
               <input
@@ -164,6 +131,105 @@ export const DetalleVenta = ({
                   }
                 }}
                 placeholder="Producto"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Descuento" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="Descuento"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Promocion" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="Promocion"
+                id="Nidentidad"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Garantia" className="titleInput" />
+
+              <input
+                error={errorIdentidad}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
+                  if (iIdentidad === '') {
+                    setErrorIdentidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorIdentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                placeholder="Garantia"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -203,7 +269,7 @@ export const DetalleVenta = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Garantia" className="titleInput" />
+              <TextCustom text="Precio" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -229,7 +295,7 @@ export const DetalleVenta = ({
                     }
                   }
                 }}
-                placeholder="Garantia"
+                placeholder="Precio"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>

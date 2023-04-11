@@ -136,72 +136,6 @@ export const NuevaVenta = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="No. Venta" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="No. Venta"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Numero de CAI" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Numero de CAI"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
               <TextCustom text="RTN" className="titleInput" />
 
               <input
@@ -265,38 +199,6 @@ export const NuevaVenta = ({
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Fecha" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
-                type="date"
-                name=""
-                helperText={texto}
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha"
-                id="fechaN"
-              />
-              {<p className="error">{texto}</p>}
             </div>
 
             <div className="contInput">
