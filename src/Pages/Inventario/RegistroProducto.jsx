@@ -17,8 +17,8 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlCliente =
-  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+const urlProducto="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertProducto"
+const urlModelos="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
 
 export const RegistroProducto = ({
   msgError = '',
@@ -26,59 +26,33 @@ export const RegistroProducto = ({
   warning = false,
   props,
 }) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  const [sucursales, setSucursales] = useState([]);
+  const [Modelo, setModelo] = useState([])
 
-  const [iIdentidad, setiIdentidad] = React.useState('');
+  useEffect(()=>{
+    fetch(urlModelos).then(response =>response.json()).then(data =>setModelo(data))
+  },[])
+
   const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
-
-  const [Nombre, setNombre] = React.useState('');
-  const [errorNombre, setErrorNombre] = React.useState(false);
-  const [Msj, setMsj] = React.useState(false);
-
-  const [Apellido, setApellido] = React.useState('');
   const [errorApellido, setErrorApellido] = React.useState(false);
-  const [aviso, setAviso] = React.useState(false);
-
-  const [errorTelefono, setErrorTelefono] = React.useState(false);
-  const [texto, setTexto] = React.useState(false);
-
-  const [Telefono, setTelefono] = useState('');
-
-  const [Identidad, setIdentidad] = useState(0);
-  const [Telefonoc, setTelefonoc] = useState(0);
-
 
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let identidad = document.getElementById('Nidentidad').value;
-    let nombres = document.getElementById('nombre').value;
-    let apellidos = document.getElementById('apellido').value;
-    let telefono = document.getElementById('phone').value;
-    let genero = parseInt(document.getElementById('genero').value);
-    let direccion = parseInt(document.getElementById('direccion').value);
-    let correo = document.getElementById('correo').value
-    let fechaN = document.getElementById('Fnacimiento').value
-
+   
     let data = {
-      idCliente:identidad,
-      nombre:nombres,
-      apellido:apellidos,
-      idGenero:genero,
-      fechaNacimiento:fechaN,
-      direccion:direccion,
-      telefonoCliente:telefono,
-      correoElectronico:correo
+      IdProducto:parseInt(document.getElementById("idProducto").value),
+      IdModelo:parseInt(document.getElementById("modelo").value),
+      precio:document.getElementById("precio").value,
+      cantidadMin:parseInt(document.getElementById("cantMin").value),
+      cantidadMax:parseInt(document.getElementById("cantMax").value),
+      descripcion:document.getElementById("producto").value
     };
-    if (sendData(urlCliente, data)) {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/listaClientes');
+
+    if (sendData(urlProducto, data)) {
+      swal('Producto agregado con exito', '', 'success').then(result => {
+        navegate('/menuInventario/ListaProductos');
       });
     }
   };
@@ -110,26 +84,8 @@ export const RegistroProducto = ({
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
                 placeholder="ID Producto"
-                id="Nidentidad"
+                id="idProducto"
               />
               <p class="error">{leyenda}</p>
             </div>
@@ -137,9 +93,18 @@ export const RegistroProducto = ({
 
             <div className="contInput">
               <TextCustom text="ID Modelo" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>No se sabe</option>
-                <option value={2}>No se sabe</option>
+              <select name="" className="selectCustom" id="modelo">
+              {Modelo.length ? (
+                  Modelo.map(pre => (
+                    <option key={pre.IdModelo} value={pre.IdModelo}>
+                      {pre.detalle}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
@@ -152,28 +117,9 @@ export const RegistroProducto = ({
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
                 placeholder="Precio"
-                id="Nidentidad"
+                id="precio"
               />
-              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -185,28 +131,9 @@ export const RegistroProducto = ({
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
                 placeholder="Cantidad Maxima"
-                id="Nidentidad"
+                id="cantMax"
               />
-              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -218,60 +145,22 @@ export const RegistroProducto = ({
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
                 placeholder="Cantidad Minima"
-                id="Nidentidad"
+                id="cantMin"
               />
-              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Descripcion del Producto" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setApellido(e.target.value);
-                  if (Apellido == '') {
-                    setErrorApellido(true);
-                    setAviso('Los campos no deben estar vacios');
-                  } else {
-                    setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Apellido)) {
-                      setErrorApellido(true);
-                      setAviso('Solo deben de ingresar letras');
-                    } else {
-                      setErrorApellido(false);
-                      setAviso('');
-                    }
-                  }
-                }}
                 error={errorApellido}
                 type="text"
                 name=""
-                helperText={aviso}
                 maxLength={50}
                 className="inputCustomText"
                 placeholder="Descripcion del Producto"
-                id="apellido"
+                id="producto"
               />
-              <p className="error">{aviso}</p>
             </div>
             
 
@@ -279,43 +168,10 @@ export const RegistroProducto = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (
-                    typeof (
-                      parseInt(document.getElementById('Nidentidad').value) !==
-                      'number'
-                    )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
-                  } else {
-                    handleNext();
-                  }
-                }}
+                onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
             </div>
           </div>
         </div>

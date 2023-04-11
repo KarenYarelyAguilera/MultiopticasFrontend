@@ -1,6 +1,5 @@
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
-
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -18,10 +17,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-
-export const ListUsuarios = () => {
+export const ListaProductoPromocion = () => {
   const [roles, setRoles] = useState([]);
-
 
   const urlUsers =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
@@ -32,7 +29,6 @@ export const ListUsuarios = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
 
   useEffect(() => {
     fetch(urlUsers)
@@ -45,7 +41,6 @@ export const ListUsuarios = () => {
 
   const navegate = useNavigate();
 
-
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -55,27 +50,14 @@ export const ListUsuarios = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 70 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 195,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 195,
-    },
+    { field: 'id_Usuario', headerName: 'ID Producto Promocion', width: 380 },
+    { field: 'Usuario', headerName: 'Producto', width: 380 },
+    { field: 'Nombre_Usuario', headerName: 'Promocion', width: 380 },
+    
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 380,
 
       renderCell: params => (
         <div className="contActions">
@@ -95,7 +77,6 @@ export const ListUsuarios = () => {
       ),
     },
   ];
-
 
   function handleButtonClick(id) {
     fetch(`/api/update/${id}`, {
@@ -117,16 +98,15 @@ export const ListUsuarios = () => {
       });
   }
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/ventas');
   };
-
 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Usuarios</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista Promociones De Productos</h2>
 
       <div
         style={{
@@ -153,18 +133,17 @@ export const ListUsuarios = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                navegate('/menuVentas/PromocionProducto');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              Nuevo Producto Promocion
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
           </div>
-
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
@@ -172,7 +151,6 @@ export const ListUsuarios = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={usuario => {
             swal({
               buttons: {

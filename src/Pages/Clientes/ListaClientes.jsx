@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -18,26 +18,23 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaClientes = () => {
-  const [roles, setRoles] = useState([]);
+  const [cambio, setCambio] = useState(0);
 
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
+  const urlClientes =
+    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes';
+  const urlUpdateCliente =
+    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=UpdateCliente';
+
+  const urlDelCliente = "http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=DeleteCliente"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlClientes)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
-  }, []);
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -50,19 +47,15 @@ export const ListaClientes = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Cliente', width: 165 },
-    { field: 'Usuario', headerName: 'Nombre', width: 165 },
-    { field: 'Nombre_Usuario', headerName: 'Apellido', width: 165 },
-    { field: 'rol', headerName: 'Genero', width: 165 },
-    { field: 'Estado_Usuario', headerName: 'Fecha de Nacimiento', width: 165 },
-    { field: 'Correo_Electronico', headerName: 'Direccion', width: 165 },
-    { field: 'Contrasenia', headerName: 'Telefono', width: 165 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Correo Electronico',
-      width: 165,
-    },
-    
+    { field: 'idCliente', headerName: 'ID', width: 165 },
+    { field: 'nombre', headerName: 'Nombre', width: 165 },
+    { field: 'apellido', headerName: 'Apellido', width: 165 },
+    { field: 'genero', headerName: 'Genero', width: 165 },
+    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 165 },
+    { field: 'direccion', headerName: 'Direccion', width: 165 },
+    { field: 'Telefono', headerName: 'Telefono', width: 165 },
+    { field: 'Email', headerName: 'Correo Electronico', width: 165 },
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -72,13 +65,13 @@ export const ListaClientes = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleUpdt(params.row.idCliente)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.idCliente)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -87,24 +80,131 @@ export const ListaClientes = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">Desea Elimiar este Cliente?</div>
+          <div className="contEditModal">
+
+          </div>
+        </div>
+      ),
+      buttons: ["Eliminar", "Cancelar"]
+    }).then((op) => {
+
+      switch (op) {
+        case null:
+          let data = {
+            idCliente: id,
+          };
+
+          console.log(data);
+
+
+          if (sendData(urlDelCliente, data)) {
+            swal(<h1>Cliente Eliminado Correctamente</h1>);
+            setCambio(cambio + 1)
+          }
+          break;
+
+        default:
+          break;
+      }
+
+    });
+
+  }
+
+  function handleUpdt(id) {
+    console.log(id);
+    swal(
+      <div>
+        <div className="logoModal">Datos a actualizar</div>
+        <div className="contEditModal">
+          <div className="contInput">
+            <TextCustom text="Usuario" className="titleInput" />
+            <input
+              type="text"
+              id="nombre"
+              className='inputCustom'
+            />
+          </div>
+
+          <div className="contInput">
+            <TextCustom
+              text="Apellido"
+              className="titleInput"
+            />
+            <input
+              type="text"
+              id="apellido"
+              className='inputCustom'
+            />
+          </div>
+          <div className="contInput">
+            <TextCustom text="Genero" className="titleInput" />
+            <select name="" id="genero">
+              <option value={1}>Masculino</option>
+              <option value={2}>Femenino</option>
+            </select>
+          </div>
+          <div className="contInput">
+            <TextCustom
+              text="fechaNacimiento"
+              className="titleInput"
+            />
+            <input type="date" id="fechaNacimiento" className='inputCustom' />
+          </div>
+          <div className="contInput">
+            <TextCustom text="direccion" className="titleInput" />
+            <input type="text" id='direccion' />
+          </div>
+          <div className="contInput">
+            <TextCustom text="telefono" className="titleInput" />
+            <input type="text" id='telefono' />
+          </div>
+          <div className="contInput">
+            <TextCustom text="Email" className="titleInput" />
+            <input
+              type="text"
+              id="Email"
+              className='inputCustom'
+            />
+          </div>
+        </div>
+      </div>,
+    ).then(() => {
+
+      let fechaN=document.getElementById('fechaNacimiento').value
+
+      let fecha = new Date(fechaN)
+
+      let anio = fecha.getFullYear().toString();
+      let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+      let dia = fecha.getDate().toString().padStart(2, "0");
+
+
+      let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+
+      let data = {
+        nombre: document.getElementById('nombre').value,
+        apellido: document.getElementById('apellido').value,
+        IdGenero: document.getElementById('genero').value,
+        fechaNacimiento:fechaFormateada,
+        direccion: document.getElementById('direccion').value,
+        telefonoCliente: document.getElementById('telefono').value,
+        correoElectronico: document.getElementById('Email').value,
+        idCliente: id,
+      };
+
+      if (sendData(urlUpdateCliente, data)) {
+        swal(<h1>Cliente Actualizado Correctamente</h1>);
+        setCambio(cambio + 1)
+      }
+    });
+
   }
   const handleBack = () => {
     navegate('/menuClientes');
@@ -155,119 +255,12 @@ export const ListaClientes = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.idCliente}
           rows={filteredData}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
-
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
-
-                    if (sendData(urlUpdateUser, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
     </div>

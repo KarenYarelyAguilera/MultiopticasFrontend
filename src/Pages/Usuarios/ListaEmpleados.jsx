@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -46,25 +46,7 @@ export const ListaEmpleados = () => {
       .then(data => setSucursales(data));
   }, []);
 
-  // const handleChange=e=>{
-  //     setBusqueda(e.target.value)
-  //     filtrar(e.target.value)
-  // }
-
-  // const filtrar = (termino) =>{
-  //     let resultados = tableData.filter((elemento)=>{
-  //         if (elemento.Nombre.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.apellido.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.Telefono.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.departamento.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.genero.toString().toLowerCase().includes(termino.toLowerCase())
-  //         || elemento.numeroIdentidad.toString().toLowerCase().includes(termino.toLowerCase())
-  //         ) {
-  //             return elemento
-  //         }
-  //     })
-  //     setTableData(resultados)
-  // }
+  
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -177,6 +159,7 @@ export const ListaEmpleados = () => {
           rows={filteredData}
           columns={columns}
           pageSize={5}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={empleado => {
             swal({
               buttons: {
