@@ -101,12 +101,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
           {/* <Route index element={<Login access={access} user={user} />} /> */}
 
-          <Route
+          {/* <Route
             index
             element={
               <Login access={access} user={user} rol={rol} mail={mail} />
             }
-          />
+          /> */}
 
           <Route
             path="/empleados/lista"
@@ -560,7 +560,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/listaCompra"
             element={
               <ProtectedRoute activo={activo}>
@@ -620,7 +620,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/ListaPromocionProducto"
             element={
               <ProtectedRoute activo={activo}>
@@ -740,7 +740,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-            <Route
+          <Route
             path="/menuVentas/NuevaVenta"
             element={
               <ProtectedRoute activo={activo}>
@@ -760,7 +760,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVenta"
             element={
               <ProtectedRoute activo={activo}>
@@ -780,7 +780,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVentaDescuento"
             element={
               <ProtectedRoute activo={activo}>
@@ -800,7 +800,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVentaPromocion"
             element={
               <ProtectedRoute activo={activo}>
@@ -820,7 +820,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetallePromocionMarca"
             element={
               <ProtectedRoute activo={activo}>
@@ -840,7 +840,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/PromocionProducto"
             element={
               <ProtectedRoute activo={activo}>
@@ -860,23 +860,24 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
-            path="/menuVentas/NuevaCompra"
+          <Route
+            // path="/menuVentas/NuevaCompra"
+            index
             element={
-              <ProtectedRoute activo={activo}>
-                <div className="flex">
+              // <ProtectedRoute activo={activo}>
+                <div className="flex" style={{width: '99%'}}>
                   <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
+                    // user={user}
+                    // rol={rol}
+                    // mail={mail}
+                    // estado={access}
+                    // Rol={Rol}
+                    // obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
                   <NuevaCompra />
                 </div>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           ></Route>
 
@@ -919,8 +920,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-
-          
 
           <Route
             path="/config"
