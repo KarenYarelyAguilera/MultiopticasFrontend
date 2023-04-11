@@ -560,7 +560,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/listaCompra"
             element={
               <ProtectedRoute activo={activo}>
@@ -620,7 +620,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/ListaPromocionProducto"
             element={
               <ProtectedRoute activo={activo}>
@@ -643,7 +643,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/usuarios/crearempleado"
             element={
-              // <ProtectedRoute activo={activo}>
+              <ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral
                   user={user}
@@ -656,14 +656,14 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <DatosEmpleado></DatosEmpleado>
               </div>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           ></Route>
 
           <Route
             path="/recuperacionPassword"
             element={
-              // <ProtectedRoute activo={activo}>
+              <ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral
                   user={user}
@@ -676,7 +676,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <RecuperacionPassword></RecuperacionPassword>
               </div>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           ></Route>
 
@@ -684,7 +684,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/ventas"
             element={
               <ProtectedRoute activo={activo}>
-                <div className="flex">
+                <div className="flex" style={{width:'99%'}}>
                   <BarraLateral
                     user={user}
                     rol={rol}
@@ -740,7 +740,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-            <Route
+          <Route
             path="/menuVentas/NuevaVenta"
             element={
               <ProtectedRoute activo={activo}>
@@ -760,7 +760,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVenta"
             element={
               <ProtectedRoute activo={activo}>
@@ -780,7 +780,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVentaDescuento"
             element={
               <ProtectedRoute activo={activo}>
@@ -800,7 +800,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetalleVentaPromocion"
             element={
               <ProtectedRoute activo={activo}>
@@ -820,7 +820,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/DetallePromocionMarca"
             element={
               <ProtectedRoute activo={activo}>
@@ -840,7 +840,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/PromocionProducto"
             element={
               <ProtectedRoute activo={activo}>
@@ -860,11 +860,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/NuevaCompra"
             element={
               <ProtectedRoute activo={activo}>
-                <div className="flex">
+                <div className="flex" style={{width: '99%'}}>
                   <BarraLateral
                     user={user}
                     rol={rol}
@@ -919,8 +919,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-
-          
 
           <Route
             path="/config"
