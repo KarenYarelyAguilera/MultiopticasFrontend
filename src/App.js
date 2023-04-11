@@ -60,6 +60,12 @@ import { RegistroSucursal } from './Pages/Ventas/RegistroSucursal.jsx';
 import { ListaSucursal } from './Pages/Ventas/ListaSucursal.jsx';
 import { ListaDescuento } from './Pages/Ventas/ListaDescuento.jsx';
 import { RegistroDescuento } from './Pages/Ventas/RegistroDecuento.jsx';
+import { ListaVenta } from './Pages/Ventas/ListaVenta.jsx';
+import { NuevaCompra } from './Pages/Ventas/NuevaCompra.jsx';
+import { ListaCompra } from './Pages/Ventas/ListaCompra.jsx';
+import { DetalleVentaDescuento } from './Pages/Ventas/DetalleVentaDescuento.jsx';
+import { DetalleVentaPromocion } from './Pages/Ventas/DetalleVentaPromocion.jsx';
+import { DetallePromocionMarca } from './Pages/Ventas/DetallePromocionMarca.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -533,6 +539,46 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
+            path="/menuVentas/listaVenta"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaVenta />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/listaCompra"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaCompra />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
             path="/menuVentas/listaSucursal"
             element={
               <ProtectedRoute activo={activo}>
@@ -672,6 +718,126 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+            <Route
+            path="/menuVentas/NuevaVenta"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <NuevaVenta />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetalleVenta"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetalleVenta />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetalleVentaDescuento"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetalleVentaDescuento />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetalleVentaPromocion"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetalleVentaPromocion />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetallePromocionMarca"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetallePromocionMarca />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/NuevaCompra"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <NuevaCompra />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/menuVentas/RegistroDescuento"
             element={
@@ -712,25 +878,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-          <Route
-            path="/ventas/reportes"
-            element={
-              <ProtectedRoute activo={activo}>
-                <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <DetalleVenta />
-                </div>
-              </ProtectedRoute>
-            }
-          ></Route>
+          
+
           <Route
             path="/config"
             element={

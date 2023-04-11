@@ -21,7 +21,7 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const DetalleVenta = ({
+export const DetalleVentaDescuento= ({
   msgError = '',
   success = false,
   warning = false,
@@ -94,9 +94,9 @@ export const DetalleVenta = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Detalle de Venta</h2>
+        <h2>Detalle de Venta Descuento</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Detalle de Venta.
+          Complete todos los puntos para poder registrar los datos de Detalles de Venta Descuento.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -137,7 +137,7 @@ export const DetalleVenta = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Producto" className="titleInput" />
+              <TextCustom text="Descuento" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -163,14 +163,14 @@ export const DetalleVenta = ({
                     }
                   }
                 }}
-                placeholder="Producto"
+                placeholder="Descuento"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cantidad" className="titleInput" />
+              <TextCustom text="Porcentaje Descuento" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -196,14 +196,14 @@ export const DetalleVenta = ({
                     }
                   }
                 }}
-                placeholder="Cantidad"
+                placeholder="Porcentaje Descuento"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Garantia" className="titleInput" />
+              <TextCustom text="Total Descuento" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -229,40 +229,7 @@ export const DetalleVenta = ({
                     }
                   }
                 }}
-                placeholder="Garantia"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Precio de Examen" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Precio de Examen"
+                placeholder="Total Descuento"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>

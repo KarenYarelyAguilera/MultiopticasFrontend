@@ -15,6 +15,46 @@ export const MenuVentas = () => {
   const dataCards = 
   [
     {
+      titulo: "Nueva Venta",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/NuevaVenta", 
+    },
+    {
+      titulo: "Detalle de Venta",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/DetalleVenta", 
+    },
+    {
+      titulo: "Detalle de Venta Descuento",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/DetalleVentaDescuento", 
+    },
+    {
+      titulo: "Detalle de Venta Promocion",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/DetalleVentaPromocion", 
+    },
+    {
+      titulo: "Detalle de Venta Promocion por la Marca",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/DetallePromocionMarca", 
+    },
+    {
+      titulo: "Lista de Venta",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/ListaVenta", 
+    },
+    {
+      titulo: "Nueva Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/NuevaCompra", 
+    },
+    {
+      titulo: "Lista de Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/ListaCompra", 
+    },
+    {
       titulo: "Registro de Garantias",
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/640/196/non_2x/3d-quality-guarantee-medal-with-star-and-ribbon-icon-isolated-on-white-background-3d-prize-winner-and-award-concept-cartoon-minimal-style-3d-badge-icon-render-illustration-vector.jpg',
       vinculo: "/menuVentas/RegistroGarantia", 
