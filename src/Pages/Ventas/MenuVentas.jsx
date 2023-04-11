@@ -25,20 +25,20 @@ export const MenuVentas = () => {
       vinculo: "/menuVentas/DetalleVenta", 
     },
     {
-      titulo: "Detalle de Venta Descuento",
+      titulo: "Conclusion de Venta",
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/720/non_2x/company-goals-and-philosophy-concept-business-mission-flat-modern-illustration-vector.jpg',
       vinculo: "/menuVentas/DetalleVentaDescuento", 
     },
-    {
-      titulo: "Detalle de Venta Promocion",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/718/non_2x/global-marketing-strategy-concept-marketing-team-target-affiliate-program-flat-modern-illustration-vector.jpg',
-      vinculo: "/menuVentas/DetalleVentaPromocion", 
-    },
-    {
-      titulo: "Detalle de Venta Promocion por la Marca",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/012/444/007/non_2x/target-investment-business-analysis-vector.jpg',
-      vinculo: "/menuVentas/DetallePromocionMarca", 
-    },
+    // {
+    //   titulo: "Detalle de Venta Promocion",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/718/non_2x/global-marketing-strategy-concept-marketing-team-target-affiliate-program-flat-modern-illustration-vector.jpg',
+    //   vinculo: "/menuVentas/DetalleVentaPromocion", 
+    // },
+    // {
+    //   titulo: "Detalle de Venta Promocion por la Marca",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/444/007/non_2x/target-investment-business-analysis-vector.jpg',
+    //   vinculo: "/menuVentas/DetallePromocionMarca", 
+    // },
     {
       titulo: "Lista de Venta",
       imagen: 'https://static.vecteezy.com/system/resources/previews/000/622/840/non_2x/to-do-list-page-with-check-marks-and-pencil-concept-illustration-for-time-and-project-management-vector-illustration-template-in-flat-style.jpg',

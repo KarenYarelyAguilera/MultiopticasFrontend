@@ -11,10 +11,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../Styles/Usuarios.css';
 
 //Components
-import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+
 
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
@@ -30,6 +30,7 @@ export const AddClientes = ({
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
+
   const [sucursales, setSucursales] = useState([]);
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
@@ -46,8 +47,6 @@ export const AddClientes = ({
 
   const [Telefono, setTelefono] = useState('');
 
-  const [Identidad, setIdentidad] = useState(0);
-  const [Telefonoc, setTelefonoc] = useState(0);
 
   const navegate = useNavigate();
 
@@ -57,26 +56,37 @@ export const AddClientes = ({
     let apellidos = document.getElementById('apellido').value;
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
-    let direccion = parseInt(document.getElementById('direccion').value);
-    let correo = document.getElementById('correo').value;
-    let fechaN = document.getElementById('fechaN').value;
+    let direccion = document.getElementById('direccion').value;
+    let correo = document.getElementById('correo').value
+    let fechaN = document.getElementById('fechaN').value
+
+    let fecha = new Date(fechaN)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
+
 
     let data = {
-      idCliente: identidad,
-      nombre: nombres,
-      apellido: apellidos,
-      idGenero: genero,
-      fechaNacimiento: fechaN,
-      direccion: direccion,
-      telefonoCliente: telefono,
-      correoElectronico: correo,
+      idCliente:identidad,
+      nombre:nombres,
+      apellido:apellidos,
+      IdGenero:genero,
+      fechaNacimiento:fechaFormateada,
+      direccion:direccion,
+      telefonoCliente:telefono,
+      correoElectronico:correo
     };
 
     if (sendData(urlCliente, data)) {
       swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/listaClientes');
+        navegate('/menuClientes/lista');
       });
     }
+
   };
 
   const handleBack = () => {
@@ -108,7 +118,6 @@ export const AddClientes = ({
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');
@@ -336,8 +345,7 @@ export const AddClientes = ({
               <Button
                 variant="contained"
                 onClick={handleNext}
-                className="btnStepper"
-              >
+                className="btnStepper">
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
@@ -351,7 +359,7 @@ export const AddClientes = ({
           src={
             'https://static.vecteezy.com/system/resources/previews/011/873/935/non_2x/online-voting-concept-flat-style-design-illustration-tiny-people-with-voting-poll-online-survey-working-together-vector.jpg'
           }
-          className="imgCont"
+          className='imgCont'
           alt="No se encuentro la imagen"
         />
       </div>
