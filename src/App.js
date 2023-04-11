@@ -684,7 +684,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/ventas"
             element={
               <ProtectedRoute activo={activo}>
-                <div className="flex">
+                <div className="flex" style={{width:'99%'}}>
                   <BarraLateral
                     user={user}
                     rol={rol}
