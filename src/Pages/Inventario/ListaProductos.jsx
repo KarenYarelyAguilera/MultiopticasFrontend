@@ -18,11 +18,13 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaProductos = () => {
+  const [Modelo, setModelo] = useState([])
   const [roles, setRoles] = useState([]);
+  const [cambio,setCambio] = useState(0)
 
-  const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=productos";
-  const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updProducto";
-  const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=modelos"
+  const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
+  const urlUpdProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
+  const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,8 +35,8 @@ export const ListaProductos = () => {
       .then(data => setTableData(data));
     fetch(urlModelos)
       .then(response => response.json())
-      .then(data => setRoles(data));
-  }, []);
+      .then(data => setModelo(data));
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -53,7 +55,7 @@ export const ListaProductos = () => {
     { field: 'precio', headerName: 'Precio', width: 190 },
     { field: 'cantidadMin', headerName: 'Cantidad Minima', width: 190 },
     { field: 'cantidadMax', headerName: 'Cantidad Maxima', width: 190 },
-    
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -63,13 +65,13 @@ export const ListaProductos = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleUpdt(params)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -78,24 +80,82 @@ export const ListaProductos = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  function handleUpdt(param) {
+    swal(
+      <div>
+        <div className="logoModal">Datos a actualizar</div>
+        <div className="contEditModal">
+          <div className="contInput">
+            <TextCustom text="producto" className="titleInput" />
+            <input
+              type="text"
+              id="producto"
+              className='inputCustom'
+              value={param.row.producto}
+            />
+          </div>
+
+          <div className="contInput">
+            <TextCustom
+              text="Modelo"
+              className="titleInput"
+            />
+            <select name="" id="modelo">
+            {Modelo.length ? (
+                  Modelo.map(pre => (
+                    <option key={pre.IdModelo} value={pre.IdModelo}>
+                      {pre.detalle}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+            </select>
+          </div>
+          <div className="contInput">
+            <TextCustom text="Precio" className="titleInput" />
+            <input
+              type="text"
+              className='inputCustom'
+              id="precio"
+              value={param.row.precio}
+            />
+          </div>
+          <div className="contInput">
+            <TextCustom
+              text="Cantidad minima"
+              className="titleInput"
+            />
+            <input type="text" id="cantMin" className='inputCustom' value={param.row.cantidadMin} />
+          </div>
+          <div className="contInput">
+            <TextCustom text="cantMax" className="titleInput" />
+            <input type="text" id="cantMax" className='inputCustom' value={param.row.cantidadMax} />
+          </div>
+        </div>
+      </div>,
+    ).then(() => {
+
+      let data = {
+        descripcion:document.getElementById('producto').value,
+        IdModelo:document.getElementById('modelo').value,
+        precio: document.getElementById('precio').value,
+        cantidadMin: document.getElementById('cantMin').value,
+        cantidadMax:document.getElementById('cantMax').value,
+        IdProducto: param.row.IdProducto,
+      };
+
+      if (sendData(urlUpdProducto, data)) {
+        swal(<h1>Producto Actualizado Correctamente</h1>);
+        setCambio(cambio+1)
+      }
+    });
+  }
+
+  function handleDel(id) {
+
   }
   const handleBack = () => {
     navegate('/inventario');
@@ -151,114 +211,6 @@ export const ListaProductos = () => {
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
-
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
-
-                    if (sendData(urlUpdProducto, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
         />
       </div>
     </div>
