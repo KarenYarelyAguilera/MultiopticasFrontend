@@ -101,7 +101,29 @@
   width: 60%;
   display: grid;
   grid-template-rows: repeat(2, 50px);
-  margin-top: 130px;
+  margin-top: 50px;
+}
+
+.secondButtons {
+  width: 93%;
+  height: 30px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+}
+
+.contRecuerdame {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 10% 20%;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btnRecuerdame {
+  width: 20px;
+  height: 20px;
 }
 
 .btnOlvidar {
@@ -111,7 +133,6 @@
   font-weight: bold;
   transition: 0.5s ease;
   text-align: right;
-  margin-right: 45px;
 }
 
 .btnOlvidar:hover {
