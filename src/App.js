@@ -6,45 +6,66 @@ import React from 'react';
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
 import { BarraLateral } from './Components/BarraLateral.jsx';
-//Modulos/paginas de ventas. ⬇️⬇️⬇️
-import { Login } from './Pages/login';
+
+//Pages
 import { Home } from './Pages/Home.jsx';
-import { MenuVentas } from './Pages/MenuVentas.jsx';
-import { NuevaVenta } from './Pages/NuevaVenta.jsx';
-import { DetalleVenta } from './Pages/DetalleVenta.jsx';
-import { Inventario } from './Pages/Inventario.jsx';
-import { RegistroInventario } from './Pages/RegistroInventario.jsx';
-import { Usuarios } from './Pages/Usuarios.jsx';
-import { AddUsers } from './Pages/AddUsers.jsx';
-import { RecuperacionPassword } from './Pages/RecuperacionPassword.jsx';
-import { PreguntasSeguridad } from './Pages/PreguntasSeguridad.jsx';
-import { ConfirmarPassword } from './Pages/ConfirmarPassword.jsx';
-import { DatosEmpleado } from './Pages/DatosEmpleado.jsx';
-import { Metodos } from './Pages/Metodos.jsx';
-import { ListaEmpleados } from './Pages/ListaEmpleados.jsx';
-import { ListUsuarios } from './Pages/ListaUsuarios.jsx';
-import { Metodos1 } from './Pages/Metodos1.jsx';
-import { Configuracion } from './Pages/Config.jsx';
-import { ConfigRol } from './Pages/ConfRol.jsx';
-import { ListaPermisos } from './Pages/ListaPermisos.jsx';
 import { Recordatorio } from './Pages/Recordatorio.jsx';
-import { Clientes } from './Pages/Clientes.jsx';
-import { ListaClientes } from './Pages/ListaClientes.jsx';
-import { AddClientes } from './Pages/AddClientes.jsx';
-import { RegistroClientes } from './Pages/RegistroClientes.jsx';
-import { ListaExpedientes } from './Pages/ListaExpedientes.jsx';
-import { ListaModelos } from './Pages/ListaModelos.jsx';
-import { RegistroModelo } from './Pages/RegistroModelo.jsx';
-import { ListaMarcas } from './Pages/ListaMarcas.jsx';
-import { RegistroMarcas } from './Pages/RegistroMarcas.jsx';
-import { RegistroProducto } from './Pages/RegistroProducto.jsx';
-import { ListaProductos } from './Pages/ListaProductos.jsx';
-import { RegistroGarantia } from './Pages/RegistroGarantia.jsx';
-import { ListaGarantia } from './Pages/ListaGarantia.jsx';
-import { RegistroSucursal } from './Pages/RegistroSucursal.jsx';
-import { ListaSucursal } from './Pages/ListaSucursal.jsx';
-import { ListaDescuento } from './Pages/ListaDescuento.jsx';
-import { RegistroDescuento } from './Pages/RegistroDecuento.jsx';
+
+//Login
+import { Login } from './Pages/Login/login.jsx';
+
+//Usuarios
+import { Usuarios } from './Pages/Usuarios/Usuarios.jsx';
+import { AddUsers } from './Pages/Usuarios/AddUsers.jsx';
+import { DatosEmpleado } from './Pages/Usuarios/DatosEmpleado.jsx';
+import { ListUsuarios } from './Pages/Usuarios/ListaUsuarios.jsx';
+import { ListaEmpleados } from './Pages/Usuarios/ListaEmpleados.jsx';
+
+//Seguridad
+import { RecuperacionPassword } from './Pages/Seguridad/RecuperacionPassword.jsx';
+import { PreguntasSeguridad } from './Pages/Seguridad/PreguntasSeguridad.jsx';
+import { ConfirmarPassword } from './Pages/Seguridad/ConfirmarPassword.jsx';
+import { Metodos } from './Pages/Seguridad/Metodos.jsx';
+import { Metodos1 } from './Pages/Seguridad/Metodos1.jsx';
+
+//Configuracion
+import { Configuracion } from './Pages/Configuracion/Config.jsx';
+import { ConfigRol } from './Pages/Configuracion/ConfRol.jsx';
+import { ListaPermisos } from './Pages/Configuracion/ListaPermisos.jsx';
+
+//Clientes
+import { Clientes } from './Pages/Clientes/Clientes.jsx';
+import { ListaClientes } from './Pages/Clientes/ListaClientes.jsx';
+import { AddClientes } from './Pages/Clientes/AddClientes.jsx';
+import { RegistroClientes } from './Pages/Clientes/RegistroClientes.jsx';
+import { ListaExpedientes } from './Pages/Clientes/ListaExpedientes.jsx';
+
+//Inventario
+import { Inventario } from './Pages/Inventario/Inventario.jsx';
+import { RegistroInventario } from './Pages/Inventario/RegistroInventario.jsx';
+import { ListaModelos } from './Pages/Inventario/ListaModelos.jsx';
+import { RegistroModelo } from './Pages/Inventario/RegistroModelo.jsx';
+import { ListaMarcas } from './Pages/Inventario/ListaMarcas.jsx';
+import { RegistroMarcas } from './Pages/Inventario/RegistroMarcas.jsx';
+import { RegistroProducto } from './Pages/Inventario/RegistroProducto.jsx';
+import { ListaProductos } from './Pages/Inventario/ListaProductos.jsx';
+
+//Ventas
+import { MenuVentas } from './Pages/Ventas/MenuVentas.jsx';
+import { NuevaVenta } from './Pages/Ventas/NuevaVenta.jsx';
+import { DetalleVenta } from './Pages/Ventas/DetalleVenta.jsx';
+import { RegistroGarantia } from './Pages/Ventas/RegistroGarantia.jsx';
+import { ListaGarantia } from './Pages/Ventas/ListaGarantia.jsx';
+import { RegistroSucursal } from './Pages/Ventas/RegistroSucursal.jsx';
+import { ListaSucursal } from './Pages/Ventas/ListaSucursal.jsx';
+import { ListaDescuento } from './Pages/Ventas/ListaDescuento.jsx';
+import { RegistroDescuento } from './Pages/Ventas/RegistroDecuento.jsx';
+import { ListaVenta } from './Pages/Ventas/ListaVenta.jsx';
+import { NuevaCompra } from './Pages/Ventas/NuevaCompra.jsx';
+import { ListaCompra } from './Pages/Ventas/ListaCompra.jsx';
+import { DetalleVentaDescuento } from './Pages/Ventas/DetalleVentaDescuento.jsx';
+import { DetalleVentaPromocion } from './Pages/Ventas/DetalleVentaPromocion.jsx';
+import { DetallePromocionMarca } from './Pages/Ventas/DetallePromocionMarca.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -126,9 +147,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           />
 
           <Route
-
             path="/home"
-       element={
+            element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
@@ -298,7 +318,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-          
+
           <Route
             path="/menuInventario/RegistroModelo"
             element={
@@ -318,7 +338,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-           <Route
+          <Route
             path="/menuInventario/RegistroProducto"
             element={
               <ProtectedRoute activo={activo}>
@@ -398,7 +418,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menumodelos/lista"
             element={
               <ProtectedRoute activo={activo}>
@@ -418,7 +438,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuInventario/ListaMarcas"
             element={
               <ProtectedRoute activo={activo}>
@@ -438,7 +458,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuInventario/ListaProductos"
             element={
               <ProtectedRoute activo={activo}>
@@ -474,13 +494,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaClientes />
                 </div>
-
               </ProtectedRoute>
             }
           ></Route>
 
-
-<Route
+          <Route
             path="/menuClientes/listaExpedientes"
             element={
               <ProtectedRoute activo={activo}>
@@ -500,7 +518,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/listaGarantias"
             element={
               <ProtectedRoute activo={activo}>
@@ -520,7 +538,47 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+          <Route
+            path="/menuVentas/listaVenta"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaVenta />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
 <Route
+            path="/menuVentas/listaCompra"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaCompra />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
             path="/menuVentas/listaSucursal"
             element={
               <ProtectedRoute activo={activo}>
@@ -540,7 +598,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/menuVentas/listaDescuento"
             element={
               <ProtectedRoute activo={activo}>
@@ -654,14 +712,14 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <RegistroGarantia/>
+                  <RegistroGarantia />
                 </div>
               </ProtectedRoute>
             }
           ></Route>
 
-<Route
-            path="/menuVentas/RegistroDescuento"
+            <Route
+            path="/menuVentas/NuevaVenta"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -674,34 +732,14 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <RegistroDescuento/>
+                  <NuevaVenta />
                 </div>
               </ProtectedRoute>
             }
           ></Route>
 
 <Route
-            path="/menuVentas/RegistroSucursal"
-            element={
-              <ProtectedRoute activo={activo}>
-                <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <RegistroSucursal/>
-                </div>
-              </ProtectedRoute>
-            }
-          ></Route>
-
-          <Route
-            path="/ventas/reportes"
+            path="/menuVentas/DetalleVenta"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -719,6 +757,129 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
+
+<Route
+            path="/menuVentas/DetalleVentaDescuento"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetalleVentaDescuento />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetalleVentaPromocion"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetalleVentaPromocion />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/DetallePromocionMarca"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <DetallePromocionMarca />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/NuevaCompra"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <NuevaCompra />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/menuVentas/RegistroDescuento"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <RegistroDescuento />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/menuVentas/RegistroSucursal"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <RegistroSucursal />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          
+
           <Route
             path="/config"
             element={
