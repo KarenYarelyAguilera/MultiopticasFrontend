@@ -66,6 +66,8 @@ import { ListaCompra } from './Pages/Ventas/ListaCompra.jsx';
 import { DetalleVentaDescuento } from './Pages/Ventas/DetalleVentaDescuento.jsx';
 import { DetalleVentaPromocion } from './Pages/Ventas/DetalleVentaPromocion.jsx';
 import { DetallePromocionMarca } from './Pages/Ventas/DetallePromocionMarca.jsx';
+import { PromocionProducto } from './Pages/Ventas/PromocionProducto.jsx';
+import { ListaProductoPromocion } from './Pages/Ventas/ListaProductoPromocion.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -618,6 +620,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/menuVentas/ListaPromocionProducto"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaProductoPromocion />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/usuarios/crearempleado"
             element={
@@ -813,6 +835,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <DetallePromocionMarca />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/PromocionProducto"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <PromocionProducto />
                 </div>
               </ProtectedRoute>
             }

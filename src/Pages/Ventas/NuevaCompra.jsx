@@ -328,7 +328,7 @@ export const NuevaCompra = ({
         
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/011/466/816/non_2x/strategic-planning-illustration-concept-a-flat-illustration-isolated-on-white-background-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
