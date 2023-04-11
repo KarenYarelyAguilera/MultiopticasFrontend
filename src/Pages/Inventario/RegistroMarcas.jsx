@@ -11,12 +11,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../Styles/Usuarios.css';
 
 //Components
-<<<<<<< HEAD:src/Pages/RegistroMarcas.jsx
-import { TextCustom } from '../Components/TextCustom.jsx';
-=======
+
 import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
->>>>>>> b8c9be4cb684c81b8c3e8fca0ddce505fd90b23d:src/Pages/Inventario/RegistroMarcas.jsx
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 

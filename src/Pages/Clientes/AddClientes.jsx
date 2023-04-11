@@ -11,10 +11,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../Styles/Usuarios.css';
 
 //Components
-import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+
 
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
@@ -48,8 +48,6 @@ export const AddClientes = ({
 
   const [Telefono, setTelefono] = useState('');
 
-  const [identidad,setIdentidad] = useState("")
-
 
   const navegate = useNavigate();
 
@@ -59,7 +57,6 @@ export const AddClientes = ({
     let apellidos = document.getElementById('apellido').value;
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
-<<<<<<< HEAD:src/Pages/AddClientes.jsx
     let direccion = document.getElementById('direccion').value;
     let correo = document.getElementById('correo').value
     let fechaN = document.getElementById('fechaN').value
@@ -83,21 +80,6 @@ export const AddClientes = ({
       direccion:direccion,
       telefonoCliente:telefono,
       correoElectronico:correo
-=======
-    let direccion = parseInt(document.getElementById('direccion').value);
-    let correo = document.getElementById('correo').value;
-    let fechaN = document.getElementById('fechaN').value;
-
-    let data = {
-      idCliente: identidad,
-      nombre: nombres,
-      apellido: apellidos,
-      idGenero: genero,
-      fechaNacimiento: fechaN,
-      direccion: direccion,
-      telefonoCliente: telefono,
-      correoElectronico: correo,
->>>>>>> b8c9be4cb684c81b8c3e8fca0ddce505fd90b23d:src/Pages/Clientes/AddClientes.jsx
     };
 
     if (sendData(urlCliente, data)) {
@@ -105,6 +87,7 @@ export const AddClientes = ({
         navegate('/menuClientes/lista');
       });
     }
+
   };
 
   const handleBack = () => {
@@ -136,7 +119,6 @@ export const AddClientes = ({
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');
@@ -364,8 +346,7 @@ export const AddClientes = ({
               <Button
                 variant="contained"
                 onClick={handleNext}
-                className="btnStepper"
-              >
+                className="btnStepper">
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
@@ -379,7 +360,7 @@ export const AddClientes = ({
           src={
             'https://static.vecteezy.com/system/resources/previews/011/873/935/non_2x/online-voting-concept-flat-style-design-illustration-tiny-people-with-voting-poll-online-survey-working-together-vector.jpg'
           }
-          className="imgCont"
+          className='imgCont'
           alt="No se encuentro la imagen"
         />
       </div>

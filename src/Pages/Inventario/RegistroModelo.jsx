@@ -1,11 +1,8 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-<<<<<<< HEAD:src/Pages/RegistroModelo.jsx
-import { sendData } from '../scripts/sendData';
-=======
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../../scripts/sendData';
->>>>>>> b8c9be4cb684c81b8c3e8fca0ddce505fd90b23d:src/Pages/Inventario/RegistroModelo.jsx
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -14,12 +11,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../Styles/Usuarios.css';
 
 //Components
-<<<<<<< HEAD:src/Pages/RegistroModelo.jsx
-import { TextCustom } from '../Components/TextCustom.jsx';
-=======
 import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
->>>>>>> b8c9be4cb684c81b8c3e8fca0ddce505fd90b23d:src/Pages/Inventario/RegistroModelo.jsx
 import swal from '@sweetalert/with-react';
 
 
