@@ -153,7 +153,7 @@ export const Login = props => {
           </div>
 
           <div className="contInputLogin">
-            <TextCustom text="Password" className="titleInput" />
+            <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
               onKeyDown={e => {
                 setContra(e.target.value);
@@ -166,7 +166,7 @@ export const Login = props => {
                 }
               }}
               error={errorContra}
-              placeholder="Password"
+              placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
               inputProps={{ maxLength: 150 }}
