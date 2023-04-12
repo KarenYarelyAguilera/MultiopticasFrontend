@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -22,8 +22,10 @@ export const ListaProductos = () => {
   const [roles, setRoles] = useState([]);
   const [cambio,setCambio] = useState(0)
 
-  const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
-  const urlUpdProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
+
+  const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
+  const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
+
   const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
 
   const [tableData, setTableData] = useState([]);
@@ -210,6 +212,7 @@ export const ListaProductos = () => {
           rows={filteredData}
           columns={columns}
           pageSize={5}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           rowsPerPageOptions={[5]}
         />
       </div>

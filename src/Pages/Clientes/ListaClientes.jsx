@@ -1,4 +1,6 @@
-import { DataGrid, esES } from '@mui/x-data-grid';
+
+import { DataGrid,esES } from '@mui/x-data-grid';
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -46,6 +48,10 @@ export const ListaClientes = () => {
     ),
   );
 
+  const handleNewExpediente = () => {
+    navegate('/menuClientes/nuevoExpediente');
+  }
+
   const columns = [
     { field: 'idCliente', headerName: 'ID', width: 165 },
     { field: 'nombre', headerName: 'Nombre', width: 165 },
@@ -59,10 +65,10 @@ export const ListaClientes = () => {
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 260,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
             onClick={() => handleUpdt(params.row.idCliente)}
@@ -74,6 +80,13 @@ export const ListaClientes = () => {
             onClick={() => handleDel(params.row.idCliente)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+
+          <Button
+            className="btnAddExpe"
+            onClick={() => handleNewExpediente()}
+          >
+            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
@@ -258,6 +271,7 @@ export const ListaClientes = () => {
           getRowId={tableData => tableData.idCliente}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

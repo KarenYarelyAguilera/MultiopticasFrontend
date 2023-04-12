@@ -23,7 +23,7 @@ import '../../Styles/Usuarios.css';
 import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { TextField } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
@@ -435,6 +435,7 @@ export const NuevaCompra = ({
               getRowId={tableData => tableData.id_Usuario}
               rows={filteredData}
               columns={columns}
+              localeText={esES.components.MuiDataGrid.defaultProps.localeText}
               pageSize={5}
               rowsPerPageOptions={[5]}
               onRowClick={usuario => {
