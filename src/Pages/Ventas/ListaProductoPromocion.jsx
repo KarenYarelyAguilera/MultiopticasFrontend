@@ -17,21 +17,24 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaProductos = () => {
+export const ListaProductoPromocion = () => {
   const [roles, setRoles] = useState([]);
 
-  const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
-  const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
-  const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
+  const urlUsers =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
+  const urlUpdateUser =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
+  const urlRoles =
+    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlProducto)
+    fetch(urlUsers)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlModelos)
+    fetch(urlRoles)
       .then(response => response.json())
       .then(data => setRoles(data));
   }, []);
@@ -47,17 +50,14 @@ export const ListaProductos = () => {
   );
 
   const columns = [
-    { field: 'IdProducto', headerName: 'ID Producto', width: 190 },
-    { field: 'producto', headerName: 'producto', width: 190 },
-    { field: 'modelo', headerName: 'Modelo', width: 190 },
-    { field: 'precio', headerName: 'Precio', width: 190 },
-    { field: 'cantidadMin', headerName: 'Cantidad Minima', width: 190 },
-    { field: 'cantidadMax', headerName: 'Cantidad Maxima', width: 190 },
+    { field: 'id_Usuario', headerName: 'ID Producto Promocion', width: 380 },
+    { field: 'Usuario', headerName: 'Producto', width: 380 },
+    { field: 'Nombre_Usuario', headerName: 'Promocion', width: 380 },
     
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 380,
 
       renderCell: params => (
         <div className="contActions">
@@ -98,7 +98,7 @@ export const ListaProductos = () => {
       });
   }
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/ventas');
   };
 
   return (
@@ -106,7 +106,7 @@ export const ListaProductos = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Productos</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista Promociones De Productos</h2>
 
       <div
         style={{
@@ -133,11 +133,11 @@ export const ListaProductos = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroProducto');
+                navegate('/menuVentas/PromocionProducto');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Producto
+              Nuevo Producto Promocion
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
@@ -146,7 +146,7 @@ export const ListaProductos = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdProducto}
+          getRowId={tableData => tableData.id_Usuario}
           rows={filteredData}
           columns={columns}
           pageSize={5}
@@ -250,7 +250,7 @@ export const ListaProductos = () => {
                       Id_usuario: usuario.row.id_Usuario,
                     };
 
-                    if (sendData(urlUpdProducto, data)) {
+                    if (sendData(urlUpdateUser, data)) {
                       swal(<h1>Usuario Actualizado Correctamente</h1>);
                     }
                   });

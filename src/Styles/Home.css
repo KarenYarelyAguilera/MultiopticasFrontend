@@ -406,14 +406,14 @@
 }
 
 .CardUsuarios .contPrimaryVentas {
-  width: 50%;
+  width: 70%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
+  grid-template-columns: repeat(3, 3fr);
   grid-gap: 30px;
 
   position: relative;
-  left: 25%;
+  left: 12%;
 }
 
 .CardUsuarios .contPrimaryClientes{

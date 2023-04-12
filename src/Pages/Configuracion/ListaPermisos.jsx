@@ -1,4 +1,4 @@
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 
 
@@ -43,6 +43,7 @@ export const ListaPermisos = () => {
                 <DataGrid
                     getRowId={getRowId}
                     rows={filteredData}
+                    localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                     columns={columns}
                     pageSize={5} />
             </div>
