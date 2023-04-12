@@ -19,16 +19,16 @@ export const MenuVentas = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/716/non_2x/global-marketing-strategy-concept-marketing-team-macromarketing-flat-modern-illustration-vector.jpg',
       vinculo: "/menuVentas/NuevaVenta", 
     },
-    {
-      titulo: "Detalle de Venta",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/736/non_2x/company-growth-concept-key-to-success-business-assets-company-mission-vision-and-philosophy-flat-modern-illustration-vector.jpg',
-      vinculo: "/menuVentas/DetalleVenta", 
-    },
-    {
-      titulo: "Conclusion de Venta",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/720/non_2x/company-goals-and-philosophy-concept-business-mission-flat-modern-illustration-vector.jpg',
-      vinculo: "/menuVentas/DetalleVentaDescuento", 
-    },
+    // {
+    //   titulo: "Detalle de Venta",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/736/non_2x/company-growth-concept-key-to-success-business-assets-company-mission-vision-and-philosophy-flat-modern-illustration-vector.jpg',
+    //   vinculo: "/menuVentas/DetalleVenta", 
+    // },
+    // {
+    //   titulo: "Conclusion de Venta",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/720/non_2x/company-goals-and-philosophy-concept-business-mission-flat-modern-illustration-vector.jpg',
+    //   vinculo: "/menuVentas/DetalleVentaDescuento", 
+    // },
     // {
     //   titulo: "Detalle de Venta Promocion",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/718/non_2x/global-marketing-strategy-concept-marketing-team-target-affiliate-program-flat-modern-illustration-vector.jpg',
