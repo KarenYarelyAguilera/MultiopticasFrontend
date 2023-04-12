@@ -66,9 +66,28 @@ export const RegistroClientes = ({
               />
             </div>
 
-            <div className="contInput">
-              <TextCustom text="ID De Detalle de Expediente" />
+            {/* <div className="contInput">
+              <TextCustom text="ID De Detalle de Expediente" className='titleInput'/>
               <input
+
+                onKeyDown={e => {
+                  setNombre(e.target.value);
+                  if (Nombre === '') {
+                    setErrorNombre(true);
+                    setMsj('Los campos no deben estar vacios');
+                  } else {
+                    setErrorNombre(false);
+                    var preg_match = /^[a-zA-Z]+$/;
+                    if (!preg_match.test(Nombre)) {
+                      setErrorNombre(true);
+                      setMsj('Solo debe de ingresar letras');
+                    } else {
+                      setErrorNombre(false);
+                      setMsj('');
+                    }
+                  }
+                }}
+                error={errorNombre}
                 type="text"
                 name=""
                 className="inputCustom"
@@ -78,6 +97,17 @@ export const RegistroClientes = ({
                 id="nombre"
                 label="Usuario"
               />
+
+              <p className="error">{Msj}</p>
+            </div> */}
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>Actual</option>
+                <option value={2}>Historico</option>
+              </select>
+
             </div>
 
             <div className="contInput">
@@ -98,21 +128,17 @@ export const RegistroClientes = ({
               <input
                 type="phone"
                 name=""
-                maxLength={8}
+
+                helperText={texto}
+                maxLength={100}
+
                 className="inputCustomText"
                 placeholder="Historial Clinico"
                 id="phone"
               />
-            </div>
+              {<p className="error">{texto}</p>}
+            </div>        
 
-            
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Actual</option>
-                <option value={2}>Historico</option>
-              </select>
-            </div>
             
 
             <div className="contBtnStepper">

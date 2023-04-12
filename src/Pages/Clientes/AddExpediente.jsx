@@ -19,17 +19,12 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const AddClientes = ({
+export const AddExpediente = ({
   msgError = '',
   success = false,
   warning = false,
   props,
 }) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
 
   const [sucursales, setSucursales] = useState([]);
   const [iIdentidad, setiIdentidad] = React.useState('');
@@ -51,41 +46,41 @@ export const AddClientes = ({
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let identidad = document.getElementById('Nidentidad').value;
-    let nombres = document.getElementById('nombre').value;
-    let apellidos = document.getElementById('apellido').value;
-    let telefono = document.getElementById('phone').value;
-    let genero = parseInt(document.getElementById('genero').value);
-    let direccion = document.getElementById('direccion').value;
-    let correo = document.getElementById('correo').value
-    let fechaN = document.getElementById('fechaN').value
+    // let identidad = document.getElementById('Nidentidad').value;
+    // let nombres = document.getElementById('nombre').value;
+    // let apellidos = document.getElementById('apellido').value;
+    // let telefono = document.getElementById('phone').value;
+    // let genero = parseInt(document.getElementById('genero').value);
+    // let direccion = document.getElementById('direccion').value;
+    // let correo = document.getElementById('correo').value
+    // let fechaN = document.getElementById('fechaN').value
 
-    let fecha = new Date(fechaN)
+    // let fecha = new Date(fechaN)
 
-    let anio = fecha.getFullYear().toString();
-    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-    let dia = fecha.getDate().toString().padStart(2, "0");
-
-
-    let fechaFormateada = anio + "/" + mes + "/" + dia;
+    // let anio = fecha.getFullYear().toString();
+    // let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    // let dia = fecha.getDate().toString().padStart(2, "0");
 
 
-    let data = {
-      idCliente:identidad,
-      nombre:nombres,
-      apellido:apellidos,
-      IdGenero:genero,
-      fechaNacimiento:fechaFormateada,
-      direccion:direccion,
-      telefonoCliente:telefono,
-      correoElectronico:correo
-    };
+    // let fechaFormateada = anio + "/" + mes + "/" + dia;
 
-    if (sendData(urlCliente, data)) {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/lista');
-      });
-    }
+
+    // let data = {
+    //   idCliente:identidad,
+    //   nombre:nombres,
+    //   apellido:apellidos,
+    //   IdGenero:genero,
+    //   fechaNacimiento:fechaFormateada,
+    //   direccion:direccion,
+    //   telefonoCliente:telefono,
+    //   correoElectronico:correo
+    // };
+
+    // if (sendData(urlCliente, data)) {
+    //   swal('Cliente agregado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/registroCliente');
+    //   });
+    // }
 
   };
 
@@ -99,16 +94,16 @@ export const AddClientes = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos del Cliente</h2>
+        <h2>Creacion de Expediente</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del cliente
+          Complete todos los puntos para poder registrar los datos del expediente
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Numero de Expediente" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -133,18 +128,18 @@ export const AddClientes = ({
                     }
                   }
                 }}
-                placeholder="Identidad"
+                placeholder="0"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Nombre" />
+              <TextCustom text="Cliente" className='titleInput'/>
               <input
                 onKeyDown={e => {
                   setNombre(e.target.value);
-                  if (Nombre == '') {
+                  if (Nombre === '') {
                     setErrorNombre(true);
                     setMsj('Los campos no deben estar vacios');
                   } else {
@@ -165,7 +160,7 @@ export const AddClientes = ({
                 name=""
                 className="inputCustom"
                 maxLength={50}
-                placeholder="Nombre"
+                placeholder="Cliente"
                 variant="standard"
                 id="nombre"
                 label="Usuario"
@@ -174,11 +169,11 @@ export const AddClientes = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Apellido" className="titleInput" />
+              <TextCustom text="Creado por" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setApellido(e.target.value);
-                  if (Apellido == '') {
+                  if (Apellido === '') {
                     setErrorApellido(true);
                     setAviso('Los campos no deben estar vacios');
                   } else {
@@ -199,114 +194,18 @@ export const AddClientes = ({
                 helperText={aviso}
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Apellido"
+                placeholder="Empleado"
                 id="apellido"
               />
               <p className="error">{aviso}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Direccion" className="titleInput" />
+              <TextCustom text="Fecha de creacion" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
-                type="phone"
-                name=""
-                helperText={texto}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Direccion"
-                id="direccion"
-              />
-              {<p className="error">{texto}</p>}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
-                type="phone"
-                name=""
-                helperText={texto}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Telefono"
-                id="phone"
-              />
-              {<p className="error">{texto}</p>}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Correo Electronico" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
-                type="phone"
-                name=""
-                helperText={texto}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Correo Electronico"
-                id="correo"
-              />
-              {<p className="error">{texto}</p>}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
+                  if (Telefono === '') {
                     setTexto('Los campos no deben estar vacios');
                     setErrorTelefono(true);
                   } else {
@@ -327,18 +226,10 @@ export const AddClientes = ({
                 helperText={texto}
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Fecha de Nacimiento"
-                id="fechaN"
+                placeholder="Fecha"
+                id="direccion"
               />
               {<p className="error">{texto}</p>}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Masculino</option>
-                <option value={2}>Femenino</option>
-              </select>
             </div>
 
             <div className="contBtnStepper">
@@ -346,7 +237,7 @@ export const AddClientes = ({
                 variant="contained"
                 onClick={handleNext}
                 className="btnStepper">
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

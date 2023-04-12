@@ -149,6 +149,7 @@ export const ListaCompra = () => {
           getRowId={tableData => tableData.id_Usuario}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

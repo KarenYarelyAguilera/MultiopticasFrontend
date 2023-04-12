@@ -158,6 +158,7 @@ export const ListaEmpleados = () => {
           getRowId={tableData => tableData.IdEmpleado}
           rows={filteredData}
           columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={empleado => {
