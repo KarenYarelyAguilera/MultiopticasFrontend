@@ -155,6 +155,7 @@ export const ListaGarantia = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={usuario => {
             swal({
               buttons: {
