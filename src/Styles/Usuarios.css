@@ -320,6 +320,15 @@
 
 /* AddCompra */
 
+/* Lista Permisos */
+.ContPermisos{
+  width: 85%;
+  height: auto;
+  position: relative;
+  left: 8%;
+}
+/* Lista Permisos */
+
 /* CardUsuario-Menu */
 
 /* AddNewUser */
@@ -341,6 +350,10 @@
   position: absolute;
   background-color: #316ee6;
   border-radius: 50px;
+}
+
+.ContUsuarios .btnBack:hover{
+  background-color: #316ee6;
 }
 /* 
 .bntBackList{
@@ -567,6 +580,7 @@
 .contBtnStepper .btnStepper,
 .contBtnStepper1 .btnStepper,
 .contBtnSventa .btnSVenta {
+  margin-top: 25px;
   width: 70%;
   height: 40px;
   border-radius: 25px;
@@ -706,8 +720,23 @@ button {
   padding-right: 20px;
 }
 
+.contActions1{
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 5px;
+
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .btnEdit {
   background-color: #316ee6 !important;
+  border-radius: 25px !important;
+  color: white !important;
+}
+
+.btnAddExpe {
+  background-color:tomato !important;
   border-radius: 25px !important;
   color: white !important;
 }
@@ -743,6 +772,10 @@ button {
   position: absolute;
   background-color: #316ee6;
   border-radius: 50px;
+}
+
+.ContConfigRol .btnBack:hover{
+  background-color: #316ee6;
 }
 /* 
 .bntBackList{

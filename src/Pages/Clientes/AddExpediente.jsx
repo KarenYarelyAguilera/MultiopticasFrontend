@@ -11,39 +11,28 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../../Styles/Usuarios.css';
 
 //Components
-import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
-const urlSucursales =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
-const urlUsers =
-  'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-const urlIEmpleado =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee';
 
-export const RegistroClientes = ({
+const urlCliente =
+  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+
+export const AddExpediente = ({
   msgError = '',
   success = false,
   warning = false,
   props,
 }) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
   const [sucursales, setSucursales] = useState([]);
-
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
-
   const [Nombre, setNombre] = React.useState('');
   const [errorNombre, setErrorNombre] = React.useState(false);
   const [Msj, setMsj] = React.useState(false);
-
   const [Apellido, setApellido] = React.useState('');
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
@@ -53,51 +42,46 @@ export const RegistroClientes = ({
 
   const [Telefono, setTelefono] = useState('');
 
-  const [Identidad, setIdentidad] = useState(0);
-  const [Telefonoc, setTelefonoc] = useState(0);
-
-  useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
-  }, []);
 
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let identidad = document.getElementById('Nidentidad').value;
-    let nombres = document.getElementById('nombre').value;
-    let apellidos = document.getElementById('apellido').value;
-    let telefono = document.getElementById('phone').value;
-    let genero = parseInt(document.getElementById('genero').value);
-    let sucursal = parseInt(document.getElementById('sucursal').value);
+    // let identidad = document.getElementById('Nidentidad').value;
+    // let nombres = document.getElementById('nombre').value;
+    // let apellidos = document.getElementById('apellido').value;
+    // let telefono = document.getElementById('phone').value;
+    // let genero = parseInt(document.getElementById('genero').value);
+    // let direccion = document.getElementById('direccion').value;
+    // let correo = document.getElementById('correo').value
+    // let fechaN = document.getElementById('fechaN').value
 
-    let data = {
-      nombre: nombres.toUpperCase(),
-      apellido: apellidos.toUpperCase(),
-      phone: telefono,
-      genero: genero,
-      sucursal: sucursal,
-      identidad: identidad,
-    };
-    if (sendData(urlIEmpleado, data)) {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        swal({
-          title: '¿Desea crearle un usuario al empleado agregado?',
-          icon: 'question',
-          buttons: true,
-          dangerMode: true,
-          buttons: ['Cancelar', 'Aceptar'],
-        }).then(result => {
-          if (result) navegate('/usuarios/crearusuario');
-          else {
-            navegate('/empleados/lista');
-          }
-        });
+    // let fecha = new Date(fechaN)
 
-        navegate('/empleados/lista');
-      });
-    }
+    // let anio = fecha.getFullYear().toString();
+    // let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    // let dia = fecha.getDate().toString().padStart(2, "0");
+
+
+    // let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+
+    // let data = {
+    //   idCliente:identidad,
+    //   nombre:nombres,
+    //   apellido:apellidos,
+    //   IdGenero:genero,
+    //   fechaNacimiento:fechaFormateada,
+    //   direccion:direccion,
+    //   telefonoCliente:telefono,
+    //   correoElectronico:correo
+    // };
+
+    // if (sendData(urlCliente, data)) {
+    //   swal('Cliente agregado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/registroCliente');
+    //   });
+    // }
+
   };
 
   const handleBack = () => {
@@ -110,16 +94,16 @@ export const RegistroClientes = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos de Expediente</h2>
+        <h2>Creacion de Expediente</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del cliente
+          Complete todos los puntos para poder registrar los datos del expediente
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Expediente" className="titleInput" />
+              <TextCustom text="Numero de Expediente" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -129,7 +113,6 @@ export const RegistroClientes = ({
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');
@@ -145,14 +128,14 @@ export const RegistroClientes = ({
                     }
                   }
                 }}
-                placeholder="Expediente"
+                placeholder="0"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
-            {/* <div className="contInput">
-              <TextCustom text="ID De Detalle de Expediente" className='titleInput'/>
+            <div className="contInput">
+              <TextCustom text="Cliente" className='titleInput'/>
               <input
                 onKeyDown={e => {
                   setNombre(e.target.value);
@@ -177,28 +160,20 @@ export const RegistroClientes = ({
                 name=""
                 className="inputCustom"
                 maxLength={50}
-                placeholder="ID Expediente"
+                placeholder="Cliente"
                 variant="standard"
                 id="nombre"
                 label="Usuario"
               />
               <p className="error">{Msj}</p>
-            </div> */}
-
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Actual</option>
-                <option value={2}>Historico</option>
-              </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Diagnostico" className="titleInput" />
+              <TextCustom text="Creado por" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setApellido(e.target.value);
-                  if (Apellido == '') {
+                  if (Apellido === '') {
                     setErrorApellido(true);
                     setAviso('Los campos no deben estar vacios');
                   } else {
@@ -218,19 +193,19 @@ export const RegistroClientes = ({
                 name=""
                 helperText={aviso}
                 maxLength={50}
-                className="inputCustomText"
-                placeholder="Diagnostico"
+                className="inputCustom"
+                placeholder="Empleado"
                 id="apellido"
               />
               <p className="error">{aviso}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Historial Clinico" className="titleInput" />
+              <TextCustom text="Fecha de creacion" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setTelefono(e.target.value);
-                  if (Telefono == '') {
+                  if (Telefono === '') {
                     setTexto('Los campos no deben estar vacios');
                     setErrorTelefono(true);
                   } else {
@@ -246,55 +221,23 @@ export const RegistroClientes = ({
                   }
                 }}
                 error={errorTelefono}
-                type="phone"
+                type="date"
                 name=""
                 helperText={texto}
-                maxLength={100}
-                className="inputCustomText"
-                placeholder="Historial Clinico"
-                id="phone"
+                maxLength={50}
+                className="inputCustom"
+                placeholder="Fecha"
+                id="direccion"
               />
               {<p className="error">{texto}</p>}
-            </div>        
-            
+            </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
-                className="btnStepper"
-                onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (
-                    typeof (
-                      parseInt(document.getElementById('Nidentidad').value) !==
-                      'number'
-                    )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
-                  } else {
-                    handleNext();
-                  }
-                }}
-              >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                onClick={handleNext}
+                className="btnStepper">
+                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
@@ -305,7 +248,7 @@ export const RegistroClientes = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/002/085/434/non_2x/people-work-from-home-in-front-of-computer-with-data-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/011/873/935/non_2x/online-voting-concept-flat-style-design-illustration-tiny-people-with-voting-poll-online-survey-working-together-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
