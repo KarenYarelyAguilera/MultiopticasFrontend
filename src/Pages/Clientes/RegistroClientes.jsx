@@ -72,7 +72,7 @@ export const RegistroClientes = ({
               />
             </div>
 
-            <div className="contInput">
+            {/* <div className="contInput">
               <TextCustom text="Historial Clinico" className="titleInput" />
               <input
                 type="phone"
@@ -83,6 +83,8 @@ export const RegistroClientes = ({
                 id="HClinico"
               />
             </div>        
+              {<p className="error">{texto}</p>}
+            </div>         */}
 
             
 

@@ -17,7 +17,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaMarcas = () => {
+export const ListaPromocion = () => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
@@ -159,7 +159,7 @@ export const ListaMarcas = () => {
 
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/ventas');
   };
 
   return (
@@ -167,7 +167,7 @@ export const ListaMarcas = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Marcas</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Promociones</h2>
 
       <div
         style={{
@@ -194,11 +194,11 @@ export const ListaMarcas = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroMarcas');
+                navegate('/menuVentas/RegistroPromociones');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Marca
+              Nueva Promocion
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
