@@ -85,8 +85,18 @@ export const MenuVentas = () => {
       vinculo: "/menuVentas/listaDescuento", 
     },
     {
-      titulo: "Registro de Promocion del Producto",
+      titulo: "Registro de Promociones",
       imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/515/non_2x/refer-a-friend-for-affiliate-and-referral-program-promotion-and-marketing-with-mobile-ads-and-seo-smartphone-technology-to-connect-people-illustration-for-business-card-banner-brochure-flyer-free-vector.jpg',
+      vinculo: "/menuVentas/RegistroPromociones", 
+    },
+    {
+      titulo: "Lista de Promociones ",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/000/659/679/non_2x/check-list-business-document-in-the-clipboard-design-vector.jpg',
+      vinculo: "/menuVentas/ListaPromociones", 
+    },
+    {
+      titulo: "Registro de Promocion del Producto",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/010/596/578/non_2x/refferal-program-flat-style-illustration-design-free-vector.jpg',
       vinculo: "/menuVentas/PromocionProducto", 
     },
     {

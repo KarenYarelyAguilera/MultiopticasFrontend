@@ -25,6 +25,11 @@ export const Configuracion = ()=>{
           imagen: 'https://static.vecteezy.com/system/resources/previews/007/382/723/non_2x/clipboard-with-checklist-icon-to-do-list-symbol-illustration-free-vector.jpg',
           vinculo: "/config/listaSucursal", 
         },
+        {
+          titulo: "Lista de Parametros",
+          imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
+          vinculo: "/config/ListaParametros", 
+        },
         
         
       ];
