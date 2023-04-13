@@ -624,7 +624,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuVentas/listaCompra"
+            path="/menuInventario/listaCompra"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -644,7 +644,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuVentas/listaSucursal"
+            path="/config/listaSucursal"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -924,7 +924,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuVentas/NuevaCompra"
+            path="/menuInventario/NuevaCompra"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex" style={{ width: '99%' }}>
@@ -964,7 +964,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuVentas/RegistroSucursal"
+            path="/config/RegistroSucursal"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">

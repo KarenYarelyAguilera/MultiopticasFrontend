@@ -98,7 +98,7 @@ export const ListaCompra = () => {
       });
   }
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/inventario');
   };
 
   return (
@@ -133,7 +133,7 @@ export const ListaCompra = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/NuevaCompra');
+                navegate('/menuInventario/NuevaCompra');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -152,7 +152,6 @@ export const ListaCompra = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={usuario => {
             swal({
               buttons: {

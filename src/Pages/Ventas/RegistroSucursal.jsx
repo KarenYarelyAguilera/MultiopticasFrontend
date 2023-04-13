@@ -84,7 +84,7 @@ export const RegistroSucursal = ({
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/config');
   };
 
   return (

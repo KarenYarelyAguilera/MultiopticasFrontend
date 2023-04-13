@@ -43,6 +43,16 @@ export const Inventario = props => {
       vinculo: '',
     },
     {
+      titulo: "Nueva Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
+      vinculo: "/menuInventario/NuevaCompra", 
+    },
+    {
+      titulo: "Lista de Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
+      vinculo: "/menuInventario/ListaCompra", 
+    },
+    {
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
       titulo: 'Registro de la Marca',
       vinculo: '/menuInventario/RegistroMarcas',

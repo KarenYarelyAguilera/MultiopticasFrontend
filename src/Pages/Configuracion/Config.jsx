@@ -14,7 +14,18 @@ export const Configuracion = ()=>{
           titulo:'Lista de Permisos',
           imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
           vinculo:'/config/verpermisos',
-        }
+        },
+        {
+          titulo: "Registro de Sucursal",
+          imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
+          vinculo: "/config/RegistroSucursal", 
+        },
+        {
+          titulo: "Lista de Sucursal",
+          imagen: 'https://static.vecteezy.com/system/resources/previews/007/382/723/non_2x/clipboard-with-checklist-icon-to-do-list-symbol-illustration-free-vector.jpg',
+          vinculo: "/config/listaSucursal", 
+        },
+        
         
       ];
 
