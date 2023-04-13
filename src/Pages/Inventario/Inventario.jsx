@@ -27,30 +27,20 @@ export const Inventario = props => {
       titulo: 'Inventario Disponible',
       vinculo: '',
     },
-    {
-      imagen: DescuentosPromociones,
-      titulo: 'Descuentos y promociones',
-      vinculo: '',
-    },
-    {
-      imagen: Garantias,
-      titulo: 'Garantias',
-      vinculo: '',
-    },
+    // {
+    //   imagen: DescuentosPromociones,
+    //   titulo: 'Descuentos y promociones',
+    //   vinculo: '',
+    // },
+    // {
+    //   imagen: Garantias,
+    //   titulo: 'Garantias',
+    //   vinculo: '',
+    // },
     {
       imagen: Kardex,
       titulo: 'Kardex',
       vinculo: '',
-    },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
-      titulo: 'Registro de Modelo',
-      vinculo: '/menuInventario/RegistroModelo',
-    },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/008/296/869/non_2x/to-do-list-concept-illustration-free-vector.jpg',
-      titulo: 'Lista de Modelo',
-      vinculo: '/menumodelos/lista',
     },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
@@ -61,6 +51,16 @@ export const Inventario = props => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
       titulo: 'Lista de Marcas',
       vinculo: '/menuInventario/ListaMarcas',
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
+      titulo: 'Registro de Modelo',
+      vinculo: '/menuInventario/RegistroModelo',
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/008/296/869/non_2x/to-do-list-concept-illustration-free-vector.jpg',
+      titulo: 'Lista de Modelo',
+      vinculo: '/menumodelos/lista',
     },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/008/323/514/non_2x/3d-realistic-data-folder-icon-illustration-vector.jpg',

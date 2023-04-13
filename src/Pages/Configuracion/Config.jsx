@@ -7,11 +7,13 @@ export const Configuracion = ()=>{
     let opcion = [
         {
           titulo: 'Configurar Roles',
+          imagen: 'https://static.vecteezy.com/system/resources/previews/006/946/052/non_2x/abstract-concept-of-social-role-social-norms-gender-stereotypes-social-norms-role-exchange-is-an-abstract-metaphor-illustration-in-flat-modern-style-vector.jpg',
           vinculo: '/config/roles',
         },
         {
           titulo:'Lista de Permisos',
-          vinculo:'/config/verpermisos'
+          imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
+          vinculo:'/config/verpermisos',
         }
         
       ];

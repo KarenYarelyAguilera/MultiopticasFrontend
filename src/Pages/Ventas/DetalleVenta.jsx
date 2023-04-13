@@ -58,30 +58,30 @@ export const DetalleVenta = ({
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let identidad = document.getElementById('Nidentidad').value;
-    let nombres = document.getElementById('nombre').value;
-    let apellidos = document.getElementById('apellido').value;
-    let telefono = document.getElementById('phone').value;
-    let genero = parseInt(document.getElementById('genero').value);
-    let direccion = parseInt(document.getElementById('direccion').value);
-    let correo = document.getElementById('correo').value
-    let fechaN = document.getElementById('Fnacimiento').value
+    // let identidad = document.getElementById('Nidentidad').value;
+    // let nombres = document.getElementById('nombre').value;
+    // let apellidos = document.getElementById('apellido').value;
+    // let telefono = document.getElementById('phone').value;
+    // let genero = parseInt(document.getElementById('genero').value);
+    // let direccion = parseInt(document.getElementById('direccion').value);
+    // let correo = document.getElementById('correo').value
+    // let fechaN = document.getElementById('Fnacimiento').value
 
-    let data = {
-      idCliente:identidad,
-      nombre:nombres,
-      apellido:apellidos,
-      idGenero:genero,
-      fechaNacimiento:fechaN,
-      direccion:direccion,
-      telefonoCliente:telefono,
-      correoElectronico:correo
-    };
-    if (sendData(urlCliente, data)) {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
+    // let data = {
+    //   idCliente:identidad,
+    //   nombre:nombres,
+    //   apellido:apellidos,
+    //   idGenero:genero,
+    //   fechaNacimiento:fechaN,
+    //   direccion:direccion,
+    //   telefonoCliente:telefono,
+    //   correoElectronico:correo
+    // };
+    // if (sendData(urlCliente, data)) {
+    //   swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuVentas/DetalleVentaDescuento');
-      });
-    }
+    //   });
+    // }
   };
 
   const handleBack = () => {
