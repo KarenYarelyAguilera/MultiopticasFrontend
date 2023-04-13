@@ -17,7 +17,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaMarcas = () => {
+export const ListaProveedores = () => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
@@ -49,8 +49,16 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID', width: 600 },
-    { field: 'descripcion', headerName: 'Marca', width: 600 },
+    { field: 'Proveedor', headerName: 'ID Proveedor', width: 150 },
+    { field: 'Empresa', headerName: 'Empresa', width: 150 },
+    { field: 'Encargado', headerName: 'Encargado', width: 150 },
+    { field: 'Codigo Postal', headerName: 'CodigoPostal', width: 150 },
+    { field: 'Pais', headerName: 'Pais', width: 150 },
+    { field: 'Ciudad', headerName: 'Ciudad', width: 150 },
+    { field: 'Direccion', headerName: 'Direccion', width: 150 },
+    { field: 'Telefono', headerName: 'Telefono', width: 150 },
+    { field: 'Correo Electronico', headerName: 'Correo Electronico', width: 150 },
+   
 
     {
       field: 'borrar',
@@ -124,7 +132,7 @@ export const ListaMarcas = () => {
     swal({
       content: (
         <div>
-          <div className="logoModal">Desea Elimiar esta marca?</div>
+          <div className="logoModal">Desea Elimiar este Proveedor?</div>
           <div className="contEditModal">
             
           </div>
@@ -143,7 +151,7 @@ export const ListaMarcas = () => {
     
     
           if (sendData(urlDelMarca, data)) {
-            swal(<h1>Marca Eliminada Correctamente</h1>);
+            swal(<h1>Proveedor Eliminado Correctamente</h1>);
             setcambio(cambio+1)
           }
           break;
@@ -167,7 +175,7 @@ export const ListaMarcas = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Marcas</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Proveedores</h2>
 
       <div
         style={{
@@ -198,7 +206,7 @@ export const ListaMarcas = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Marca
+              Nuevo Proveedor
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

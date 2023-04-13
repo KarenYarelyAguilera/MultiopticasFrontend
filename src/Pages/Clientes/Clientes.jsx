@@ -24,12 +24,12 @@ export const Clientes = () => {
         'https://static.vecteezy.com/system/resources/previews/021/272/476/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-personal-data-form-free-vector.jpg',
       vinculo: '/menuClientes/lista',
     },
-    {
-      titulo: 'Datos de Expediente',
-      imagen:
-        'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg',
-      vinculo: '/menuClientes/registroCliente',
-    },
+    // {
+    //   titulo: 'Datos de Expediente',
+    //   imagen:
+    //     'https://static.vecteezy.com/system/resources/previews/021/272/478/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-registration-form-on-screen-free-vector.jpg',
+    //   vinculo: '/menuClientes/registroCliente',
+    // },
     {
       titulo: 'Listas De Expedientes',
       imagen:
