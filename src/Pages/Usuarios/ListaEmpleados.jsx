@@ -160,7 +160,6 @@ export const ListaEmpleados = () => {
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={empleado => {
             swal({
               buttons: {
