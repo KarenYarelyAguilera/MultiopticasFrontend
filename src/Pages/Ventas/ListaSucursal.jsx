@@ -100,7 +100,7 @@ export const ListaSucursal = () => {
       });
   }
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/config');
   };
 
   return (
@@ -135,7 +135,7 @@ export const ListaSucursal = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/RegistroSucursal');
+                navegate('/config/RegistroSucursal');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -154,7 +154,6 @@ export const ListaSucursal = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           onRowClick={usuario => {
             swal({
               buttons: {

@@ -19,7 +19,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 
-export const ListUsuarios = () => {
+export const ListaParametros = () => {
   const [roles, setRoles] = useState([]);
 
 
@@ -55,27 +55,17 @@ export const ListUsuarios = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 70 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 195,
-    },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 195,
-    },
+    { field: 'id_Usuario', headerName: 'ID Parametro', width: 140 },
+    { field: 'Usuario', headerName: 'Parametro', width: 200 },
+    { field: 'Nombre_Usuario', headerName: 'Valor', width: 200 },
+    { field: 'rol', headerName: 'Creado Por', width: 200 },
+    { field: 'Estado_Usuario', headerName: 'Fecha de Creacion', width: 200 },
+    { field: 'Correo_Electronico', headerName: 'Modificado por', width: 200 },
+    { field: 'Contrasenia', headerName: 'Fecha de Modificacion', width: 200 },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 200,
 
       renderCell: params => (
         <div className="contActions">
@@ -85,12 +75,7 @@ export const ListUsuarios = () => {
           >
             <EditIcon></EditIcon>
           </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+         
         </div>
       ),
     },
@@ -117,7 +102,7 @@ export const ListUsuarios = () => {
       });
   }
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/config');
   };
 
 
@@ -126,7 +111,7 @@ export const ListUsuarios = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Usuarios</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Parametros</h2>
 
       <div
         style={{
@@ -149,7 +134,7 @@ export const ListUsuarios = () => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          {/* <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -163,7 +148,7 @@ export const ListUsuarios = () => {
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
-          </div>
+          </div> */}
 
         </div>
         <DataGrid
