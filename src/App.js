@@ -69,6 +69,8 @@ import { DetallePromocionMarca } from './Pages/Ventas/DetallePromocionMarca.jsx'
 import { PromocionProducto } from './Pages/Ventas/PromocionProducto.jsx';
 import { ListaProductoPromocion } from './Pages/Ventas/ListaProductoPromocion.jsx';
 import { AddExpediente } from './Pages/Clientes/AddExpediente.jsx';
+import { RegistroProveedores } from './Pages/Inventario/RegistroProveedores.jsx';
+import { ListaProveedores } from './Pages/Inventario/ListaProveedores.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -382,6 +384,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
+            path="/menuInventario/RegistroProveedores"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <RegistroProveedores />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
             path="/menuInventario/RegistroMarcas"
             element={
               <ProtectedRoute activo={activo}>
@@ -476,6 +498,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMarcas />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuInventario/ListaProveedores"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaProveedores />
                 </div>
               </ProtectedRoute>
             }
