@@ -98,7 +98,7 @@ export const ListaCompra = () => {
       });
   }
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/inventario');
   };
 
   return (
@@ -133,7 +133,7 @@ export const ListaCompra = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/NuevaCompra');
+                navegate('/menuInventario/NuevaCompra');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

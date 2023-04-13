@@ -155,6 +155,7 @@ export const ListaVenta = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          
           onRowClick={usuario => {
             swal({
               buttons: {

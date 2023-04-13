@@ -20,7 +20,7 @@ import { TextField } from '@mui/material';
 const urlCliente =
   'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
 
-export const RegistroSucursal = ({
+export const RegistroPromocion = ({
   msgError = '',
   success = false,
   warning = false,
@@ -84,7 +84,7 @@ export const RegistroSucursal = ({
   };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/ventas');
   };
 
   return (
@@ -93,16 +93,17 @@ export const RegistroSucursal = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Sucursal</h2>
+        <h2>Registro de Promocion</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
+          Complete todos los puntos para poder registrar las Promociones.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
+           
             <div className="contInput">
-              <TextCustom text="Departamento" className="titleInput" />
+              <TextCustom text="Porcentaje de Descuento" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -128,109 +129,114 @@ export const RegistroSucursal = ({
                     }
                   }
                 }}
-                placeholder="Departamento"
+                placeholder="Porcentaje de Descuento"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Ciudad" className="titleInput" />
-
+              <TextCustom text="Fecha de Inicio" className="titleInput" />
               <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
                 onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
+                  setTelefono(e.target.value);
+                  if (Telefono == '') {
+                    setTexto('Los campos no deben estar vacios');
+                    setErrorTelefono(true);
                   } else {
-                    setErrorIdentidad(false);
+                    setErrorTelefono(false);
                     var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
+                    if (!preg_match.test(Telefono)) {
+                      setErrorTelefono(true);
+                      setTexto('Solo deben de ingresar numeros');
                     } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
+                      setErrorTelefono(false);
+                      setTexto('');
                     }
                   }
                 }}
-                placeholder="Ciudad"
-                id="Nidentidad"
+                error={errorTelefono}
+                type="date"
+                name=""
+                helperText={texto}
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Inicio"
+                id="fechaN"
               />
-              <p class="error">{leyenda}</p>
+              {<p className="error">{texto}</p>}
+            </div>
+            
+            <div className="contInput">
+              <TextCustom text="Fecha Final" className="titleInput" />
+              <input
+                onKeyDown={e => {
+                  setTelefono(e.target.value);
+                  if (Telefono == '') {
+                    setTexto('Los campos no deben estar vacios');
+                    setErrorTelefono(true);
+                  } else {
+                    setErrorTelefono(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(Telefono)) {
+                      setErrorTelefono(true);
+                      setTexto('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorTelefono(false);
+                      setTexto('');
+                    }
+                  }
+                }}
+                error={errorTelefono}
+                type="date"
+                name=""
+                helperText={texto}
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha Final"
+                id="fechaN"
+              />
+              {<p className="error">{texto}</p>}
             </div>
 
             <div className="contInput">
-              <TextCustom text="Direccion" className="titleInput" />
-
-              <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="Direccion"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
+              <TextCustom text="Estado" className="titleInput" />
+              <select name="" className="selectCustom" id="genero">
+                <option value={1}>No se sabe</option>
+                <option value={2}>No se sabe</option>
+              </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
-
+              <TextCustom text="Descripcion" className="titleInput" />
               <input
-                error={errorIdentidad}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
                 onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
+                  setApellido(e.target.value);
+                  if (Apellido == '') {
+                    setErrorApellido(true);
+                    setAviso('Los campos no deben estar vacios');
                   } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
+                    setErrorApellido(false);
+                    var preg_match = /^[a-zA-Z]+$/;
+                    if (!preg_match.test(Apellido)) {
+                      setErrorApellido(true);
+                      setAviso('Solo deben de ingresar letras');
                     } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
+                      setErrorApellido(false);
+                      setAviso('');
                     }
                   }
                 }}
-                placeholder="Telefono"
-                id="Nidentidad"
+                error={errorApellido}
+                type="text"
+                name=""
+                helperText={aviso}
+                maxLength={50}
+                className="inputCustomText"
+                placeholder="Descripcion"
+                id="apellido"
               />
-              <p class="error">{leyenda}</p>
+              <p className="error">{aviso}</p>
             </div>
             
 
@@ -281,7 +287,7 @@ export const RegistroSucursal = ({
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/005/005/494/non_2x/the-central-cloud-server-has-many-branch-offices-free-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/010/885/906/non_2x/refer-friend-illustration-service-loyalty-referral-man-and-woman-marketing-business-design-concept-network-recommend-announcement-advertising-program-banner-digital-tell-job-commerce-earn-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

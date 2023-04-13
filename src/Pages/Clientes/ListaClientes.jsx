@@ -1,4 +1,6 @@
+
 import { DataGrid,esES } from '@mui/x-data-grid';
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
