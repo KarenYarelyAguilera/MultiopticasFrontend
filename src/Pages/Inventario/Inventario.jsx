@@ -72,6 +72,16 @@ export const Inventario = props => {
       titulo: 'Lista de Productos',
       vinculo: '/menuInventario/ListaProductos',
     },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/001/871/298/non_2x/illustration-template-for-database-management-system-for-data-storage-backup-hosting-server-cloud-service-provider-design-can-be-used-for-landing-page-ui-ux-web-website-banner-flyer-free-vector.jpg',
+      titulo: 'Registro de Proveedores',
+      vinculo: '/menuInventario/RegistroProveedores', 
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/004/430/976/non_2x/health-list-with-a-yellow-color-free-vector.jpg',
+      titulo: 'Lista de Proveedores',
+      vinculo: '/menuInventario/ListaProveedores',
+    },
   ];
 
   return (
