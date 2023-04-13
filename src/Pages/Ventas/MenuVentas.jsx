@@ -44,16 +44,16 @@ export const MenuVentas = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/000/622/840/non_2x/to-do-list-page-with-check-marks-and-pencil-concept-illustration-for-time-and-project-management-vector-illustration-template-in-flat-style.jpg',
       vinculo: "/menuVentas/ListaVenta", 
     },
-    {
-      titulo: "Nueva Compra",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
-      vinculo: "/menuVentas/NuevaCompra", 
-    },
-    {
-      titulo: "Lista de Compra",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
-      vinculo: "/menuVentas/ListaCompra", 
-    },
+    // {
+    //   titulo: "Nueva Compra",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
+    //   vinculo: "/menuVentas/NuevaCompra", 
+    // },
+    // {
+    //   titulo: "Lista de Compra",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
+    //   vinculo: "/menuVentas/ListaCompra", 
+    // },
     {
       titulo: "Registro de Garantias",
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/640/196/non_2x/3d-quality-guarantee-medal-with-star-and-ribbon-icon-isolated-on-white-background-3d-prize-winner-and-award-concept-cartoon-minimal-style-3d-badge-icon-render-illustration-vector.jpg',
@@ -64,16 +64,16 @@ export const MenuVentas = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
       vinculo: "/menuVentas/listaGarantias", 
     },
-    {
-      titulo: "Registro de Sucursal",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
-      vinculo: "/menuVentas/RegistroSucursal", 
-    },
-    {
-      titulo: "Lista de Sucursal",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/007/382/723/non_2x/clipboard-with-checklist-icon-to-do-list-symbol-illustration-free-vector.jpg',
-      vinculo: "/menuVentas/listaSucursal", 
-    },
+    // {
+    //   titulo: "Registro de Sucursal",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
+    //   vinculo: "/menuVentas/RegistroSucursal", 
+    // },
+    // {
+    //   titulo: "Lista de Sucursal",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/007/382/723/non_2x/clipboard-with-checklist-icon-to-do-list-symbol-illustration-free-vector.jpg',
+    //   vinculo: "/menuVentas/listaSucursal", 
+    // },
     {
       titulo: "Registro de Descuento",
       imagen: 'https://static.vecteezy.com/system/resources/previews/017/012/645/non_2x/design-illustration-of-shopping-time-and-discount-clock-that-appears-from-the-shopping-cart-to-show-the-time-of-best-offer-can-be-used-for-web-website-posters-apps-brochures-free-vector.jpg',
@@ -85,8 +85,18 @@ export const MenuVentas = () => {
       vinculo: "/menuVentas/listaDescuento", 
     },
     {
-      titulo: "Registro de Promocion del Producto",
+      titulo: "Registro de Promociones",
       imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/515/non_2x/refer-a-friend-for-affiliate-and-referral-program-promotion-and-marketing-with-mobile-ads-and-seo-smartphone-technology-to-connect-people-illustration-for-business-card-banner-brochure-flyer-free-vector.jpg',
+      vinculo: "/menuVentas/RegistroPromociones", 
+    },
+    {
+      titulo: "Lista de Promociones ",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/000/659/679/non_2x/check-list-business-document-in-the-clipboard-design-vector.jpg',
+      vinculo: "/menuVentas/ListaPromociones", 
+    },
+    {
+      titulo: "Registro de Promocion del Producto",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/010/596/578/non_2x/refferal-program-flat-style-illustration-design-free-vector.jpg',
       vinculo: "/menuVentas/PromocionProducto", 
     },
     {

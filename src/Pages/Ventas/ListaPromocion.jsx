@@ -1,6 +1,4 @@
-
 import { DataGrid,esES } from '@mui/x-data-grid';
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -19,8 +17,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-
-export const ListaModelos = () => {
+export const ListaPromocion = () => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
@@ -28,27 +25,18 @@ export const ListaModelos = () => {
   const urlMarcas =
     'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
 
-    const urlModelos =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=modelos';
-    
-
-  const urlUpdateModelo = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updModelo'
+  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
   
-  const urlDelModelo = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delModelo'
+  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [Marca, setMarca] = useState([])
 
   useEffect(() => {
-    fetch(urlModelos)
+    fetch(urlMarcas)
       .then(response => response.json())
       .then(data => setTableData(data));
   }, [cambio]);
-
-  useEffect(()=>{
-    fetch(urlMarcas).then(response =>response.json()).then(data=>setMarca(data))
-  },[])
 
   const navegate = useNavigate();
 
@@ -61,9 +49,8 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID', width: 400 },
-    { field: 'descripcion', headerName: 'Marca', width: 400 },
-    { field: 'detalle', headerName: 'Modelo', width: 400 },
+    { field: 'IdMarca', headerName: 'ID', width: 600 },
+    { field: 'descripcion', headerName: 'Marca', width: 600 },
 
     {
       field: 'borrar',
@@ -74,13 +61,13 @@ export const ListaModelos = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdModelo)}
+            onClick={() => handleUpdt(params.row.IdMarca)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdModelo)}
+           onClick={() => handleDel(params.row.IdMarca)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -96,28 +83,12 @@ export const ListaModelos = () => {
           <div className="logoModal">Datos a actualizar</div>
           <div className="contEditModal">
             <div className="contInput">
-              <TextCustom text="Modelo" className="titleInput" />
+              <TextCustom text="Marca" className="titleInput" />
               <input
                 type="text"
-                id="modelo"
+                id="marca"
                 className="inputCustom"
               />
-            </div>
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <select name="" className="selectCustom" id="marca">
-              {Marca.length ? (
-                  Marca.map(pre => (
-                    <option key={pre.IdMarca} value={pre.IdMarca}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
             </div>
           </div>
         </div>
@@ -128,16 +99,15 @@ export const ListaModelos = () => {
       switch (op) {
         case true:
           let data = {
-            idModelo: id,
-            detalle: document.getElementById("modelo").value,
-            idMarca:parseInt(document.getElementById("marca").value)
+            IdMarca: id,
+            descripcion: document.getElementById("marca").value,
           };
     
           console.log(data);
     
     
-          if (sendData(urlUpdateModelo, data)) {
-            swal(<h1>Modelo Actualizado Correctamente</h1>);
+          if (sendData(urlUpdateMarca, data)) {
+            swal(<h1>Marca Actualizada Correctamente</h1>);
             setcambio(cambio+1)
           }
           break;
@@ -166,14 +136,14 @@ export const ListaModelos = () => {
       switch (op) {
         case null:
           let data = {
-            idModelo: id
+            IdMarca: id
           };
     
           console.log(data);
     
     
-          if (sendData(urlDelModelo, data)) {
-            swal(<h1>Modelo Eliminado Correctamente</h1>);
+          if (sendData(urlDelMarca, data)) {
+            swal(<h1>Marca Eliminada Correctamente</h1>);
             setcambio(cambio+1)
           }
           break;
@@ -187,8 +157,9 @@ export const ListaModelos = () => {
   }
 
 
+
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/ventas');
   };
 
   return (
@@ -196,7 +167,7 @@ export const ListaModelos = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Modelos</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Promociones</h2>
 
       <div
         style={{
@@ -223,11 +194,11 @@ export const ListaModelos = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroModelo');
+                navegate('/menuVentas/RegistroPromociones');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Modelo
+              Nueva Promocion
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
@@ -236,15 +207,13 @@ export const ListaModelos = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdModelo}
+          getRowId={tableData => tableData.IdMarca}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
-       
       </div>
     </div>
   );

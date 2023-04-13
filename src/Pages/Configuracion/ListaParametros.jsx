@@ -1,5 +1,6 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -17,8 +18,10 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaSucursal = () => {
+
+export const ListaParametros = () => {
   const [roles, setRoles] = useState([]);
+
 
   const urlUsers =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
@@ -29,6 +32,7 @@ export const ListaSucursal = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     fetch(urlUsers)
@@ -41,6 +45,7 @@ export const ListaSucursal = () => {
 
   const navegate = useNavigate();
 
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -50,16 +55,17 @@ export const ListaSucursal = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Sucursal', width: 250 },
-    { field: 'Usuario', headerName: 'Departamento', width: 250 },
-    { field: 'Nombre_Usuario', headerName: 'Ciudad', width: 250 },
-    { field: 'rol', headerName: 'Direccion', width: 250 },
-    { field: 'Estado_Usuario', headerName: 'Telefono', width: 250 },
-   
+    { field: 'id_Usuario', headerName: 'ID Parametro', width: 140 },
+    { field: 'Usuario', headerName: 'Parametro', width: 200 },
+    { field: 'Nombre_Usuario', headerName: 'Valor', width: 200 },
+    { field: 'rol', headerName: 'Creado Por', width: 200 },
+    { field: 'Estado_Usuario', headerName: 'Fecha de Creacion', width: 200 },
+    { field: 'Correo_Electronico', headerName: 'Modificado por', width: 200 },
+    { field: 'Contrasenia', headerName: 'Fecha de Modificacion', width: 200 },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 200,
 
       renderCell: params => (
         <div className="contActions">
@@ -69,16 +75,12 @@ export const ListaSucursal = () => {
           >
             <EditIcon></EditIcon>
           </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+         
         </div>
       ),
     },
   ];
+
 
   function handleButtonClick(id) {
     fetch(`/api/update/${id}`, {
@@ -103,12 +105,13 @@ export const ListaSucursal = () => {
     navegate('/config');
   };
 
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Sucursal</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Parametros</h2>
 
       <div
         style={{
@@ -131,21 +134,22 @@ export const ListaSucursal = () => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          {/* <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroSucursal');
+                navegate('/usuarios/crearusuario');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Sucursal
+              Nuevo Cliente
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
-          </div>
+          </div> */}
+
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}

@@ -120,7 +120,7 @@ export const NuevaCompra = ({
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/inventario');
   };
 
   const columns = [

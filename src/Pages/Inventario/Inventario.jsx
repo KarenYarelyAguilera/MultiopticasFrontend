@@ -43,6 +43,16 @@ export const Inventario = props => {
       vinculo: '',
     },
     {
+      titulo: "Nueva Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
+      vinculo: "/menuInventario/NuevaCompra", 
+    },
+    {
+      titulo: "Lista de Compra",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
+      vinculo: "/menuInventario/ListaCompra", 
+    },
+    {
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
       titulo: 'Registro de la Marca',
       vinculo: '/menuInventario/RegistroMarcas',
@@ -71,6 +81,16 @@ export const Inventario = props => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/006/945/991/non_2x/my-order-list-illustration-exclusive-design-inspiration-vector.jpg',
       titulo: 'Lista de Productos',
       vinculo: '/menuInventario/ListaProductos',
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/001/871/298/non_2x/illustration-template-for-database-management-system-for-data-storage-backup-hosting-server-cloud-service-provider-design-can-be-used-for-landing-page-ui-ux-web-website-banner-flyer-free-vector.jpg',
+      titulo: 'Registro de Proveedores',
+      vinculo: '/menuInventario/RegistroProveedores', 
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/004/430/976/non_2x/health-list-with-a-yellow-color-free-vector.jpg',
+      titulo: 'Lista de Proveedores',
+      vinculo: '/menuInventario/ListaProveedores',
     },
   ];
 

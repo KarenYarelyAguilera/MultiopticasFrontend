@@ -18,7 +18,7 @@ import { TextField } from '@mui/material';
 
 
 const urlProducto="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertProducto"
-const urlModelos="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=modelos"
+const urlModelos="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
 
 export const RegistroProducto = ({
   msgError = '',
