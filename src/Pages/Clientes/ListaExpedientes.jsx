@@ -18,7 +18,6 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaExpedientes = () => {
-  const [roles, setRoles] = useState([]);
 
   const urlUsers = 'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
 
@@ -29,9 +28,6 @@ export const ListaExpedientes = () => {
     fetch(urlUsers)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
   }, []);
 
   const navegate = useNavigate();
