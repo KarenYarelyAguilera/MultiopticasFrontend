@@ -16,8 +16,8 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlCliente =
-  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+const urlExpediente ='http://localhost/APIS-Multioptica/Expediente/controller/expediente.php?op=InsertExpediente';
+const urlEmployees ='http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
 
 export const AddExpediente = ({
   msgError = '',
@@ -26,61 +26,42 @@ export const AddExpediente = ({
   props,
 }) => {
 
-  const [sucursales, setSucursales] = useState([]);
-  const [iIdentidad, setiIdentidad] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
-  const [Nombre, setNombre] = React.useState('');
-  const [errorNombre, setErrorNombre] = React.useState(false);
-  const [Msj, setMsj] = React.useState(false);
-  const [Apellido, setApellido] = React.useState('');
-  const [errorApellido, setErrorApellido] = React.useState(false);
-  const [aviso, setAviso] = React.useState(false);
+  const [Empleado, setEmpleado] = useState([])
 
-  const [errorTelefono, setErrorTelefono] = React.useState(false);
-  const [texto, setTexto] = React.useState(false);
+  useEffect(() => {
+    fetch(urlEmployees)
+      .then(response => response.json())
+      .then(data => setEmpleado(data));
+  }, []);
 
-  const [Telefono, setTelefono] = useState('');
 
 
   const navegate = useNavigate();
 
   const handleNext = () => {
-    // let identidad = document.getElementById('Nidentidad').value;
-    // let nombres = document.getElementById('nombre').value;
-    // let apellidos = document.getElementById('apellido').value;
-    // let telefono = document.getElementById('phone').value;
-    // let genero = parseInt(document.getElementById('genero').value);
-    // let direccion = document.getElementById('direccion').value;
-    // let correo = document.getElementById('correo').value
-    // let fechaN = document.getElementById('fechaN').value
 
-    // let fecha = new Date(fechaN)
+    let identidad = document.getElementById("identidad").value
+    let empleado = parseInt(document.getElementById("empleado").value)
+    let fechaN = document.getElementById("fecha").value
 
-    // let anio = fecha.getFullYear().toString();
-    // let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-    // let dia = fecha.getDate().toString().padStart(2, "0");
+    let fecha = new Date(fechaN)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+    let data = {
+      fechaCreacion:fechaFormateada,
+      IdCliente:identidad,
+      IdEmpleado:empleado
+    }
+    if (sendData(urlExpediente,data)) {
+      navegate('/menuClientes/registroCliente');
+    }
 
 
-    // let fechaFormateada = anio + "/" + mes + "/" + dia;
-
-
-    // let data = {
-    //   idCliente:identidad,
-    //   nombre:nombres,
-    //   apellido:apellidos,
-    //   IdGenero:genero,
-    //   fechaNacimiento:fechaFormateada,
-    //   direccion:direccion,
-    //   telefonoCliente:telefono,
-    //   correoElectronico:correo
-    // };
-
-    // if (sendData(urlCliente, data)) {
-    //   swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/registroCliente');
-    //   });
-    // }
 
   };
 
@@ -103,133 +84,46 @@ export const AddExpediente = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Expediente" className="titleInput" />
-
+              <TextCustom text="Identidad del Cliente" className='titleInput' />
               <input
-                error={errorIdentidad}
                 type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                placeholder="0"
-                id="Nidentidad"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Cliente" className='titleInput'/>
-              <input
-                onKeyDown={e => {
-                  setNombre(e.target.value);
-                  if (Nombre === '') {
-                    setErrorNombre(true);
-                    setMsj('Los campos no deben estar vacios');
-                  } else {
-                    setErrorNombre(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Nombre)) {
-                      setErrorNombre(true);
-                      setMsj('Solo debe de ingresar letras');
-                    } else {
-                      setErrorNombre(false);
-                      setMsj('');
-                    }
-                  }
-                }}
-                error={errorNombre}
-                type="text"
-                helperText={Msj}
                 name=""
                 className="inputCustom"
                 maxLength={50}
                 placeholder="Cliente"
                 variant="standard"
-                id="nombre"
-                label="Usuario"
+                id="identidad"
+                label="identidad"
               />
-              <p className="error">{Msj}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Creado por" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setApellido(e.target.value);
-                  if (Apellido === '') {
-                    setErrorApellido(true);
-                    setAviso('Los campos no deben estar vacios');
-                  } else {
-                    setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Apellido)) {
-                      setErrorApellido(true);
-                      setAviso('Solo deben de ingresar letras');
-                    } else {
-                      setErrorApellido(false);
-                      setAviso('');
-                    }
-                  }
-                }}
-                error={errorApellido}
-                type="text"
-                name=""
-                helperText={aviso}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Empleado"
-                id="apellido"
-              />
-              <p className="error">{aviso}</p>
+              <select name="" id="empleado">
+              {Empleado.length ? (
+                  Empleado.map(pre => (
+                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
+                      {pre.Nombre}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
 
             <div className="contInput">
               <TextCustom text="Fecha de creacion" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono === '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
                 type="date"
                 name=""
-                helperText={texto}
                 maxLength={50}
                 className="inputCustom"
                 placeholder="Fecha"
-                id="direccion"
+                id="fecha"
               />
-              {<p className="error">{texto}</p>}
             </div>
 
             <div className="contBtnStepper">

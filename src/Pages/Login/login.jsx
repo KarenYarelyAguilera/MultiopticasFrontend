@@ -80,6 +80,7 @@ export const Login = props => {
         Id: respJsonUsr[0].Id_Usuario,
       };
 
+
       if (respJsonPss && respJsonUsr[0].Estado_Usuario === 'Nuevo') {
         props.mail(respJsonUsr[0].Correo_Electronico);
         props.user(respJsonUsr[0].Nombre_Usuario);
@@ -91,6 +92,7 @@ export const Login = props => {
         props.user(respJsonUsr[0].Nombre_Usuario);
         props.rol(respJsonUsr[0].Rol);
         props.mail(respJsonUsr[0].Correo_Electronico);
+        props.idUsuario(respJsonUsr[0].Id_Usuario)
         navegate('/Home');
       }
     } catch (error) {
