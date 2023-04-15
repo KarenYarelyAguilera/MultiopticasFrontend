@@ -14,6 +14,9 @@ import '../../Styles/Usuarios.css';
 //import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import { ContentPasteGoOutlined } from '@mui/icons-material';
+
+const  urlSucursal ='http://localhost/APIS-Multioptica/Gestion/controller/gestion.php?op=InsertSucursal';
 
 export const RegistroSucursal = ({
   msgError = '',
@@ -22,9 +25,7 @@ export const RegistroSucursal = ({
   props,
 }) => {
 
-  const  urlSucursal ='http://localhost/APIS-Multioptica/Gestion/controller/gestion.php?op=InsertSucursal';
-
-  //const [sucursales, setSucursales] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
 
   const navegate = useNavigate();
 
@@ -38,13 +39,19 @@ export const RegistroSucursal = ({
       departamento:departamento,
       ciudad:ciudad,
       direccion:direccion,
-      telefono:telefono,
+      telefono:telefono
     };
 
-    if (sendData(urlSucursal, data)) {
-      swal('Sucursal agregada con exito',"", 'success')
-        navegate('/config/RegistroSucursal');
-      };
+  console.log(data)  
+  if (sendData(urlSucursal, data)) {
+    swal('Sucursal agregada con exito','', 'success').then(result => {
+      navegate('/config/RegistroSucursal');
+    });
+  }
+    // if (sendData(urlSucursal, data)) {
+    //   swal('Sucursal agregada con exito',"", 'success')
+    //     navegate('/config/RegistroSucursal');
+    //   };
   };
 
   const handleBack = () => {
@@ -131,37 +138,8 @@ export const RegistroSucursal = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                // onClick={() => {
-                //   if (
-                //     document.getElementById('Nidentidad').value == '' ||
-                //     document.getElementById('nombre').value == '' ||
-                //     document.getElementById('apellido').value == ''
-                //   ) {
-                //     swal('No deje campos vacios.', '', 'error');
-                //   } else if (
-                //     typeof (
-                //       parseInt(document.getElementById('Nidentidad').value) !==
-                //       'number'
-                //     )
-                //   ) {
-                //     swal('El campo identidad solo acepta numeros', '', 'error');
-                //   } else if (
-                //     typeof document.getElementById('nombre').value !== 'string'
-                //   ) {
-                //     swal('El campo nombre solo acepta letras', '', 'error');
-                //   }
-                //   if (
-                //     typeof document.getElementById('apellido').value !==
-                //     'string'
-                //   ) {
-                //     swal('El campo apellido solo acepta letras', '', 'error');
-                //   }
-                //   if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                //     swal('Corrija los campos Erroneos', '', 'error');
-                //   } else {
-                //     handleNext();
-                //   }
-                // }}
+
+                onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
