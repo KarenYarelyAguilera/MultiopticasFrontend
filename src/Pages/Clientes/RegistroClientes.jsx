@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { sendData } from '../../scripts/sendData';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -12,6 +12,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 
+const urlExpedienteDetalle ='http://localhost/APIS-Multioptica/Expediente/controller/expediente.php?op=InsertDetallesExpediente';
 
 export const RegistroClientes = ({
   msgError = '',
@@ -19,19 +20,24 @@ export const RegistroClientes = ({
   warning = false,
   props,
 }) => {
-  
 
-  useEffect(() => {
-    // fetch()
-    //   .then(response => response.json())
-    //   .then(data => setSucursales(data));
-  }, []);
 
   const navegate = useNavigate();
 
   const handleNext = () => {
 
-   
+   let diagnostico = document.getElementById("diagnostico").value
+   let HClinico = document.getElementById("HClinico").value
+
+   let data = {
+    diagnostico:diagnostico,
+    historialClinico:HClinico
+   }
+
+   if (sendData(urlExpedienteDetalle,data)) {
+    swal("Expediente agregado con exito","","success")
+    navegate("/menuClientes/listaExpedientes")
+   }
     
   };
 
@@ -53,73 +59,16 @@ export const RegistroClientes = ({
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            <div className="contInput">
-              <TextCustom text="ID Expediente" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Expediente"
-                id="Nidentidad"
-              />
-            </div>
-
-            {/* <div className="contInput">
-              <TextCustom text="ID De Detalle de Expediente" className='titleInput'/>
-              <input
-
-                onKeyDown={e => {
-                  setNombre(e.target.value);
-                  if (Nombre === '') {
-                    setErrorNombre(true);
-                    setMsj('Los campos no deben estar vacios');
-                  } else {
-                    setErrorNombre(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Nombre)) {
-                      setErrorNombre(true);
-                      setMsj('Solo debe de ingresar letras');
-                    } else {
-                      setErrorNombre(false);
-                      setMsj('');
-                    }
-                  }
-                }}
-                error={errorNombre}
-                type="text"
-                name=""
-                className="inputCustom"
-                maxLength={50}
-                placeholder="ID Expediente"
-                variant="standard"
-                id="nombre"
-                label="Usuario"
-              />
-
-              <p className="error">{Msj}</p>
-            </div> */}
-
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Actual</option>
-                <option value={2}>Historico</option>
-              </select>
-
-            </div>
 
             <div className="contInput">
               <TextCustom text="Diagnostico" className="titleInput" />
               <input
                 type="text"
                 name=""
-                
                 maxLength={50}
                 className="inputCustomText"
                 placeholder="Diagnostico"
-                id="apellido"
+                id="diagnostico"
               />
             </div>
 
@@ -128,14 +77,12 @@ export const RegistroClientes = ({
               <input
                 type="phone"
                 name=""
-
-                helperText={texto}
                 maxLength={100}
-
                 className="inputCustomText"
                 placeholder="Historial Clinico"
-                id="phone"
+                id="HClinico"
               />
+            </div>        
               {<p className="error">{texto}</p>}
             </div>         */}
 
