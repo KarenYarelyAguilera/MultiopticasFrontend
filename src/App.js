@@ -110,7 +110,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             index
             element={
-              <Login access={access} user={user} rol={rol} mail={mail} />
+              <Login access={access} user={user} rol={rol} mail={mail} idUsuario={id}/>
             }
           />
 
@@ -281,7 +281,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <AddUsers></AddUsers>
+                  <AddUsers idU={idUsuario}></AddUsers>
                 </div>
               </ProtectedRoute>
             }
