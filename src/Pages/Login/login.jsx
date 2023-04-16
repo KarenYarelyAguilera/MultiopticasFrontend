@@ -146,6 +146,7 @@ export const Login = props => {
               placeholder="Usuario"
               className="inputCustomLogin"
               inputProps={{ maxLength: 50 }}
+              
               ref={refUsuario}
             />
             <p className="errorMessage">
