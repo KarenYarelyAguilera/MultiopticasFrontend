@@ -145,7 +145,7 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              inputProps={{ maxLength: 50 }}
+              maxLength={50}
               ref={refUsuario}
             />
             <p className="errorMessage">
@@ -171,7 +171,7 @@ export const Login = props => {
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
-              inputProps={{ maxLength: 150 }}
+              maxLength={150}
               type={showPassword ? 'text' : 'password'}
               inputRef={refContrasenia}
               endAdornment={
