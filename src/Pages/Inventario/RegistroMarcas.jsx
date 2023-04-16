@@ -38,6 +38,14 @@ export const RegistroMarcas = ({
 
   const navegate = useNavigate();
 
+  const [marca, setmarca] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorMarca, setErrorMarca] = React.useState(false);
+
+  const [nombremarca, setnombremarca] = React.useState('');
+  const [aviso, setaviso] = React.useState('');
+  const [errornombremarca, setErrornombremarca] = React.useState(false);
+
   const handleNext = () => {
     let id = parseInt(document.getElementById("idMarca").value)
     let marca = document.getElementById("Marca").value
@@ -75,6 +83,24 @@ export const RegistroMarcas = ({
               <TextCustom text="ID Marca" className="titleInput" />
 
               <input
+              onKeyDown={e => {
+                setmarca(e.target.value);
+                setmarca(parseInt(e.target.value));
+                if (marca === '') {
+                  setErrorMarca(true);
+                  setleyenda('Los campos no deben estar vacios');
+                } else {
+                  setErrorMarca(false);
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(marca)) {
+                    setErrorMarca(true);
+                    setleyenda('Solo deben de ingresar numeros');
+                  } else {
+                    setErrorMarca(false);
+                    setleyenda('');
+                  }
+                }
+              }}
                 type="text"
                 name=""
                 maxLength={13}
@@ -82,19 +108,38 @@ export const RegistroMarcas = ({
                 placeholder="ID Marca"
                 id="idMarca"
               />
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Nombre de la Marca" className="titleInput" />
 
               <input
+               onKeyDown={e => {
+                setnombremarca(e.target.value);
+                if (nombremarca == '') {
+                  setErrornombremarca(true);
+                  setaviso('Los campos no deben estar vacios');
+                } else {
+                  setErrornombremarca(false);
+                  var preg_match = /^[a-zA-Z]+$/;
+                  if (!preg_match.test(nombremarca)) {
+                    setErrornombremarca(true);
+                    setaviso('Solo deben de ingresar letras');
+                  } else {
+                    setErrornombremarca(false);
+                    setaviso('');
+                  }
+                }
+              }}
                 type="text"
                 name=""
-                maxLength={13}
+                maxLength={40}
                 className="inputCustom"
                 placeholder="Nombre de la Marca"
                 id="Marca"
               />
+               <p class="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">
