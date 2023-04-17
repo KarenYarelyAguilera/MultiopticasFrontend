@@ -25,7 +25,7 @@ export const Inventario = props => {
     {
       imagen: InventarioDisponible,
       titulo: 'Inventario Disponible',
-      vinculo: '',
+      vinculo: '/Inventario/InventarioDisponible',
     },
     // {
     //   imagen: DescuentosPromociones,
@@ -40,7 +40,7 @@ export const Inventario = props => {
     {
       imagen: Kardex,
       titulo: 'Kardex',
-      vinculo: '',
+      vinculo: '/menuInventario/Kardex',
     },
     {
       titulo: "Nueva Compra",
