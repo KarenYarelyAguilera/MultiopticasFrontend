@@ -74,6 +74,9 @@ import { ListaProveedores } from './Pages/Inventario/ListaProveedores.jsx';
 import { ListaPromocion } from './Pages/Ventas/ListaPromocion.jsx';
 import { RegistroPromocion } from './Pages/Ventas/RegistroPromocion.jsx';
 import { ListaParametros } from './Pages/Configuracion/ListaParametros.jsx';
+import { InventarioDisponible } from './Pages/Inventario/InventarioDisponible.jsx';
+import { Kardex } from './Pages/Inventario/Kardex.jsx';
+import { Bitacora } from './Pages/Configuracion/Bitacora.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -520,6 +523,66 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMarcas />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuInventario/Kardex"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <Kardex />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/Bitacora"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <Bitacora />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/Inventario/InventarioDisponible"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <InventarioDisponible />
                 </div>
               </ProtectedRoute>
             }
