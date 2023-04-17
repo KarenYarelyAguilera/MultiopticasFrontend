@@ -287,10 +287,7 @@ export const DatosEmpleado = ({
                     document.getElementById('apellido').value == ''
                   ) {
                     swal('No deje campos vacios.', '', 'error');
-                  } else if (
-                    typeof (
-                      parseInt(document.getElementById('Nidentidad').value) !==
-                      'number'
+                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !=='number'
                     )
                   ) {
                     swal('El campo identidad solo acepta numeros', '', 'error');
