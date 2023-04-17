@@ -93,6 +93,8 @@ export const Recordatorio = () => {
                     day: "Día"
           }}
           selectable
+          popup={true}
+          onSelectSlot={(e)=>console.log(e)}
           culture='es'
           localizer={localizer}
           events={allEvents}

@@ -9,9 +9,6 @@ import { sendData } from '../../scripts/sendData';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
@@ -20,27 +17,18 @@ import { TextCustom } from '../../Components/TextCustom';
 
 
 export const ListaParametros = () => {
-  const [roles, setRoles] = useState([]);
-
-
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
+  
+  const urlParametros ='http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=parametros';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlParametros)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
+    
   }, []);
 
   const navegate = useNavigate();
@@ -55,13 +43,13 @@ export const ListaParametros = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Parametro', width: 140 },
-    { field: 'Usuario', headerName: 'Parametro', width: 200 },
-    { field: 'Nombre_Usuario', headerName: 'Valor', width: 200 },
-    { field: 'rol', headerName: 'Creado Por', width: 200 },
-    { field: 'Estado_Usuario', headerName: 'Fecha de Creacion', width: 200 },
-    { field: 'Correo_Electronico', headerName: 'Modificado por', width: 200 },
-    { field: 'Contrasenia', headerName: 'Fecha de Modificacion', width: 200 },
+    { field: 'Id_Parametro', headerName: 'ID Parametro', width: 140 },
+    { field: 'Parametro', headerName: 'Parametro', width: 250 },
+    { field: 'Valor', headerName: 'Valor', width: 200 },
+    { field: 'creado_por', headerName: 'Creado Por', width: 200 },
+    { field: 'fecha_creacion', headerName: 'Fecha de Creacion', width: 200 },
+    { field: 'modificado_por', headerName: 'Modificado por', width: 200 },
+    { field: 'fecha_modificacion', headerName: 'Fecha de Modificacion', width: 200 },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -71,7 +59,7 @@ export const ListaParametros = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleButtonClick(params)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -82,24 +70,8 @@ export const ListaParametros = () => {
   ];
 
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  function handleButtonClick(param) {
+    alert(param.row.Id_Parametro+"\n"+param.row.Parametro)
   }
   const handleBack = () => {
     navegate('/config');
@@ -152,120 +124,120 @@ export const ListaParametros = () => {
 
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.Id_Parametro}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
+          // onRowClick={usuario => {
+          //   swal({
+          //     buttons: {
+          //       update: 'Actualizar',
+          //       cancel: 'Cancelar',
+          //     },
+          //     content: (
+          //       <div className="logoModal">
+          //         Que accion desea realizar con el cliente:{' '}
+          //         {usuario.row.Usuario}
+          //       </div>
+          //     ),
+          //   }).then(op => {
+          //     switch (op) {
+          //       case 'update':
+          //         swal(
+          //           <div>
+          //             <div className="logoModal">Datos a actualizar</div>
+          //             <div className="contEditModal">
+          //               <div className="contInput">
+          //                 <TextCustom text="Usuario" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="nombre"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Usuario}
+          //                 />
+          //               </div>
 
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Nombre de Usuario"
+          //                   className="titleInput"
+          //                 />
+          //                 <input
+          //                   type="text"
+          //                   id="nombreUsuario"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Nombre_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Estado" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   className='inputCustom'
+          //                   id="EstadoUsuario"
+          //                   value={usuario.row.Estado_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Contraseña"
+          //                   className="titleInput"
+          //                 />
+          //                 <input type="text" id="contrasenia" className='inputCustom'/>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Rol" className="titleInput" />
+          //                 <select id="rol" className="selectCustom">
+          //                   {roles.length ? (
+          //                     roles.map(pre => (
+          //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
+          //                         {pre.Rol}
+          //                       </option>
+          //                     ))
+          //                   ) : (
+          //                     <option value="No existe informacion">
+          //                       No existe informacion
+          //                     </option>
+          //                   )}
+          //                 </select>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Email" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="Email"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Correo_Electronico}
+          //                 />
+          //               </div>
+          //             </div>
+          //           </div>,
+          //         ).then(() => {
+          //           let data = {
+          //             Usuario: document.getElementById('nombre').value,
+          //             Nombre_Usuario:
+          //               document.getElementById('nombreUsuario').value,
+          //             Estado_Usuario:
+          //               document.getElementById('EstadoUsuario').value,
+          //             Contrasenia: document.getElementById('contrasenia').value,
+          //             Id_Rol: document.getElementById('rol').value,
+          //             Correo_Electronico:
+          //               document.getElementById('Email').value,
+          //             Id_usuario: usuario.row.id_Usuario,
+          //           };
 
-                    if (sendData(urlUpdateUser, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
+          //           if (sendData(urlUpdateUser, data)) {
+          //             swal(<h1>Usuario Actualizado Correctamente</h1>);
+          //           }
+          //         });
+          //         break;
+          //       default:
+          //         break;
+          //     }
+          //   });
+          // }}
         />
       </div>
     </div>
