@@ -25,12 +25,13 @@ const urlCompraDetalle = 'http://localhost/APIS-Multioptica/compra/controller/co
 const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
 const urlProveedor = "http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores";
 const urlUpdInventario = "http://localhost/APIS-Multioptica/inventario/controller/inventario.php?op=uInventario"
+const urlKardex ="http://localhost/APIS-Multioptica/Kardex/Controller/kardex.php?op=InsertKardex"
 
 export const NuevaCompra = ({
   msgError = '',
   success = false,
   warning = false,
-  props,
+  idUsuario,
 }) => {
   // const [activeStep, setActiveStep] = React.useState(0);
 
@@ -99,30 +100,6 @@ export const NuevaCompra = ({
     { field: 'Fecha', headerName: 'Fecha', width: 145 },
     { field: 'Costo', headerName: 'Costo de la Compra', width: 145 },
     { field: 'Total', headerName: 'Total', width: 145 },
-
-
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 180,
-
-      renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-          // onClick={() => handleButtonClick(params.row.id)}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-          // onClick={() => handleButtonClick(params.row.id)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-        </div>
-      ),
-    },
   ];
 
   var idCounter=0
@@ -159,9 +136,17 @@ export const NuevaCompra = ({
         IdProducto:compras[i].Producto,
         CostoCompra: parseInt(compras[i].Costo)
        } 
+       const dataKardex ={
+        IdTipoMovimiento:1,
+        IdProducto:compras[i].Producto,
+        fechaYHora:compras[0].Fecha,
+        cantidad:parseInt(compras[i].Cantidad),
+        Id_Usuario:idUsuario
+       }
 
        sendData(urlCompraDetalle,dataDetalle)
        sendData(urlUpdInventario,dataInventario)
+       sendData(urlKardex,dataKardex)
       }
       swal("Compra registrada con exito","","success")
     }
@@ -331,7 +316,7 @@ export const NuevaCompra = ({
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
-              <Button className="btnReport1">
+              <Button className="btnReport1" onClick={()=>{setCompras([]);setCambio(cambio+1)}}>
                 Cancelar
               </Button>
             </div>
