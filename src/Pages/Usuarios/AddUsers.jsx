@@ -20,7 +20,7 @@ import swal from '@sweetalert/with-react';
 import AddUser from '../../IMG/AddUser.jpg';
 import { useNavigate } from 'react-router';
 
-export const AddUsers = () => {
+export const AddUsers = (props) => {
 
   const [Nombreusuario, setNombreusuario] = useState("");
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);
@@ -44,7 +44,8 @@ export const AddUsers = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
-
+  const urlBitacoraUsuario =
+    'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
     'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
   const urlRoles =
@@ -84,8 +85,13 @@ export const AddUsers = () => {
       correo: correo,
       rol: rol,
     };
+    let dataB = {
+      Id:props.idU
+    }
+
     if (await sendData(urlInsert, data)) {
       swal('Usuario creado exitosamente.', '', 'success');
+      sendData(urlBitacoraUsuario,dataB)
     }
   };
 

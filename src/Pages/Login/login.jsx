@@ -80,6 +80,7 @@ export const Login = props => {
         Id: respJsonUsr[0].Id_Usuario,
       };
 
+
       if (respJsonPss && respJsonUsr[0].Estado_Usuario === 'Nuevo') {
         props.mail(respJsonUsr[0].Correo_Electronico);
         props.user(respJsonUsr[0].Nombre_Usuario);
@@ -91,6 +92,7 @@ export const Login = props => {
         props.user(respJsonUsr[0].Nombre_Usuario);
         props.rol(respJsonUsr[0].Rol);
         props.mail(respJsonUsr[0].Correo_Electronico);
+        props.idUsuario(respJsonUsr[0].Id_Usuario)
         navegate('/Home');
       }
     } catch (error) {
@@ -143,7 +145,7 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              inputProps={{ maxLength: 50 }}
+              maxLength={50}
               ref={refUsuario}
             />
             <p className="errorMessage">
@@ -169,7 +171,7 @@ export const Login = props => {
               placeholder="Password"
               id="filled-adornment-password"
               className="inputCustomPass"
-              inputProps={{ maxLength: 150 }}
+              maxLength={150}
               type={showPassword ? 'text' : 'password'}
               inputRef={refContrasenia}
               endAdornment={
