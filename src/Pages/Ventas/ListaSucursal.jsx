@@ -20,23 +20,15 @@ import { TextCustom } from '../../Components/TextCustom';
 export const ListaSucursal = () => {
   const [roles, setRoles] = useState([]);
 
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
-
+  const urlSucursal ='http://localhost/APIS-Multioptica/Gestion/controller/gestion.php?op=sucursales';
+  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlSucursal)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
   }, []);
 
   const navegate = useNavigate();
@@ -50,11 +42,11 @@ export const ListaSucursal = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Sucursal', width: 250 },
-    { field: 'Usuario', headerName: 'Departamento', width: 250 },
-    { field: 'Nombre_Usuario', headerName: 'Ciudad', width: 250 },
-    { field: 'rol', headerName: 'Direccion', width: 250 },
-    { field: 'Estado_Usuario', headerName: 'Telefono', width: 250 },
+    { field: 'IdSucursal', headerName: 'ID Sucursal', width: 250 },
+    { field: 'departamento', headerName: 'Departamento', width: 250 },
+    { field: 'ciudad', headerName: 'Ciudad', width: 250 },
+    { field: 'direccion', headerName: 'Direccion', width: 250 },
+    { field: 'telefono', headerName: 'Telefono', width: 250 },
    
     {
       field: 'borrar',
@@ -135,7 +127,7 @@ export const ListaSucursal = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroSucursal');
+                navegate('/menuVentas/RegistroSucursal');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -148,120 +140,120 @@ export const ListaSucursal = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.IdSucursal}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
+          // onRowClick={usuario => {
+          //   swal({
+          //     buttons: {
+          //       update: 'Actualizar',
+          //       cancel: 'Cancelar',
+          //     },
+          //     content: (
+          //       <div className="logoModal">
+          //         Que accion desea realizar con el cliente:{' '}
+          //         {usuario.row.Usuario}
+          //       </div>
+          //     ),
+          //   }).then(op => {
+          //     switch (op) {
+          //       case 'update':
+          //         swal(
+          //           <div>
+          //             <div className="logoModal">Datos a actualizar</div>
+          //             <div className="contEditModal">
+          //               <div className="contInput">
+          //                 <TextCustom text="Usuario" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="nombre"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Usuario}
+          //                 />
+          //               </div>
 
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Nombre de Usuario"
+          //                   className="titleInput"
+          //                 />
+          //                 <input
+          //                   type="text"
+          //                   id="nombreUsuario"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Nombre_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Estado" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   className='inputCustom'
+          //                   id="EstadoUsuario"
+          //                   value={usuario.row.Estado_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Contraseña"
+          //                   className="titleInput"
+          //                 />
+          //                 <input type="text" id="contrasenia" className='inputCustom'/>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Rol" className="titleInput" />
+          //                 <select id="rol" className="selectCustom">
+          //                   {roles.length ? (
+          //                     roles.map(pre => (
+          //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
+          //                         {pre.Rol}
+          //                       </option>
+          //                     ))
+          //                   ) : (
+          //                     <option value="No existe informacion">
+          //                       No existe informacion
+          //                     </option>
+          //                   )}
+          //                 </select>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Email" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="Email"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Correo_Electronico}
+          //                 />
+          //               </div>
+          //             </div>
+          //           </div>,
+          //         ).then(() => {
+          //           let data = {
+          //             Usuario: document.getElementById('nombre').value,
+          //             Nombre_Usuario:
+          //               document.getElementById('nombreUsuario').value,
+          //             Estado_Usuario:
+          //               document.getElementById('EstadoUsuario').value,
+          //             Contrasenia: document.getElementById('contrasenia').value,
+          //             Id_Rol: document.getElementById('rol').value,
+          //             Correo_Electronico:
+          //               document.getElementById('Email').value,
+          //             Id_usuario: usuario.row.id_Usuario,
+          //           };
 
-                    if (sendData(urlUpdateUser, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
+          //           if (sendData(urlUpdateUser, data)) {
+          //             swal(<h1>Usuario Actualizado Correctamente</h1>);
+          //           }
+          //         });
+          //         break;
+          //       default:
+          //         break;
+          //     }
+          //   });
+          // }}
         />
       </div>
     </div>

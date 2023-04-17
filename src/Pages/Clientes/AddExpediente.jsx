@@ -38,6 +38,11 @@ export const AddExpediente = ({
 
   const navegate = useNavigate();
 
+  const [nidentidad, setnidentidad] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [erroridentidad, setErroridentidad] = React.useState(false);
+
+
   const handleNext = () => {
 
     let identidad = document.getElementById("identidad").value
@@ -86,15 +91,33 @@ export const AddExpediente = ({
             <div className="contInput">
               <TextCustom text="Identidad del Cliente" className='titleInput' />
               <input
+                onKeyDown={e => {
+                  setnidentidad(e.target.value);
+                  if (nidentidad === '') {
+                    setErroridentidad(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  } else {
+                    setErroridentidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(nidentidad)) {
+                      setErroridentidad(true);
+                      setmensaje('Solo deben de ingresar numeros');
+                    } else {
+                      setErroridentidad(false);
+                      setmensaje('');
+                    }
+                  }
+                }}
                 type="text"
                 name=""
                 className="inputCustom"
-                maxLength={50}
+                maxLength={13}
                 placeholder="Cliente"
                 variant="standard"
                 id="identidad"
                 label="identidad"
               />
+              <p class="error">{mensaje}</p>
             </div>
 
             <div className="contInput">

@@ -33,11 +33,30 @@ export const RegistroProducto = ({
     fetch(urlModelos).then(response =>response.json()).then(data =>setModelo(data))
   },[])
 
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
-  const [errorApellido, setErrorApellido] = React.useState(false);
 
   const navegate = useNavigate();
+
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorproducto, setErrorproducto] = React.useState(false);
+  const [producto, setproducto] = React.useState(false);
+
+  const [precio, setprecio] = React.useState('');
+  const [errorprecio, setErrorprecio] = React.useState(false);
+  const [aviso, setaviso] = React.useState(false);
+
+  const [cantidadmax, setcantidadmax] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [errorcantidadmax, setErrorcantidadmax] = React.useState(false);
+
+  const [cantidadmin, setcantidadmin] = React.useState('');
+  const [advertencia, setadvertencia] = React.useState('');
+  const [errorcantidadmin, setErrorcantidadmin] = React.useState(false);
+
+  const [descrpcion, setdescripcion] = React.useState('');
+  const [msj, setmsj] = React.useState('');
+  const [errordescripcion, setErrordescripcion] = React.useState(false);
+
+
 
   const handleNext = () => {
    
@@ -79,7 +98,24 @@ export const RegistroProducto = ({
               <TextCustom text="ID Producto" className="titleInput" />
 
               <input
-                error={errorIdentidad}
+                   onKeyDown={e => {
+                    setproducto(e.target.value);
+                    if (producto === '') {
+                      setErrorproducto(true);
+                      setleyenda('Los campos no deben estar vacios');
+                    } else {
+                      setErrorproducto(false);
+                      var preg_match = /^[0-9]+$/;
+                      if (!preg_match.test(producto)) {
+                        setErrorproducto(true);
+                        setleyenda('Solo deben de ingresar numeros');
+                      } else {
+                        setErrorproducto(false);
+                        setleyenda('');
+                      }
+                    }
+                  }}
+                error={errorproducto}
                 type="text"
                 name=""
                 maxLength={13}
@@ -112,7 +148,24 @@ export const RegistroProducto = ({
               <TextCustom text="Precio" className="titleInput" />
 
               <input
-                error={errorIdentidad}
+               onKeyDown={e => {
+                setprecio(e.target.value);
+                if (precio === '') {
+                  setErrorprecio(true);
+                  setaviso('Los campos no deben estar vacios');
+                } else {
+                  setErrorprecio(false);
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(precio)) {
+                    setErrorprecio(true);
+                    setaviso('Solo deben de ingresar numeros');
+                  } else {
+                    setErrorprecio(false);
+                    setaviso('');
+                  }
+                }
+              }}
+                error={errorprecio}
                 type="text"
                 name=""
                 maxLength={13}
@@ -120,13 +173,31 @@ export const RegistroProducto = ({
                 placeholder="Precio"
                 id="precio"
               />
+              <p class="error">{aviso}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Cantidad Maxima" className="titleInput" />
 
               <input
-                error={errorIdentidad}
+              onKeyDown={e => {
+                setcantidadmax(e.target.value);
+                if (cantidadmax === '') {
+                  setErrorcantidadmax(true);
+                  setmensaje('Los campos no deben estar vacios');
+                } else {
+                  setErrorcantidadmax(false);
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(cantidadmax)) {
+                    setErrorcantidadmax(true);
+                    setmensaje('Solo deben de ingresar numeros');
+                  } else {
+                    setErrorcantidadmax(false);
+                    setmensaje('');
+                  }
+                }
+              }}
+                error={errorcantidadmax}
                 type="text"
                 name=""
                 maxLength={13}
@@ -134,13 +205,31 @@ export const RegistroProducto = ({
                 placeholder="Cantidad Maxima"
                 id="cantMax"
               />
+              <p class="error">{mensaje}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Cantidad Minima" className="titleInput" />
-
+            
               <input
-                error={errorIdentidad}
+              onKeyDown={e => {
+                setcantidadmin(e.target.value);
+                if (cantidadmin === '') {
+                  setErrorcantidadmin(true);
+                  setadvertencia('Los campos no deben estar vacios');
+                } else {
+                  setErrorcantidadmin(false);
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(cantidadmin)) {
+                    setErrorcantidadmin(true);
+                    setadvertencia('Solo deben de ingresar numeros');
+                  } else {
+                    setErrorcantidadmin(false);
+                    setadvertencia('');
+                  }
+                }
+              }}
+                error={errorcantidadmin}
                 type="text"
                 name=""
                 maxLength={13}
@@ -148,19 +237,32 @@ export const RegistroProducto = ({
                 placeholder="Cantidad Minima"
                 id="cantMin"
               />
+              <p class="error">{advertencia}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Descripcion del Producto" className="titleInput" />
               <input
-                error={errorApellido}
+               onKeyDown={e => {
+                setdescripcion(e.target.value);
+                if (descrpcion == '') {
+                  setErrordescripcion(true);
+                  setmsj('Los campos no deben estar vacios');
+                }  else {
+                    setErrordescripcion(false);
+                    setmsj('');
+                  }
+                }
+              }
+                error={errordescripcion}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={60}
                 className="inputCustomText"
                 placeholder="Descripcion del Producto"
                 id="producto"
               />
+               <p class="error">{msj}</p>
             </div>
             
 

@@ -17,6 +17,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 
 export const ListaParametros = () => {
+
   
   const urlParametros ='http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=parametros';
 
@@ -25,10 +26,10 @@ export const ListaParametros = () => {
 
 
   useEffect(() => {
+
     fetch(urlParametros)
       .then(response => response.json())
       .then(data => setTableData(data));
-    
   }, []);
 
   const navegate = useNavigate();

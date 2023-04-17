@@ -49,6 +49,14 @@ export const AddClientes = ({
 
 
   const navegate = useNavigate();
+  
+  const [direccion, setdireccion] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [errordireccion, setErrordireccion] = React.useState(false);
+
+  const [correoelec, setcorreoelec] = React.useState('');
+  const [advertencia, setadvertencia] = React.useState('');
+  const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
 
   const handleNext = () => {
     let identidad = document.getElementById('Nidentidad').value;
@@ -208,33 +216,27 @@ export const AddClientes = ({
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
+                 onKeyDown={e => {
+                  setdireccion(e.target.value);
+                  if (direccion == '') {
+                    setErrordireccion(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  }  else {
+                      setErrordireccion(false);
+                      setmensaje('');
                     }
                   }
-                }}
+                } 
                 error={errorTelefono}
                 type="phone"
                 name=""
-                helperText={texto}
-                maxLength={50}
+                helperText={mensaje}
+                maxLength={100}
                 className="inputCustom"
                 placeholder="Direccion"
                 id="direccion"
               />
-              {<p className="error">{texto}</p>}
+              {<p className="error">{mensaje}</p>}
             </div>
 
             <div className="contInput">
@@ -261,7 +263,7 @@ export const AddClientes = ({
                 type="phone"
                 name=""
                 helperText={texto}
-                maxLength={50}
+                maxLength={15}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
@@ -272,24 +274,25 @@ export const AddClientes = ({
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
+               onKeyDown={e => {
+                setcorreoelec(e.target.value);
+                if (correoelec == '') {
+                  setErrorcorreoelec(true);
+                  setadvertencia('Los campos no deben estar vacios');
+                }
+                 else {
+                  setErrorcorreoelec(false);
+                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!expresion.test(correoelec)) {
+                    setErrorcorreoelec(true);
+                    setadvertencia('Formato invalido');
                   } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
+                    setErrorcorreoelec(false);
+                    setadvertencia('');
                   }
-                }}
-                error={errorTelefono}
+                }
+              }}
+                error={errorcorreoelec}
                 type="phone"
                 name=""
                 helperText={texto}
@@ -298,7 +301,7 @@ export const AddClientes = ({
                 placeholder="Correo Electronico"
                 id="correo"
               />
-              {<p className="error">{texto}</p>}
+              {<p className="error">{advertencia}</p>}
             </div>
 
             <div className="contInput">
