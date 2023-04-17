@@ -1062,7 +1062,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaCompra />
+                  <NuevaCompra idUsuario={idUsuario}/>
                 </div>
               </ProtectedRoute>
             }
@@ -1182,9 +1182,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <div className="content">
                     <Recordatorio></Recordatorio>
-                  </div>
                 </div>
               </ProtectedRoute>
             }

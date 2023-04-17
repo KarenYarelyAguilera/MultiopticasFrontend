@@ -17,8 +17,7 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlCliente =
-  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+const urlPromocion = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertPromocion';
 
 export const RegistroPromocion = ({
   msgError = '',
@@ -31,54 +30,27 @@ export const RegistroPromocion = ({
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
-  const [sucursales, setSucursales] = useState([]);
-
-  const [iIdentidad, setiIdentidad] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
-
-  const [Nombre, setNombre] = React.useState('');
-  const [errorNombre, setErrorNombre] = React.useState(false);
-  const [Msj, setMsj] = React.useState(false);
-
-  const [Apellido, setApellido] = React.useState('');
-  const [errorApellido, setErrorApellido] = React.useState(false);
-  const [aviso, setAviso] = React.useState(false);
-
-  const [errorTelefono, setErrorTelefono] = React.useState(false);
-  const [texto, setTexto] = React.useState(false);
-
-  const [Telefono, setTelefono] = useState('');
-
-  const [Identidad, setIdentidad] = useState(0);
-  const [Telefonoc, setTelefonoc] = useState(0);
-
-
+  
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let identidad = document.getElementById('Nidentidad').value;
-    let nombres = document.getElementById('nombre').value;
-    let apellidos = document.getElementById('apellido').value;
-    let telefono = document.getElementById('phone').value;
-    let genero = parseInt(document.getElementById('genero').value);
-    let direccion = parseInt(document.getElementById('direccion').value);
-    let correo = document.getElementById('correo').value
-    let fechaN = document.getElementById('Fnacimiento').value
+
+    let descPorcent = document.getElementById('descPorcent').value;
+    let fechaInicial = document.getElementById('fechaInicial').value;
+    let fechaFinal = document.getElementById('fechaFinal').value;
+    let estado = document.getElementById('estado').value;
+    let descripcion = document.getElementById('descripcion').value;
 
     let data = {
-      idCliente:identidad,
-      nombre:nombres,
-      apellido:apellidos,
-      idGenero:genero,
-      fechaNacimiento:fechaN,
-      direccion:direccion,
-      telefonoCliente:telefono,
-      correoElectronico:correo
+      descPorcent:descPorcent,
+      fechaInicial:fechaInicial,
+      fechaFinal:fechaFinal,
+      estado:estado,
+      descripcion:descripcion
     };
-    if (sendData(urlCliente, data)) {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/listaClientes');
+    if (sendData(urlPromocion, data)) {
+      swal('Promocion agregada con exito', '', 'success').then(result => {
+        navegate('/menuVentas/RegistroPromociones');
       });
     }
   };
@@ -106,176 +78,70 @@ export const RegistroPromocion = ({
               <TextCustom text="Porcentaje de Descuento" className="titleInput" />
 
               <input
-                error={errorIdentidad}
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                onKeyDown={e => {
-                  setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
-                  if (iIdentidad === '') {
-                    setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
-                      setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorIdentidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
                 placeholder="Porcentaje de Descuento"
-                id="Nidentidad"
+                id="descPorcent"
               />
-              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Fecha de Inicio" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
                 type="date"
                 name=""
-                helperText={texto}
+                // helperText={texto}
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Fecha de Inicio"
-                id="fechaN"
+                id="fechaInicial"
               />
-              {<p className="error">{texto}</p>}
+              
             </div>
             
             <div className="contInput">
               <TextCustom text="Fecha Final" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
-                error={errorTelefono}
                 type="date"
                 name=""
-                helperText={texto}
+                // helperText={texto}
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Fecha Final"
-                id="fechaN"
+                id="fechaFinal"
               />
-              {<p className="error">{texto}</p>}
+        
             </div>
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>No se sabe</option>
-                <option value={2}>No se sabe</option>
+              <select name="" className="selectCustom" id="estado">
+                <option value={1}>Activo</option>
+                <option value={2}>Inactivo</option>
               </select>
             </div>
 
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setApellido(e.target.value);
-                  if (Apellido == '') {
-                    setErrorApellido(true);
-                    setAviso('Los campos no deben estar vacios');
-                  } else {
-                    setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Apellido)) {
-                      setErrorApellido(true);
-                      setAviso('Solo deben de ingresar letras');
-                    } else {
-                      setErrorApellido(false);
-                      setAviso('');
-                    }
-                  }
-                }}
-                error={errorApellido}
                 type="text"
                 name=""
-                helperText={aviso}
                 maxLength={50}
                 className="inputCustomText"
                 placeholder="Descripcion"
-                id="apellido"
+                id="descripcion"
               />
-              <p className="error">{aviso}</p>
             </div>
-            
-
+      
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (
-                    typeof (
-                      parseInt(document.getElementById('Nidentidad').value) !==
-                      'number'
-                    )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
-                  } else {
-                    handleNext();
-                  }
-                }}
+                onClick={handleNext}
               >
+                
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
