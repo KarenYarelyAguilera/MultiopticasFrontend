@@ -164,7 +164,7 @@ export const RegistroGarantia = ({
                       }
                        else {
                         setErrorDescripcion(false);
-                        var expresion = /^[a-zA-Z0-9]+$/;
+                        var expresion = /^[a-zA-Z0-9\s]+$/;
                         if (!expresion.test(descripcion)) {
                           setErrorDescripcion(true);
                           setleyenda('Formato invalido');
@@ -188,9 +188,16 @@ export const RegistroGarantia = ({
 
             <div className="contBtnStepper">
               <Button
+               onClick={() => {
+                  swal('Garantia agregada con exito', '', 'success')
+                navegate('/menuVentas/listaGarantias')
+                handleNext();
+
+              }}
+                  
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
