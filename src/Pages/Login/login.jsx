@@ -116,7 +116,6 @@ export const Login = props => {
             <input
               onKeyDown={e => {
                 setUsuario(e.target.value);
-
                 if (usuario.length > 47) {
                   setErrorUsuario(true);
                   setprueba('A excedido al numero de caracteres');
@@ -172,7 +171,7 @@ export const Login = props => {
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
-              inputProps={{ maxLength: 150 }}
+              maxLength={150}
               type={showPassword ? 'text' : 'password'}
               inputRef={refContrasenia}
               endAdornment={

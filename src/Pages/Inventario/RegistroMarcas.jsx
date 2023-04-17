@@ -81,11 +81,9 @@ export const RegistroMarcas = ({
           <div className="InputContPrincipal1">
             <div className="contInput">
               <TextCustom text="ID Marca" className="titleInput" />
-
               <input
-              onKeyDown={e => {
+                 onKeyDown={e => {
                 setmarca(e.target.value);
-                setmarca(parseInt(e.target.value));
                 if (marca === '') {
                   setErrorMarca(true);
                   setleyenda('Los campos no deben estar vacios');

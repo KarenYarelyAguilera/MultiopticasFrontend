@@ -117,7 +117,7 @@ export const RegistroGarantia = ({
                   }
                    else {
                     seterrorgarantia(false);
-                    var expresion = /^[a-zA-Z0-9]+$/;
+                    var expresion = /^[a-zA-Z0-9\s]+$/;
                     if (!expresion.test(garantia)) {
                       seterrorgarantia(true);
                       setmensaje('Formato invalido');

@@ -38,6 +38,43 @@ export const RegistroProveedores = ({
 
   const navegate = useNavigate();
 
+  const [proveed, setproveed] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorproveedor, setErrorproveedor] = React.useState(false);
+
+  const [codigopostal, setcodigopostal] = React.useState('');
+  const [aviso, setaviso] = React.useState('');
+  const [errorcodigopostal, setErrorcodigopostal] = React.useState(false);
+
+  const [nombre, setnombre] = React.useState('');
+  const [msj, setmsj] = React.useState('');
+  const [errornombre, setErrornombre] = React.useState(false);
+ 
+  const [encargado, setencargado] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [errorencargado, setErrorencargado] = React.useState(false);
+
+  const [pais, setpais] = React.useState('');
+  const [avi, setavi] = React.useState('');
+  const [errorpais, setErrorpais] = React.useState(false);
+
+  const [ciudad, setciudad] = React.useState('');
+  const [advertencia, setadvertencia] = React.useState('');
+  const [errorciudad, setErrorciudad] = React.useState(false);
+
+  const [direccion, setdireccion] = React.useState('');
+  const [validacion, setvalidacion] = React.useState('');
+  const [errordireccion, setErrordireccion] = React.useState(false);
+
+  const [tel, settel] = React.useState('');
+  const [adv, setadv] = React.useState('');
+  const [errortel, setErrortel] = React.useState(false);
+
+  const [correo, setcorreo] = React.useState('');
+  const [parrafo, setparrafo] = React.useState('');
+  const [errorcorreo, setErrorcorreo] = React.useState(false);
+
+
   const handleNext = () => {
     let id = parseInt(document.getElementById("idMarca").value)
     let marca = document.getElementById("Marca").value
@@ -75,6 +112,23 @@ export const RegistroProveedores = ({
               <TextCustom text="Empresa Proveedora" className="titleInput" />
 
               <input
+              onKeyDown={e => {
+                setnombre(e.target.value);
+                if (nombre == '') {
+                  setErrornombre(true);
+                  setmsj('Los campos no deben estar vacios');
+                } else {
+                  setErrornombre(false);
+                  var preg_match = /^[a-zA-Z]+$/;
+                  if (!preg_match.test(nombre)) {
+                    setErrornombre(true);
+                    setmsj('Solo deben de ingresar letras');
+                  } else {
+                    setErrornombre(false);
+                    setmsj('');
+                  }
+                }
+              }}
                 type="text"
                 name=""
                 maxLength={50}
@@ -82,25 +136,61 @@ export const RegistroProveedores = ({
                 placeholder="Empresa Proveedora"
                 id="idMarca"
               />
+              <p class="error">{msj}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Codigo Postal" className="titleInput" />
 
               <input
+
+                onKeyDown={e => {
+                  setcodigopostal(e.target.value);
+                  if (codigopostal === '') {
+                    setErrorcodigopostal(true);
+                    setaviso('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcodigopostal(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(codigopostal)) {
+                      setErrorcodigopostal(true);
+                      setaviso('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcodigopostal(false);
+                      setaviso('');
+                    }
+                  }
+                }}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={15}
                 className="inputCustom"
                 placeholder="Codigo Postal"
                 id="Marca"
               />
+              <p class="error">{aviso}</p>
             </div>
-
             <div className="contInput">
               <TextCustom text="Persona Encargada" className="titleInput" />
-
+              
               <input
+                 onKeyDown={e => {
+                  setencargado(e.target.value);
+                  if (encargado == '') {
+                    setErrorencargado(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  } else {
+                    setErrorencargado(false);
+                    var preg_match = /^[a-zA-Z]+$/;
+                    if (!preg_match.test(encargado)) {
+                      setErrorencargado(true);
+                      setmensaje('Solo deben de ingresar letras');
+                    } else {
+                      setErrorencargado(false);
+                      setmensaje('');
+                    }
+                  }
+                }}
                 type="text"
                 name=""
                 maxLength={50}
@@ -108,71 +198,159 @@ export const RegistroProveedores = ({
                 placeholder="ID Persona Encargada"
                 id="idMarca"
               />
+               <p class="error">{mensaje}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Pais" className="titleInput" />
-
+          
               <input
+                  onKeyDown={e => {
+                    setpais(e.target.value);
+                    if (pais == '') {
+                      setErrorpais(true);
+                      setavi('Los campos no deben estar vacios');
+                    } else {
+                      setErrorpais(false);
+                      var preg_match = /^[a-zA-Z]+$/;
+                      if (!preg_match.test(pais)) {
+                        setErrorpais(true);
+                        setavi('Solo deben de ingresar letras');
+                      } else {
+                        setErrorpais(false);
+                        setavi('');
+                      }
+                    }
+                  }}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={25}
                 className="inputCustom"
                 placeholder="Pais"
                 id="Marca"
               />
+               <p class="error">{avi}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
 
               <input
+
+                  onKeyDown={e => {
+                    settel(e.target.value);
+                    if (tel === '') {
+                      setErrortel(true);
+                      setadv('Los campos no deben estar vacios');
+                    } else {
+                      setErrortel(false);
+                      var preg_match = /^[0-9]+$/;
+                      if (!preg_match.test(tel)) {
+                        setErrortel(true);
+                        setadv('Solo deben de ingresar numeros');
+                      } else {
+                        setErrortel(false);
+                        setadv('');
+                      }
+                    }
+                  }}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={20}
                 className="inputCustom"
                 placeholder="Telefono"
                 id="idMarca"
               />
+              <p class="error">{adv}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Ciudad" className="titleInput" />
 
               <input
+                  onKeyDown={e => {
+                    setciudad(e.target.value);
+                    if (ciudad == '') {
+                      setErrorciudad(true);
+                      setadvertencia('Los campos no deben estar vacios');
+                    } else {
+                      setErrorciudad(false);
+                      var preg_match = /^[a-zA-Z]+$/;
+                      if (!preg_match.test(ciudad)) {
+                        setErrorciudad(true);
+                        setadvertencia('Solo deben de ingresar letras');
+                      } else {
+                        setErrorciudad(false);
+                        setadvertencia('');
+                      }
+                    }
+                  }}
+
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={25}
                 className="inputCustom"
                 placeholder="Ciudad"
                 id="Marca"
               />
+               <p class="error">{advertencia}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
 
               <input
+              onKeyDown={e => {
+                setcorreo(e.target.value);
+                if (correo == '') {
+                  setErrorcorreo(true);
+                  setparrafo('Los campos no deben estar vacios');
+                }
+                 else {
+                  setErrorcorreo(false);
+                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!expresion.test(correo)) {
+                    setErrorcorreo(true);
+                    setparrafo('Formato invalido');
+                  } else {
+                    setErrorcorreo(false);
+                    setparrafo('');
+                  }
+                }
+              }}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={100}
                 className="inputCustom"
                 placeholder="Correo Electronico"
                 id="Marca"
               />
+               <p class="error">{parrafo}</p>
             </div>
             
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
               <input
+                onKeyDown={e => {
+                  setdireccion(e.target.value);
+                  if (direccion == '') {
+                    setErrordireccion(true);
+                    setvalidacion('Los campos no deben estar vacios');
+                  }  else {
+                      setErrordireccion(false);
+                      setvalidacion('');
+                    }
+                  }
+                }
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={100}
                 className="inputCustomText"
                 placeholder="Direccion"
                 id="modelo"
               />
-            </div>
+               <p class="error">{validacion}</p>
+            </div> 
 
             <div className="contBtnStepper">
               <Button

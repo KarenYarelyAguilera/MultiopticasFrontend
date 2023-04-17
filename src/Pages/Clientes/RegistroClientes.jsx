@@ -24,6 +24,10 @@ export const RegistroClientes = ({
 
   const navegate = useNavigate();
 
+  const [ddiagnostico, setddiagnostico] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [errordiagnostico, setErrordiagnostico] = React.useState(false);
+
   const handleNext = () => {
 
    let diagnostico = document.getElementById("diagnostico").value
@@ -63,13 +67,26 @@ export const RegistroClientes = ({
             <div className="contInput">
               <TextCustom text="Diagnostico" className="titleInput" />
               <input
+               onKeyDown={e => {
+                setddiagnostico(e.target.value);
+                if (ddiagnostico == '') {
+                  setErrordiagnostico(true);
+                  setmensaje('Los campos no deben estar vacios');
+                }  else {
+                    setErrordiagnostico(false);
+                    setmensaje('');
+                  }
+                }
+              }
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={100}
                 className="inputCustomText"
                 placeholder="Diagnostico"
                 id="diagnostico"
+                error={errordiagnostico}
               />
+              <p class="error">{mensaje}</p>
             </div>
 
             {/* <div className="contInput">
