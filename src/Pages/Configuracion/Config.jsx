@@ -30,6 +30,11 @@ export const Configuracion = ()=>{
           imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
           vinculo: "/config/ListaParametros", 
         },
+        {
+          titulo: "Bitacora",
+          imagen: 'https://static.vecteezy.com/system/resources/previews/002/788/724/non_2x/checklist-on-smartphone-screen-online-survey-concept-hand-holds-mobile-phone-and-check-list-with-checkmark-illustration-flat-vector.jpg',
+          vinculo: "/config/Bitacora", 
+        },
         
         
       ];
