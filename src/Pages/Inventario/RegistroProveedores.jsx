@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 //Styles
@@ -12,14 +12,11 @@ import '../../Styles/Usuarios.css';
 
 //Components
 
-import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-import { TextField } from '@mui/material';
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+const urlProveedores = 'http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=nProveedor';
 
 export const RegistroProveedores = ({
   msgError = '',
@@ -27,28 +24,37 @@ export const RegistroProveedores = ({
   warning = false,
   props,
 }) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
   
-
-
-
+  const [proveedores, setProveedores]= useState([]);
+ 
   const navegate = useNavigate();
 
   const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+    let nombreProveedor = document.getElementById("nombreProveedor").value
+    let encargado = document.getElementById("encargado").value;
+    let pais = document.getElementById("pais").value;
+    let ciudad = document.getElementById("ciudad").value;
+    let codigoPostal = document.getElementById("codigoPostal").value;
+    let direccion = document.getElementById("direccion").value;
+    let telefono = document.getElementById("telefono").value;
+    let correoElectronico = document.getElementById("correoElectronico").value;
+ 
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
-    }
+      nombre:nombreProveedor,
+      encargado:encargado,
+      pais:pais,
+      ciudad:ciudad,
+      codigoP:codigoPostal,
+      direccion:direccion,
+      telefono:telefono,
+      correo:correoElectronico
+    };
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
+ console.log(data) 
+
+    if (sendData(urlProveedores, data)) {
+      swal('Proveedor agregado con exito', '', 'success').then(result => {
+        navegate('/menuInventario/ListaProveedore');
       });
     }
   };
@@ -79,8 +85,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Empresa Proveedora"
-                id="idMarca"
+                placeholder="nombreProveedor"
+                id="nombreProveedor"
               />
             </div>
 
@@ -92,8 +98,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Codigo Postal"
-                id="Marca"
+                placeholder="codigoPostal"
+                id="codigoPostal"
               />
             </div>
 
@@ -105,8 +111,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="ID Persona Encargada"
-                id="idMarca"
+                placeholder="encargado"
+                id="encargado"
               />
             </div>
 
@@ -118,8 +124,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Pais"
-                id="Marca"
+                placeholder="pais"
+                id="pais"
               />
             </div>
 
@@ -131,8 +137,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Telefono"
-                id="idMarca"
+                placeholder="telefono"
+                id="telefono"
               />
             </div>
 
@@ -144,8 +150,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Ciudad"
-                id="Marca"
+                placeholder="ciudad"
+                id="ciudad"
               />
             </div>
 
@@ -157,8 +163,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Correo Electronico"
-                id="Marca"
+                placeholder="correoElectronico"
+                id="correoElectronico"
               />
             </div>
             
@@ -169,8 +175,8 @@ export const RegistroProveedores = ({
                 name=""
                 maxLength={50}
                 className="inputCustomText"
-                placeholder="Direccion"
-                id="modelo"
+                placeholder="direccion"
+                id="direccion"
               />
             </div>
 

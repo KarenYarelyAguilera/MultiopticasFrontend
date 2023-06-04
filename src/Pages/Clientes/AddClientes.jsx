@@ -6,7 +6,6 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
 //Styles
 import '../../Styles/Usuarios.css';
 
@@ -14,10 +13,11 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 
 
 const urlCliente =
-  'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=InsertCliente';
+  'http://localhost:3000/api/clientes/clienteNuevo';
 
 export const AddClientes = ({
   msgError = '',
@@ -50,7 +50,7 @@ export const AddClientes = ({
 
   const navegate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
@@ -74,18 +74,24 @@ export const AddClientes = ({
       idCliente:identidad,
       nombre:nombres,
       apellido:apellidos,
-      IdGenero:genero,
+      idGenero:genero,
       fechaNacimiento:fechaFormateada,
       direccion:direccion,
-      telefonoCliente:telefono,
-      correoElectronico:correo
-    };
+      telefono:telefono,
+      correo:correo
+    }
 
-    if (sendData(urlCliente, data)) {
+
+
+    await axios.post(urlCliente,data).then(response=>{
       swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuClientes/lista');
       });
-    }
+
+    }).catch(error=>{
+      console.log(error);
+      swal('Error al registrar el cliente', '', 'success')
+    })
 
   };
 

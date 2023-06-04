@@ -18,15 +18,10 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const Bitacora = () => {
-  const [Modelo, setModelo] = useState([])
-  const [roles, setRoles] = useState([]);
   const [cambio,setCambio] = useState(0)
 
 
-  const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
-  const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
-
-  const urlModelos = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos"
+  const urlProducto ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Bitacora";
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,9 +30,6 @@ export const Bitacora = () => {
     fetch(urlProducto)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlModelos)
-      .then(response => response.json())
-      .then(data => setModelo(data));
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -51,87 +43,17 @@ export const Bitacora = () => {
   );
 
   const columns = [
-    { field: 'IdProducto', headerName: 'ID Bitacora', width: 240 },
-    { field: 'producto', headerName: 'Usuario', width: 260 },
-    { field: 'modelo', headerName: 'Objeto', width: 260 },
-    { field: 'precio', headerName: 'Accion', width: 260 },
-    { field: 'cantidadMin', headerName: 'Descripcion', width: 260 },
-    { field: 'cantidadMax', headerName: 'Fecha', width: 260 },
+    { field: 'IdBitacora', headerName: 'ID Bitacora', width: 240 },
+    { field: 'Nombre_Usuario', headerName: 'Usuario', width: 260 },
+    { field: 'Objeto', headerName: 'Pantalla', width: 260 },
+    { field: 'accion', headerName: 'Accion', width: 260 },
+    { field: 'Descripcion', headerName: 'Descripcion', width: 260 },
+    { field: 'fecha', headerName: 'Fecha', width: 260 },
 
   ];
 
   function handleUpdt(param) {
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <TextCustom text="producto" className="titleInput" />
-            <input
-              type="text"
-              id="producto"
-              className='inputCustom'
-              value={param.row.producto}
-            />
-          </div>
-
-          <div className="contInput">
-            <TextCustom
-              text="Modelo"
-              className="titleInput"
-            />
-            <select name="" id="modelo">
-            {Modelo.length ? (
-                  Modelo.map(pre => (
-                    <option key={pre.IdModelo} value={pre.IdModelo}>
-                      {pre.detalle}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-            </select>
-          </div>
-          <div className="contInput">
-            <TextCustom text="Precio" className="titleInput" />
-            <input
-              type="text"
-              className='inputCustom'
-              id="precio"
-              value={param.row.precio}
-            />
-          </div>
-          <div className="contInput">
-            <TextCustom
-              text="Cantidad minima"
-              className="titleInput"
-            />
-            <input type="text" id="cantMin" className='inputCustom' value={param.row.cantidadMin} />
-          </div>
-          <div className="contInput">
-            <TextCustom text="cantMax" className="titleInput" />
-            <input type="text" id="cantMax" className='inputCustom' value={param.row.cantidadMax} />
-          </div>
-        </div>
-      </div>,
-    ).then(() => {
-
-      let data = {
-        descripcion:document.getElementById('producto').value,
-        IdModelo:document.getElementById('modelo').value,
-        precio: document.getElementById('precio').value,
-        cantidadMin: document.getElementById('cantMin').value,
-        cantidadMax:document.getElementById('cantMax').value,
-        IdProducto: param.row.IdProducto,
-      };
-
-      if (sendData(urlUpdProducto, data)) {
-        swal(<h1>Producto Actualizado Correctamente</h1>);
-        setCambio(cambio+1)
-      }
-    });
+   
   }
 
   function handleDel(id) {
@@ -177,7 +99,7 @@ export const Bitacora = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdProducto}
+          getRowId={tableData => tableData.IdBitacora}
           rows={filteredData}
           columns={columns}
           pageSize={5}
