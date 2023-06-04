@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para i
 import { useState } from 'react';
 import React from 'react';
 
+
 //Components
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
