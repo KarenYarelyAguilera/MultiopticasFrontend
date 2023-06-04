@@ -50,6 +50,16 @@ export const NuevaCompra = ({
   const [compras,setCompras] = useState([])
   const [cambio,setCambio]=useState(0)
 
+
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorcantidad, setErrorcantidad] = React.useState(false);
+  const [cantid, setcantid] = React.useState(false);
+
+  const [aviso, setaviso] = React.useState('');
+  const [errorcocompra, setErrorcoscompra] = React.useState(false);
+  const [cosCompra, setcosCompra] = React.useState(false);
+
+
   useEffect(() => {
     // fetch()
     //   .then(response => response.json())
@@ -212,15 +222,36 @@ export const NuevaCompra = ({
                 className="inputCustom"
                 placeholder="Cantidad"
                 id="cantidad"
-                onChange={(e) => {
-                  const cantidadValue = e.target.value;
-                  if (/^\d*$/.test(cantidadValue)) {
-                    setCantidad(cantidadValue);
+                onKeyDown={e => {
+                  setcantid(e.target.value);
+                  if (cantid === '' ) {
+                    setErrorcantidad(true);
+                    setleyenda('Los campos no deben estar vacios');
                   } else {
-                    setCantidad('');
+                    setErrorcantidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cantid)) {
+                      setErrorcantidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcantidad(false);
+                      setleyenda('');
+                    }
                   }
                 }}
+                onClick={e => {
+                  setcantid(e.target.value);
+                  if (cantid === '') {
+                    setErrorcantidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcantidad(false);
+                    setleyenda('');
+                  }
+                }}
+                 
               />
+               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -247,15 +278,35 @@ export const NuevaCompra = ({
                 className="inputCustom"
                 placeholder="Costo de la Compra"
                 id="costo"
-                onChange={(e) => {
-                  const costoValue = e.target.value;
-                  if (/^\d*$/.test(costoValue)) {
-                    setCosto(costoValue);
+                onKeyDown={e => {
+                  setcosCompra(e.target.value);
+                  if (cosCompra === '') {
+                    setErrorcoscompra(true);
+                    setaviso('Los campos no deben estar vacios');
                   } else {
-                    setCosto('');
+                    setErrorcoscompra(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cosCompra)) {
+                      setErrorcoscompra(true);
+                      setaviso('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcoscompra(false);
+                      setaviso('');
+                    }
+                  }
+                }}
+                onClick={e => {
+                  setcosCompra(e.target.value);
+                  if (cosCompra === '') {
+                    setErrorcoscompra(true);
+                    setaviso('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcoscompra(false);
+                    setaviso('');
                   }
                 }}
               />
+               <p class="error">{aviso}</p>
             </div>
 
             <div className="contInput">

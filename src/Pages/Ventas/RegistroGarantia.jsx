@@ -28,6 +28,14 @@ export const RegistroGarantia = ({
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [Productos, setProductos] = useState([])
+
+  const [garantia, setGarantia] = useState('');
+  const [mensaje, setmensaje] = useState('');
+  const [errorGarantia, seterrorgarantia] = useState(false);
+
+  const [descripcion, setDescripcion] = useState('');
+  const [leyenda, setleyenda] = useState('');
+  const [errorDescripcion, setErrorDescripcion] = useState(false);
   
   useEffect(()=>{
     fetch(urlProducto).then(response =>response.json()).then(data=>setProductos(data))
@@ -95,15 +103,40 @@ export const RegistroGarantia = ({
 
             <div className="contInput">
               <TextCustom text="Meses" className="titleInput" />
-
               <input
+                onKeyDown={e => {
+                  setGarantia(e.target.value);
+
+                  if (garantia.length > 10) {
+                    seterrorgarantia(true);
+                  setmensaje('A excedido al numero de caracteres');
+                  }
+                  if (garantia === '') {
+                    seterrorgarantia(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  }
+                   else {
+                    seterrorgarantia(false);
+                    var expresion = /^[a-zA-Z0-9\s]+$/;
+                    if (!expresion.test(garantia)) {
+                      seterrorgarantia(true);
+                      setmensaje('Formato invalido');
+                    }
+
+                     else {
+                      seterrorgarantia(false);
+                      setmensaje('');
+                    }
+                  }
+                }}
                 type="text"
                 name=""
-                maxLength={13}
+                maxLength={11}
                 className="inputCustom"
                 placeholder="Meses"
                 id="meses"
               />
+            <p class="error">{mensaje}</p>
             </div>
             
 
@@ -118,13 +151,38 @@ export const RegistroGarantia = ({
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
+                    onKeyDown={e => {
+                      setDescripcion(e.target.value);
+    
+                      if (descripcion.length > 100) {
+                        setErrorDescripcion(true);
+                      setleyenda('A excedido al numero de caracteres');
+                      }
+                      if (descripcion === '') {
+                        setErrorDescripcion(true);
+                        setleyenda('Los campos no deben estar vacios');
+                      }
+                       else {
+                        setErrorDescripcion(false);
+                        var expresion = /^[a-zA-Z0-9]+$/;
+                        if (!expresion.test(descripcion)) {
+                          setErrorDescripcion(true);
+                          setleyenda('Formato invalido');
+                        }
+                         else {
+                          setErrorDescripcion(false);
+                          setleyenda('');
+                        }
+                      }
+                    }}
                 type="text"
                 name=""
-                maxLength={50}
+                maxLength={100}
                 className="inputCustomText"
                 placeholder="Descripcion"
                 id="descripcion"
               />
+              <p class="error">{leyenda}</p>
             </div>
             
 

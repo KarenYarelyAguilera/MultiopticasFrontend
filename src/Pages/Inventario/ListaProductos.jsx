@@ -22,6 +22,10 @@ export const ListaProductos = () => {
   const [roles, setRoles] = useState([]);
   const [cambio,setCambio] = useState(0)
 
+  const [cantidadmax, setcantidadmax] =useState('');
+  const [mensaje, setmensaje] =useState('');
+  const [errorcantidadmax, setErrorcantidadmax] =useState(false);
+
 
   const urlProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
   const urlUpdProducto ="http://localhost/APIS-Multioptica/producto/controller/producto.php?op=UpdateProducto";
@@ -30,6 +34,10 @@ export const ListaProductos = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+//--------------------------------------------------------------------
+  const [precio, setprecio] = useState('');
+  const [errorprecio, setErrorprecio] = useState(false);
+  const [aviso, setaviso] = useState(false);
 
   useEffect(() => {
     fetch(urlProducto)
@@ -119,11 +127,31 @@ export const ListaProductos = () => {
           <div className="contInput">
             <TextCustom text="Precio" className="titleInput" />
             <input
+             onKeyDown={e => {
+              setprecio(e.target.value);
+              if (precio === '') {
+                setErrorprecio(true);
+                setaviso('Los campos no deben estar vacios');
+              } else {
+                setErrorprecio(false);
+                var preg_match = /^[0-9]+$/;
+                if (!preg_match.test(precio)) {
+                  setErrorprecio(true);
+                  setaviso('Solo deben de ingresar numeros');
+                } else {
+                  setErrorprecio(false);
+                  setaviso('');
+                }
+              }
+            }}
               type="text"
               className='inputCustom'
               id="precio"
+              error={errorprecio}
+              maxLength={13}
               value={param.row.precio}
             />
+             <p class="error">{aviso}</p>
           </div>
           <div className="contInput">
             <TextCustom
@@ -134,7 +162,29 @@ export const ListaProductos = () => {
           </div>
           <div className="contInput">
             <TextCustom text="cantMax" className="titleInput" />
-            <input type="text" id="cantMax" className='inputCustom' value={param.row.cantidadMax} />
+            <input 
+             onKeyDown={e => {
+              setcantidadmax(e.target.value);
+              if (cantidadmax === '') {
+                setErrorcantidadmax(true);
+                setmensaje('Los campos no deben estar vacios');
+              } else {
+                setErrorcantidadmax(false);
+                var preg_match = /^[0-9]+$/;
+                if (!preg_match.test(cantidadmax)) {
+                  setErrorcantidadmax(true);
+                  setmensaje('Solo deben de ingresar numeros');
+                } else {
+                  setErrorcantidadmax(false);
+                  setmensaje('');
+                }
+              }
+            }}
+            type="text"
+             id="cantMax" 
+             className='inputCustom'
+             value={param.row.cantidadMax} />
+             <p class="error">{mensaje}</p>
           </div>
         </div>
       </div>,
