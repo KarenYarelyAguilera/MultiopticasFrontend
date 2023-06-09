@@ -28,12 +28,21 @@ export const RegistroModelo = ({
 
   const [Marca, setMarca] = useState([])
 
+  const [modelo, setmodelo] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+  const [errormodelo, setErrorModelo] = React.useState(false);
+
+  const [descrpcion, setdescripcion] = React.useState('');
+  const [aviso, setaviso] = React.useState('');
+  const [errordescripcion, setErrordescripcion] = React.useState(false);
+
   useEffect(()=>{
     fetch(urlMarcas).then(response =>response.json()).then(data=>setMarca(data))
   },[])
 
 
   const navegate = useNavigate();
+
 
   const handleNext = () => {
     let data = {
@@ -67,8 +76,25 @@ export const RegistroModelo = ({
           <div className="InputContPrincipal1">
             <div className="contInput">
               <TextCustom text="ID Modelo" className="titleInput" />
-
+             
               <input
+                  onKeyDown={e => {
+                    setmodelo(e.target.value);
+                    if (modelo === '') {
+                      setErrorModelo(true);
+                      setleyenda('Los campos no deben estar vacios');
+                    } else {
+                      setErrorModelo(false);
+                      var preg_match = /^[0-9]+$/;
+                      if (!preg_match.test(modelo)) {
+                        setErrorModelo(true);
+                        setleyenda('Solo deben de ingresar numeros');
+                      } else {
+                        setErrorModelo(false);
+                        setleyenda('');
+                      }
+                    }
+                  }}
                 type="text"
                 name=""
                 maxLength={13}
@@ -76,6 +102,7 @@ export const RegistroModelo = ({
                 placeholder="ID Modelo"
                 id="idModelo"
               />
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -98,6 +125,17 @@ export const RegistroModelo = ({
             <div className="contInput">
               <TextCustom text="Descripcion de Modelo" className="titleInput" />
               <input
+               onKeyDown={e => {
+                setdescripcion(e.target.value);
+                if (descrpcion == '') {
+                  setErrordescripcion(true);
+                  setaviso('Los campos no deben estar vacios');
+                } else {
+                    setErrordescripcion(false);
+                    setaviso('');
+                  }
+                }
+              }
                 type="text"
                 name=""
                 maxLength={50}
@@ -105,6 +143,7 @@ export const RegistroModelo = ({
                 placeholder="Descripcion de Modelo"
                 id="modelo"
               />
+               <p class="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">

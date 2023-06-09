@@ -9,9 +9,6 @@ import { sendData } from '../../scripts/sendData';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
@@ -20,17 +17,17 @@ import { TextCustom } from '../../Components/TextCustom';
 
 
 export const ListaParametros = () => {
-  const [roles, setRoles] = useState([]);
 
-
-  const urlListaParametros = 'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=parametros';
+  
+  const urlParametros ='http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=parametros';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
   useEffect(() => {
-    fetch(urlListaParametros)
+
+    fetch(urlParametros)
       .then(response => response.json())
       .then(data => setTableData(data));
   }, []);
@@ -48,8 +45,7 @@ export const ListaParametros = () => {
 
   const columns = [
     { field: 'Id_Parametro', headerName: 'ID Parametro', width: 140 },
-    { field: 'Id_Usuario', headerName: 'ID Usuario', width: 200 },
-    { field: 'Parametro', headerName: 'Parametro', width: 200 },
+    { field: 'Parametro', headerName: 'Parametro', width: 250 },
     { field: 'Valor', headerName: 'Valor', width: 200 },
     { field: 'creado_por', headerName: 'Creado Por', width: 200 },
     { field: 'fecha_creacion', headerName: 'Fecha de Creacion', width: 200 },
@@ -64,7 +60,7 @@ export const ListaParametros = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleButtonClick(params)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -75,24 +71,8 @@ export const ListaParametros = () => {
   ];
 
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  function handleButtonClick(param) {
+    alert(param.row.Id_Parametro+"\n"+param.row.Parametro)
   }
   const handleBack = () => {
     navegate('/config');
