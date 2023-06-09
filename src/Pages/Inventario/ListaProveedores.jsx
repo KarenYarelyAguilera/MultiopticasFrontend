@@ -22,18 +22,14 @@ export const ListaProveedores = () => {
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
+  const urlProveedores ='http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores';
 
-  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
   
-  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlMarcas)
+    fetch(urlProveedores)
       .then(response => response.json())
       .then(data => setTableData(data));
   }, [cambio]);
@@ -49,33 +45,33 @@ export const ListaProveedores = () => {
   );
 
   const columns = [
-    { field: 'Proveedor', headerName: 'ID Proveedor', width: 150 },
-    { field: 'Empresa', headerName: 'Empresa', width: 150 },
-    { field: 'Encargado', headerName: 'Encargado', width: 150 },
-    { field: 'Codigo Postal', headerName: 'CodigoPostal', width: 150 },
-    { field: 'Pais', headerName: 'Pais', width: 150 },
-    { field: 'Ciudad', headerName: 'Ciudad', width: 150 },
-    { field: 'Direccion', headerName: 'Direccion', width: 150 },
-    { field: 'Telefono', headerName: 'Telefono', width: 150 },
-    { field: 'Correo Electronico', headerName: 'Correo Electronico', width: 150 },
+    { field: 'IdProveedor', headerName: 'ID Proveedor', width: 150 },
+    { field: 'nombreProveedor', headerName: 'Empresa', width: 150 },
+    { field: 'encargado', headerName: 'Encargado', width: 150 },
+    { field: 'pais', headerName: 'Pais', width: 150 },
+    { field: 'ciudad', headerName: 'Cuidad', width: 150 },
+    { field: 'codigoPostal', headerName: 'Codigo Postal', width: 150 },
+    { field: 'direccion', headerName: 'Direccion', width: 150 },
+    { field: 'telefono', headerName: 'Telefono', width: 150 },
+    { field: 'correoElectronico', headerName: 'Correo Electronico', width: 150 },
    
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 200,
+      width: 190,
 
       renderCell: params => (
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdMarca)}
+            onClick={() => handleButtonClick(params.row.id)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdMarca)}
+            onClick={() => handleButtonClick(params.row.id)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -84,90 +80,27 @@ export const ListaProveedores = () => {
     },
   ];
 
-  function handleUpdt(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <input
-                type="text"
-                id="marca"
-                className="inputCustom"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
-
-      switch (op) {
-        case true:
-          let data = {
-            IdMarca: id,
-            descripcion: document.getElementById("marca").value,
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateMarca, data)) {
-            swal(<h1>Marca Actualizada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
+  function handleButtonClick(id) {
+    fetch(`/api/update/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        /* los nuevos datos que se van a actualizar */
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Aquí puedes actualizar los datos en el estado de tu aplicación
+        // para reflejar los cambios en la interfaz de usuario.
+      })
+      .catch(error => {
+        // Manejar cualquier error que pueda ocurrir durante la actualización
+      });
   }
-
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar este Proveedor?</div>
-          <div className="contEditModal">
-            
-          </div>
-        </div>
-      ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
-
-      switch (op) {
-        case null:
-          let data = {
-            IdMarca: id
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlDelMarca, data)) {
-            swal(<h1>Proveedor Eliminado Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-
-
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/config');
   };
 
   return (
@@ -202,7 +135,7 @@ export const ListaProveedores = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroMarcas');
+                navegate('/menuInventario/RegistroProveedores');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -215,14 +148,128 @@ export const ListaProveedores = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdMarca}
+          getRowId={tableData => tableData.IdProveedor}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-        />
+
+
+//----------------ni idea para que es------------
+           // onRowClick={usuario => {
+          //   swal({
+          //     buttons: {
+          //       update: 'Actualizar',
+          //       cancel: 'Cancelar',
+          //     },
+          //     content: (
+          //       <div className="logoModal">
+          //         Que accion desea realizar con el cliente:{' '}
+          //         {usuario.row.Usuario}
+          //       </div>
+          //     ),
+          //   }).then(op => {
+          //     switch (op) {
+          //       case 'update':
+          //         swal(
+          //           <div>
+          //             <div className="logoModal">Datos a actualizar</div>
+          //             <div className="contEditModal">
+          //               <div className="contInput">
+          //                 <TextCustom text="Usuario" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="nombre"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Usuario}
+          //                 />
+          //               </div>
+
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Nombre de Usuario"
+          //                   className="titleInput"
+          //                 />
+          //                 <input
+          //                   type="text"
+          //                   id="nombreUsuario"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Nombre_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Estado" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   className='inputCustom'
+          //                   id="EstadoUsuario"
+          //                   value={usuario.row.Estado_Usuario}
+          //                 />
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom
+          //                   text="Contraseña"
+          //                   className="titleInput"
+          //                 />
+          //                 <input type="text" id="contrasenia" className='inputCustom'/>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Rol" className="titleInput" />
+          //                 <select id="rol" className="selectCustom">
+          //                   {roles.length ? (
+          //                     roles.map(pre => (
+          //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
+          //                         {pre.Rol}
+          //                       </option>
+          //                     ))
+          //                   ) : (
+          //                     <option value="No existe informacion">
+          //                       No existe informacion
+          //                     </option>
+          //                   )}
+          //                 </select>
+          //               </div>
+          //               <div className="contInput">
+          //                 <TextCustom text="Email" className="titleInput" />
+          //                 <input
+          //                   type="text"
+          //                   id="Email"
+          //                   className='inputCustom'
+          //                   value={usuario.row.Correo_Electronico}
+          //                 />
+          //               </div>
+          //             </div>
+          //           </div>,
+          //         ).then(() => {
+          //           let data = {
+          //             Usuario: document.getElementById('nombre').value,
+          //             Nombre_Usuario:
+          //               document.getElementById('nombreUsuario').value,
+          //             Estado_Usuario:
+          //               document.getElementById('EstadoUsuario').value,
+          //             Contrasenia: document.getElementById('contrasenia').value,
+          //             Id_Rol: document.getElementById('rol').value,
+          //             Correo_Electronico:
+          //               document.getElementById('Email').value,
+          //             Id_usuario: usuario.row.id_Usuario,
+          //           };
+
+          //           if (sendData(urlUpdateUser, data)) {
+          //             swal(<h1>Usuario Actualizado Correctamente</h1>);
+          //           }
+          //         });
+          //         break;
+          //       default:
+          //         break;
+          //     }
+          //   });
+          // }}
+
+          />
       </div>
     </div>
   );
+  
+    
 };

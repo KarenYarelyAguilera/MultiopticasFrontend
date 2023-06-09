@@ -1191,4 +1191,49 @@ button {
 .swal-button--confirm:hover {
   background-color: #316ee6 !important;
 }
+
 /* Ventana Modal - swal */
+
+/*RECORDATORIO*/
+.contPrimary{
+  width: 100%;
+
+  display: grid;
+  grid-template-rows: repeat(2,2fr);
+  grid-gap: 50px;
+}
+
+.calendar{
+  text-transform: uppercase;
+}
+
+
+.contAddRecordatorio{
+  width: 40%;
+  height: auto;
+  
+  display: grid;
+  grid-template-rows: repeat(3,3fr);
+  grid-gap: 40px;
+  justify-items: center;
+  align-items: center;
+  padding-left: 30%;
+}
+
+.inputConte{
+  display: grid;
+  grid-template-rows: repeat(2,2fr);
+}
+
+.btnGuardarRecor {
+  width: 20%;
+  height: 50px;
+  background-color: #316ee6;
+  color: white;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  border: none;
+  box-shadow: 2px 2px 15px 5px solid black;
+}
+/*RECORDATORIO*/

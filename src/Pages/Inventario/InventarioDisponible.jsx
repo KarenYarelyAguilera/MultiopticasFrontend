@@ -1,4 +1,4 @@
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -19,28 +19,26 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const InventarioDisponible = () => {
 
+  const urlInventario = "http://localhost/APIS-Multioptica/inventario/Controller/inventario.php?op=inventarios"
+
   const [cambio, setcambio] = useState(0)
-  const [marcah, setMarcah] = useState()
-
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
-
-  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
-  
-  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlMarcas)
+    fetch(urlInventario)
       .then(response => response.json())
       .then(data => setTableData(data));
   }, [cambio]);
 
   const navegate = useNavigate();
 
-  const filteredData = tableData.filter(row =>
+  const rowsWithIds = tableData.map((row, index) => ({
+    ...row,
+    id: `${row.name}-${index}`
+  }));
+
+  const filteredData = rowsWithIds.filter(row =>
     Object.values(row).some(
       value =>
         value &&
@@ -48,14 +46,16 @@ export const InventarioDisponible = () => {
     ),
   );
 
+  const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+
   const columns = [
-    { field: 'Proveedor', headerName: 'Proveedor', width: 210 },
-    { field: 'Empresa', headerName: 'ID Producto', width: 210 },
-    { field: 'Encargado', headerName: 'Marca', width: 210 },
-    { field: 'Codigo Postal', headerName: 'Modelo', width: 210 },
-    { field: 'Pais', headerName: 'Cantidad Disponible', width: 210 },
-    { field: 'Ciudad', headerName: 'Sucursal', width: 210 },
-   
+    { field: 'producto', headerName: 'Producto', width: 210 },
+    { field: 'cantidad', headerName: 'Cantidad', width: 210 },
+    { field: 'precio', headerName: 'Precio', width: 210 },
+    { field: 'mes', headerName: 'Mes', width: 210,valueGetter: (params) => meses[params.value - 1]},
+    { field: 'anio', headerName: 'Año', width: 210 },
+
 
     {
       field: 'borrar',
@@ -66,13 +66,13 @@ export const InventarioDisponible = () => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdMarca)}
+            onClick={() => swal("No puede realizar esta accion en este momento","","error")}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdMarca)}
+            onClick={() => swal("No puede realizar esta accion en este momento","","error")}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -80,88 +80,6 @@ export const InventarioDisponible = () => {
       ),
     },
   ];
-
-  function handleUpdt(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <input
-                type="text"
-                id="marca"
-                className="inputCustom"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
-
-      switch (op) {
-        case true:
-          let data = {
-            IdMarca: id,
-            descripcion: document.getElementById("marca").value,
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateMarca, data)) {
-            swal(<h1>Marca Actualizada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar este Proveedor?</div>
-          <div className="contEditModal">
-            
-          </div>
-        </div>
-      ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
-
-      switch (op) {
-        case null:
-          let data = {
-            IdMarca: id
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlDelMarca, data)) {
-            swal(<h1>Proveedor Eliminado Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-
 
   const handleBack = () => {
     navegate('/inventario');
@@ -172,7 +90,7 @@ export const InventarioDisponible = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Proveedores</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Inventario</h2>
 
       <div
         style={{
@@ -212,7 +130,7 @@ export const InventarioDisponible = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdMarca}
+          getRowId={tableData => tableData.id}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

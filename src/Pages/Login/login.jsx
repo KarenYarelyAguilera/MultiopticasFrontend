@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ErrorIcon from '@mui/icons-material/Error';
 //import { ForgetPsswrd } from "../scripts/login"
 import '../../Styles/login.css';
 import logo from '../../IMG/Multioptica.png';
@@ -18,14 +17,14 @@ import {
   useNavigate,
 } from 'react-router-dom'; /**Este hook ayuda a redireccionar
 a una pagina diferente mediante el "path" */
-import { sendData } from '../../scripts/sendData';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from "axios";
 
 export const Login = props => {
   const urlLogin =
-    'http://localhost/APIS-Multioptica/login/controller/user.php?op=psswrd';
+    'http://localhost:3000/api/login/compare';
   const urlDUsuario =
-    'http://localhost/APIS-Multioptica/login/controller/user.php?op=user';
+    'http://localhost:3000/api/login';
   const urlFechaExpiracion =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
@@ -50,11 +49,16 @@ export const Login = props => {
     event.preventDefault();
   };
 
-  useEffect(() => {
-    fetch(urlIntentos)
-      .then(resp => resp.json())
-      .then(data => setIntentos(parseInt(data.valor)));
-  }, []);
+  // useEffect(() => {
+  //   axios.get(urlIntentos)
+  //     .then(resp => resp.data)
+  //     .then(data => setIntentos(parseInt(data.valor)))
+  //     .catch(error => {
+  //       // Manejo de errores
+  //       console.error(error);
+  //     });
+  // }, []);
+
 
   const [contador, setContador] = useState(0);
   const navegate = useNavigate();
@@ -64,7 +68,7 @@ export const Login = props => {
   const handleLogin = async () => {
     const data = {
       correo: refUsuario.current.value,
-      clave: refContrasenia.current.value,
+      clave: refContrasenia.current.value
     };
 
     const data2 = {
@@ -72,27 +76,30 @@ export const Login = props => {
     };
 
     try {
-      const respJsonPss = await sendData(urlLogin, data);
-      const respJsonUsr = await sendData(urlDUsuario, data2);
-      const respJsonFec = await sendData(urlFechaExpiracion, data2);
 
-      const dataBitacora = {
-        Id: respJsonUsr[0].Id_Usuario,
-      };
+      const respJsonPss = await axios.post(urlLogin, data) //sendData(urlLogin, data);
+      const respJsonUsr = await axios.post(urlDUsuario, data2) //sendData(urlDUsuario, data2);
+      //const respJsonFec = await sendData(urlFechaExpiracion, data2);
 
 
-      if (respJsonPss && respJsonUsr[0].Estado_Usuario === 'Nuevo') {
-        props.mail(respJsonUsr[0].Correo_Electronico);
-        props.user(respJsonUsr[0].Nombre_Usuario);
+      // const dataBitacora = {
+      //   Id: respJsonUsr.data[0].Id_Usuario,
+      // };
+
+      console.log(respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo');
+
+      if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Nuevo') {
+        props.mail(respJsonUsr.data[0].Correo_Electronico);
+        props.user(respJsonUsr.data[0].Nombre_Usuario);
         navegate('/preguntasSeguridad');
       }
-      if (respJsonPss && respJsonUsr[0].Estado_Usuario === 'Activo') {
-        sendData(urlBitacoraLogin, dataBitacora);
-        props.access(respJsonUsr[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
-        props.user(respJsonUsr[0].Nombre_Usuario);
-        props.rol(respJsonUsr[0].Rol);
-        props.mail(respJsonUsr[0].Correo_Electronico);
-        props.idUsuario(respJsonUsr[0].Id_Usuario)
+      if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo') {
+        // sendData(urlBitacoraLogin, dataBitacora);
+        props.access(respJsonUsr.data[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
+        props.user(respJsonUsr.data[0].Nombre_Usuario);
+        props.rol(respJsonUsr.data[0].Rol);
+        props.mail(respJsonUsr.data[0].Correo_Electronico);
+        props.idUsuario(respJsonUsr.data[0].Id_Usuario)
         navegate('/Home');
       }
     } catch (error) {
@@ -101,7 +108,7 @@ export const Login = props => {
         '',
         'error',
       );
-      setContador(contador + 1);
+      //setContador(contador + 1);
     }
   };
 
@@ -116,7 +123,6 @@ export const Login = props => {
             <input
               onKeyDown={e => {
                 setUsuario(e.target.value);
-
                 if (usuario.length > 47) {
                   setErrorUsuario(true);
                   setprueba('A excedido al numero de caracteres');
@@ -145,7 +151,8 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              maxLength={50}
+              inputProps={{ maxLength: 50 }}
+              
               ref={refUsuario}
             />
             <p className="errorMessage">

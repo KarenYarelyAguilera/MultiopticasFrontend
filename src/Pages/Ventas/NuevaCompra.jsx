@@ -25,12 +25,13 @@ const urlCompraDetalle = 'http://localhost/APIS-Multioptica/compra/controller/co
 const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
 const urlProveedor = "http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores";
 const urlUpdInventario = "http://localhost/APIS-Multioptica/inventario/controller/inventario.php?op=uInventario"
+const urlKardex ="http://localhost/APIS-Multioptica/Kardex/Controller/kardex.php?op=InsertKardex"
 
 export const NuevaCompra = ({
   msgError = '',
   success = false,
   warning = false,
-  props,
+  idUsuario,
 }) => {
   // const [activeStep, setActiveStep] = React.useState(0);
 
@@ -48,6 +49,16 @@ export const NuevaCompra = ({
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [compras,setCompras] = useState([])
   const [cambio,setCambio]=useState(0)
+
+
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorcantidad, setErrorcantidad] = React.useState(false);
+  const [cantid, setcantid] = React.useState(false);
+
+  const [aviso, setaviso] = React.useState('');
+  const [errorcocompra, setErrorcoscompra] = React.useState(false);
+  const [cosCompra, setcosCompra] = React.useState(false);
+
 
   useEffect(() => {
     // fetch()
@@ -99,30 +110,6 @@ export const NuevaCompra = ({
     { field: 'Fecha', headerName: 'Fecha', width: 145 },
     { field: 'Costo', headerName: 'Costo de la Compra', width: 145 },
     { field: 'Total', headerName: 'Total', width: 145 },
-
-
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 180,
-
-      renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-          // onClick={() => handleButtonClick(params.row.id)}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-          // onClick={() => handleButtonClick(params.row.id)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-        </div>
-      ),
-    },
   ];
 
   var idCounter=0
@@ -159,9 +146,17 @@ export const NuevaCompra = ({
         IdProducto:compras[i].Producto,
         CostoCompra: parseInt(compras[i].Costo)
        } 
+       const dataKardex ={
+        IdTipoMovimiento:1,
+        IdProducto:compras[i].Producto,
+        fechaYHora:compras[0].Fecha,
+        cantidad:parseInt(compras[i].Cantidad),
+        Id_Usuario:idUsuario
+       }
 
        sendData(urlCompraDetalle,dataDetalle)
        sendData(urlUpdInventario,dataInventario)
+       sendData(urlKardex,dataKardex)
       }
       swal("Compra registrada con exito","","success")
     }
@@ -227,15 +222,36 @@ export const NuevaCompra = ({
                 className="inputCustom"
                 placeholder="Cantidad"
                 id="cantidad"
-                onChange={(e) => {
-                  const cantidadValue = e.target.value;
-                  if (/^\d*$/.test(cantidadValue)) {
-                    setCantidad(cantidadValue);
+                onKeyDown={e => {
+                  setcantid(e.target.value);
+                  if (cantid === '' ) {
+                    setErrorcantidad(true);
+                    setleyenda('Los campos no deben estar vacios');
                   } else {
-                    setCantidad('');
+                    setErrorcantidad(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cantid)) {
+                      setErrorcantidad(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcantidad(false);
+                      setleyenda('');
+                    }
                   }
                 }}
+                onClick={e => {
+                  setcantid(e.target.value);
+                  if (cantid === '') {
+                    setErrorcantidad(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcantidad(false);
+                    setleyenda('');
+                  }
+                }}
+                 
               />
+               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -262,15 +278,35 @@ export const NuevaCompra = ({
                 className="inputCustom"
                 placeholder="Costo de la Compra"
                 id="costo"
-                onChange={(e) => {
-                  const costoValue = e.target.value;
-                  if (/^\d*$/.test(costoValue)) {
-                    setCosto(costoValue);
+                onKeyDown={e => {
+                  setcosCompra(e.target.value);
+                  if (cosCompra === '') {
+                    setErrorcoscompra(true);
+                    setaviso('Los campos no deben estar vacios');
                   } else {
-                    setCosto('');
+                    setErrorcoscompra(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cosCompra)) {
+                      setErrorcoscompra(true);
+                      setaviso('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcoscompra(false);
+                      setaviso('');
+                    }
+                  }
+                }}
+                onClick={e => {
+                  setcosCompra(e.target.value);
+                  if (cosCompra === '') {
+                    setErrorcoscompra(true);
+                    setaviso('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcoscompra(false);
+                    setaviso('');
                   }
                 }}
               />
+               <p class="error">{aviso}</p>
             </div>
 
             <div className="contInput">
@@ -331,7 +367,7 @@ export const NuevaCompra = ({
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
-              <Button className="btnReport1">
+              <Button className="btnReport1" onClick={()=>{setCompras([]);setCambio(cambio+1)}}>
                 Cancelar
               </Button>
             </div>

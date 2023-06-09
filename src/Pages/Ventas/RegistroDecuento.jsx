@@ -30,6 +30,14 @@ export const RegistroDescuento = ({
   
 
   const navegate = useNavigate();
+  const [descuentocliente, setDescuentoCliente] = useState('');
+  const [mensaje, setmensaje] = useState('');
+  const [errordescuentocliente, setErrorDescuentocliente] = useState(false);
+
+  const [descuentoempleado, setDescuentoEmpleado] = useState('');
+  const [advertencia, setadvertencia] = useState('');
+  const [errordescuentoempleado, setErrorDescuentoempleado] = useState(false);
+
 
   const handleNext = () => {
     let descCliente = parseFloat(document.getElementById("descCliente").value)
@@ -71,20 +79,69 @@ export const RegistroDescuento = ({
               <TextCustom text="Descuento del Cliente" className="titleInput" />
 
               <input
-               
+               onKeyDown={e => {
+                setDescuentoCliente(e.target.value);
+
+                if (descuentocliente.length > 10) {
+                  setErrorDescuentocliente(true);
+                setmensaje('A excedido al numero de caracteres');
+                }
+                if (descuentocliente === '') {
+                  setErrorDescuentocliente(true);
+                  setmensaje('Los campos no deben estar vacios');
+                }
+                 else {
+                  setErrorDescuentocliente(false);
+                  var expresion = /^\d+(\.\d{1,2})?$/;
+                  if (!expresion.test(descuentocliente)) {
+                    setErrorDescuentocliente(true);
+                    setmensaje('Formato invalido');
+                  }
+                   else {
+                    setErrorDescuentocliente(false);
+                    setmensaje('');
+                  }
+                }
+              }}
                 type="text"
                 name=""
-                maxLength={13}
+                maxLength={10}
                 className="inputCustom"
                 
                 placeholder="Descuento del Cliente"
                 id="descCliente"
               />
+              <p class="error">{mensaje}</p>
+
             </div>
 
             <div className="contInput">
               <TextCustom text="Descuento de Empleado" className="titleInput" />
               <input
+                       onKeyDown={e => {
+                        setDescuentoEmpleado(e.target.value);
+        
+                        if (descuentoempleado.length > 10) {
+                          setErrorDescuentoempleado(true);
+                      setadvertencia('A excedido al numero de caracteres');
+                        }
+                        if (descuentoempleado === '') {
+                          setErrorDescuentoempleado(true);
+                          setadvertencia('Los campos no deben estar vacios');
+                        }
+                         else {
+                          setErrorDescuentoempleado(false);
+                          var expresion = /^\d+(\.\d{1,2})?$/;
+                          if (!expresion.test(descuentoempleado)) {
+                            setErrorDescuentoempleado(true);
+                            setadvertencia('Formato invalido');
+                          }
+                           else {
+                            setErrorDescuentoempleado(false);
+                            setadvertencia('');
+                          }
+                        }
+                      }}
                 type="text"
                 name=""
                 maxLength={13}
@@ -92,6 +149,8 @@ export const RegistroDescuento = ({
                 placeholder="Descuento de Empleado"
                 id="descEmpleado"
               />
+              <p class="error">{advertencia}</p>
+
             </div>
            
           <div className="contInput">
