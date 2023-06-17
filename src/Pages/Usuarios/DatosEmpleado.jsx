@@ -17,13 +17,14 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 
 const urlSucursales =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
+  'http://localhost:3000/api/empleado/sucursal';
 const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
 const urlIEmpleado =
-  'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=InsertEmployee';
+  'http://localhost:3000/api/empleado';
 
 export const DatosEmpleado = ({
   msgError = '',
@@ -58,15 +59,20 @@ export const DatosEmpleado = ({
   const [Identidad, setIdentidad] = useState(0);
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  /*   useEffect(() => {
+      fetch(urlSucursales).then(response => response.json())
+        .then(data => setSucursales(data));
+    }, []); */
+
   useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
+    axios.get(urlSucursales).then(response => {
+      setSucursales(response.data)
+    }).catch(error => console.log(error))
   }, []);
 
   const navegate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
@@ -74,15 +80,16 @@ export const DatosEmpleado = ({
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
+    //tienen que estar igual a las apis del node
     let data = {
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
-      phone: telefono,
-      genero: genero,
-      sucursal: sucursal,
-      identidad: identidad,
+      telEmple: telefono,
+      idGenero: genero,
+      idSucursal: sucursal,
+      numId: identidad,
     };
-    if (sendData(urlIEmpleado, data)) {
+    /* if (sendData(urlIEmpleado, data)) {
       swal('Empleado agregado con exito', '', 'success').then(result => {
         swal({
           title: '¿Desea crearle un usuario al empleado agregado?',
@@ -99,7 +106,18 @@ export const DatosEmpleado = ({
 
         navegate('/empleados/lista');
       });
-    }
+    } */
+
+    await axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        navegate('/empleados/lista');
+      });
+
+    }).catch(error => {
+      console.log(error);
+      swal('Error al registrar el cliente', '', 'success')
+    })
+
   };
 
   const handleBack = () => {
@@ -287,8 +305,8 @@ export const DatosEmpleado = ({
                     document.getElementById('apellido').value == ''
                   ) {
                     swal('No deje campos vacios.', '', 'error');
-                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !=='number'
-                    )
+                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !== 'number'
+                  )
                   ) {
                     swal('El campo identidad solo acepta numeros', '', 'error');
                   } else if (
