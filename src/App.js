@@ -77,6 +77,8 @@ import { ListaParametros } from './Pages/Configuracion/ListaParametros.jsx';
 import { InventarioDisponible } from './Pages/Inventario/InventarioDisponible.jsx';
 import { Kardex } from './Pages/Inventario/Kardex.jsx';
 import { Bitacora } from './Pages/Configuracion/Bitacora.jsx';
+import { ListaPromocionMarcas } from './Pages/Inventario/ListaPromocionMarcas.jsx';
+import { RegistroPromMarca } from './Pages/Inventario/RegistroPromMarca.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -132,6 +134,46 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaEmpleados></ListaEmpleados>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+<Route
+            path="/promocion/listaPromocion"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPromocionMarcas></ListaPromocionMarcas>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+
+<Route
+            path="/marcas/registroPromMarca"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <RegistroPromMarca></RegistroPromMarca>
                 </div>
               </ProtectedRoute>
             }
