@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para i
 import { useState } from 'react';
 import React from 'react';
 
+
 //Components
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
@@ -120,7 +121,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/empleados/lista"
             element={
-              <ProtectedRoute activo={activo}>
+             /*  <ProtectedRoute activo={activo}> */
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -133,7 +134,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaEmpleados></ListaEmpleados>
                 </div>
-              </ProtectedRoute>
+             /*  </ProtectedRoute> */
             }
           />
 
@@ -811,7 +812,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/usuarios/crearempleado"
             element={
-              <ProtectedRoute activo={activo}>
+              // <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -824,7 +825,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <DatosEmpleado></DatosEmpleado>
                 </div>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           ></Route>
 
