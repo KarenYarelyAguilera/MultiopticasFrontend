@@ -73,8 +73,8 @@ export const ListaEmpleados  = () => {
     { field: 'nombre', headerName: 'Nombre', width: 190 },
     { field: 'apellido', headerName: 'Apellido', width: 190 },
     { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190 },
-    { field: 'IdSucursal', headerName: 'Sucursal', width: 190 },
-    { field: 'IdGenero', headerName: 'Genero', width: 190 },
+    { field: 'departamento', headerName: 'Sucursal', width: 190 },
+    { field: 'descripcion', headerName: 'Genero', width: 190 },
     { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
     {
       
