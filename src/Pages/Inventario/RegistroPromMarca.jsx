@@ -21,7 +21,7 @@ import { TextField } from '@mui/material';
 const urlMarca =
   'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
 
-export const RegistroMarcas = ({
+export const RegistroPromMarca = ({
   msgError = '',
   success = false,
   warning = false,
@@ -71,7 +71,7 @@ export const RegistroMarcas = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Marcas</h2>
+        <h2>Registro Promocion de Marcas</h2>
         <h3>
           Complete todos los puntos para poder registrar los datos de la Marca.
         </h3>
@@ -80,7 +80,7 @@ export const RegistroMarcas = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Nombre de la Marca" className="titleInput" />
+              <TextCustom text="Promocion" className="titleInput" />
 
               <input
                onKeyDown={e => {
@@ -104,7 +104,7 @@ export const RegistroMarcas = ({
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Nombre de la Marca"
+                placeholder="Promocion"
                 id="Marca"
               />
                <p class="error">{aviso}</p>

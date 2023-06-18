@@ -95,39 +95,6 @@ export const RegistroProducto = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Producto" className="titleInput" />
-
-              <input
-                   onKeyDown={e => {
-                    setproducto(e.target.value);
-                    if (producto === '') {
-                      setErrorproducto(true);
-                      setleyenda('Los campos no deben estar vacios');
-                    } else {
-                      setErrorproducto(false);
-                      var preg_match = /^[0-9]+$/;
-                      if (!preg_match.test(producto)) {
-                        setErrorproducto(true);
-                        setleyenda('Solo deben de ingresar numeros');
-                      } else {
-                        setErrorproducto(false);
-                        setleyenda('');
-                      }
-                    }
-                  }}
-                error={errorproducto}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="ID Producto"
-                id="idProducto"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-            
-
-            <div className="contInput">
               <TextCustom text="ID Modelo" className="titleInput" />
               <select name="" className="selectCustom" id="modelo">
               {Modelo.length ? (
