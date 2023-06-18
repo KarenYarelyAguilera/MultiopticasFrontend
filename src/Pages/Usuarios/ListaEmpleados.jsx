@@ -20,10 +20,16 @@ import axios from 'axios';
 
 export const ListaEmpleados  = () => {
   const [cambio, setCambio] = useState(0);
+  const [generos, setGeneros] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
+ 
+
 
   const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlUpdateEmployees = 'http://localhost:3000/api/empleado/actualizar';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+  const urlgeneros= 'http://localhost:3000/api/empleado/genero';
+  const urlsucursales='http://localhost:3000/api/empleado/sucursal';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,6 +39,16 @@ export const ListaEmpleados  = () => {
    axios.get(urlEmployees).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
+
+    axios.get(urlgeneros).then(response => {
+      setGeneros(response.data)
+    }).catch(error => console.log(error))
+
+    axios.get(urlsucursales).then(response => {
+      setSucursales(response.data)
+    }).catch(error => console.log(error))
+
+
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -42,6 +58,12 @@ export const ListaEmpleados  = () => {
       value => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+
+
+
+
+
 
   
 
@@ -55,6 +77,7 @@ export const ListaEmpleados  = () => {
     { field: 'IdGenero', headerName: 'Genero', width: 190 },
     { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
     {
+      
       field: 'borrar',
       headerName: 'Acciones',
       width: 260,
@@ -63,7 +86,7 @@ export const ListaEmpleados  = () => {
         <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdEmpleado)}
+            onClick={() => handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -79,12 +102,13 @@ export const ListaEmpleados  = () => {
       ),
     },
   ];
-
+  
+//funcion de eliminar
   function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">Desea Elimiar este empleado?</div>
+          <div className="logoModal">¿Desea Elimiar este empleado?</div>
           <div className="contEditModal">
 
           </div>
@@ -119,81 +143,136 @@ export const ListaEmpleados  = () => {
     });
 
   }
+ 
 
+  //funcion de actualizar
   function handleUpdt(id) {
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
 
-          <div className="contInput">
-            <TextCustom text="Usuario" className="titleInput" />
-            <input  type="text" id="nombre" className='inputCustom' />
+   // onRowClick={empleado => {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">¿Desea actualizar el empleado:{' '} {id.nombre}{' '}?
           </div>
+        ),
+      }).then(op => {
+        switch (op) {
+          case 'update':
+            swal(
+              <div>
+                <div className="logoModal">Datos a actualizar</div>
+                <div className="contEditModal">
+                  <div className="contInput">
+                    <TextCustom text="Nombre" className="titleInput" />
+                    <input
+                      type="text"
+                      id="nombre"
+                      className="inputCustom"
+                     value={id.nombre}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Apellido" className="titleInput" />
+                    <input
+                      type="text"
+                      id="apellido"
+                      className="inputCustom"
+                      value={id.apellido}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Telefono" className="titleInput" />
+                    <input
+                      type="text"
+                      id="telefono"
+                      className="inputCustom"
+                     value={id.telefonoEmpleado}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Identidad" className="titleInput" />
+                    <input
+                      type="text"
+                      id="identidad"
+                      className="inputCustom"
+                      value={id.numeroIdentidad}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Sucursal" className="titleInput" />
+                    <select id="sucursal" className="selectCustom">
+                      {sucursales.length ? (
+                        sucursales.map(pre => (
+                          <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                            {pre.departamento}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
+                        </option>
+                      )}
+                    </select>
+                  </div>
 
-          <div className="contInput">
-            <TextCustom text="Apellido" className="titleInput"
-            />
-            <input type="text" id="apellido" className='inputCustom'/>
-          </div>
+                  <div className="contInput">
+                    <TextCustom text="Genero" className="titleInput" />
+                    <select id="genero" className="selectCustom">
+                      {generos.length ? (
+                        generos.map(pre => (
+                          <option key={pre.IdGenero} value={pre.IdGenero}>
+                            {pre.descripcion}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
+                        </option>
+                      )}
+                    </select>
+                  </div>
+                </div>
+              </div>,
+            ).then(async() => {
 
-          <div className="contInput">
-            <TextCustom text="Telefono" className="titleInput" />
-            <input type="text" id="telefonoEmpleado" />
-          </div>
+              let data = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                telEmple:document.getElementById('telefono').value,
+                idSucursal: document.getElementById('sucursal').value,
+                idGenero: document.getElementById('genero').value,
+                numId:document.getElementById('identidad').value,
+                IdEmpleado: id.IdEmpleado,
+              };
 
-          <div className="contInput">
-            <TextCustom text="Identidad" className="titleInput" />
-            <input type="text" id="numeroIdentidad" />
-          </div>
+              // if (sendData(urlUpdateEmployees, data)) {
+              //   swal(<h1>Empleado Editado Correctamente</h1>);
+              // }
 
-          <div className="contInput">
-            <TextCustom text="Sucursal" className="titleInput" />
-            <select id="sucursal" className="selectCustom">
-              <option value={1}>Francisco Morazan</option>
-              <option value={2}>San Pedro Sula</option>
-            </select>
-          </div>
+              await axios.put(urlUpdateEmployees, data).then(response => {
+                swal(<h1>Empleado Actualizado Correctamente</h1>);
+                setCambio(cambio + 1)
+              }).catch(error => {
+                // Manejar cualquier error que pueda ocurrir durante la actualización
+              });
 
-
-          <div className="contInput">
-            <TextCustom text="Genero" className="titleInput" />
-            <select name="" id="genero" className="selectCustom">
-              <option value={1}>Masculino</option>
-              <option value={2}>Femenino</option>
-            </select>
-          </div>
+            });
+            break;
 
           
-        </div>
-      </div>,
-    ).then( async() => {
-
-      
-
-
-      let data = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        telefonoEmpleado: document.getElementById('telefono').value,
-        numeroIdentidad: document.getElementById('identidad').value,
-        IdSucursal: document.getElementById('sucursal').value,
-        IdGenero: document.getElementById('genero').value,
-        IdEmpleado: id,
-  
-      };
-
-      await axios.put(urlUpdateEmployees, data).then(response => {
-        swal(<h1>Empleado Actualizado Correctamente</h1>);
-        setCambio(cambio + 1)
-      }).catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
+          default:
+            break;
+        }
       });
-
-    });
+    //}//}//
 
   }
+
+
+
   const handleBack = () => {
     navegate('/empleados/lista');
   };
@@ -248,9 +327,12 @@ export const ListaEmpleados  = () => {
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
+        //aqui iba el onrow
           rowsPerPageOptions={[5]}
         />
       </div>
     </div>
   );
+
+
 };
