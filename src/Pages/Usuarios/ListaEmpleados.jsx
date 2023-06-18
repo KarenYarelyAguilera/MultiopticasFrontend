@@ -1,9 +1,9 @@
-import { DataGrid,esES } from '@mui/x-data-grid';
+
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
 import swal from '@sweetalert/with-react';
-import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,98 +16,265 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
-export const ListaEmpleados = () => {
+export const ListaEmpleados  = () => {
+  const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const navegate = useNavigate();
+ 
 
-  const urlEmployees =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
-  const urlgeneros =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=generos';
-  const urlsucursales =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=sucursales';
-  const urlUpdateEmployees =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=UpdateEmployee';
+
+  const urlEmployees = 'http://localhost:3000/api/empleado';
+  const urlUpdateEmployees = 'http://localhost:3000/api/empleado/actualizar';
+  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+  const urlgeneros= 'http://localhost:3000/api/empleado/genero';
+  const urlsucursales='http://localhost:3000/api/empleado/sucursal';
 
   const [tableData, setTableData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
-    fetch(urlEmployees)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-    fetch(urlgeneros)
-      .then(response => response.json())
-      .then(data => setGeneros(data));
-    fetch(urlsucursales)
-      .then(response => response.json())
-      .then(data => setSucursales(data));
-  }, []);
+   axios.get(urlEmployees).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
 
-  
+    axios.get(urlgeneros).then(response => {
+      setGeneros(response.data)
+    }).catch(error => console.log(error))
+
+    axios.get(urlsucursales).then(response => {
+      setSucursales(response.data)
+    }).catch(error => console.log(error))
+
+
+  }, [cambio]);
+
+  const navegate = useNavigate();
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
-      value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+      value => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
 
+
+
+
+
+
+
+  
+
   const columns = [
+    //son los de la base no los de node
     { field: 'IdEmpleado', headerName: 'ID', width: 190 },
-    { field: 'Nombre', headerName: 'Nombre', width: 190 },
+    { field: 'nombre', headerName: 'Nombre', width: 190 },
     { field: 'apellido', headerName: 'Apellido', width: 190 },
-    { field: 'Telefono', headerName: 'Telefono', width: 190 },
+    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190 },
     { field: 'departamento', headerName: 'Sucursal', width: 190 },
-    { field: 'genero', headerName: 'Genero', width: 190 },
+    { field: 'descripcion', headerName: 'Genero', width: 190 },
     { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
     {
+      
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 260,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdEmpleado)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
+
+         
         </div>
       ),
     },
   ];
+  
+//funcion de eliminar
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea Elimiar este empleado?</div>
+          <div className="contEditModal">
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+          </div>
+        </div>
+      ),
+      buttons: ["Eliminar", "Cancelar"]
+    }).then(async (op)=> {
+
+      switch (op) {
+        case null:
+
+          let data = {
+            IdEmpleado: id,
+          };
+
+          console.log(data);
+
+         await axios.delete(urlDelEmployees,{data}).then(response=>{
+            swal("Empleado eliminado correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar el empleado","","error")
+          })
+
+          break;
+
+        default:
+          break;
+      }
+
+    });
+
   }
+ 
+
+  //funcion de actualizar
+  function handleUpdt(id) {
+
+   // onRowClick={empleado => {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">¿Desea actualizar el empleado:{' '} {id.nombre}{' '}?
+          </div>
+        ),
+      }).then(op => {
+        switch (op) {
+          case 'update':
+            swal(
+              <div>
+                <div className="logoModal">Datos a actualizar</div>
+                <div className="contEditModal">
+                  <div className="contInput">
+                    <TextCustom text="Nombre" className="titleInput" />
+                    <input
+                      type="text"
+                      id="nombre"
+                      className="inputCustom"
+                     value={id.nombre}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Apellido" className="titleInput" />
+                    <input
+                      type="text"
+                      id="apellido"
+                      className="inputCustom"
+                      value={id.apellido}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Telefono" className="titleInput" />
+                    <input
+                      type="text"
+                      id="telefono"
+                      className="inputCustom"
+                     value={id.telefonoEmpleado}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Identidad" className="titleInput" />
+                    <input
+                      type="text"
+                      id="identidad"
+                      className="inputCustom"
+                      value={id.numeroIdentidad}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Sucursal" className="titleInput" />
+                    <select id="sucursal" className="selectCustom">
+                      {sucursales.length ? (
+                        sucursales.map(pre => (
+                          <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                            {pre.departamento}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
+                        </option>
+                      )}
+                    </select>
+                  </div>
+
+                  <div className="contInput">
+                    <TextCustom text="Genero" className="titleInput" />
+                    <select id="genero" className="selectCustom">
+                      {generos.length ? (
+                        generos.map(pre => (
+                          <option key={pre.IdGenero} value={pre.IdGenero}>
+                            {pre.descripcion}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
+                        </option>
+                      )}
+                    </select>
+                  </div>
+                </div>
+              </div>,
+            ).then(async() => {
+
+              let data = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                telEmple:document.getElementById('telefono').value,
+                idSucursal: document.getElementById('sucursal').value,
+                idGenero: document.getElementById('genero').value,
+                numId:document.getElementById('identidad').value,
+                IdEmpleado: id.IdEmpleado,
+              };
+
+              // if (sendData(urlUpdateEmployees, data)) {
+              //   swal(<h1>Empleado Editado Correctamente</h1>);
+              // }
+
+              await axios.put(urlUpdateEmployees, data).then(response => {
+                swal(<h1>Empleado Actualizado Correctamente</h1>);
+                setCambio(cambio + 1)
+              }).catch(error => {
+                // Manejar cualquier error que pueda ocurrir durante la actualización
+              });
+
+            });
+            break;
+
+          
+          default:
+            break;
+        }
+      });
+    //}//}//
+
+  }
+
+
+
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/empleados/lista');
   };
 
   return (
@@ -160,125 +327,12 @@ export const ListaEmpleados = () => {
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
-          onRowClick={empleado => {
-            swal({
-              buttons: {
-                update: 'ACTUALIZAR',
-                cancel: 'CANCELAR',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el empleado:{' '}
-                  {empleado.row.Nombre}{' '}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Nombre" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className="inputCustom"
-                            value={empleado.row.Nombre}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Apellido" className="titleInput" />
-                          <input
-                            type="text"
-                            id="apellido"
-                            className="inputCustom"
-                            value={empleado.row.apellido}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Telefono" className="titleInput" />
-                          <input
-                            type="text"
-                            id="telefono"
-                            className="inputCustom"
-                            value={empleado.row.Telefono}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Identidad" className="titleInput" />
-                          <input
-                            type="text"
-                            id="identidad"
-                            className="inputCustom"
-                            value={empleado.row.numeroIdentidad}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Sucursal" className="titleInput" />
-                          <select id="sucursal" className="selectCustom">
-                            {sucursales.length ? (
-                              sucursales.map(pre => (
-                                <option
-                                  key={pre.IdSucursal}
-                                  value={pre.IdSucursal}
-                                >
-                                  {pre.departamento}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-
-                        <div className="contInput">
-                          <TextCustom text="Genero" className="titleInput" />
-                          <select id="genero" className="selectCustom">
-                            {generos.length ? (
-                              generos.map(pre => (
-                                <option key={pre.IdGenero} value={pre.IdGenero}>
-                                  {pre.descripcion}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      nombre: document.getElementById('nombre').value,
-                      apellido: document.getElementById('apellido').value,
-                      telefonoEmpleado:
-                        document.getElementById('telefono').value,
-                      IdSucursal: document.getElementById('sucursal').value,
-                      IdGenero: document.getElementById('genero').value,
-                      numeroIdentidad:
-                        document.getElementById('identidad').value,
-                      IdEmpleado: empleado.row.IdEmpleado,
-                    };
-
-                    if (sendData(urlUpdateEmployees, data)) {
-                      swal(<h1>Empleado Editado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
+        //aqui iba el onrow
           rowsPerPageOptions={[5]}
         />
       </div>
     </div>
   );
+
+
 };
