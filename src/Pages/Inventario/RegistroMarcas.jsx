@@ -80,7 +80,8 @@ export const RegistroMarcas = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Marca" className="titleInput" />
+             
+             <TextCustom text="ID Marca" className="titleInput" />
               <input
                  onKeyDown={e => {
                 setmarca(e.target.value);
