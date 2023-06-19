@@ -79,6 +79,7 @@ import { Kardex } from './Pages/Inventario/Kardex.jsx';
 import { Bitacora } from './Pages/Configuracion/Bitacora.jsx';
 import { ListaPromocionMarcas } from './Pages/Inventario/ListaPromocionMarcas.jsx';
 import { RegistroPromMarca } from './Pages/Inventario/RegistroPromMarca.jsx';
+import {Progress} from './Pages/Seguridad/Progress.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -229,13 +230,24 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={<Metodos1 correo={correo}></Metodos1>}
           ></Route>
 
-          <Route
+          {/* <Route
             path="/preguntasSeguridad"
             element={
               <PreguntasSeguridad
                 activo={activo}
                 user={usuario}
                 mail={correo}
+              />
+            }
+          ></Route> */}
+
+<Route
+            path="/progress"
+            element={
+              <Progress
+                // activo={activo}
+                // user={usuario}
+                // mail={correo}
               />
             }
           ></Route>
