@@ -152,7 +152,7 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              inputProps={{ maxLength: 50 }}
+              maxLength={50}
               
               ref={refUsuario}
             />

@@ -24,11 +24,11 @@ export const ListaClientes = () => {
   const [cambio, setCambio] = useState(0);
 
   const urlClientes =
-    'http://localhost:3000/api/clientes';
+    'http://localhost:3001/api/clientes';
   const urlUpdateCliente =
-    'http://localhost:3000/api/clientes/actualizar';
+    'http://localhost:3001/api/clientes/actualizar';
 
-  const urlDelCliente = "http://localhost:3000/api/clientes/eliminar"
+  const urlDelCliente = "http://localhost:3001/api/clientes/eliminar"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
