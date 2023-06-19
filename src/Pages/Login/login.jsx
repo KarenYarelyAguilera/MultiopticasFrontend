@@ -22,9 +22,9 @@ import axios from "axios";
 
 export const Login = props => {
   const urlLogin =
-    'http://localhost:3001/api/login/compare';
+    'http://localhost:3000/api/login/compare';
   const urlDUsuario =
-    'http://localhost:3001/api/login';
+    'http://localhost:3000/api/login';
   const urlFechaExpiracion =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
@@ -151,7 +151,7 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              inputProps={{ maxLength: 50 }}
+              maxLength={50}
               
               ref={refUsuario}
             />
