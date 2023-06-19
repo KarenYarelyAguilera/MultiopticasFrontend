@@ -92,6 +92,7 @@ export const Login = props => {
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         navegate('/preguntasSeguridad');
+        
       }
       if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo') {
         // sendData(urlBitacoraLogin, dataBitacora);
