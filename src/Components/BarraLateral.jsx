@@ -36,7 +36,7 @@ export const BarraLateral = (props) => {
   const [permisos, setPermisos] = useState([])
 
   useEffect(() => {
-    fetch(urlP, {
+    /* fetch(urlP, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const BarraLateral = (props) => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => setPermisos(data))
+      .then((data) => setPermisos(data)) */
   }, [])
 
 
@@ -187,10 +187,10 @@ export const BarraLateral = (props) => {
   return (
     <div className="BarraLateral close">
       <div className="imglogo">
-        <Link to="/">
+        <Link to="/dashboard">
           <img src={MulltiOptica} alt="logo" className="logoBarraLateral" />
         </Link>
-        <Link to="/">
+        <Link to="/dashboard">
           <img src={MulltiOpticaOjo} alt="logo" className="logoOjo" />
         </Link>
         <FontAwesomeIcon

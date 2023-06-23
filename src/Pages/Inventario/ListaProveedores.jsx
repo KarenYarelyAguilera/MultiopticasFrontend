@@ -139,7 +139,7 @@ export const ListaProveedores = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Sucursal
+              Nuevo Proveedor
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

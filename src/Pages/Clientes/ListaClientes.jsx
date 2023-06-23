@@ -1,5 +1,5 @@
 
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
@@ -18,24 +18,26 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
 export const ListaClientes = () => {
   const [cambio, setCambio] = useState(0);
 
   const urlClientes =
-    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=Clientes';
+    'http://localhost:3001/api/clientes';
   const urlUpdateCliente =
-    'http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=UpdateCliente';
+    'http://localhost:3001/api/clientes/actualizar';
 
-  const urlDelCliente = "http://localhost/APIS-Multioptica/Cliente/controller/cliente.php?op=DeleteCliente"
+  const urlDelCliente = "http://localhost:3001/api/clientes/eliminar"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+
   useEffect(() => {
-    fetch(urlClientes)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+   axios.get(urlClientes).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -104,21 +106,25 @@ export const ListaClientes = () => {
         </div>
       ),
       buttons: ["Eliminar", "Cancelar"]
-    }).then((op) => {
+    }).then(async (op)=> {
 
       switch (op) {
         case null:
+
           let data = {
             idCliente: id,
           };
 
           console.log(data);
 
+         await axios.delete(urlDelCliente,{data}).then(response=>{
+            swal("Cliente Eliminado correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar el cliente","","error")
+          })
 
-          if (sendData(urlDelCliente, data)) {
-            swal(<h1>Cliente Eliminado Correctamente</h1>);
-            setCambio(cambio + 1)
-          }
           break;
 
         default:
@@ -187,9 +193,9 @@ export const ListaClientes = () => {
           </div>
         </div>
       </div>,
-    ).then(() => {
+    ).then( async() => {
 
-      let fechaN=document.getElementById('fechaNacimiento').value
+      let fechaN = document.getElementById('fechaNacimiento').value
 
       let fecha = new Date(fechaN)
 
@@ -204,18 +210,23 @@ export const ListaClientes = () => {
       let data = {
         nombre: document.getElementById('nombre').value,
         apellido: document.getElementById('apellido').value,
-        IdGenero: document.getElementById('genero').value,
-        fechaNacimiento:fechaFormateada,
+        idGenero: document.getElementById('genero').value,
+        fechaNacimiento: fechaFormateada,
         direccion: document.getElementById('direccion').value,
-        telefonoCliente: document.getElementById('telefono').value,
-        correoElectronico: document.getElementById('Email').value,
+        telefono: document.getElementById('telefono').value,
+        correo: document.getElementById('Email').value,
         idCliente: id,
       };
 
-      if (sendData(urlUpdateCliente, data)) {
+      // if (sendData(urlUpdateCliente, data)) {
+      //   swal(<h1>Cliente Actualizado Correctamente</h1>);
+      //   setCambio(cambio + 1)
+      // }
+      await axios.put(urlUpdateCliente,data).then(response=>{
         swal(<h1>Cliente Actualizado Correctamente</h1>);
         setCambio(cambio + 1)
-      }
+      })
+
     });
 
   }

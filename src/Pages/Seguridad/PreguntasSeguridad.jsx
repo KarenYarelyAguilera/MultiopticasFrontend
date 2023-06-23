@@ -11,6 +11,7 @@ import { useState,useEffect } from 'react';
 //Styles
 import '../../Styles/RecuperacionPassword.css';
 import swal from '@sweetalert/with-react';
+import axios from 'axios';
 
 export const PreguntasSeguridad = (props) => {
   const navegate = useNavigate();
@@ -18,11 +19,8 @@ export const PreguntasSeguridad = (props) => {
   // const [errorMessage, seterrorMessage] = useState('');
   // const [respuesta, setrespuesta] = useState('');
 
-  useEffect(() => {
-    fetch(urlPreguntas).then(resp=>resp.json()).then(data=>setParametro(parseInt(data.valor)))
-  }, [])
   
-
+  
   var today = new Date()
   var dateFormat = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate()
   const urlIPreguntas = "http://localhost/APIS-Multioptica/preguntas/controller/preguntas.php?op=nuevaPregunta"
@@ -30,6 +28,10 @@ export const PreguntasSeguridad = (props) => {
   const urlIResp = "http://localhost/APIS-Multioptica/preguntas/controller/preguntas.php?op=nuevaRespuesta"
   const urlPreguntas = "http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=preguntas"
   const urlUpduser = "http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fLogin"
+ 
+  useEffect(() => {
+    fetch(urlPreguntas).then(resp=>resp.json()).then(data=>setParametro(parseInt(data.valor)))
+  }, [])
 
   const datausr = {
     correo: props.mail
