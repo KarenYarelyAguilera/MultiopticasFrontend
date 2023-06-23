@@ -11,7 +11,7 @@ export const Registration = props => {
   }
 
   const handleLogin = () => {
-    navegate("/home")
+    navegate("/")
   }
 
   return (
@@ -82,7 +82,7 @@ export const Registration = props => {
 
         <span className="refInicioSesion">
           <b>
-            ¿Ya tienes una cuenta? <a href="/home">Inicia Sesión</a>
+            ¿Ya tienes una cuenta? <a href="/">Inicia Sesión</a>
           </b>
         </span>
       </div>

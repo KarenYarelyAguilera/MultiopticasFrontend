@@ -115,7 +115,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           {/* <Route index element={<Login access={access} user={user} />} /> */}
 
           <Route
-            path="/home"
+            path="/"
             element={
               <Login
                 access={access}
