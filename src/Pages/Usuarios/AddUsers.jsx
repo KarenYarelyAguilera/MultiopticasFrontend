@@ -19,6 +19,7 @@ import swal from '@sweetalert/with-react';
 //Images
 import AddUser from '../../IMG/AddUser.jpg';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 export const AddUsers = (props) => {
 
@@ -47,22 +48,18 @@ export const AddUsers = (props) => {
   const urlBitacoraUsuario =
     'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
-    'http://localhost/APIS-Multioptica/empleado/controller/empleado.php?op=Employees';
+    'http://localhost:3000/api/empleado';
   const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
+    'http://localhost:3000/api/Rol';
   const urlInsert =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=insertUsuario';
+    'http://localhost:3000/api/usuario/insert';
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
 
   useEffect(() => {
-    fetch(urlEmployees)
-      .then(response => response.json())
-      .then(data => setIdEmpleado(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRol(data));
+    axios.get(urlEmployees).then(response=>setIdEmpleado(response.data))
+    axios.get(urlRoles).then(response=>setRol(response.data))
   }, []);
 
   const insertar = async () => {
@@ -89,7 +86,7 @@ export const AddUsers = (props) => {
       Id:props.idU
     }
 
-    if (await sendData(urlInsert, data)) {
+    if (await axios.post(urlInsert,data)) {
       swal('Usuario creado exitosamente.', '', 'success');
       sendData(urlBitacoraUsuario,dataB)
     }
@@ -119,8 +116,8 @@ export const AddUsers = (props) => {
               <select id="empleado" className="selectCustom">
                 {Empleado.length ? (
                   Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.Nombre}
+                    <option key={pre.numeroIdentidad} value={pre.numeroIdentidad}>
+                      {pre.numeroIdentidad}
                     </option>
                   ))
                 ) : (

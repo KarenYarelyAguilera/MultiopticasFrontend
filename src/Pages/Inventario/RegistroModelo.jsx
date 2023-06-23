@@ -75,37 +75,6 @@ export const RegistroModelo = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Modelo" className="titleInput" />
-             
-              <input
-                  onKeyDown={e => {
-                    setmodelo(e.target.value);
-                    if (modelo === '') {
-                      setErrorModelo(true);
-                      setleyenda('Los campos no deben estar vacios');
-                    } else {
-                      setErrorModelo(false);
-                      var preg_match = /^[0-9]+$/;
-                      if (!preg_match.test(modelo)) {
-                        setErrorModelo(true);
-                        setleyenda('Solo deben de ingresar numeros');
-                      } else {
-                        setErrorModelo(false);
-                        setleyenda('');
-                      }
-                    }
-                  }}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="ID Modelo"
-                id="idModelo"
-              />
-              <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Marca" className="titleInput" />
               <select name="" className="selectCustom" id="marca">
               {Marca.length ? (

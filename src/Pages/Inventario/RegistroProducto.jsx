@@ -88,14 +88,15 @@ export const RegistroProducto = ({
       <div className="titleAddUser">
         <h2>Registro de Producto</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
+          Complete todos los puntos para poder registrar el producto.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="ID Producto" className="titleInput" />
+
+            <TextCustom text="ID Producto" className="titleInput" />
 
               <input
                    onKeyDown={e => {
@@ -120,7 +121,7 @@ export const RegistroProducto = ({
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                placeholder="ID Producto"
+                placeholder="ID Marca"
                 id="idProducto"
               />
               <p class="error">{leyenda}</p>
@@ -128,6 +129,7 @@ export const RegistroProducto = ({
             
 
             <div className="contInput">
+
               <TextCustom text="ID Modelo" className="titleInput" />
               <select name="" className="selectCustom" id="modelo">
               {Modelo.length ? (

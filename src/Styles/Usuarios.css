@@ -14,28 +14,31 @@
 .contPadre {
   width: 100%;
   height: 100vh;
+  background-image: url("../IMG/backgroundQuestion.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: none;
 
   display: grid;
   grid-template-columns: repeat(2, 2fr);
   grid-gap: 10px;
-
   justify-content: center;
+  align-items: center;
 }
 
 .contLogin {
   width: 100%;
-  height: 40vh;
-  padding-top: 150px;
-
+  height: 62vh;
+  /* padding-top: 150px; */
   display: grid;
-  /* grid-template-rows: repeat(4, 200px); */
-  grid-template-rows: 15% 30% 60% 55%;
+  grid-template-rows: repeat(4, 4fr);
+  /* grid-template-rows: 16% 30% 60% 55%; */
   justify-items: center;
   align-items: center;
 }
 
 .titleHello {
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .contInputLogin {
@@ -49,29 +52,28 @@
 .contInputLogin .titleInput {
   color: gray;
   font-weight: bold;
-  margin-left: 5px;
   font-size: 15px;
 }
 
 .inputCustomLogin {
   width: 100%;
-  height: 45px;
+  height: 25px;
+  padding: 13px;
+  border-radius: 10px;
   background-color: #d0d0d059;
-  border-radius: 5px;
-  padding-left: 10px;
-  font-size: 18px;
+  border: 2px solid gray;
   font-weight: bold;
-  border: 2px solid #84848459;
+  font-size: 15px;
 }
 
 .contInputLogin .inputCustomPass {
   width: 104% !important;
   height: 49px;
-  border-radius: 5px !important;
+  border-radius: 10px !important;
   background-color: #d0d0d059;
-  border: 2px solid #84848459 !important;
+  border: 2px solid gray !important;
   font-weight: bold;
-  font-size: 18px !important;
+  font-size: 15px !important;
 
   line-height: none !important;
   letter-spacing: none !important;
@@ -101,7 +103,7 @@
   width: 60%;
   display: grid;
   grid-template-rows: repeat(2, 50px);
-  margin-top: 50px;
+  margin-top: 25px;
 }
 
 .secondButtons {
@@ -129,7 +131,7 @@
 .btnOlvidar {
   height: 18px;
   text-decoration: none;
-  color: rgb(132, 132, 132);
+  color: black;
   font-weight: bold;
   transition: 0.5s ease;
   text-align: right;
@@ -140,9 +142,35 @@
   color: #316ee6;
 }
 
+.btnRegistrate{
+  text-decoration: none;
+  color: black;
+  transition: 0.5s ease;
+  text-align: center;
+
+  margin-top: 37px;
+}
+
+.btnRegistrate a{
+  color: #3535a2;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.5s;
+}
+
+.btnRegistrate a:hover{
+  text-decoration: underline;
+}
+
+.btnOlvidar:hover {
+  text-decoration: underline;
+  color: #316ee6;
+}
+
+
 .btnIngresar {
   width: 93% !important;
-  height: 60px !important;
+  height: 45px !important;
   background: rgb(38, 103, 177);
   background: linear-gradient(
     90deg,
@@ -152,14 +180,14 @@
   color: white !important;
   font-weight: bold !important;
   font-size: 20px !important;
-  /* border-radius: 25px !important; */
+  border-radius: 25px !important;
 }
 
 .contImgLogin {
-  width: 100%;
-  height: auto;
-
-  background-color: #033db0;
+  width: 96%;
+  height: 95vh;
+  border-radius: 25px;
+  background-color: #3535a2;
 }
 
 .imgLogin {
@@ -168,11 +196,10 @@
 
 .contHijoLogin {
   width: 60%;
-  height: 200px;
-
+  height: 310px;
   display: grid;
-  grid-template-rows: repeat(2, 70px);
-  grid-gap: 85px;
+  grid-template-rows: repeat(3, 3fr);
+  grid-gap: 62px;
 }
 /* Login */
 
