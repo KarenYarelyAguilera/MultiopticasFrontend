@@ -1,10 +1,9 @@
-import { PageOne } from '../../Components/PageOne/PageOne';
-import { PageTwo } from '../../Components/PageTwo/PageTwo';
-import { PageThree } from '../../Components/PageThree/PageThree';
-import { PageFour } from '../../Components/PageFour/PageFour';
+import { PageOne } from '../../Components/Preguntas/PageOne/PageOne';
+import { PageTwo } from '../../Components/Preguntas/PageTwo/PageTwo';
+import { PageThree } from '../../Components/Preguntas/PageThree/PageThree';
+import { PageFour } from '../../Components/Preguntas/PageFour/PageFour';
 // import "./App.css";
 import React, { useState } from 'react';
-import tachyons from 'tachyons';
 import { MultiStepProgressBar } from '../../Components/MultiStepProgressBar/MultiStepProgressBar';
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 

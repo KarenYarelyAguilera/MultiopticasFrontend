@@ -1,6 +1,6 @@
 import React from "react";
-import { TextCustom } from "../TextCustom";
-import '../../Styles/RecuperacionPassword.css';
+import { TextCustom } from "../../TextCustom";
+import '../../../Styles/RecuperacionPassword.css';
 
 export const PageFour = () => {
     return (
@@ -40,7 +40,7 @@ export const PageFour = () => {
               borderStyle: 'none',
               borderRadius: '10px',
               width: '100%',
-              backgroundColor: '#316ee6',
+              backgroundColor: '#3535a2',
             }}
             type="submit"
             value="Enviar"

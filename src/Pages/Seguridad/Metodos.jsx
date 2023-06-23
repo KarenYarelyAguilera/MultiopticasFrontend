@@ -1,59 +1,55 @@
-import { useNavigate } from 'react-router';
-
-import '../../Styles/RecuperacionPassword.css';
-import { TextCustom } from '../../Components/TextCustom.jsx';
-import Button from '@mui/material/Button';
+import { PageOne } from '../../Components/Recuperacion/PageOne/PageOne';
+import { PageTwo } from '../../Components/Recuperacion/PageTwo/PageTwo';
+import { PageThree } from '../../Components/Recuperacion/PageThree/PageThree';
+import { PageFour } from '../../Components/Recuperacion/PageFour/PageFour';
+// import "./App.css";
+import React, { useState } from 'react';
+import { MultiStepProgressBar } from '../../Components/MultiStepProgressBar/MultiStepProgressBar';
+import passwordRecovery from '../../IMG/passwordrecovery.png';
 
 export const Metodos = props => {
-  const navegate = useNavigate();
+  const [page, setPage] = useState('pageone');
 
-  const PreguntasCorreo = () => {
-    let correo = document.getElementById('correo').value;
-    props.correo(correo);
+  const nextPage = page => {
+    setPage(page);
+  };
 
-    navegate('/recuperacion/preguntas');
+  const nextPageNumber = pageNumber => {
+    switch (pageNumber) {
+      case '1':
+        setPage('pageone');
+        break;
+      case '2':
+        setPage('pagetwo');
+        break;
+      case '3':
+        setPage('pagethree');
+        break;
+      case '4':
+        alert('Ooops! Seems like you did not fill the form.');
+        break;
+      default:
+        setPage('1');
+    }
   };
 
   return (
-    <div className="contRecuperaPassword">
-      <div className="titleRecuPassword">
-        <h2>Recuperacion de contraseña</h2>
-        <h3>
-          Complete los campos requeridos para poder recuperar su contraseña.
-        </h3>
+    <div className="divSection">
+      <div className="divInfoRecuperacion">
+        <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
+        {
+          {
+            pageone: <PageOne onButtonClick={nextPage} />,
+            pagetwo: <PageTwo onButtonClick={nextPage} />,
+            pagethree: <PageThree onButtonClick={nextPage} />,
+            pagefour: <PageFour />,
+          }[page]
+        }
       </div>
 
-      <div className="sectionRecuPassword">
-        <div className="panelInfo">
-        <div className="contInput">
-        <TextCustom text="Correo Electronico" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                id="correo"
-                className="inputCustom"
-                placeholder="Correo Electronico"
-              />
-        </div>
-        <div className="contBtn">
-          <Button
-            className="btnSubmit"
-            variant="container"
-            onClick={PreguntasCorreo}
-          >
-            Preguntas de Seguridad
-          </Button>
-          <Button
-            className="btnSubmit"
-            variant="container"
-            onClick={PreguntasCorreo}
-          >
-            Correo de Verificación
-          </Button>
-        </div>
-        </div>
+      <div className="divImgSection">
+        <img src={passwordRecovery} alt="Iamgen no encontrada" />
       </div>
     </div>
-      
   );
 };

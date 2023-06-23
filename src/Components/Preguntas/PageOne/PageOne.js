@@ -1,7 +1,7 @@
 import React from 'react';
-import { TextCustom } from '../TextCustom';
+import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
-import '../../Styles/RecuperacionPassword.css';
+import '../../../Styles/RecuperacionPassword.css';
 
 export const PageOne = ({ onButtonClick }) => {
   return (
@@ -42,7 +42,7 @@ export const PageOne = ({ onButtonClick }) => {
               borderStyle: 'none',
               borderRadius: '10px',
               width: '100%',
-              backgroundColor: '#316ee6',
+              backgroundColor: '#3535a2',
             }}
             type="submit"
             value="Siguiente"
