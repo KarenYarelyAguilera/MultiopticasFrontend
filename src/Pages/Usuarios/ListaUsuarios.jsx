@@ -223,22 +223,23 @@ export const ListUsuarios = () => {
                 </div>
               </div>
             </div>,
-          ).then(() => {
+          ).then(async () => {
             let data = {
-              Usuario: document.getElementById('nombre').value,
-              Nombre_Usuario:
+              usuario: document.getElementById('nombre').value,
+              nombreUsuario:
                 document.getElementById('nombreUsuario').value,
-              Estado_Usuario:
+              estadoUsuario:
                 document.getElementById('EstadoUsuario').value,
-              Contrasenia: document.getElementById('contrasenia').value,
-              Id_Rol: document.getElementById('rol').value,
-              Correo_Electronico:
+              clave: document.getElementById('contrasenia').value,
+              idRol: parseInt(document.getElementById('rol').value),
+              correo:
                 document.getElementById('Email').value,
-              Id_usuario: id.id_Usuario,
+              idUsuario: id.id_Usuario,
             };
 
-            if (sendData(urlUpdateUser, data)) {
+            if (await axios.put(urlUpdateUser,data)) {
               swal(<h1>Usuario Actualizado Correctamente</h1>);
+              setCambio(cambio+1)
             }
           });
           break;
@@ -285,7 +286,7 @@ export const ListUsuarios = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              Nuevo Usuario
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
