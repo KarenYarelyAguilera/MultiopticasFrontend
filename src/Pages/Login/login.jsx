@@ -92,6 +92,7 @@ export const Login = props => {
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         navegate('/preguntasSeguridad');
+        
       }
       if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo') {
         // sendData(urlBitacoraLogin, dataBitacora);
@@ -100,7 +101,7 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario)
-        navegate('/Home');
+        navegate('/dashboard');
       }
     } catch (error) {
       swal(
@@ -151,7 +152,7 @@ export const Login = props => {
               error={errorUsuario}
               placeholder="Usuario"
               className="inputCustomLogin"
-              inputProps={{ maxLength: 50 }}
+              maxLength={50}
               
               ref={refUsuario}
             />
@@ -218,6 +219,10 @@ export const Login = props => {
           <Button className="btnIngresar" onClick={handleLogin}>
             Iniciar sesion
           </Button>
+
+          <span className="btnRegistrate">
+              ¿No tienes una cuenta? <a href="/registration">Registrate</a>
+            </span>
         </div>
       </div>
       <div className="contImgLogin">
