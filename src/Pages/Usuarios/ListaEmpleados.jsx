@@ -35,6 +35,20 @@ export const ListaEmpleados  = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
 
+
+  const [Nombre, setNombre] = useState('');
+  const [errorNombre, setErrorNombre] = useState(false);
+  const [Msj, setMsj] = useState(false);
+
+  const [Apellido, setApellido] = useState('');
+  const [errorApellido, setErrorApellido] = useState(false);
+  const [aviso, setAviso] = useState(false);
+
+  const [errorTelefono, setErrorTelefono] = useState(false);
+  const [texto, setTexto] = useState(false);
+
+
+
   useEffect(() => {
    axios.get(urlEmployees).then(response => {
       setTableData(response.data)
@@ -168,30 +182,73 @@ export const ListaEmpleados  = () => {
                   <div className="contInput">
                     <TextCustom text="Nombre" className="titleInput" />
                     <input
+                     onKeyDown={e => {
+                      setNombre(e.target.value);
+                      if (Nombre == '') {
+                        setErrorNombre(true);
+                        setMsj('Los campos no deben estar vacios');
+                      } else {
+                        setErrorNombre(false);
+                        var preg_match =/^[a-zA-Z\s]*$/;
+                        if (!preg_match.test(Nombre)) {
+                          setErrorNombre(true);
+                          setMsj('Solo debe de ingresar letras');
+                        } else {
+                          setErrorNombre(false);
+                          setMsj('');
+                        }
+                      }
+                    }}
                       type="text"
                       id="nombre"
                       className="inputCustom"
                      value={id.nombre}
-
                      maxLength={20}
                     />
+                    <p className="error">{Msj}</p>
                   </div>
                   <div className="contInput">
                     <TextCustom text="Apellido" className="titleInput" />
                     <input
+                    onKeyDown={e => {
+                      setApellido(e.target.value);
+                      if (Apellido == '') {
+                        setErrorApellido(true);
+                        setAviso('Los campos no deben estar vacios');
+                      } else {
+                        setErrorApellido(false);
+                        var preg_match =/^[a-zA-Z\s]*$/;
+                        if (!preg_match.test(Apellido)) {
+                          setErrorApellido(true);
+                          setAviso('Solo deben de ingresar letras');
+                        } else {
+                          setErrorApellido(false);
+                          setAviso('');
+                        }
+                      }
+                    }}
                       type="text"
+                      name=""
                       id="apellido"
                       className="inputCustom"
                       value={id.apellido}
+                      maxLength={20}
+                      helperText={aviso}
+                      error={errorApellido}
+                      placeholder="Apellido"
                     />
+                    <p className="error">{aviso}</p>
                   </div>
+
                   <div className="contInput">
                     <TextCustom text="Telefono" className="titleInput" />
                     <input
+
                       type="text"
                       id="telefono"
                       className="inputCustom"
                      value={id.telefonoEmpleado}
+                     maxLength={8}
                     />
                   </div>
                   <div className="contInput">
