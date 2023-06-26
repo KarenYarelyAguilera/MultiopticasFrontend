@@ -11,10 +11,13 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import { TextField } from '@mui/material';
+import axios from 'axios';
+
+const urlGarantia = 'http://localhost:3000/api/garantias/crear';
+const urlProductos = 'http://localhost:3000/api/productos';
 
 
-const urlGarantias ='http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertGarantia';
-const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
 
 export const RegistroGarantia = ({
   msgError = '',
@@ -22,46 +25,53 @@ export const RegistroGarantia = ({
   warning = false,
   props,
 }) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
   const [Productos, setProductos] = useState([])
-
-  const [garantia, setGarantia] = useState('');
-  const [mensaje, setmensaje] = useState('');
-  const [errorGarantia, seterrorgarantia] = useState(false);
-
-  const [descripcion, setDescripcion] = useState('');
-  const [leyenda, setleyenda] = useState('');
-  const [errorDescripcion, setErrorDescripcion] = useState(false);
   
-  useEffect(()=>{
-    fetch(urlProducto).then(response =>response.json()).then(data=>setProductos(data))
-  },[])
+
+  const [mesesGarantia, setGarantia] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
+  const [errormesesGarantia, seterrormesesGarantia] = React.useState(false);
+
+  const [descripcion, setDescripcion] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorDescripcion, setErrorDescripcion] = React.useState(false);
+
+
+  useEffect(() => {
+    axios.get(urlProductos).then(response => {
+      setProductos(response.data)
+    }).catch(error => console.log(error))
+  }, []);
 
   const navegate = useNavigate();
 
-  console.log(Productos);
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
-    let idProducto = parseInt(document.getElementById("producto").value)
-    let meses = document.getElementById("meses").value
-    let estado = document.getElementById("estado").value
+    let IdProducto = parseInt(document.getElementById("IdProducto").value)
+   
+    let mesesGarantia = document.getElementById("mesesGarantia").value
+    let estado = parseInt(document.getElementById("estado").value)  
     let descripcion = document.getElementById("descripcion").value
 
+
     let data = {
-      descripcion:descripcion,
-      mesesGarantia:meses,
-      IdProducto:idProducto,
-      estado:estado
+      descripcion: descripcion,
+      mesesGarantia: mesesGarantia,
+      IdProducto: IdProducto,
+      estado: estado
     }
 
-    if (sendData(urlGarantias,data)) {
-      swal("Garantia registrada con exito","","success")
-    }
+    await axios.post(urlGarantia, data).then(response => {
+      swal('Garantia agregada con exito', '', 'success').then(result => {
+        navegate('/menuVentas/listaGarantias');
+      });
+
+    }).catch(error => {
+      console.log(error);
+      swal('Error al registrar la garantia', '', 'success')
+    })
 
   };
 
@@ -77,17 +87,17 @@ export const RegistroGarantia = ({
       <div className="titleAddUser">
         <h2>Registro de Garantia</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
+          Complete todos los puntos para poder registrar la garantia.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-           
-          <div className="contInput">
+
+            <div className="contInput">
               <TextCustom text="ID Producto" className="titleInput" />
               <select name="" className="selectCustom" id="producto">
-              {Productos.length ? (
+                {Productos.length ? (
                   Productos.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
                       {pre.producto}
@@ -107,38 +117,32 @@ export const RegistroGarantia = ({
                 onKeyDown={e => {
                   setGarantia(e.target.value);
 
-                  if (garantia.length > 10) {
-                    seterrorgarantia(true);
-                  setmensaje('A excedido al numero de caracteres');
-                  }
-                  if (garantia === '') {
-                    seterrorgarantia(true);
+                  if (mesesGarantia === '') {
+                    seterrormesesGarantia(true);
                     setmensaje('Los campos no deben estar vacios');
                   }
-                   else {
-                    seterrorgarantia(false);
-                    var expresion = /^[a-zA-Z0-9\s]+$/;
-                    if (!expresion.test(garantia)) {
-                      seterrorgarantia(true);
-                      setmensaje('Formato invalido');
-                    }
-
-                     else {
-                      seterrorgarantia(false);
-                      setmensaje('');
-                    }
+                  else {
+                   /*  seterrormesesGarantia(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(mesesGarantia)) {
+                      seterrormesesGarantia(true);
+                       //setTexto('Solo deben de ingresar numeros');
+                    } else {
+                      seterrormesesGarantia(false);
+                       //setTexto('');
+                    } */
                   }
                 }}
                 type="text"
                 name=""
-                maxLength={11}
+                maxLength={2}
                 className="inputCustom"
                 placeholder="Meses"
                 id="meses"
               />
-            <p class="error">{mensaje}</p>
+              <p class="error">{mensaje}</p>
             </div>
-            
+
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
@@ -151,6 +155,32 @@ export const RegistroGarantia = ({
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
+
+                onKeyDown={(e) => {
+                  setDescripcion(e.target.value);
+
+                  if (descripcion.length > 100) {
+                    setErrorDescripcion(true);
+                    setleyenda('A excedido al numero de caracteres');
+                  }
+                  if (descripcion === '') {
+                    setErrorDescripcion(true);
+                    setleyenda('Los campos no deben estar vacios');
+                  }
+                  else {
+                    setErrorDescripcion(false);
+                    var expresion = /^[a-zA-Z0-9]+$/;
+                    if (!expresion.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda('Formato invalido');
+                    }
+                    else {
+                      setErrorDescripcion(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+
                     onKeyDown={e => {
                       setDescripcion(e.target.value);
     
@@ -175,6 +205,7 @@ export const RegistroGarantia = ({
                         }
                       }
                     }}
+
                 type="text"
                 name=""
                 maxLength={100}
@@ -184,7 +215,7 @@ export const RegistroGarantia = ({
               />
               <p class="error">{leyenda}</p>
             </div>
-            
+
 
             <div className="contBtnStepper">
               <Button
@@ -197,7 +228,16 @@ export const RegistroGarantia = ({
                   
                 variant="contained"
                 className="btnStepper"
+
+                onClick={() => {
+
+
+                  handleNext()
+
+                }}
+
                 
+
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
