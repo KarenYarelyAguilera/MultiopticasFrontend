@@ -1,17 +1,17 @@
-import { Container, Grid, TextField, Button } from '@mui/material';
+import React from 'react'; 
+import { useEffect, useState, useRef } from 'react';
+import { Container, Grid, TextField, Button, Box } from '@mui/material';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Modal from '@mui/material/Modal';
 //import { ForgetPsswrd } from "../scripts/login"
 import '../../Styles/login.css';
 import logo from '../../IMG/Multioptica.png';
 import ImgLogin from '../../IMG/ImgLogin.png';
 import swal from '@sweetalert/with-react';
-import { useEffect, useState } from 'react';
-import { useRef } from 'react'; /**Este hook ayuda a referenciar un componente
-sin necesidad del getElementById */
 import {
   Link,
   useNavigate,
@@ -21,6 +21,7 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from "axios";
 
 export const Login = props => {
+  
   const urlLogin =
     'http://localhost:3000/api/login/compare';
   const urlDUsuario =
@@ -49,21 +50,26 @@ export const Login = props => {
     event.preventDefault();
   };
 
-  // useEffect(() => {
-  //   axios.get(urlIntentos)
-  //     .then(resp => resp.data)
-  //     .then(data => setIntentos(parseInt(data.valor)))
-  //     .catch(error => {
-  //       // Manejo de errores
-  //       console.error(error);
-  //     });
-  // }, []);
-
-
   const [contador, setContador] = useState(0);
   const navegate = useNavigate();
   const refUsuario = useRef(null);
   const refContrasenia = useRef(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handlePreguntas = () => {
+    navegate("/progress")
+  }
+
+  const handleCorreo = () => {
+    navegate("/recuperacion")
+  }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleLogin = async () => {
     const data = {
@@ -165,6 +171,7 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
+               maxLength={13}
               onKeyDown={e => {
                 setContra(e.target.value);
                 if (contra === '') {
@@ -174,13 +181,22 @@ export const Login = props => {
                   setMsj('');
                   setErrorContra(false);
                 }
+                setContra(e.target.value);
+                if (contra.length > 47) {
+                  setErrorContra(true);
+                  setMsj('A excedido al numero de caracteres');
+                }  else {
+                    setErrorContra(false);
+                    setMsj('');
+                  }
               }}
               error={errorContra}
+              
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
-              maxLength={150}
               type={showPassword ? 'text' : 'password'}
+              
               inputRef={refContrasenia}
               endAdornment={
                 <InputAdornment position="end">
@@ -193,6 +209,7 @@ export const Login = props => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
+              
               }
             />
             <p className="errorMessage">
@@ -211,9 +228,26 @@ export const Login = props => {
               />
               Recuerdame
             </div>
-            <Link className="btnOlvidar" to={'/recuperacion'}>
+            {/* <Link className="btnOlvidar" to={'/recuperacion'}>
+              ¿Olvidaste tu contraseña?
+            </Link> */}
+            <Link className="btnOlvidar" onClick={handleOpen}>
               ¿Olvidaste tu contraseña?
             </Link>
+            <Modal
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="parent-modal-title"
+  aria-describedby="parent-modal-description"
+>
+  <Box className="contModal">
+    <h2 id="parent-modal-title">Recuperación de contraseña</h2>
+    <div>
+    <Button className='btnPreguntas' onClick={handlePreguntas}>Preguntas de seguridad</Button>
+    <Button className="btnCorreo" onClick={handleCorreo}>Correo Electronico</Button>
+    </div>
+  </Box>
+</Modal>
           </div>
 
           <Button className="btnIngresar" onClick={handleLogin}>
