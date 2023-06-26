@@ -150,6 +150,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
+
           <Route
             path="/promocion/listaPromocion"
             element={
@@ -170,6 +171,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
              </ProtectedRoute>
             }
           />
+
 
           <Route
 
