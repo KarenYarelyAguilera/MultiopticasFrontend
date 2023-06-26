@@ -164,6 +164,7 @@ export const DatosEmpleado = ({
                       setErrorIdentidad(false);
                       setleyenda('');
                     }
+                    
                   }
                 }}
                 placeholder="Identidad"
@@ -182,7 +183,7 @@ export const DatosEmpleado = ({
                     setMsj('Los campos no deben estar vacios');
                   } else {
                     setErrorNombre(false);
-                    var preg_match = /^[a-zA-Z]+$/;
+                    var preg_match =/^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Nombre)) {
                       setErrorNombre(true);
                       setMsj('Solo debe de ingresar letras');
@@ -216,7 +217,7 @@ export const DatosEmpleado = ({
                     setAviso('Los campos no deben estar vacios');
                   } else {
                     setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z]+$/;
+                    var preg_match =/^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true);
                       setAviso('Solo deben de ingresar letras');

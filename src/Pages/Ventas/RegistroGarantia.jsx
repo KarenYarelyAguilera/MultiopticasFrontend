@@ -155,6 +155,7 @@ export const RegistroGarantia = ({
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
+
                 onKeyDown={(e) => {
                   setDescripcion(e.target.value);
 
@@ -179,6 +180,32 @@ export const RegistroGarantia = ({
                     }
                   }
                 }}
+
+                    onKeyDown={e => {
+                      setDescripcion(e.target.value);
+    
+                      if (descripcion.length > 100) {
+                        setErrorDescripcion(true);
+                      setleyenda('A excedido al numero de caracteres');
+                      }
+                      if (descripcion === '') {
+                        setErrorDescripcion(true);
+                        setleyenda('Los campos no deben estar vacios');
+                      }
+                       else {
+                        setErrorDescripcion(false);
+                        var expresion = /^[a-zA-Z0-9\s]+$/;
+                        if (!expresion.test(descripcion)) {
+                          setErrorDescripcion(true);
+                          setleyenda('Formato invalido');
+                        }
+                         else {
+                          setErrorDescripcion(false);
+                          setleyenda('');
+                        }
+                      }
+                    }}
+
                 type="text"
                 name=""
                 maxLength={100}
@@ -192,14 +219,25 @@ export const RegistroGarantia = ({
 
             <div className="contBtnStepper">
               <Button
+               onClick={() => {
+                  swal('Garantia agregada con exito', '', 'success')
+                navegate('/menuVentas/listaGarantias')
+                handleNext();
+
+              }}
+                  
                 variant="contained"
                 className="btnStepper"
+
                 onClick={() => {
 
 
                   handleNext()
 
                 }}
+
+                
+
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
