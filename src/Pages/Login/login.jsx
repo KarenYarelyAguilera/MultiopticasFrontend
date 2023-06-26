@@ -171,6 +171,7 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
+               maxLength={13}
               onKeyDown={e => {
                 setContra(e.target.value);
                 if (contra === '') {
@@ -180,13 +181,22 @@ export const Login = props => {
                   setMsj('');
                   setErrorContra(false);
                 }
+                setContra(e.target.value);
+                if (contra.length > 47) {
+                  setErrorContra(true);
+                  setMsj('A excedido al numero de caracteres');
+                }  else {
+                    setErrorContra(false);
+                    setMsj('');
+                  }
               }}
               error={errorContra}
+              
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
-              maxLength={150}
               type={showPassword ? 'text' : 'password'}
+              
               inputRef={refContrasenia}
               endAdornment={
                 <InputAdornment position="end">
@@ -199,6 +209,7 @@ export const Login = props => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
+              
               }
             />
             <p className="errorMessage">
