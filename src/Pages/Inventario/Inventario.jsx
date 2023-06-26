@@ -63,6 +63,16 @@ export const Inventario = props => {
       vinculo: '/menuInventario/ListaMarcas',
     },
     {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
+      titulo: 'Registro Promocion de Marca',
+      vinculo: '/marcas/registroPromMarca',
+    },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
+      titulo: 'Lista Promocion de Marcas',
+      vinculo: '/promocion/listaPromocion',
+    },
+    {
       imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
       titulo: 'Registro de Modelo',
       vinculo: '/menuInventario/RegistroModelo',

@@ -50,8 +50,9 @@ export const RegistroGarantia = ({
   const handleNext = async () => {
 
     let IdProducto = parseInt(document.getElementById("IdProducto").value)
+   
     let mesesGarantia = document.getElementById("mesesGarantia").value
-    let estado = document.getElementById("estado").value
+    let estado = parseInt(document.getElementById("estado").value)  
     let descripcion = document.getElementById("descripcion").value
 
 
@@ -121,7 +122,7 @@ export const RegistroGarantia = ({
                     setmensaje('Los campos no deben estar vacios');
                   }
                   else {
-                    seterrormesesGarantia(false);
+                   /*  seterrormesesGarantia(false);
                     var preg_match = /^[0-9]+$/;
                     if (!preg_match.test(mesesGarantia)) {
                       seterrormesesGarantia(true);
@@ -129,7 +130,7 @@ export const RegistroGarantia = ({
                     } else {
                       seterrormesesGarantia(false);
                        //setTexto('');
-                    }
+                    } */
                   }
                 }}
                 type="text"

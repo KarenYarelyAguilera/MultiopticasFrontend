@@ -187,10 +187,10 @@ export const BarraLateral = (props) => {
   return (
     <div className="BarraLateral close">
       <div className="imglogo">
-        <Link to="/">
+        <Link to="/dashboard">
           <img src={MulltiOptica} alt="logo" className="logoBarraLateral" />
         </Link>
-        <Link to="/">
+        <Link to="/dashboard">
           <img src={MulltiOpticaOjo} alt="logo" className="logoOjo" />
         </Link>
         <FontAwesomeIcon

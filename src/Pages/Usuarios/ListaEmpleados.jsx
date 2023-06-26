@@ -172,6 +172,8 @@ export const ListaEmpleados  = () => {
                       id="nombre"
                       className="inputCustom"
                      value={id.nombre}
+
+                     maxLength={20}
                     />
                   </div>
                   <div className="contInput">

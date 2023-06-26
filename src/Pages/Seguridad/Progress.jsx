@@ -1,13 +1,13 @@
-import { PageOne } from '../../Components/Recuperacion/PageOne/PageOne';
-import { PageTwo } from '../../Components/Recuperacion/PageTwo/PageTwo';
-import { PageThree } from '../../Components/Recuperacion/PageThree/PageThree';
-import { PageFour } from '../../Components/Recuperacion/PageFour/PageFour';
+import { PageOne } from '../../Components/Preguntas/PageOne/PageOne';
+import { PageTwo } from '../../Components/Preguntas/PageTwo/PageTwo';
+import { PageThree } from '../../Components/Preguntas/PageThree/PageThree';
+import { PageFour } from '../../Components/Preguntas/PageFour/PageFour';
 // import "./App.css";
 import React, { useState } from 'react';
 import { MultiStepProgressBar } from '../../Components/MultiStepProgressBar/MultiStepProgressBar';
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 
-export const Metodos = props => {
+export const Progress = props => {
   const [page, setPage] = useState('pageone');
 
   const nextPage = page => {
@@ -35,7 +35,11 @@ export const Metodos = props => {
 
   return (
     <div className="divSection">
-      <div className="divInfoRecuperacion">
+      <div className="divInfoQuestion">
+        <div className="titleRecuPassword">
+          <h2>Preguntas de Seguridad</h2>
+          <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
+        </div>
         <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
         {
           {

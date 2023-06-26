@@ -95,6 +95,7 @@ export const RegistroProducto = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
+
             <TextCustom text="ID Producto" className="titleInput" />
 
               <input
@@ -128,6 +129,7 @@ export const RegistroProducto = ({
             
 
             <div className="contInput">
+
               <TextCustom text="ID Modelo" className="titleInput" />
               <select name="" className="selectCustom" id="modelo">
               {Modelo.length ? (

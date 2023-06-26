@@ -70,6 +70,7 @@ export const DatosEmpleado = ({
     }).catch(error => console.log(error))
   }, []);
 
+  
   const navegate = useNavigate();
 
   const handleNext = async () => {
@@ -115,7 +116,7 @@ export const DatosEmpleado = ({
 
     }).catch(error => {
       console.log(error);
-      swal('Error al registrar el cliente', '', 'success')
+      swal('Error al registrar el empleado', '', 'success')
     })
 
   };
