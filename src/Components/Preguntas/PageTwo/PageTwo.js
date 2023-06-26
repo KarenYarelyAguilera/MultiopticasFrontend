@@ -10,7 +10,7 @@ export const PageTwo = ({ onButtonClick }) => {
           <div className='divInfoQuestionResp'>
           <TextCustom text="Preguntas:" className="titleInput" />
           <div className="contInput">
-            <select className="inputCustom" name="">
+            <select className="inputCustomPreguntas" name="">
               <option value="1">Pregunta Numero 1</option>
               <option value="1">Pregunta Numero 2</option>
               <option value="1">Pregunta Numero 3</option>
@@ -35,13 +35,7 @@ export const PageTwo = ({ onButtonClick }) => {
         </div>
         <div className='divSubmitQuestion'>
           <input
-            className="f6 grow br2 ph3 pv2 mb2 dib white"
-            style={{
-              borderStyle: 'none',
-              borderRadius: '10px',
-              width: '100%',
-              backgroundColor: '#3535a2',
-            }}
+            className="btnSubmitPreguntas"
             type="submit"
             value="Siguiente"
             onClick={() => onButtonClick('pagethree')}
