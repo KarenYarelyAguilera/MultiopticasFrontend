@@ -29,9 +29,21 @@ export const ListaEmpleados = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+
+
   const [Nombre, setNombre] = useState('');
   const [errorNombre, setErrorNombre] = useState(false);
   const [Msj, setMsj] = useState(false);
+
+  const [Apellido, setApellido] = useState('');
+  const [errorApellido, setErrorApellido] = useState(false);
+  const [aviso, setAviso] = useState(false);
+
+  const [errorTelefono, setErrorTelefono] = useState(false);
+  const [texto, setTexto] = useState(false);
+
+
 
   useEffect(() => {
     axios
@@ -136,42 +148,35 @@ export const ListaEmpleados = () => {
 
   //funcion de actualizar
   function handleUpdt(id) {
-    // onRowClick={empleado => {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el empleado: {id.nombre} ?
-        </div>
-      ),
-    }).then(op => {
-      switch (op) {
-        case null:
-          break;
-        case 'update':
-          swal(
-            <div>
-              <div className="logoModal">Datos a actualizar</div>
-              <div className="contEditModal">
-                <div className="contInput">
-                  <TextCustom text="Nombre" className="titleInput" />
-                  <input
-                    type="text"
-                    id="nombre"
-                    className="inputCustom"
-                    value={id.Nombre}
-                    maxLength={20}
-                    onKeyDown={e => {
+
+   // onRowClick={empleado => {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">¿Desea actualizar el empleado:{' '} {id.nombre}{' '}?
+          </div>
+        ),
+      }).then(op => {
+        switch (op) {
+          case 'update':
+            swal(
+              <div>
+                <div className="logoModal">Datos a actualizar</div>
+                <div className="contEditModal">
+                  <div className="contInput">
+                    <TextCustom text="Nombre" className="titleInput" />
+                    <input
+                     onKeyDown={e => {
                       setNombre(e.target.value);
                       if (Nombre == '') {
                         setErrorNombre(true);
                         setMsj('Los campos no deben estar vacios');
                       } else {
                         setErrorNombre(false);
-                        var preg_match = /^[a-zA-Z]+$/;
+                        var preg_match =/^[a-zA-Z\s]*$/;
                         if (!preg_match.test(Nombre)) {
                           setErrorNombre(true);
                           setMsj('Solo debe de ingresar letras');
@@ -181,82 +186,113 @@ export const ListaEmpleados = () => {
                         }
                       }
                     }}
-                    error={errorNombre}
-                  />
-                  <p className="error">{Msj}</p>
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Apellido" className="titleInput" />
-                  <input
-                    type="text"
-                    id="apellido"
-                    className="inputCustom"
-                    value={id.apellido}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Telefono" className="titleInput" />
-                  <input
-                    type="text"
-                    id="telefono"
-                    className="inputCustom"
-                    value={id.telefonoEmpleado}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Identidad" className="titleInput" />
-                  <input
-                    type="text"
-                    id="identidad"
-                    className="inputCustom"
-                    value={id.numeroIdentidad}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Sucursal" className="titleInput" />
-                  <select id="sucursal" className="selectCustom">
-                    {sucursales.length ? (
-                      sucursales.map(pre => (
-                        <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                          {pre.departamento}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select>
-                </div>
+                      type="text"
+                      id="nombre"
+                      className="inputCustom"
+                     value={id.nombre}
+                     maxLength={20}
+                    />
+                    <p className="error">{Msj}</p>
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Apellido" className="titleInput" />
+                    <input
+                    onKeyDown={e => {
+                      setApellido(e.target.value);
+                      if (Apellido == '') {
+                        setErrorApellido(true);
+                        setAviso('Los campos no deben estar vacios');
+                      } else {
+                        setErrorApellido(false);
+                        var preg_match =/^[a-zA-Z\s]*$/;
+                        if (!preg_match.test(Apellido)) {
+                          setErrorApellido(true);
+                          setAviso('Solo deben de ingresar letras');
+                        } else {
+                          setErrorApellido(false);
+                          setAviso('');
+                        }
+                      }
+                    }}
+                      type="text"
+                      name=""
+                      id="apellido"
+                      className="inputCustom"
+                      value={id.apellido}
+                      maxLength={20}
+                      helperText={aviso}
+                      error={errorApellido}
+                      placeholder="Apellido"
+                    />
+                    <p className="error">{aviso}</p>
+                  </div>
 
-                <div className="contInput">
-                  <TextCustom text="Genero" className="titleInput" />
-                  <select id="genero" className="selectCustom">
-                    {generos.length ? (
-                      generos.map(pre => (
-                        <option key={pre.IdGenero} value={pre.IdGenero}>
-                          {pre.descripcion}
+                  <div className="contInput">
+                    <TextCustom text="Telefono" className="titleInput" />
+                    <input
+
+                      type="text"
+                      id="telefono"
+                      className="inputCustom"
+                     value={id.telefonoEmpleado}
+                     maxLength={8}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Identidad" className="titleInput" />
+                    <input
+                      type="text"
+                      id="identidad"
+                      className="inputCustom"
+                      value={id.numeroIdentidad}
+                    />
+                  </div>
+                  <div className="contInput">
+                    <TextCustom text="Sucursal" className="titleInput" />
+                    <select id="sucursal" className="selectCustom">
+                      {sucursales.length ? (
+                        sucursales.map(pre => (
+                          <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                            {pre.departamento}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
                         </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select>
+                      )}
+                    </select>
+                  </div>
+
+                  <div className="contInput">
+                    <TextCustom text="Genero" className="titleInput" />
+                    <select id="genero" className="selectCustom">
+                      {generos.length ? (
+                        generos.map(pre => (
+                          <option key={pre.IdGenero} value={pre.IdGenero}>
+                            {pre.descripcion}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
+                        </option>
+                      )}
+                    </select>
+                  </div>
                 </div>
-              </div>
-            </div>,
-          ).then(async () => {
-            let data = {
-              nombre: document.getElementById('nombre').value,
-              apellido: document.getElementById('apellido').value,
-              telEmple: document.getElementById('telefono').value,
-              idSucursal: document.getElementById('sucursal').value,
-              idGenero: document.getElementById('genero').value,
-              numId: document.getElementById('identidad').value,
-              IdEmpleado: id.IdEmpleado,
-            };
+              </div>,
+            ).then(async() => {
+
+              let data = {
+                nombre: document.getElementById('nombre').value,
+                apellido: document.getElementById('apellido').value,
+                telEmple:document.getElementById('telefono').value,
+                idSucursal: document.getElementById('sucursal').value,
+                idGenero: document.getElementById('genero').value,
+                numId:document.getElementById('identidad').value,
+                IdEmpleado: id.IdEmpleado,
+              };
 
             // if (sendData(urlUpdateEmployees, data)) {
             //   swal(<h1>Empleado Editado Correctamente</h1>);
@@ -271,26 +307,31 @@ export const ListaEmpleados = () => {
               .catch(error => {
                 // Manejar cualquier error que pueda ocurrir durante la actualización
               });
-          });
-          break;
 
-        default:
-          break;
-      }
-    });
+            });
+            break;
+
+          
+          default:
+            break;
+        }
+      });
     //}//}//
+
   }
+
+
 
   const handleBack = () => {
     navegate('/empleados/lista');
   };
 
-  return (
-    <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}>
-        <ArrowBackIcon className="iconBack" />
-      </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+    return (
+      <div className="ContUsuarios">
+        <Button className="btnBack" onClick={handleBack}>
+          <ArrowBackIcon className="iconBack" />
+        </Button>
+        <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
 
       <div
         style={{
@@ -335,10 +376,12 @@ export const ListaEmpleados = () => {
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
-          //aqui iba el onrow
+        //aqui iba el onrow
           rowsPerPageOptions={[5]}
         />
       </div>
     </div>
   );
+
+
 };

@@ -1,10 +1,9 @@
 import { PageOne } from '../../Components/Preguntas/PageOne/PageOne';
 import { PageTwo } from '../../Components/Preguntas/PageTwo/PageTwo';
 import { PageThree } from '../../Components/Preguntas/PageThree/PageThree';
-import { PageFour } from '../../Components/Preguntas/PageFour/PageFour';
 // import "./App.css";
 import React, { useState } from 'react';
-import { MultiStepProgressBar } from '../../Components/MultiStepProgressBar/MultiStepProgressBar';
+import { MultiProgressPreguntas } from '../../Components/MultiStepProgressBar/MultiProgressPreguntas';
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 
 export const Progress = props => {
@@ -23,9 +22,6 @@ export const Progress = props => {
         setPage('pagetwo');
         break;
       case '3':
-        setPage('pagethree');
-        break;
-      case '4':
         alert('Ooops! Seems like you did not fill the form.');
         break;
       default:
@@ -40,13 +36,12 @@ export const Progress = props => {
           <h2>Preguntas de Seguridad</h2>
           <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
         </div>
-        <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
+        <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
         {
           {
             pageone: <PageOne onButtonClick={nextPage} />,
             pagetwo: <PageTwo onButtonClick={nextPage} />,
-            pagethree: <PageThree onButtonClick={nextPage} />,
-            pagefour: <PageFour />,
+            pagethree: <PageThree />,
           }[page]
         }
       </div>
