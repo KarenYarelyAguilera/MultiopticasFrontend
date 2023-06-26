@@ -59,6 +59,10 @@ export const NuevaCompra = ({
   const [errorcocompra, setErrorcoscompra] = React.useState(false);
   const [cosCompra, setcosCompra] = React.useState(false);
 
+  const [cantidadc, setcantidadc] = useState(0);
+  const [costoc, setcostoc] = useState(0);
+
+
 
   useEffect(() => {
     // fetch()
@@ -325,9 +329,10 @@ export const NuevaCompra = ({
 
             <div className="contBtnStepper1">
               <Button
+              onClick={AggDataGrid}
+              
                 variant="contained"
                 className="btnStepper"
-                onClick={AggDataGrid}
               >
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
