@@ -122,7 +122,7 @@ export const ListaEmpleados  = () => {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea Elimiar este empleado?</div>
+          <div className="logoModal">¿Desea Eliminar este empleado?</div>
           <div className="contEditModal">
 
           </div>
