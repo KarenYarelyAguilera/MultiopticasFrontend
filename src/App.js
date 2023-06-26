@@ -167,7 +167,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaPromocionMarcas></ListaPromocionMarcas>
                 </div>
-             /*  </ProtectedRoute> */
+             </ProtectedRoute>
             }
           />
 
