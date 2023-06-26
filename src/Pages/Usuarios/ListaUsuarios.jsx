@@ -154,7 +154,8 @@ export const ListUsuarios = () => {
     }).then(op => {
       switch (op) {
         case 'update':
-          swal(
+          swal({
+            content:(
             <div>
               <div className="logoModal">Datos a actualizar</div>
               <div className="contEditModal">
@@ -222,25 +223,39 @@ export const ListUsuarios = () => {
                   />
                 </div>
               </div>
-            </div>,
-          ).then(async () => {
-            let data = {
-              usuario: document.getElementById('nombre').value,
-              nombreUsuario:
-                document.getElementById('nombreUsuario').value,
-              estadoUsuario:
-                document.getElementById('EstadoUsuario').value,
-              clave: document.getElementById('contrasenia').value,
-              idRol: parseInt(document.getElementById('rol').value),
-              correo:
-                document.getElementById('Email').value,
-              idUsuario: id.id_Usuario,
-            };
-
-            if (await axios.put(urlUpdateUser,data)) {
-              swal(<h1>Usuario Actualizado Correctamente</h1>);
-              setCambio(cambio+1)
+            </div>),
+            buttons:{
+              actualizar:'actualizar',
+              cancelar:'cancelar'
+              }
+          }
+          ).then(async (value) => {
+            switch (value) {
+              case 'actualizar':
+                let data = {
+                  usuario: document.getElementById('nombre').value,
+                  nombreUsuario:
+                    document.getElementById('nombreUsuario').value,
+                  estadoUsuario:
+                    document.getElementById('EstadoUsuario').value,
+                  clave: document.getElementById('contrasenia').value,
+                  idRol: parseInt(document.getElementById('rol').value),
+                  correo:
+                    document.getElementById('Email').value,
+                  idUsuario: id.id_Usuario,
+                };
+    
+                if (await axios.put(urlUpdateUser,data)) {
+                  swal(<h1>Usuario Actualizado Correctamente</h1>);
+                  setCambio(cambio+1)
+                }    
+                break;
+            
+              default:
+                
+                break;
             }
+            
           });
           break;
         default:

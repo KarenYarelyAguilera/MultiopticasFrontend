@@ -160,9 +160,14 @@ export const ListaEmpleados = () => {
           </div>
         ),
       }).then(op => {
+        
         switch (op) {
+          case 'CANCELAR':
+
+          break;
           case 'update':
-            swal(
+            swal({
+              content:(
               <div>
                 <div className="logoModal">Datos a actualizar</div>
                 <div className="contEditModal">
@@ -281,33 +286,44 @@ export const ListaEmpleados = () => {
                     </select>
                   </div>
                 </div>
-              </div>,
-            ).then(async() => {
-
-              let data = {
-                nombre: document.getElementById('nombre').value,
-                apellido: document.getElementById('apellido').value,
-                telEmple:document.getElementById('telefono').value,
-                idSucursal: document.getElementById('sucursal').value,
-                idGenero: document.getElementById('genero').value,
-                numId:document.getElementById('identidad').value,
-                IdEmpleado: id.IdEmpleado,
-              };
-
-            // if (sendData(urlUpdateEmployees, data)) {
-            //   swal(<h1>Empleado Editado Correctamente</h1>);
-            // }
-
-            await axios
-              .put(urlUpdateEmployees, data)
-              .then(response => {
-                swal(<h1>Empleado Actualizado Correctamente</h1>);
-                setCambio(cambio + 1);
-              })
-              .catch(error => {
-                // Manejar cualquier error que pueda ocurrir durante la actualización
-              });
-
+              </div>),
+              buttons:{
+                cancelar:'cancelar',
+                actualizar:"actualizar"
+              }}
+            ).then(async(op) => {
+              switch (op) {
+                case 'actualizar':
+                  let data = {
+                    nombre: document.getElementById('nombre').value,
+                    apellido: document.getElementById('apellido').value,
+                    telEmple:document.getElementById('telefono').value,
+                    idSucursal: document.getElementById('sucursal').value,
+                    idGenero: document.getElementById('genero').value,
+                    numId:document.getElementById('identidad').value,
+                    IdEmpleado: id.IdEmpleado,
+                  };
+    
+                // if (sendData(urlUpdateEmployees, data)) {
+                //   swal(<h1>Empleado Editado Correctamente</h1>);
+                // }
+    
+                await axios
+                  .put(urlUpdateEmployees, data)
+                  .then(response => {
+                    swal(<h1>Empleado Actualizado Correctamente</h1>);
+                    setCambio(cambio + 1);
+                  })
+                  .catch(error => {
+                    // Manejar cualquier error que pueda ocurrir durante la actualización
+                  });
+        
+                  break;
+              
+                default:
+                  break;
+              }
+              
             });
             break;
 
