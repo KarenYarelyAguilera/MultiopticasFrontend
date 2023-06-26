@@ -165,7 +165,7 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-               maxLength={13}
+              
               onKeyDown={e => {
                 setContra(e.target.value);
                 if (contra === '') {
@@ -185,7 +185,7 @@ export const Login = props => {
                   }
               }}
               error={errorContra}
-              
+              inputProps={{maxLength:13}}
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
