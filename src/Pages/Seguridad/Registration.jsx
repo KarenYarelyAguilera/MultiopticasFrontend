@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import passwordRecovery from '../../IMG//registration.png';
 import { TextCustom } from '../../Components/TextCustom';
 import { useNavigate } from 'react-router';
+import { FilledInput, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export const Registration = props => {
   const navegate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfi, setShowPasswordConfi] = useState(false);
 
+  const handleClickShowPassword = () => setShowPassword(show => !show);
+  const handleClickShowPasswordConfi = () => setShowPasswordConfi(show => !show);
+  const refContrasenia = useRef(null);
+  const refContraseniaConfi = useRef(null);
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
   const handleProgress = () => {
     navegate("/progress")
   }
@@ -56,16 +67,19 @@ export const Registration = props => {
           </div>
 
           <div className="sectInput">
-            <TextCustom text="Correo electrónico" className="titleInput" />
+            <TextCustom text="Telefono" className="titleInput" />
             <div className="contInput">
               <input type="text" name="" className="inputCustomRegis" />
             </div>
           </div>
 
           <div className="sectInput">
-            <TextCustom text="Contraseña" className="titleInput" />
+            <TextCustom text="Genero" className="titleInput" />
             <div className="contInput">
-              <input type="text" name="" className="inputCustomRegis" />
+            <select className="inputCustomRegis" name="">
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
+            </select>
             </div>
           </div>
 
@@ -75,11 +89,61 @@ export const Registration = props => {
               <input type="text" name="" className="inputCustomRegis" />
             </div>
           </div>
+
+          <div className="sectInput">
+            <TextCustom text="Contraseña" className="titleInput" />
+            <div className="contInput">
+            <FilledInput
+              id="filled-adornment-password"
+              className="inputCustomPassRegis"
+              maxLength={150}
+              type={showPassword ? 'text' : 'password'}
+              inputRef={refContrasenia}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            </div>
+          </div>
+
+          <div className="sectInput">
+            <TextCustom text="Confirmar Contraseña" className="titleInput" />
+            <div className="contInput">
+            <FilledInput
+              id="filled-adornment-password"
+              className="inputCustomPassRegis"
+              maxLength={150}
+              type={showPasswordConfi ? 'text' : 'password'}
+              inputRef={refContraseniaConfi}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPasswordConfi}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            </div>
+          </div>
         </div>
         <div className="divSubmitRegis">
-          <button className="buttonCustomRegis" onClick={handleProgress}>Registrar</button>
+          <button className="buttonCustomRegis" onClick={handleProgress}>Siguiente</button>
         </div>
-
+<br />
         <span className="refInicioSesion">
           <b>
             ¿Ya tienes una cuenta? <a href="/">Inicia Sesión</a>
