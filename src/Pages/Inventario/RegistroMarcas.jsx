@@ -80,6 +80,38 @@ export const RegistroMarcas = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
+   
+             <TextCustom text="ID Marca" className="titleInput" />
+              <input
+                 onKeyDown={e => {
+                setmarca(e.target.value);
+                if (marca === '') {
+                  setErrorMarca(true);
+                  setleyenda('Los campos no deben estar vacios');
+                } else {
+                  setErrorMarca(false);
+                  var preg_match = /^[0-9]+$/;
+                  if (!preg_match.test(marca)) {
+                    setErrorMarca(true);
+                    setleyenda('Solo deben de ingresar numeros');
+                  } else {
+                    setErrorMarca(false);
+                    setleyenda('');
+                  }
+                }
+              }}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="ID Marca"
+                id="idMarca"
+              />
+              <p class="error">{leyenda}</p>
+            </div>
+
+            <div className="contInput">
+
               <TextCustom text="Nombre de la Marca" className="titleInput" />
 
               <input
