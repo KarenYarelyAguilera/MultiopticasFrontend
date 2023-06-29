@@ -45,8 +45,8 @@ export const AddUsers = (props) => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
-  const urlBitacoraUsuario =
-    'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
+  // const urlBitacoraUsuario =
+  //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
     'http://localhost:3001/api/empleado';
   const urlRoles =
@@ -88,7 +88,7 @@ export const AddUsers = (props) => {
 
     if (await axios.post(urlInsert,data)) {
       swal('Usuario creado exitosamente.', '', 'success');
-      sendData(urlBitacoraUsuario,dataB)
+      //sendData(urlBitacoraUsuario,dataB)
     }
   };
 
