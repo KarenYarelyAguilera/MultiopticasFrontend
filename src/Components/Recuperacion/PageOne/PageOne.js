@@ -3,7 +3,7 @@ import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
 import '../../../Styles/RecuperacionPassword.css';
 
-export const PageOne = ({ onButtonClick }) => {
+export const PageOne = ({ onButtonClick, correo }) => {
   return (
 
     <main>
@@ -22,6 +22,7 @@ export const PageOne = ({ onButtonClick }) => {
               name=""
               className="inputCustom"
               placeholder="Respuesta"
+              id='respuesta'
             />
           </div>
           </div>
@@ -29,9 +30,11 @@ export const PageOne = ({ onButtonClick }) => {
         <div className='divSubmitRecuperacion'>
           <input
             className="btnSubmit"
-            type="submit"
+            type="button"
             value="Siguiente"
-            onClick={() => onButtonClick('pagetwo')}
+            onClick={() => {
+              correo(document.getElementById('respuesta').value)
+              onButtonClick('pagetwo')}}
           />
         </div>
       </form>

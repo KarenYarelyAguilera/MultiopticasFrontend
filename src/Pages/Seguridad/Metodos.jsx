@@ -8,6 +8,11 @@ import { MultiStepProgressBar } from '../../Components/MultiStepProgressBar/Mult
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 
 export const Metodos = props => {
+  
+  const [correo1, setCorreo1] = useState('');
+  const crr1 = correo=>setCorreo1(correo)
+
+  
   const [page, setPage] = useState('pageone');
 
   const nextPage = page => {
@@ -39,10 +44,10 @@ export const Metodos = props => {
         <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
         {
           {
-            pageone: <PageOne onButtonClick={nextPage} />,
-            pagetwo: <PageTwo onButtonClick={nextPage} />,
-            pagethree: <PageThree onButtonClick={nextPage} />,
-            pagefour: <PageFour />,
+            pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
+            pagetwo: <PageTwo correo1={correo1} onButtonClick={nextPage} />,
+            pagethree: <PageThree correo={correo1} onButtonClick={nextPage} />,
+            pagefour: <PageFour correo={correo1} />,
           }[page]
         }
       </div>
