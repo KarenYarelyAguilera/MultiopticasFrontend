@@ -25,13 +25,13 @@ export const ListUsuarios = () => {
 
 
   const urlUsers =
-    'http://localhost:3000/api/usuarios';
+    'http://localhost:3001/api/usuarios';
   const urlUpdateUser =
-    'http://localhost:3000/api/usuario/update';
+    'http://localhost:3001/api/usuario/update';
     const urlDelUser =
-    'http://localhost:3000/api/usuario/delete';
+    'http://localhost:3001/api/usuario/delete';
   const urlRoles =
-    'http://localhost:3000/api/Rol';
+    'http://localhost:3001/api/Rol';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

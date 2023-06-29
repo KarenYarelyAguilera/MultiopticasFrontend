@@ -58,7 +58,7 @@ export const ForgetPsswrd = (props) => {
             return correo;
           })
           .then(data => {
-            window.location="http://localhost:3000/recuperacion"
+            window.location="http://localhost:3001/recuperacion"
           });
 
         break;
