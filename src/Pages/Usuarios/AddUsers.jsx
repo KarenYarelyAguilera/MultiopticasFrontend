@@ -48,11 +48,11 @@ export const AddUsers = (props) => {
   const urlBitacoraUsuario =
     'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
-    'http://localhost:3000/api/empleado';
+    'http://localhost:3001/api/empleado';
   const urlRoles =
-    'http://localhost:3000/api/Rol';
+    'http://localhost:3001/api/Rol';
   const urlInsert =
-    'http://localhost:3000/api/usuario/insert';
+    'http://localhost:3001/api/usuario/insert';
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);

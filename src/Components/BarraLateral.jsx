@@ -36,7 +36,7 @@ export const BarraLateral = (props) => {
   const [permisos, setPermisos] = useState([])
 
   useEffect(() => {
-    /* fetch(urlP, {
+    fetch(urlP, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const BarraLateral = (props) => {
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((data) => setPermisos(data)) */
+      .then((data) => setPermisos(data)) 
   }, [])
 
 
@@ -214,14 +214,14 @@ export const BarraLateral = (props) => {
             <Configuracion />
             <Recordatorios />
             <Seguridad /> */}
-            <Inventario></Inventario>
-           <Clientes></Clientes>
-            <Ventas></Ventas>
-            <Recordatorios></Recordatorios>
-            <Usuario></Usuario>
-            <Reportes></Reportes>
-            <Seguridad></Seguridad>
-            <Configuracion></Configuracion>
+            <Inventario/>
+           <Clientes/>
+            <Ventas/>
+            <Recordatorios/>
+            <Usuario/>
+            <Reportes/>
+            <Seguridad/>
+            <Configuracion/>
 
           </ul>
         </nav>
