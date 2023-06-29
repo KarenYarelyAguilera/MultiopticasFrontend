@@ -1,9 +1,7 @@
-
 import { DataGrid, esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
-
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,18 +16,16 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados  = () => {
+export const ListaEmpleados = () => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
- 
-
 
   const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlUpdateEmployees = 'http://localhost:3000/api/empleado/actualizar';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
-  const urlgeneros= 'http://localhost:3000/api/empleado/genero';
-  const urlsucursales='http://localhost:3000/api/empleado/sucursal';
+  const urlgeneros = 'http://localhost:3000/api/empleado/genero';
+  const urlsucursales = 'http://localhost:3000/api/empleado/sucursal';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,36 +46,37 @@ export const ListaEmpleados  = () => {
 
 
   useEffect(() => {
-   axios.get(urlEmployees).then(response => {
-      setTableData(response.data)
-    }).catch(error => console.log(error))
+    axios
+      .get(urlEmployees)
+      .then(response => {
+        setTableData(response.data);
+      })
+      .catch(error => console.log(error));
 
-    axios.get(urlgeneros).then(response => {
-      setGeneros(response.data)
-    }).catch(error => console.log(error))
+    axios
+      .get(urlgeneros)
+      .then(response => {
+        setGeneros(response.data);
+      })
+      .catch(error => console.log(error));
 
-    axios.get(urlsucursales).then(response => {
-      setSucursales(response.data)
-    }).catch(error => console.log(error))
-
-
+    axios
+      .get(urlsucursales)
+      .then(response => {
+        setSucursales(response.data);
+      })
+      .catch(error => console.log(error));
   }, [cambio]);
 
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
-      value => value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
-
-
-
-
-
-
-
-  
 
   const columns = [
     //son los de la base no los de node
@@ -91,17 +88,13 @@ export const ListaEmpleados  = () => {
     { field: 'descripcion', headerName: 'Genero', width: 190 },
     { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
     {
-      
       field: 'borrar',
       headerName: 'Acciones',
       width: 260,
 
       renderCell: params => (
         <div className="contActions1">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row)}
-          >
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
@@ -110,54 +103,50 @@ export const ListaEmpleados  = () => {
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
-
-         
         </div>
       ),
     },
   ];
-  
-//funcion de eliminar
+
+  //funcion de eliminar
   function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea Elimiar este empleado?</div>
+          <div className="logoModal">¿Desea Eliminar este empleado?</div>
           <div className="contEditModal">
 
           </div>
         </div>
       ),
-      buttons: ["Eliminar", "Cancelar"]
-    }).then(async (op)=> {
-
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
       switch (op) {
         case null:
-
           let data = {
             IdEmpleado: id,
           };
 
           console.log(data);
 
-         await axios.delete(urlDelEmployees,{data}).then(response=>{
-            swal("Empleado eliminado correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
-            console.log(error);
-            swal("Error al eliminar el empleado","","error")
-          })
+          await axios
+            .delete(urlDelEmployees, { data })
+            .then(response => {
+              swal('Empleado eliminado correctamente', '', 'success');
+              setCambio(cambio + 1);
+            })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar el empleado', '', 'error');
+            });
 
           break;
 
         default:
           break;
       }
-
     });
-
   }
- 
 
   //funcion de actualizar
   function handleUpdt(id) {
@@ -173,9 +162,14 @@ export const ListaEmpleados  = () => {
           </div>
         ),
       }).then(op => {
+        
         switch (op) {
+          case 'CANCELAR':
+
+          break;
           case 'update':
-            swal(
+            swal({
+              content:(
               <div>
                 <div className="logoModal">Datos a actualizar</div>
                 <div className="contEditModal">
@@ -294,30 +288,44 @@ export const ListaEmpleados  = () => {
                     </select>
                   </div>
                 </div>
-              </div>,
-            ).then(async() => {
-
-              let data = {
-                nombre: document.getElementById('nombre').value,
-                apellido: document.getElementById('apellido').value,
-                telEmple:document.getElementById('telefono').value,
-                idSucursal: document.getElementById('sucursal').value,
-                idGenero: document.getElementById('genero').value,
-                numId:document.getElementById('identidad').value,
-                IdEmpleado: id.IdEmpleado,
-              };
-
-              // if (sendData(urlUpdateEmployees, data)) {
-              //   swal(<h1>Empleado Editado Correctamente</h1>);
-              // }
-
-              await axios.put(urlUpdateEmployees, data).then(response => {
-                swal(<h1>Empleado Actualizado Correctamente</h1>);
-                setCambio(cambio + 1)
-              }).catch(error => {
-                // Manejar cualquier error que pueda ocurrir durante la actualización
-              });
-
+              </div>),
+              buttons:{
+                cancelar:'cancelar',
+                actualizar:"actualizar"
+              }}
+            ).then(async(op) => {
+              switch (op) {
+                case 'actualizar':
+                  let data = {
+                    nombre: document.getElementById('nombre').value,
+                    apellido: document.getElementById('apellido').value,
+                    telEmple:document.getElementById('telefono').value,
+                    idSucursal: document.getElementById('sucursal').value,
+                    idGenero: document.getElementById('genero').value,
+                    numId:document.getElementById('identidad').value,
+                    IdEmpleado: id.IdEmpleado,
+                  };
+    
+                // if (sendData(urlUpdateEmployees, data)) {
+                //   swal(<h1>Empleado Editado Correctamente</h1>);
+                // }
+    
+                await axios
+                  .put(urlUpdateEmployees, data)
+                  .then(response => {
+                    swal(<h1>Empleado Actualizado Correctamente</h1>);
+                    setCambio(cambio + 1);
+                  })
+                  .catch(error => {
+                    // Manejar cualquier error que pueda ocurrir durante la actualización
+                  });
+        
+                  break;
+              
+                default:
+                  break;
+              }
+              
             });
             break;
 
@@ -336,12 +344,12 @@ export const ListaEmpleados  = () => {
     navegate('/empleados/lista');
   };
 
-  return (
-    <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}>
-        <ArrowBackIcon className="iconBack" />
-      </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+    return (
+      <div className="ContUsuarios">
+        <Button className="btnBack" onClick={handleBack}>
+          <ArrowBackIcon className="iconBack" />
+        </Button>
+        <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
 
       <div
         style={{
