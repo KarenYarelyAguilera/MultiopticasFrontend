@@ -1,8 +1,18 @@
 import React from 'react';
 import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
+import swal from '@sweetalert/with-react';
 
-export const PageTwo = ({ onButtonClick }) => {
+export const PageTwo = ({ onButtonClick,correo1 }) => {
+  const handleClick = () => {
+    const respuesta = document.getElementById('respuesta').value;
+    if (correo1 === respuesta) {
+      onButtonClick('pagethree');
+      
+    } else {
+      swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+    }
+  };
   return (
     <main>
       <div className="titleRecuperacion">
@@ -20,6 +30,7 @@ export const PageTwo = ({ onButtonClick }) => {
               name=""
               className="inputCustom"
               placeholder="Respuesta"
+              id='respuesta'
             />
           </div>
           </div>
@@ -27,9 +38,9 @@ export const PageTwo = ({ onButtonClick }) => {
         <div className='divSubmitRecuperacion'>
           <input
             className="btnSubmit"
-            type="submit"
+            type="button"
             value="Siguiente"
-            onClick={() => onButtonClick('pagethree')}
+            onClick={handleClick}
           />
         </div>
       </form>
