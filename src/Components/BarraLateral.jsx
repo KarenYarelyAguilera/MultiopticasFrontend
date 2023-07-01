@@ -35,17 +35,17 @@ export const BarraLateral = (props) => {
 
   const [permisos, setPermisos] = useState([])
 
-  useEffect(() => {
-    fetch(urlP, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => setPermisos(data)) 
-  }, [])
+  // useEffect(() => {
+  //   fetch(urlP, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setPermisos(data)) 
+  // }, [])
 
 
   let pantallas = Object.values(permisos).map(({ Id_Objeto }) => parseInt(Id_Objeto)) //permite acceder a la propiedad del objeto y aislarla a un array aparte

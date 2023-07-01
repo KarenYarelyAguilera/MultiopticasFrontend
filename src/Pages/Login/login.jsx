@@ -21,8 +21,8 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const Login = props => {
-  const urlLogin = 'http://localhost:3001/api/login/compare';
-  const urlDUsuario = 'http://localhost:3001/api/login';
+  const urlLogin = 'http://localhost:3000/api/login/compare';
+  const urlDUsuario = 'http://localhost:3000/api/login';
   const urlFechaExpiracion =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
