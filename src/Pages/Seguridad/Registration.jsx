@@ -240,49 +240,9 @@ export const Registration = props => {
             </div>
           </div>
 
-          <div className="sectInput">
-            <TextCustom text="Genero" className="titleInput" />
-            <div className="contInput">
-
-            <select className="inputCustomRegis" name="">
-              <option value="1">Masculino</option>
-              <option value="2">Femenino</option>
-            </select>
-
-              <input
-              onKeyDown={e => {
-                setcontrasenia(e.target.value);
-                if(contrasenia=== '') {
-                  seterrorContrasenia(true);
-                  setadvertencia('Los campos no deben estar vacios');
-                }else {
-                  seterrorContrasenia(false);
-                  var preg_match =/^(?=.*[A-Z])(?=.*\d).{8,}$/;
-                  if (!preg_match.test(contrasenia)) {
-                    seterrorContrasenia(true);
-                    setadvertencia('La contraseña debe tener al menos 8 caracteres, una letra mayúscula y un número.');
-                  } else {
-                    seterrorContrasenia(false);
-                    setadvertencia('');
-                  }
-              }}
-                }
-
-              type="text"
-               name="" 
-               className="inputCustomRegis"
-               error={errorContrasenia}
-              placeholder="Usuario"
-              maxLength={20}
-              minLength={5}
-                />
-                 <p class="error">{advertencia}</p>
-
-            </div>
-          </div>
 
           <div className="sectInput">
-            <TextCustom text="Confirmar Contraseña" className="titleInput" />
+            <TextCustom text="Correo" className="titleInput" />
             <div className="contInput">
               <input type="text" name="" className="inputCustomRegis" />
             </div>
@@ -338,6 +298,19 @@ export const Registration = props => {
             </div>
           </div>
         </div>
+
+        <div className="sectInput">
+            <TextCustom text="Genero" className="titleInput" />
+            <div className="contInput">
+
+            <select className="inputCustomRegis" name="">
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
+            </select>
+
+            </div>
+          </div>
+          
         <div className="divSubmitRegis">
           <button className="buttonCustomRegis" onClick={handleProgress}>Siguiente</button>
         </div>
