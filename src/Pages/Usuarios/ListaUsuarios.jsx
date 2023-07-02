@@ -1,10 +1,9 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
-import { sendData } from '../../scripts/sendData';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,18 +19,16 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 
-export const ListUsuarios = () => {
+export const ListUsuarios = ({data,update}) => {
   const [roles, setRoles] = useState([]);
+  
 
 
   const urlUsers =
     'http://localhost:3000/api/usuarios';
-  const urlUpdateUser =
-    'http://localhost:3000/api/usuario/update';
     const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
-  const urlRoles =
-    'http://localhost:3000/api/Rol';
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,8 +36,6 @@ export const ListUsuarios = () => {
 
   useEffect(() => {
     axios.get(urlUsers).then(response=>setTableData(response.data))
-    axios.get(urlRoles).then(response=>setRoles(response.data))
-    
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -151,96 +146,14 @@ export const ListUsuarios = () => {
           {id.Usuario}
         </div>
       ),
-    }).then(op => {
+    }).then(
+      op => {
       switch (op) {
         case 'update':
-          swal(
-            <div>
-              <div className="logoModal">Datos a actualizar</div>
-              <div className="contEditModal">
-                <div className="contInput">
-                  <TextCustom text="Usuario" className="titleInput" />
-                  <input
-                    type="text"
-                    id="nombre"
-                    className='inputCustom'
-                    value={id.Usuario}
-                  />
-                </div>
-
-                <div className="contInput">
-                  <TextCustom
-                    text="Nombre de Usuario"
-                    className="titleInput"
-                  />
-                  <input
-                    type="text"
-                    id="nombreUsuario"
-                    className='inputCustom'
-                    value={id.Nombre_Usuario}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Estado" className="titleInput" />
-                  <input
-                    type="text"
-                    className='inputCustom'
-                    id="EstadoUsuario"
-                    value={id.Estado_Usuario}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom
-                    text="Contraseña"
-                    className="titleInput"
-                  />
-                  <input type="text" id="contrasenia" className='inputCustom'/>
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Rol" className="titleInput" />
-                  <select id="rol" className="selectCustom">
-                    {roles.length ? (
-                      roles.map(pre => (
-                        <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                          {pre.Rol}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select>
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Email" className="titleInput" />
-                  <input
-                    type="text"
-                    id="Email"
-                    className='inputCustom'
-                    value={id.Correo_Electronico}
-                  />
-                </div>
-              </div>
-            </div>,
-          ).then(() => {
-            let data = {
-              Usuario: document.getElementById('nombre').value,
-              Nombre_Usuario:
-                document.getElementById('nombreUsuario').value,
-              Estado_Usuario:
-                document.getElementById('EstadoUsuario').value,
-              Contrasenia: document.getElementById('contrasenia').value,
-              Id_Rol: document.getElementById('rol').value,
-              Correo_Electronico:
-                document.getElementById('Email').value,
-              Id_usuario: id.id_Usuario,
-            };
-
-            if (sendData(urlUpdateUser, data)) {
-              swal(<h1>Usuario Actualizado Correctamente</h1>);
-            }
-          });
+        
+        data(id)
+        update(true)
+        navegate('/usuarios/crearusuario')
           break;
         default:
           break;
@@ -285,7 +198,7 @@ export const ListUsuarios = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              Nuevo Usuario
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

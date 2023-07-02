@@ -20,11 +20,12 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 const urlSucursales =
-  'http://localhost:3000/api/empleado/sucursal';
+  'http://localhost:3001/api/empleado/sucursal';
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado =
-  'http://localhost:3000/api/empleado';
+const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+
+
 
 export const DatosEmpleado = ({
   msgError = '',
@@ -38,7 +39,7 @@ export const DatosEmpleado = ({
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([]);
-
+//estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
@@ -70,6 +71,7 @@ export const DatosEmpleado = ({
     }).catch(error => console.log(error))
   }, []);
 
+  
   const navegate = useNavigate();
 
   const handleNext = async () => {
@@ -115,7 +117,7 @@ export const DatosEmpleado = ({
 
     }).catch(error => {
       console.log(error);
-      swal('Error al registrar el cliente', '', 'success')
+      swal('Error al registrar el empleado', '', 'success')
     })
 
   };
