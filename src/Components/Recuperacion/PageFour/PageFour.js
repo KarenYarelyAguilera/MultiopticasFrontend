@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 
-export const PageFour = ({correo}) => {
+export const PageFour = ({correo,id,autor}) => {
   const navegate = useNavigate()
   const handleClick = ()=>{
 
@@ -16,13 +16,22 @@ export const PageFour = ({correo}) => {
 
     const data ={
       correo:correo,
-      clave:contra1
+      clave:contra1,
+      id:id,
+      autor:autor
     }
     if (contra1!==contra2) {
       swal("Las contraseñas no coinciden","","warning")
     }else{
 
-      axios.put(urlUpdPassword,data).then(response=>swal("Contraseña actualizada","","success").then(()=>navegate("/"))) 
+      axios.put(urlUpdPassword,data).then(response=>{
+        console.log(response.data);
+        if (response.data===false) {
+          swal("La contraseña no puede ser igual que la anterior","","error")
+        }else{
+          swal("Contraseña actualizada","","success").then(()=>navegate("/"))
+        } 
+      }) 
     }
   }
     return (
