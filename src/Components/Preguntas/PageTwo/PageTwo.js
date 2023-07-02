@@ -6,7 +6,7 @@ import swal from '@sweetalert/with-react';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const PageTwo = ({ onButtonClick,correo1 }) => {
+export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
 
 
@@ -15,60 +15,42 @@ export const PageTwo = ({ onButtonClick,correo1 }) => {
   //const [email,setEmail]=useState('');
   const [pasar, setPasar]=useState(false)
 
+  const data={
+    correo:correo1
+  }
+ 
 
 
-
-
-
-  const handleClick = async () => {
-
-    const respuesta = document.getElementById('respuesta').value;
   
-    let data = {
-      correo:respuesta,
-    };
-
-
-   /*    await axios.post(urlUserExist, data).then(response=>{
-          if(response.data.length<0){
-            swal("El correo que ingreso no existe.", "", "error")
-            
-          }else{
-            onButtonClick('pagethree');
-          } 
-      }); 
-  */
-
-/* 
-      await axios.post(urlUserExist, data).then(response=>
-        setPasar(response.data));
-      console.log(pasar)
-      return pasar;
- */
-
-
-
-     if (correo1 === respuesta) { 
+    const handleClick = async () => {
+      const respuesta = document.getElementById('respuesta').value;
+      if (correo1 === respuesta) {
         
-     /*  await axios.post(urlUserExist, data).then(response=>{
-        if(response.data.length<0){
-          swal("El correo que ingreso no existe.", "", "error")
-        }else{
-          onButtonClick('pagethree');
-        }
-      })  */
-
-        await axios.post(urlUserExist, data).then(response=>
-            setPasar(response.data));
-          console.log(pasar)
-          return pasar;
-          /*  */
-
-    } else {
-      swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
-    } 
-
-  };
+        await axios.post(urlUserExist,data).then(response=>{
+          //console.log(data);
+          id(response.data[0].Id_Usuario)
+          autor(response.data[0].Nombre_Usuario)
+          //console.log(data);
+          if (response.data) {
+  
+            const data2 = {
+              "correo": correo1,
+              "id": response.data[0].Id_Usuario,
+            };
+    
+            axios.post(urlUserExist, data2).then(()=> onButtonClick('pagethree'))
+          }else{
+            swal("El correo que ingreso es erroneo o no esta registrado")
+          }
+  
+         
+        
+        })
+        
+      } else {
+        swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+      }
+    };
 
 
 
@@ -101,10 +83,10 @@ export const PageTwo = ({ onButtonClick,correo1 }) => {
             className="btnSubmit"
             type="button"
             value="Siguiente"
-           // onClick={handleClick}
+            onClick={handleClick}
 
             
-            onClick={() => {
+           /*  onClick={() => {
 
               handleClick()
 
@@ -118,7 +100,7 @@ export const PageTwo = ({ onButtonClick,correo1 }) => {
                   onButtonClick('pagethree')
                 } 
               
-            }}  
+            }}  */ 
             
 
 
