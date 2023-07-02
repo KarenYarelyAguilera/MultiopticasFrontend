@@ -41,9 +41,13 @@ export const Registration = ({
   const [textoCorreo, setTextoCorreo] = useState("");
   const [errorCorreo, setErrorCorreo] = useState(false);
 
-  const [contra, setContra] = useState("");
+  const [contra1, setContra1] = useState("");
   const [msj, setMsjs] = useState("");
-  const [errorContra, setErrorContra] = useState(false);
+  const [errorContra1, setErrorContra1] = useState(false);
+
+  const [contra2, setContra2] = useState("");
+  const [errorContra2, setErrorContra2] = useState(false);
+  const [advertencia, setadvertencia] = useState(false);
 
   const [Telefono, setTelefono] = useState('');
 
@@ -100,6 +104,9 @@ export const Registration = ({
     navegate("/")
   }
 
+
+
+
   return (
     <div className="divRegistration">
       <div className="divImgSection">
@@ -128,7 +135,7 @@ export const Registration = ({
                   var preg_match = /^[a-zA-Z]+$/;
                   if (!preg_match.test(Nombreusuario)) {
                     setErrorNombreusuario(true)
-                    setMensaje("Solo debe de ingresar letras")
+                    setMensaje("Solo se debe de ingresar letras sin espacios vacios")
                   } else {
                     setErrorNombreusuario(false);
                     setMensaje("");
@@ -159,7 +166,7 @@ export const Registration = ({
                   setMsj('Los campos no deben estar vacios');
                 } else {
                   setErrorNombre(false);
-                  var preg_match = /^[a-zA-Z]+$/;
+                  var preg_match = /^[a-zA-Z\s]+$/;
                   if (!preg_match.test(Nombre)) {
                     setErrorNombre(true);
                     setMsj('Solo debe de ingresar letras');
@@ -193,7 +200,7 @@ export const Registration = ({
                   setAviso('Los campos no deben estar vacios');
                 } else {
                   setErrorApellido(false);
-                  var preg_match = /^[a-zA-Z]+$/;
+                  var preg_match = /^[a-zA-Z\s]+$/;
                   if (!preg_match.test(Apellido)) {
                     setErrorApellido(true);
                     setAviso('Solo deben de ingresar letras');
@@ -271,7 +278,7 @@ export const Registration = ({
               error={errorTelefono}
               type="phone"
               name=""
-              helperText={texto}
+              helperText={textoCorreo}
               maxLength={8}
               className="inputCustom"
               placeholder="Telefono"
@@ -280,61 +287,67 @@ export const Registration = ({
             {<p className="error">{texto}</p>}
           </div>
 
-          <div className="sectinput">
-            <TextCustom text="Genero" className="titleInput" />
-            <select name="" className="inputCustomRegis" id="genero">
-              <option value={1}>Masculino</option>
-              <option value={2}>Femenino</option>
-            </select>
-          </div>
 
-          <div className="contInput">
-            <TextCustom text="Correo Electronico" className="titleInput" />
-            <input
-              onKeyDown={(e) => {
-                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!expresion.test(correo)) {
-                  setErrorCorreo  (true)
-                  setTextoCorreo("Formato invalido");
-                }
-                else {
-                  setErrorCorreo(false);
-                  setTextoCorreo("");
-                }
-              }}
+
+        <div className='contInput'>
+      <TextCustom text="Correo Electronico" className="titleInput"/>
+      <input
+        onKeyDown={(e) => {
+          setCorreo(e.target.value)
+          var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!expresion.test(correo)) {
+            setErrorCorreo(true)
+            setTextoCorreo("Formato invalido");
+          }
+          else {
+            setErrorCorreo(false);
+            setTextoCorreo("");
+          }
+        }}
+        onClick={e => {
+          setCorreo(e.target.value);
+          if (correo === '') {
+            setErrorCorreo(true);
+            setTextoCorreo('Los campos no deben estar vacios');
+          } else {
+            setErrorCorreo(false);
+            setTextoCorreo('');
+          }
+        }}
               type="text"
               name=""
               id="correo"
               className="inputCustom"
               placeholder="Correo Electronico"
               error={errorCorreo}
-              helperText={texto}
+              helperText={textoCorreo}
               maxLength={30}
 
             />
-            <p className='error'>{texto}</p>
-          </div>
+            <p className='error'>{textoCorreo}</p>
 
+        </div>
+         
           <div className="contInput">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
 
               onKeyDown={(e) => {
-                setContra(e.target.value);
-                if (contra === "") {
-                  setErrorContra(true);
-                  setMsj("Los campos no deben estar vacios");
+                setContra1(e.target.value);
+                if (contra1 === "") {
+                  setErrorContra1(true);
+                  setMsjs("Los campos no deben estar vacios");
                 }
                 else {
-                  setErrorContra(false)
-                  var regularExpression = /^[a-zA-Z0-9!@#$%^&*]$/;
-                  if (!regularExpression.test(contra)) {
-                    setErrorContra(true)
+                  setErrorContra1(false)
+                  var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                  if (!regularExpression.test(contra1)) {
+                    setErrorContra1(true)
                     setMsjs("");
                   }
                   else {
                     setMsjs("La contraseña debe de tener letras, numeros y caracteres especiales");
-                    setErrorContra(false);
+                    setErrorContra1(false);
                   }
                 }
               }}
@@ -369,23 +382,33 @@ export const Registration = ({
             <div className="contInput">
               <FilledInput
                 onKeyDown={(e) => {
-                  setContra(e.target.value);
-                  if (contra === "") {
-                    setErrorContra(true);
-                    setMsj("Los campos no deben estar vacios");
+
+                  
+                  setContra2(e.target.value);
+                  if (contra2 === "") {
+                    setErrorContra2(true);
+                    setadvertencia("Los campos no deben estar vacios");
                   }
                   else {
-                    setErrorContra(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]$/;
-                    if (!regularExpression.test(contra)) {
-                      setErrorContra(true)
-                      setMsj("");
+                    setErrorContra2(false)
+                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                    if (!regularExpression.test(contra2)) {
+                      setErrorContra2(true)
+                      setadvertencia("");
                     }
                     else {
-                      setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
-                      setErrorContra(false);
+                      setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
+                      setErrorContra2(false);
+                    }
+                    if (contra1 === contra2) {
+                      // Las contraseñas son iguales
+                      setadvertencia("Las contraseñas coinciden.");
+                    } else {
+                      // Las contraseñas son diferentes
+                      setadvertencia("Las contraseñas no coinciden.");
                     }
                   }
+                  
                 }}
 
                 id="filled-adornment-password"
@@ -410,14 +433,30 @@ export const Registration = ({
                   </InputAdornment>
                 }
               ></FilledInput>
+               <p className='error'>{advertencia}</p>
             </div>
           </div>
         </div>
 
+        <div className="sectinput">
+            <TextCustom text="Genero" className="titleInput" />
+            <select name="" className="inputCustomRegis" id="genero">
+              <option value={1}>Masculino</option>
+              <option value={2}>Femenino</option>
+            </select>
+          </div>
+
         <div className="divSubmitRegis">
-          <button className="buttonCustomRegis" onClick={() => {
-            handleProgress();
-          }}>Siguiente</button>
+          <button className="buttonCustomRegis"
+           onClick={() => {
+            if (document.getElementById("nombre").value == "" || document.getElementById("filled-adornment-password").value == "" || document.getElementById("correo").value == "") {
+              swal("No deje campos vacios.", "", "error")
+            }
+            else {
+              handleProgress();
+            }
+          }}  
+          >Siguiente</button>
         </div>
         <br />
         <span className="refInicioSesion">
