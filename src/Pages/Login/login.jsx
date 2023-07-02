@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { useEffect, useState, useRef } from 'react';
 import { Container, Grid, TextField, Button, Box } from '@mui/material';
 import { FilledInput } from '@mui/material';
@@ -18,11 +18,14 @@ import {
 } from 'react-router-dom'; /**Este hook ayuda a redireccionar
 a una pagina diferente mediante el "path" */
 import { TextCustom } from '../../Components/TextCustom';
-import axios from 'axios';
+import axios from "axios";
 
 export const Login = props => {
-  const urlLogin = 'http://localhost:3001/api/login/compare';
-  const urlDUsuario = 'http://localhost:3001/api/login';
+  
+  const urlLogin =
+    'http://localhost:3000/api/login/compare';
+  const urlDUsuario =
+    'http://localhost:3000/api/login';
   const urlFechaExpiracion =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
@@ -54,12 +57,12 @@ export const Login = props => {
   const [open, setOpen] = React.useState(false);
 
   const handlePreguntas = () => {
-    navegate('/progress');
-  };
+    navegate("/progress")
+  }
 
   const handleCorreo = () => {
-    navegate('/recuperacion');
-  };
+    navegate("/recuperacion")
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -71,7 +74,7 @@ export const Login = props => {
   const handleLogin = async () => {
     const data = {
       correo: refUsuario.current.value,
-      clave: refContrasenia.current.value,
+      clave: refContrasenia.current.value
     };
 
     const data2 = {
@@ -79,37 +82,31 @@ export const Login = props => {
     };
 
     try {
-      const respJsonPss = await axios.post(urlLogin, data); //sendData(urlLogin, data);
-      const respJsonUsr = await axios.post(urlDUsuario, data2); //sendData(urlDUsuario, data2);
+
+      const respJsonPss = await axios.post(urlLogin, data) //sendData(urlLogin, data);
+      const respJsonUsr = await axios.post(urlDUsuario, data2) //sendData(urlDUsuario, data2);
       //const respJsonFec = await sendData(urlFechaExpiracion, data2);
+
 
       // const dataBitacora = {
       //   Id: respJsonUsr.data[0].Id_Usuario,
       // };
 
-      console.log(
-        respJsonPss.data.result &&
-          respJsonUsr.data[0].Estado_Usuario === 'Activo',
-      );
+      console.log(respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo');
 
-      if (
-        respJsonPss.data.result &&
-        respJsonUsr.data[0].Estado_Usuario === 'Nuevo'
-      ) {
+      if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Nuevo') {
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         navegate('/preguntasSeguridad');
+        
       }
-      if (
-        respJsonPss.data.result &&
-        respJsonUsr.data[0].Estado_Usuario === 'Activo'
-      ) {
+      if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Activo') {
         // sendData(urlBitacoraLogin, dataBitacora);
         props.access(respJsonUsr.data[0].Estado_Usuario); //Paso la propiedad estado para cambiar el hook y poder iniciar sesion.
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
-        props.idUsuario(respJsonUsr.data[0].Id_Usuario);
+        props.idUsuario(respJsonUsr.data[0].Id_Usuario)
         navegate('/dashboard');
       }
     } catch (error) {
@@ -162,6 +159,7 @@ export const Login = props => {
               placeholder="Usuario"
               className="inputCustomLogin"
               maxLength={50}
+              
               ref={refUsuario}
             />
             <p className="errorMessage">
@@ -173,7 +171,7 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-              maxLength={13}
+               maxLength={13}
               onKeyDown={e => {
                 setContra(e.target.value);
                 if (contra === '') {
@@ -187,16 +185,18 @@ export const Login = props => {
                 if (contra.length > 47) {
                   setErrorContra(true);
                   setMsj('A excedido al numero de caracteres');
-                } else {
-                  setErrorContra(false);
-                  setMsj('');
-                }
+                }  else {
+                    setErrorContra(false);
+                    setMsj('');
+                  }
               }}
               error={errorContra}
+              
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
+              
               inputRef={refContrasenia}
               endAdornment={
                 <InputAdornment position="end">
@@ -209,6 +209,7 @@ export const Login = props => {
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
+              
               }
             />
             <p className="errorMessage">
@@ -234,23 +235,19 @@ export const Login = props => {
               ¿Olvidaste tu contraseña?
             </Link>
             <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="parent-modal-title"
-              aria-describedby="parent-modal-description"
-            >
-              <Box className="contModal">
-                <h2 id="parent-modal-title">Recuperación de contraseña</h2>
-                <div>
-                  <Button className="btnPreguntas" onClick={handlePreguntas}>
-                    Preguntas de seguridad
-                  </Button>
-                  <Button className="btnCorreo" onClick={handleCorreo}>
-                    Correo Electronico
-                  </Button>
-                </div>
-              </Box>
-            </Modal>
+  open={open}
+  onClose={handleClose}
+  aria-labelledby="parent-modal-title"
+  aria-describedby="parent-modal-description"
+>
+  <Box className="contModal">
+    <h2 id="parent-modal-title">Recuperación de contraseña</h2>
+    <div>
+    <Button className='btnPreguntas' onClick={handlePreguntas}>Preguntas de seguridad</Button>
+    <Button className="btnCorreo" onClick={handleCorreo}>Correo Electronico</Button>
+    </div>
+  </Box>
+</Modal>
           </div>
 
           <Button className="btnIngresar" onClick={handleLogin}>
@@ -258,8 +255,8 @@ export const Login = props => {
           </Button>
 
           <span className="btnRegistrate">
-            ¿No tienes una cuenta? <a href="/registration">Registrate</a>
-          </span>
+              ¿No tienes una cuenta? <a href="/registration">Registrate</a>
+            </span>
         </div>
       </div>
       <div className="contImgLogin">
