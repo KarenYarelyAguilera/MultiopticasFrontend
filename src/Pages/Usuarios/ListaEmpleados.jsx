@@ -21,9 +21,9 @@ export const ListaEmpleados = (props) => {
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
 
-  const urlEmployees = 'http://localhost:3001/api/empleado';
+  const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
-  const urlDelEmployees = 'http://localhost:3001/api/empleado/eliminar';
+  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
   const urlgeneros = 'http://localhost:3001/api/empleado/genero';
   const urlsucursales = 'http://localhost:3001/api/empleado/sucursal';
 

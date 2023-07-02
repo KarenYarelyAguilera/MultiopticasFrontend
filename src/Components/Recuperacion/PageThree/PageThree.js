@@ -3,36 +3,14 @@ import React from 'react';
 import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
 import swal from 'sweetalert';
-import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 
-export const PageThree = ({ onButtonClick, correo }) => {
-  const urlId = 'http://localhost:3000/api/token/id';
-  const urlEnviarCodigo = 'http://localhost:3000/api/token/enviarCodigo';
+export const PageThree = ({ onButtonClick, correo, id }) => {
   const urlVerificar = 'http://localhost:3000/api/token/verificar';
-  
-  const [id, setId] = useState(0);
   const [pasar,setPasar]=useState(false)
 
-  const data = {
-    "correo": correo,
-  };
-  
-  useEffect(() => {
-    console.log(data);
-    axios.post(urlId, data).then(response => {setId(response.data)});
-  }, [id]);
-  
-    const data2 = {
-      "correo": correo,
-      "id": id,
-    };
-
-  useEffect(() => {
-    console.log(data2);
-    axios.post(urlEnviarCodigo, data2);
-  }, [id]);
+   
 
   const handleClick = async () => {
     const codigo = document.getElementById('codigo').value;
@@ -41,8 +19,20 @@ export const PageThree = ({ onButtonClick, correo }) => {
       codigo: codigo,
       id: id,
     };
-    await axios.post(urlVerificar, data).then(response=>setPasar(response.data));
-    console.log(pasar)
+    await axios.post(urlVerificar, data).then(response=>{
+      
+      if (response.data==false) {
+        swal(
+          'Por favor ingrese su codigo de verificacion',
+          '',
+          'warning',
+        )
+      }else{
+        onButtonClick('pagefour')
+
+      }
+    });
+   
     return pasar;
   };
 
@@ -69,20 +59,7 @@ export const PageThree = ({ onButtonClick, correo }) => {
             className="btnSubmit"
             type="button"
             value="Siguiente"
-            onClick={() => {
-              handleClick()
-              if (pasar===false) {
-                swal(
-                  'Por favor ingrese su codigo de verificacion',
-                  '',
-                  'warning',
-                )
-              }else{
-                onButtonClick('pagefour')
-
-              }
-              
-            }}
+            onClick={handleClick}
           />
         </div>
       </form>

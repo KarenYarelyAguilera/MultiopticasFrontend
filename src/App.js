@@ -221,16 +221,16 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={<Metodos1 correo={correo}></Metodos1>}
           ></Route>
 
-          {/* <Route
+           <Route
             path="/preguntasSeguridad"
             element={
-              <PreguntasSeguridad
+              <Metodos1
                 activo={activo}
                 user={usuario}
                 mail={correo}
               />
             }
-          ></Route> */}
+          ></Route> 
 
           <Route
             path="/progress"

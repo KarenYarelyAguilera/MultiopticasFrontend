@@ -20,7 +20,7 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 const urlSucursales =
-  'http://localhost:3001/api/empleado/sucursal';
+  'http://localhost:3000/api/empleado/sucursal';
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
 const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
