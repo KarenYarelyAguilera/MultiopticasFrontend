@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'; //Sirven para i
 import { useState } from 'react';
 import React from 'react';
 
-
 //Components
 import { ProtectedRoute } from './Components/ProtectedRoute.jsx';
 import { BarraHorizontal } from './Components/BarraHorizontal.jsx';
@@ -89,6 +88,8 @@ function App() {
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
+  const [data,setData] = useState({})
+  const [actualizar,setActualizar] = useState(false)
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
@@ -99,6 +100,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const rol = rl => setRol(rl);
   const cObjeto = obb => setobj(obb);
   const id = idd => setIdUsuario(idd);
+  const Data = ddata =>setData(ddata)
+  const update = upd =>setActualizar(upd)
 
   return (
     <div>
@@ -322,27 +325,47 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               // </ProtectedRoute>
             }
           ></Route>
+          
+            <Route
+              path="/usuarios/crearusuario"
+              element={
+                ///*  <ProtectedRoute activo={activo}> */
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <AddUsers idU={idUsuario} data={data} update={actualizar} limpiarData={Data} limpiarUpdate={update} ></AddUsers>
+                </div>
+                //</ProtectedRoute>
+              }
+            ></Route>
 
-          <Route
-            path="/usuarios/crearusuario"
-            element={
-              ///*  <ProtectedRoute activo={activo}> */
-              <div className="flex">
-                <BarraLateral
-                  user={user}
-                  rol={rol}
-                  mail={mail}
-                  estado={access}
-                  Rol={Rol}
-                  obj={cObjeto}
-                />
-                <BarraHorizontal user={usuario} />
-                <AddUsers idU={idUsuario}></AddUsers>
-              </div>
-              //</ProtectedRoute>
-            }
-          ></Route>
-
+            <Route
+              path="/usuarios/lista"
+              element={
+                // <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListUsuarios update={update} data={Data} />
+                </div>
+                //</ProtectedRoute>
+              }
+            ></Route>
+          
           <Route
             path="/menuClientes/nuevoCliente"
             element={
@@ -366,19 +389,19 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/menuClientes/nuevoExpediente"
             element={
-             // <ProtectedRoute activo={activo}>
-                <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <AddExpediente />
-                </div>
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <AddExpediente />
+              </div>
               //</ProtectedRoute>
             }
           ></Route>
@@ -483,9 +506,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/usuarios/lista"
+            path="/empleados/lista"
             element={
-              // <ProtectedRoute activo={activo}>
+              //<ProtectedRoute activo={activo}>
               <div className="flex">
                 <BarraLateral
                   user={user}
@@ -496,29 +519,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListUsuarios />
+                <ListaEmpleados />
               </div>
-              //</ProtectedRoute>
-            }
-          ></Route>
-
-          <Route
-            path="/empleados/lista"
-            element={
-              //<ProtectedRoute activo={activo}>
-                <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <ListaEmpleados />
-                </div>
-            //  </ProtectedRoute>
+              //  </ProtectedRoute>
             }
           ></Route>
 

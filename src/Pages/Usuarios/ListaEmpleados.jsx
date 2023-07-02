@@ -28,12 +28,6 @@ export const ListaEmpleados = () => {
   const urlgeneros = 'http://localhost:3001/api/empleado/genero';
   const urlsucursales = 'http://localhost:3001/api/empleado/sucursal';
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
-  const urlUpdateEmployees = 'http://localhost:3000/api/empleado/actualizar';
-  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
-  const urlgeneros = 'http://localhost:3000/api/empleado/genero';
-  const urlsucursales = 'http://localhost:3000/api/empleado/sucursal';
-
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -118,9 +112,6 @@ export const ListaEmpleados = () => {
       content: (
         <div>
 
-          <div className="logoModal">¿Desea Elimiar este empleado?</div>
-          <div className="contEditModal"></div>
-
           <div className="logoModal">¿Desea Eliminar este empleado?</div>
           <div className="contEditModal">
 
@@ -191,33 +182,6 @@ export const ListaEmpleados = () => {
                     value={id.nombre}
                     id="nombre"
                     onKeyDown={e => {
-
-   // onRowClick={empleado => {
-      swal({
-        buttons: {
-          update: 'ACTUALIZAR',
-          cancel: 'CANCELAR',
-        },
-        content: (
-          <div className="logoModal">¿Desea actualizar el empleado:{' '} {id.nombre}{' '}?
-          </div>
-        ),
-      }).then(op => {
-        
-        switch (op) {
-          case 'CANCELAR':
-
-          break;
-          case 'update':
-            swal({
-              content:(
-              <div>
-                <div className="logoModal">Datos a actualizar</div>
-                <div className="contEditModal">
-                  <div className="contInput">
-                    <TextCustom text="Nombre" className="titleInput" />
-                    <input
-                     onKeyDown={e => {
 
                       setNombre(e.target.value);
                       if (Nombre == '') {
@@ -357,53 +321,6 @@ export const ListaEmpleados = () => {
           break;
       }
     });
-
-              </div>),
-              buttons:{
-                cancelar:'cancelar',
-                actualizar:"actualizar"
-              }}
-            ).then(async(op) => {
-              switch (op) {
-                case 'actualizar':
-                  let data = {
-                    nombre: document.getElementById('nombre').value,
-                    apellido: document.getElementById('apellido').value,
-                    telEmple:document.getElementById('telefono').value,
-                    idSucursal: document.getElementById('sucursal').value,
-                    idGenero: document.getElementById('genero').value,
-                    numId:document.getElementById('identidad').value,
-                    IdEmpleado: id.IdEmpleado,
-                  };
-    
-                // if (sendData(urlUpdateEmployees, data)) {
-                //   swal(<h1>Empleado Editado Correctamente</h1>);
-                // }
-    
-                await axios
-                  .put(urlUpdateEmployees, data)
-                  .then(response => {
-                    swal(<h1>Empleado Actualizado Correctamente</h1>);
-                    setCambio(cambio + 1);
-                  })
-                  .catch(error => {
-                    // Manejar cualquier error que pueda ocurrir durante la actualización
-                  });
-        
-                  break;
-              
-                default:
-                  break;
-              }
-              
-            });
-            break;
-
-          
-          default:
-            break;
-        }
-      });
 
     //}//}//
   }
