@@ -146,6 +146,7 @@ export const DatosEmpleado = ({
                 type="text"
                 name=""
                 maxLength={13}
+                minLength={13}
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
