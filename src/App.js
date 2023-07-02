@@ -519,7 +519,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaEmpleados />
+                <ListaEmpleados update={update} />
               </div>
               //  </ProtectedRoute>
             }

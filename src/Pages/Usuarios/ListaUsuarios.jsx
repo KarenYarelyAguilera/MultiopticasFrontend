@@ -150,7 +150,6 @@ export const ListUsuarios = ({data,update}) => {
       op => {
       switch (op) {
         case 'update':
-        
         data(id)
         update(true)
         navegate('/usuarios/crearusuario')
