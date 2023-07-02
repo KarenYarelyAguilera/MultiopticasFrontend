@@ -16,25 +16,25 @@ import ListUsers from '../../IMG/ListUsers.jpg';
 
 export const Usuarios = (props) => {
 
-  const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=Pobjetos"
-  const [Permisos, setPermisos] = useState([])
+  // const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=Pobjetos"
+  // const [Permisos, setPermisos] = useState([])
 
-  const data = {
-    idObj:props.obj,
-    rol:props.rol
-  }
+  // const data = {
+  //   idObj:props.obj,
+  //   rol:props.rol
+  // }
 
-  useEffect(()=>{
-    fetch(urlP, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => setPermisos(data))
-  },[])
+  // useEffect(()=>{
+  //   fetch(urlP, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setPermisos(data))
+  // },[])
   
   let usuario = [
     {
@@ -64,6 +64,11 @@ export const Usuarios = (props) => {
     
     
   ];
+  let Permisos = {
+    Permiso_Consultar:"s",
+    Permiso_Insercion:"s"
+  }
+  console.log(Permisos.Permiso_Insercion===usuario[3].insert);
 
   let mostrar=[]
   for (let i = 0; i < usuario.length; i++) {

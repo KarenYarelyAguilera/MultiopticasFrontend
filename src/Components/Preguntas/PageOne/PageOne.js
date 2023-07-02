@@ -8,33 +8,17 @@ export const PageOne = ({ onButtonClick }) => {
     <main>
       <form className="measure">
         <div className="contPrincipalRecu">
-          <div className='divInfoQuestionResp'>
-          <TextCustom text="Preguntas:" className="titleInput" />
-          <div className="contInput">
-            <select className="inputCustomPreguntas" name="">
-              <option value="1">Pregunta Numero 1</option>
-              <option value="1">Pregunta Numero 2</option>
-              <option value="1">Pregunta Numero 3</option>
-              <option value="1">Pregunta Numero 4</option>
-            </select>
-          </div>
-
-          </div>
-
-          <div className='divInfoQuestionResp'>
-
-          <TextCustom text="Respuesta:" className="titleInput" />
-          <div className="contInput">
-            <input
-              type="text"
-              name=""
-              className="inputCustom"
-              placeholder="Respuesta"
+          <div className="divInfoQuestionResp">
+            <TextCustom
+              text="Ingrese correo electronico o usuario:"
+              className="titleInput"
             />
-          </div>
+            <div className="contInput">
+              <input type="text" name="" className="inputCustom" />
+            </div>
           </div>
         </div>
-        <div className='divSubmitQuestion'>
+        <div className="divSubmitQuestion">
           <input
             className="btnSubmitPreguntas"
             type="submit"
@@ -44,7 +28,6 @@ export const PageOne = ({ onButtonClick }) => {
         </div>
       </form>
     </main>
-
   );
 };
 
