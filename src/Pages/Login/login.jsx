@@ -173,8 +173,18 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-              maxLength={13}
+              
               onKeyDown={e => {
+                setContra(e.target.value);
+                if (contra.length > 40) {
+                  setErrorContra(true);
+                  setMsj('A excedido al numero de caracteres');
+                } else {
+                  setErrorContra(false);
+                  setMsj('');
+                }
+              }}
+              onClick={ e => {
                 setContra(e.target.value);
                 if (contra === '') {
                   setErrorContra(true);
@@ -183,16 +193,10 @@ export const Login = props => {
                   setMsj('');
                   setErrorContra(false);
                 }
-                setContra(e.target.value);
-                if (contra.length > 47) {
-                  setErrorContra(true);
-                  setMsj('A excedido al numero de caracteres');
-                } else {
-                  setErrorContra(false);
-                  setMsj('');
-                }
-              }}
+              }
+              }
               error={errorContra}
+              inputProps={{maxLength:150}}
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"

@@ -16,7 +16,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = (props) => {
+export const ListaEmpleados = ({data,update}) => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
@@ -148,181 +148,31 @@ export const ListaEmpleados = (props) => {
   }
 
   //funcion de actualizar
-
-
   function handleUpdt(id) {
-    // onRowClick={empleado => {
     swal({
       buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
+        update: 'Actualizar',
+        cancel: 'Cancelar',
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el empleado: {id.nombre} ?
+          ¿Desea actualizar el empleado?:{' '}
+          {id.Usuario}
         </div>
       ),
-    }).then(op => {
+    }).then(
+      op => {
       switch (op) {
         case 'update':
-          swal(
-            <div>
-              <div className="logoModal">Datos a actualizar</div>
-              <div className="contEditModal">
-                <div className="contInput">
-                  <TextCustom text="Nombre" className="titleInput" />
-                  <input
-                    error={errorNombre}
-                    type="text"
-                    helperText={Msj}
-                    name=""
-                    className="inputCustom"
-                    maxLength={50}
-                    value={id.nombre}
-                    id="nombre"
-                    onKeyDown={e => {
-
-                      setNombre(e.target.value);
-                      if (Nombre == '') {
-                        setErrorNombre(true);
-                        setMsj('Los campos no deben estar vacios');
-                      } else {
-                        setErrorNombre(false);
-                        var preg_match = /^[a-zA-Z]+$/;
-                        if (!preg_match.test(Nombre)) {
-                          setErrorNombre(true);
-                          setMsj('Solo deben de ingresar letras');
-                        } else {
-                          setErrorNombre(false);
-                          setMsj('');
-                        }
-                      }
-                    }}
-                  />
-                  <p className="error">{Msj}</p>
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Apellido" className="titleInput" />
-                  <input
-                    onKeyDown={e => {
-                      setApellido(e.target.value);
-                      if (Apellido == '') {
-                        setErrorApellido(true);
-                        setAviso('Los campos no deben estar vacios');
-                      } else {
-                        setErrorApellido(false);
-                        var preg_match = /^[a-zA-Z\s]*$/;
-                        if (!preg_match.test(Apellido)) {
-                          setErrorApellido(true);
-                          setAviso('Solo deben de ingresar letras');
-                        } else {
-                          setErrorApellido(false);
-                          setAviso('');
-                        }
-                      }
-                    }}
-                    type="text"
-                    name=""
-                    id="apellido"
-                    className="inputCustom"
-                    value={id.apellido}
-                    maxLength={20}
-                    helperText={aviso}
-                    error={errorApellido}
-                    placeholder="Apellido"
-                  />
-                  <p className="error">{aviso}</p>
-                </div>
-
-                <div className="contInput">
-                  <TextCustom text="Telefono" className="titleInput" />
-                  <input
-                    type="text"
-                    id="telefono"
-                    className="inputCustom"
-                    value={id.telefonoEmpleado}
-                    maxLength={8}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Identidad" className="titleInput" />
-                  <input
-                    type="text"
-                    id="identidad"
-                    className="inputCustom"
-                    value={id.numeroIdentidad}
-                  />
-                </div>
-                <div className="contInput">
-                  <TextCustom text="Sucursal" className="titleInput" />
-                  <select id="sucursal" className="selectCustom">
-                    {sucursales.length ? (
-                      sucursales.map(pre => (
-                        <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                          {pre.departamento}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select>
-                </div>
-
-                <div className="contInput">
-                  <TextCustom text="Genero" className="titleInput" />
-                  <select id="genero" className="selectCustom">
-                    {generos.length ? (
-                      generos.map(pre => (
-                        <option key={pre.IdGenero} value={pre.IdGenero}>
-                          {pre.descripcion}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select>
-                </div>
-
-              </div>
-            </div>,
-          ).then(async () => {
-            let data = {
-              nombre: document.getElementById('nombre').value,
-              apellido: document.getElementById('apellido').value,
-              telEmple: document.getElementById('telefono').value,
-              idSucursal: document.getElementById('sucursal').value,
-              idGenero: document.getElementById('genero').value,
-              numId: document.getElementById('identidad').value,
-              IdEmpleado: id.IdEmpleado,
-            };
-
-            // if (sendData(urlUpdateEmployees, data)) {
-            //   swal(<h1>Empleado Editado Correctamente</h1>);
-            // }
-
-            await axios
-              .put(urlUpdateEmployees, data)
-              .then(response => {
-                swal(<h1>Empleado Actualizado Correctamente</h1>);
-                setCambio(cambio + 1);
-              })
-              .catch(error => {
-                // Manejar cualquier error que pueda ocurrir durante la actualización
-              });
-          });
+        data(id)
+        update(true)
+        navegate('/usuarios/crearempleado')
           break;
-
         default:
           break;
       }
     });
-
-    //}//}//
-  }
+  };
 
   const handleBack = () => {
     navegate('/empleados/lista');

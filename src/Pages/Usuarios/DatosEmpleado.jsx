@@ -24,10 +24,10 @@ const urlSucursales =
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
 const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
+const urlDelEmployees = 'http://localhost:3001/api/empleado/eliminar';
 
-
-
-export const DatosEmpleado = ({
+export const DatosEmpleado =  ({
   msgError = '',
   success = false,
   warning = false,
@@ -40,8 +40,8 @@ export const DatosEmpleado = ({
   // };
   const [sucursales, setSucursales] = useState([]);
 //estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
-  const [iIdentidad, setiIdentidad] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
+  const [iIdentidad, setiIdentidad] = React.useState(props.data.iIdentidad || '');
+  const [leyenda, setleyenda] = React.useState(false);
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
 
   const [Nombre, setNombre] = React.useState('');
@@ -60,6 +60,11 @@ export const DatosEmpleado = ({
   const [Identidad, setIdentidad] = useState(0);
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    console.log(`Nuevo valor de ${name}: ${value}`);
+  };
+
   /*   useEffect(() => {
       fetch(urlSucursales).then(response => response.json())
         .then(data => setSucursales(data));
@@ -74,7 +79,8 @@ export const DatosEmpleado = ({
   
   const navegate = useNavigate();
 
-  const handleNext = async () => {
+
+  const actualizar = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
@@ -82,7 +88,6 @@ export const DatosEmpleado = ({
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
-    //tienen que estar igual a las apis del node
     let data = {
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
@@ -91,48 +96,59 @@ export const DatosEmpleado = ({
       idSucursal: sucursal,
       numId: identidad,
     };
-    /* if (sendData(urlIEmpleado, data)) {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        swal({
-          title: '¿Desea crearle un usuario al empleado agregado?',
-          icon: 'question',
-          buttons: true,
-          dangerMode: true,
-          buttons: ['Cancelar', 'Aceptar'],
-        }).then(result => {
-          if (result) navegate('/usuarios/crearusuario');
-          else {
-            navegate('/empleados/lista');
-          }
-        });
+  
+    let dataB = {
+      Id: props.idU
+    }
+    if (await axios.put(urlUpdateEmployees, data)) {
+      swal(<h1>Empleado Actualizado Correctamente</h1>).then(()=>{props.limpiarData({});props.limpiarUpdate(false)});
+      navegate('/empleados/lista')
+    }
+  };
 
-        navegate('/empleados/lista');
-      });
-    } */
+  const insertar = async () => {
+ 
+      let identidad = document.getElementById('Nidentidad').value;
+      let nombres = document.getElementById('nombre').value;
+      let apellidos = document.getElementById('apellido').value;
+      let telefono = document.getElementById('phone').value;
+      let genero = parseInt(document.getElementById('genero').value);
+      let sucursal = parseInt(document.getElementById('sucursal').value);
+  
+   
+    let data = {
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      telEmple: telefono,
+      idGenero: genero,
+      idSucursal: sucursal,
+      numId: identidad,
+    };
 
-    await axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        navegate('/empleados/lista');
-      });
+    let dataB = {
+      Id: props.idU
+    }
 
-    }).catch(error => {
-      console.log(error);
-      swal('Error al registrar el empleado', '', 'success')
-    })
-
+    if (await axios.post(urlIEmpleado, data)) {
+      swal('Empleado creado exitosamente.', '', 'success');
+      //sendData(urlBitacoraUsuario,dataB)
+    }
   };
 
   const handleBack = () => {
+    props.limpiarData({})
+    props.limpiarUpdate(false)
     navegate('/usuarios');
   };
 
   return (
     <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}>
+      <Button className="btnBack" 
+      onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos del empleado</h2>
+      {props.update ? <h2>Actualizacion de Empleado</h2> : <h2>Registro de Empleado</h2>}
         <h3>
           Complete todos los puntos para poder registrar los datos del empleado
         </h3>
@@ -169,6 +185,7 @@ export const DatosEmpleado = ({
                     
                   }
                 }}
+                onChange={e=>setiIdentidad(e.target.value)}
                 placeholder="Identidad"
                 id="Nidentidad"
               />
@@ -299,7 +316,7 @@ export const DatosEmpleado = ({
             </div>
 
             <div className="contBtnStepper">
-              <Button
+            {props.update ? <Button
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
@@ -327,12 +344,45 @@ export const DatosEmpleado = ({
                   if (isNaN(Telefonoc) || isNaN(Identidad)) {
                     swal('Corrija los campos Erroneos', '', 'error');
                   } else {
-                    handleNext();
+                    actualizar();
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
-              </Button>
+                <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1>
+              </Button> : <Button
+                variant="contained"
+                className="btnStepper"
+                onClick={() => {
+                  if (
+                    document.getElementById('Nidentidad').value == '' ||
+                    document.getElementById('nombre').value == '' ||
+                    document.getElementById('apellido').value == ''
+                  ) {
+                    swal('No deje campos vacios.', '', 'error');
+                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !== 'number'
+                  )
+                  ) {
+                    swal('El campo identidad solo acepta numeros', '', 'error');
+                  } else if (
+                    typeof document.getElementById('nombre').value !== 'string'
+                  ) {
+                    swal('El campo nombre solo acepta letras', '', 'error');
+                  }
+                  if (
+                    typeof document.getElementById('apellido').value !==
+                    'string'
+                  ) {
+                    swal('El campo apellido solo acepta letras', '', 'error');
+                  }
+                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
+                    swal('Corrija los campos Erroneos', '', 'error');
+                  } else {
+                    insertar();
+                  }
+                }}
+              >
+                <h1>{'Finish' ? 'Crear Empleado' : 'Finish'}</h1>
+                </Button>}
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
               </Button> */}
