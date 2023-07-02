@@ -101,6 +101,7 @@ export const AddUsers = (props) => {
       correo: correo,
       idRol: rol,
     };
+  
     let dataB = {
       Id: props.idU
     }
@@ -155,7 +156,7 @@ export const AddUsers = (props) => {
         <ArrowBackIcon className='iconBack' />
       </Button>
       <div className="titleAddUser">
-        {props.update ? <h2>Actualizacion de Usuario</h2> :<h2>Registro de Usuario</h2>}
+        {props.update ? <h2>Actualizacion de Usuario</h2> : <h2>Registro de Usuario</h2>}
         
         <h3>Complete todos los puntos para poder registrar el usuario</h3>
       </div>
@@ -319,7 +320,8 @@ export const AddUsers = (props) => {
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
-              <input
+              
+              {props.update ? <input
                 onChange={(e) => {
                   setCorreo(e.target.value)
                   var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -341,8 +343,34 @@ export const AddUsers = (props) => {
                 helperText={texto}
                 value={correo}
                 maxLength={30}
+                disabled
 
-              />
+              /> : <input
+              onChange={(e) => {
+                setCorreo(e.target.value)
+                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!expresion.test(correo)) {
+                  setErrorCorreo(true)
+                  setTexto("Formato invalido");
+                }
+                else {
+                  setErrorCorreo(false);
+                  setTexto("");
+                }
+              }}
+              type="text"
+              name="input2"
+              id="correo"
+              className="inputCustom"
+              placeholder="Correo Electronico"
+              error={errorCorreo}
+              helperText={texto}
+              value={correo}
+              maxLength={30}
+              
+
+            /> }
+              
               <p className='error'>{texto}</p>
             </div>
 

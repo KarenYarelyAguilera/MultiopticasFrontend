@@ -16,11 +16,10 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = () => {
+export const ListaEmpleados = (props) => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
-
 
   const urlEmployees = 'http://localhost:3001/api/empleado';
   const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
