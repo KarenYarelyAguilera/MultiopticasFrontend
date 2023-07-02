@@ -1,87 +1,162 @@
-import React, { useRef, useState } from 'react';
-
+//import React from 'react';
 import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
-import { FilledInput, IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+import swal from '@sweetalert/with-react';
 
-export const PageThree = ({ onButtonClick }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfi, setShowPasswordConfi] = useState(false);
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-  const handleClickShowPassword = () => setShowPassword(show => !show);
-  const handleClickShowPasswordConfi = () => setShowPasswordConfi(show => !show);
-  const refContrasenia = useRef(null);
-  const refContraseniaConfi = useRef(null);
-  const handleMouseDownPassword = event => {
-    event.preventDefault();
+
+export const PageThree = ({ onButtonClick, correo }) => {
+
+  const [Preguntas, setPreguntas] = useState([]);
+  const urlPreguntas = 'http://localhost:3000/api/preguntas';
+  const urlRespuestas = 'http://localhost:3000/api/preguntas/compararR';
+  const urlId = 'http://localhost:3000/api/token/id';
+
+//
+  const [id, setId] = useState(0);
+  const [pasar,setPasar]=useState(false)
+//
+
+ 
+  
+  useEffect(() => {
+    //console.log(data);
+    axios.get(urlPreguntas).then(response =>{
+      setPreguntas(response.data);
+     }).catch(error => console.log(error))
+   },[]);
+
+   
+
+  const data = {
+    "correo": correo,
+  }; 
+
+   //correo y id_usuario
+    useEffect(() => {
+    console.log(data);
+    axios.post(urlId, data).then(response => {
+      setId(response.data);
+    }).catch(error => console.log(error));
+    }, [id]); 
+
+
+/*    const data2 = {
+    "Id_Pregunta":Id_Pregunta,
+    "id": id,
+    "Respuesta":Respuesta,
+  };  */
+
+  /*
+   useEffect(() => {
+    console.log(data2);
+    axios.post(urlRespuestas, data2);
+  }, [id]);*/
+
+
+
+   //
+   
+   //
+
+
+  const handleClick = async () => {
+
+    const Id_Pregunta =parseInt(document.getElementById('Id_preguntas').value);
+    const respuestap = document.getElementById('respuestap').value;
+
+
+    let data = {
+      Id_Pregunta:Id_Pregunta,
+      Respuesta: respuestap,
+      Id_Usuario: id,
+
+    };
+
+    console.log(data);
+
+     await axios.post(urlRespuestas, data).then(response=>
+      setPasar(response.data));
+     console.log(pasar)
+     return pasar; 
+
   };
+ 
+
+
+
+
+  
 
   return (
     <main>
       <form className="measure">
         <div className="contPrincipalRecu">
-          <div className="divInfoQuestionResp">
-            <TextCustom text="Nueva contraseña:" className="titleInput" />
-            <div className="contInput">
-            <FilledInput
-              id="filled-adornment-password"
-              className="inputCustomPassRegis"
-              maxLength={150}
-              type={showPassword ? 'text' : 'password'}
-              inputRef={refContrasenia}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            </div>
+          <div className='divInfoQuestionResp'>
+          <TextCustom text="Preguntas:" className="titleInput" />
+          <div className="contInput">
+          <select id="Id_preguntas"  className="inputCustomPreguntas">
+                {Preguntas.length ? (
+                  Preguntas.map(pre => (
+                    <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
+                      {pre.Pregunta}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
           </div>
 
-          <div className="divInfoQuestionResp">
-            <TextCustom text="Confirmar nueva contraseña:" className="titleInput" />
-            <div className="contInput">
-            <FilledInput
-              id="filled-adornment-password"
-              className="inputCustomPassRegis"
-              maxLength={150}
-              type={showPasswordConfi ? 'text' : 'password'}
-              inputRef={refContraseniaConfi}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPasswordConfi}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+          </div>
+
+          <div className='divInfoQuestionResp'>
+
+          <TextCustom text="Respuesta:" className="titleInput" />
+          <div className="contInput">
+            <input
+              type="text"
+              name=""
+              className="inputCustom"
+              placeholder="Respuesta"
+              id='respuestap'
             />
-            </div>
+          </div>
           </div>
         </div>
-        <div className="divSubmitQuestion">
+        <div className='divSubmitQuestion'>
           <input
             className="btnSubmitPreguntas"
-            type="submit"
-            value="Enviar"
-            // onClick={() => onButtonClick('pagetwo')}
+            type="button"
+            value="Siguiente"
+           // onClick={() => onButtonClick('pagefour')}
+
+              onClick={() => {
+
+              handleClick()
+
+                if (pasar===false) {
+                  swal(
+                    'Por favor ingrese la respuesta correcta',
+                    '',
+                    'warning',
+                  )
+                }else{
+                  onButtonClick('pagefour')
+                } 
+              
+            }}  
+
           />
         </div>
       </form>
     </main>
   );
 };
+
 
 export default PageThree;

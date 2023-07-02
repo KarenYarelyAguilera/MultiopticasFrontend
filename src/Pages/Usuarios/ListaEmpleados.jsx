@@ -22,10 +22,10 @@ export const ListaEmpleados = (props) => {
   const [sucursales, setSucursales] = useState([]);
 
   const urlEmployees = 'http://localhost:3000/api/empleado';
-  const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
+  const urlUpdateEmployees = 'http://localhost:3000/api/empleado/actualizar';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
-  const urlgeneros = 'http://localhost:3001/api/empleado/genero';
-  const urlsucursales = 'http://localhost:3001/api/empleado/sucursal';
+  const urlgeneros = 'http://localhost:3000/api/empleado/genero';
+  const urlsucursales = 'http://localhost:3000/api/empleado/sucursal';
 
 
   const [tableData, setTableData] = useState([]);
