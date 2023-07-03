@@ -79,8 +79,8 @@ export const DatosEmpleado = (props) => {
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
     const data = {
-      nombre:nombres.toLocalUpperCase(),
-      apellido:apellidos.toLocalUpperCase(),
+      nombre:nombres.toUpperCase(),
+      apellido:apellidos.toUpperCase(),
       telEmple:telefono,
       idSucursal:sucursal,
       idGenero:genero,

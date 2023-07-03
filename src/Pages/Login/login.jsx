@@ -87,10 +87,7 @@ export const Login = props => {
         Id: respJsonUsr.data[0].Id_Usuario,
       };
 
-      console.log(
-        respJsonPss.data.result &&
-          respJsonUsr.data[0].Estado_Usuario === 'Activo',
-      );
+      console.log(respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Nuevo');
 
       if (
         respJsonPss.data.result &&
@@ -110,16 +107,16 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
-        axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
-        
+        axios.post(urlBitacoraLogin, dataBitacora).then(() => navegate('/dashboard'))
+
       }
     } catch (error) {
+      setContador(contador + 1)
       swal(
         'El usuario que ingreso no existe o\nIngreso credenciales erroneas',
         '',
         'error',
       );
-      //setContador(contador + 1);
     }
   };
 
