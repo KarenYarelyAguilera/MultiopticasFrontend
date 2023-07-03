@@ -11,6 +11,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
 
   const urlUserExist = 'http://localhost:3000/api/login';
+  const urlPreguntas = 'http://localhost:3000/api/preguntas';
 
   //const [email,setEmail]=useState('');
   const [pasar, setPasar]=useState(false)
@@ -21,16 +22,16 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
  
 
 
-  
+
     const handleClick = async () => {
       const respuesta = document.getElementById('respuesta').value;
       if (correo1 === respuesta) {
         
         await axios.post(urlUserExist,data).then(response=>{
-          //console.log(data);
+          
           id(response.data[0].Id_Usuario)
           autor(response.data[0].Nombre_Usuario)
-          //console.log(data);
+          
           if (response.data) {
   
             const data2 = {
@@ -38,14 +39,17 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
               "id": response.data[0].Id_Usuario,
             };
     
-            axios.post(urlUserExist, data2).then(()=> onButtonClick('pagethree'))
+            onButtonClick('pagethree');
+
           }else{
             swal("El correo que ingreso es erroneo o no esta registrado")
           }
   
          
         
-        })
+        }).catch(() => {
+          swal("Verifique si el correo que ingreso es correcto");
+        });
         
       } else {
         swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
