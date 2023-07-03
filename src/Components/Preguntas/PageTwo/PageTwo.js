@@ -8,7 +8,9 @@ import axios from 'axios';
 
 export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
-
+  const [email, setCorreo] = useState("");
+  const [textoCorreo, setTextoCorreo] = useState("");
+  const [errorCorreo, setErrorCorreo] = useState(false);
 
   const urlUserExist = 'http://localhost:3000/api/login';
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
@@ -19,10 +21,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
   const data={
     correo:correo1
   }
- 
-
-
-
+  
     const handleClick = async () => {
       const respuesta = document.getElementById('respuesta').value;
       if (correo1 === respuesta) {
@@ -39,7 +38,9 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
               "id": response.data[0].Id_Usuario,
             };
     
-            onButtonClick('pagethree');
+            axios.post(urlUserExist, data2).then(()=> onButtonClick('pagethree')).catch(() => {
+              swal("Ocurrió un error al realizar la segunda petición POST");
+            });
 
           }else{
             swal("El correo que ingreso es erroneo o no esta registrado", "", "error")
@@ -73,6 +74,36 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
           <TextCustom text="Confirme su correo electrónico:" className="titleInput" />
           <div className="contInput">
             <input
+
+                onKeyDown={(e) => {
+                  setCorreo(e.target.value)
+                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!expresion.test(email)) {
+                    setErrorCorreo(true)
+                    setTextoCorreo("Formato invalido");
+                  }
+                  else {
+                    setErrorCorreo(false);
+                    setTextoCorreo("");
+                  }
+                }}
+                onClick={e => {
+                  setCorreo(e.target.value);
+                  if (email === '') {
+                    setErrorCorreo(true);
+                    setTextoCorreo('Los campos no deben estar vacios');
+                  } else {
+                    setErrorCorreo(false);
+                    setTextoCorreo('');
+                  }
+                }}
+                maxLength={30}
+                error={errorCorreo}
+                helperText={textoCorreo}
+
+
+
+
               type="text"
               name=""
               className="inputCustom"
@@ -80,6 +111,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
               id='respuesta'
             />
           </div>
+          <p className='error'>{textoCorreo}</p>
           </div>
         </div>
         <div className='divSubmitRecuperacion'>

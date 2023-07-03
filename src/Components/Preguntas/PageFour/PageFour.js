@@ -11,10 +11,25 @@ import axios from "axios";
 
 
 export const PageFour = ({correo,id,autor }) => {
+
+  const [clave1, setContra1] = useState("");
+  const [msj, setMsjs] = useState("");
+  const [errorContra1, setErrorContra1] = useState(false);
+
+  const [clave2, setContra2] = useState("");
+  const [errorContra2, setErrorContra2] = useState(false);
+  const [advertencia, setadvertencia] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfi, setShowPasswordConfi] = useState(false);
+
+
+
   const navegate = useNavigate()
   const handleClick = ()=>{
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+ 
     
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
@@ -42,8 +57,9 @@ export const PageFour = ({correo,id,autor }) => {
     return (
       <main>
       <div className="titleRecuperacion">
-          <h2>Ingrese una nueva contraseña</h2>
-          <h3>Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas.</h3>
+          <TextCustom text="Ingrese una nueva contraseña" className="titleInput" />
+          <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas." className="titleInput" />
+         
         </div>
       <form className="measure">
         <div className="contPrincipalRecuperacion">
@@ -52,12 +68,42 @@ export const PageFour = ({correo,id,autor }) => {
           <TextCustom text="Nueva contraseña" className="titleInput" />
           <div className="contInput">
             <input
-              type="password"
+
+                  onKeyDown={(e) => {
+                    setContra1(e.target.value);
+                    if (clave1 === "") {
+                      setErrorContra1(true);
+                      setMsjs("Los campos no deben estar vacios");
+                    }
+                    else {
+                      setErrorContra1(false)
+                      var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                      if (!regularExpression.test(clave1)) {
+                        setErrorContra1(true)
+                        setMsjs("");
+                      }
+                      else {
+                        setMsjs("La contraseña debe de tener letras, numeros y caracteres especiales");
+                        setErrorContra1(false);
+                      }
+                    }
+                  }}
+                  type={showPassword ? 'text' : 'password'}
+                  inputProps={{ maxLength: 20 }}
+                  minLength= "8"
+                  //inputRef={refContrasenia}
+
+
+
+
+
+              //type="password"
               name=""
               className="inputCustom"
               id="contra1"
             />
           </div>
+              <p className='error'>{msj}</p>
           </div>
 
           <div className='divInfoRecuperacion'>
@@ -65,12 +111,41 @@ export const PageFour = ({correo,id,autor }) => {
           <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
           <div className="contInput">
             <input
-              type="password"
+
+                  onKeyDown={(e) => {
+                    setContra2(e.target.value);
+                    if (clave2 === "") {
+                      setErrorContra2(true);
+                      setadvertencia("Los campos no deben estar vacios");
+                    }
+                    else {
+                      setErrorContra2(false)
+                      var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                      if (!regularExpression.test(clave2)) {
+                        setErrorContra2(true)
+                        setadvertencia("");
+                      }
+                      else {
+                        setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
+                        setErrorContra2(false);
+                      }
+                    }
+
+                  }}
+                  type={showPassword ? 'text' : 'password'}
+                  inputProps={{ maxLength: 20 }}
+                  minLength= "8"
+                  //inputRef={refContrasenia}
+
+
+
+             //type="password"
               name=""
               className="inputCustom"
               id="contra2"
             />
           </div>
+            <p className='error'>{advertencia}</p>
           </div>
         </div>
         <div className='divSubmitRecuperacion'>

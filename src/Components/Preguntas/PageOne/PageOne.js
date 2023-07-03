@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
 import '../../../Styles/RecuperacionPassword.css';
@@ -6,6 +6,10 @@ import '../../../Styles/RecuperacionPassword.css';
 
 
 export const PageOne = ({ onButtonClick, correo }) => {
+
+  const [email, setCorreo] = useState("");
+  const [textoCorreo, setTextoCorreo] = useState("");
+  const [errorCorreo, setErrorCorreo] = useState(false);
 
   return (
     <main>
@@ -20,6 +24,31 @@ export const PageOne = ({ onButtonClick, correo }) => {
 
             <div className="contInput">
               <input
+              onKeyDown={(e) => {
+                setCorreo(e.target.value)
+                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!expresion.test(email)) {
+                  setErrorCorreo(true)
+                  setTextoCorreo("Formato invalido");
+                }
+                else {
+                  setErrorCorreo(false);
+                  setTextoCorreo("");
+                }
+              }}
+              onClick={e => {
+                setCorreo(e.target.value);
+                if (email === '') {
+                  setErrorCorreo(true);
+                  setTextoCorreo('Los campos no deben estar vacios');
+                } else {
+                  setErrorCorreo(false);
+                  setTextoCorreo('');
+                }
+              }}
+              maxLength={30}
+              error={errorCorreo}
+              helperText={textoCorreo}
                 type="text"
                 name=""
                 className="inputCustom"
@@ -27,7 +56,7 @@ export const PageOne = ({ onButtonClick, correo }) => {
                 id='respuesta'
               />
             </div>
-
+            <p className='error'>{textoCorreo}</p>
           </div>
         </div>
         
