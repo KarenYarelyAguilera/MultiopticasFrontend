@@ -131,25 +131,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-          <Route
-            path="/empleados/lista"
-            element={
-              /*  <ProtectedRoute activo={activo}> */
-              <div className="flex">
-                <BarraLateral
-                  user={user}
-                  rol={rol}
-                  mail={mail}
-                  estado={access}
-                  Rol={Rol}
-                  obj={cObjeto}
-                />
-                <BarraHorizontal user={usuario} />
-                <ListaEmpleados></ListaEmpleados>
-              </div>
-              /*  </ProtectedRoute> */
-            }
-          />
 
           <Route
             path="/promocion/listaPromocion"
@@ -519,7 +500,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaEmpleados update={update} />
+                <ListaEmpleados update={update} data={Data} />
               </div>
               //  </ProtectedRoute>
             }
@@ -879,7 +860,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosEmpleado></DatosEmpleado>
+                <DatosEmpleado idU={idUsuario} data={data} update={actualizar} limpiarData={Data} limpiarUpdate={update}> </DatosEmpleado>
               </div>
               // </ProtectedRoute>
             }

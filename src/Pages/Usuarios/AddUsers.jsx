@@ -322,7 +322,7 @@ export const AddUsers = (props) => {
               <TextCustom text="Correo Electronico" className="titleInput" />
               
               {props.update ? <input
-                onChange={(e) => {
+                onKeyDown={(e) => {
                   setCorreo(e.target.value)
                   var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                   if (!expresion.test(correo)) {
@@ -346,7 +346,7 @@ export const AddUsers = (props) => {
                 disabled
 
               /> : <input
-              onChange={(e) => {
+              onKeyDown={(e) => {
                 setCorreo(e.target.value)
                 var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!expresion.test(correo)) {
