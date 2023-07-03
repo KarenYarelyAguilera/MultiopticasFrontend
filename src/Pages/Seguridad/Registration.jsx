@@ -150,7 +150,7 @@ export const Registration = ({
               maxLength={15}
               placeholder="Nombre"
               variant="standard"
-              id="nombre"
+              id="usuario"
               label="Usuario"
             />
             <p className='error'>{mensaje}</p>
@@ -382,8 +382,6 @@ export const Registration = ({
             <div className="contInput">
               <FilledInput
                 onKeyDown={(e) => {
-
-                  
                   setContra2(e.target.value);
                   if (contra2 === "") {
                     setErrorContra2(true);
@@ -400,7 +398,7 @@ export const Registration = ({
                       setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
                       setErrorContra2(false);
                     }
-                    if (contra1 === contra2) {
+                    if (contra1 !== contra2) {
                       // Las contraseñas son iguales
                       setadvertencia("Las contraseñas coinciden.");
                     } else {
@@ -449,9 +447,33 @@ export const Registration = ({
         <div className="divSubmitRegis">
           <button className="buttonCustomRegis"
            onClick={() => {
-            if (document.getElementById("nombre").value == "" || document.getElementById("filled-adornment-password").value == "" || document.getElementById("correo").value == "") {
-              swal("No deje campos vacios.", "", "error")
+            var usuario = document.getElementById("usuario").value;
+            var nombre = document.getElementById("nombre").value;
+            var apellido = document.getElementById("apellido").value;
+            var Nidentidad = document.getElementById("Nidentidad").value;
+            var phone = document.getElementById("phone").value;
+            var correo = document.getElementById("correo").value;
+            var password = document.getElementById("filled-adornment-password").value;
+            
+            if (usuario === "" || nombre === "" || apellido === "" || Nidentidad === "" || phone === "" || password === "" || correo === "") {
+              swal("No deje campos vacíos.", "", "error");
+            } else if (!/^[a-zA-Z]+$/.test(usuario)) {
+              swal("El campo usuario solo acepta letras.", "", "error");
+            } else if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+              swal("El campo nombre solo acepta letras.", "", "error");
+            } else if (!/^[a-zA-Z\s]+$/.test(apellido)) {
+              swal("El campo apellido solo acepta letras.", "", "error");
+            } else if (isNaN(parseInt(Nidentidad))) {
+              swal("El campo identidad solo acepta números.", "", "error");
+            } else if (isNaN(parseInt(phone))) {
+              swal("El campo teléfono solo acepta números.", "", "error");
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+              swal("El campo correo debe contener un correo válido.", "", "error");
+            } 
+            else if (!/^[a-zA-Z0-9!@#$%^&*]+$/.test(document.getElementById("filled-adornment-password").value)) {
+              swal("El campo contraseña debe incluir letras, números y caracteres especiales", "", "error");
             }
+          
             else {
               handleProgress();
             }
