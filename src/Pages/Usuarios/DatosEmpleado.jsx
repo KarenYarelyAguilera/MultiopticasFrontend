@@ -344,4 +344,4 @@ export const DatosEmpleado = ({
       </div>
     </div>
   );
-};
+}
