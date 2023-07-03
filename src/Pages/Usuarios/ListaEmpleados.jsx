@@ -1,4 +1,4 @@
-import { DataGrid, esES } from '@mui/x-data-grid';
+mport { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
