@@ -18,9 +18,10 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { sendData } from '../scripts/sendData';
+import axios from 'axios';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
-const urlBitacoraUsuario ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Usuario"
+const urlBitacoraUsuario ="http://localhost:3000/api/bitacora/Usuario"
 
 
 export const BarraLateral = (props) => {
@@ -207,7 +208,9 @@ export const BarraLateral = (props) => {
               <Link
                 className="link"
                 to="/usuarios"
-                onClick={() => props.obj(2)}
+                onClick={() =>{
+                  axios.post(urlBitacoraUsuario,dataB)
+                  props.obj(2)}}
               >
                 {/* fetch(urlBitacoraUsuario, {
              method: "POST",

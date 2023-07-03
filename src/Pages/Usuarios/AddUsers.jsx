@@ -62,6 +62,8 @@ export const AddUsers = (props) => {
     'http://localhost:3000/api/usuario/insert';
   const urlUpdateUser =
     'http://localhost:3000/api/usuario/update';
+    const urlBitacoraUpdUsuario = 'http://localhost:3000/api/bitacora/ActualizacionUsuario'
+
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -94,8 +96,8 @@ export const AddUsers = (props) => {
 
     let data = {
       idUsuario: props.data.id_Usuario,
-      usuario: user.toLocaleUpperCase(),
-      nombreUsuario: nombre.toLocalUpperCase(),
+      usuario: user.toUpperCase(),
+      nombreUsuario: nombre.toUpperCase(),
       clave: refContrasenia.current.value,
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,
@@ -105,9 +107,14 @@ export const AddUsers = (props) => {
     let dataB = {
       Id: props.idU
     }
+
     if (await axios.put(urlUpdateUser, data)) {
       console.log(data);
-      swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{props.limpiarData({});props.limpiarUpdate(false)});
+      swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{
+        axios.post(urlBitacoraUpdUsuario,dataB)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+      });
       navegate('/usuarios/lista')
     }
   };
@@ -126,17 +133,19 @@ export const AddUsers = (props) => {
 
     let data = {
       id: id,
-      usuario: user.toLocaleUpperCase(),
+      usuario: user.toUpperCase(),
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,
       rol: rol,
     };
+
     let dataB = {
       Id: props.idU
     }
 
     if (await axios.post(urlInsert, data)) {
+
       swal('Usuario creado exitosamente.', '', 'success');
       //sendData(urlBitacoraUsuario,dataB)
     }
