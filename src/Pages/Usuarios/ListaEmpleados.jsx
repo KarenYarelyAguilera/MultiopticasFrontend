@@ -23,7 +23,10 @@ export const ListaEmpleados = (props) => {
 
   const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
- 
+
+
+  const urlDelBitacora = 'http://localhost:3000/api/bitacora/EliminarEmpleado';
+
 
 
   const [tableData, setTableData] = useState([]);
@@ -110,12 +113,15 @@ export const ListaEmpleados = (props) => {
             IdEmpleado: id,
           };
 
+          let dataB = {
+            Id: props.idU
+          }
+
           console.log(data);
 
-          await axios
-            .delete(urlDelEmployees, { data })
-            .then(response => {
-              swal('Empleado eliminado correctamente', '', 'success');
+          await axios.delete(urlDelEmployees,{data}).then(response =>{
+             axios.post (urlDelBitacora, dataB)
+            swal('Empleado eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
             })
             .catch(error => {

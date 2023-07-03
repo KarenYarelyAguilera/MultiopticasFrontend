@@ -27,6 +27,12 @@ const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el em
 const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
 
+//URL de bitacora 
+const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
+
+
 
 export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -53,7 +59,7 @@ export const DatosEmpleado = (props) => {
 
   const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
 
-  const [Identidad, setIdentidad] = useState(parseInt(props.data.numeroIdentidad) || 0);
+  const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
   /*   useEffect(() => {
@@ -79,8 +85,8 @@ export const DatosEmpleado = (props) => {
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
     const data = {
-      nombre:nombres.toLocalUpperCase(),
-      apellido:apellidos.toLocalUpperCase(),
+      nombre:nombres.toUpperCase(),
+      apellido:apellidos.toUpperCase(),
       telEmple:telefono,
       idSucursal:sucursal,
       idGenero:genero,
@@ -88,8 +94,14 @@ export const DatosEmpleado = (props) => {
       IdEmpleado:props.data.IdEmpleado,
     }
 
+
+    let dataB={
+      Id: props.idUsuario
+    }
+
     axios.put(urlUpdEmpleado,data).then(()=>{
-      swal("Empleado Actualizado Correctamente","","success").then(()=>{
+        swal("Empleado Actualizado Correctamente","","success").then(()=>{
+          axios.post(urlUpdBitacora,dataB)
         navegate('/empleados/lista')
       })
     })
@@ -132,19 +144,31 @@ export const DatosEmpleado = (props) => {
       });
     } */
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+
     await axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
+    swal('Empleado agregado con exito', '', 'success').then(result => {
+      axios.post(urlInsertBitacora, dataB)
         navegate('/empleados/lista');
       });
 
+      let dataB = {
+        Id: props.idUsuario
+      }
+      
     }).catch(error => {
       console.log(error);
       swal('Error al registrar el cliente', '', 'success')
+      axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
 
   const handleBack = () => {
+    props.Data({})
+    props.update(false)
     navegate('/usuarios');
   };
 
@@ -171,12 +195,12 @@ export const DatosEmpleado = (props) => {
                 type="text"
                 name=""
                 maxLength={13}
-                onChange={e => setIdentidad(parseInt(e.target.value))}
+                onChange={e => setIdentidad(e.target.value)}
                 value={Identidad}
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
+                  setIdentidad(e.target.value);
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');

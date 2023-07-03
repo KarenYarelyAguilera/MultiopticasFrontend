@@ -19,15 +19,19 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 
-export const ListUsuarios = ({data,update}) => {
+export const ListUsuarios = ({props,data,update,}) => {
   const [roles, setRoles] = useState([]);
   
 
 
   const urlUsers =
     'http://localhost:3000/api/usuarios';
-    const urlDelUser =
+
+  const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
+
+//  const urlBitacoraDelUsuario=
+//    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
 
   const [tableData, setTableData] = useState([]);
@@ -83,6 +87,7 @@ export const ListUsuarios = ({data,update}) => {
           <Button
             className="btnDelete"
            onClick={() => handleDel(params.row.id_Usuario)}
+
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -105,6 +110,7 @@ export const ListUsuarios = ({data,update}) => {
           Desea eliminar este usuario?
         </div>
       ),
+      
     }).then(async (op)=> {
 
       switch (op) {
@@ -114,10 +120,15 @@ export const ListUsuarios = ({data,update}) => {
             id: id,
           };
 
+          // let dataB = {
+          //   Id: props.idU
+          // }
+
           console.log(data);
 
          await axios.delete(urlDelUser,{data}).then(response=>{
             swal("Usuario eliminado correctamente","","success")
+            // axios.post(urlBitacoraDelUsuario,dataB)
             setCambio(cambio+1)
           }).catch(error=>{
             console.log(error);

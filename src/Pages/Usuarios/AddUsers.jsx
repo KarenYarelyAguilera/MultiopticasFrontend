@@ -56,14 +56,20 @@ export const AddUsers = (props) => {
   //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
     'http://localhost:3000/api/empleado';
+    
   const urlRoles =
     'http://localhost:3000/api/Rol';
   const urlInsert =
     'http://localhost:3000/api/usuario/insert';
+
   const urlUpdateUser =
     'http://localhost:3000/api/usuario/update';
-    const urlBitacoraUpdUsuario = 'http://localhost:3000/api/bitacora/ActualizacionUsuario'
 
+  const urlBitacoraInsert = 
+   'http://localhost:3000/api/bitacora/InsertUsuario';
+
+  const urlBitacoraUpdUsuario = 
+    'http://localhost:3000/api/bitacora/ActualizacionUsuario';
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -111,7 +117,7 @@ export const AddUsers = (props) => {
     if (await axios.put(urlUpdateUser, data)) {
       console.log(data);
       swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{
-        axios.post(urlBitacoraUpdUsuario,dataB)
+        axios.post(urlBitacoraUpdUsuario,dataB) //----Registro de actualuzacion 
         props.limpiarData({});
         props.limpiarUpdate(false)
       });
@@ -144,8 +150,8 @@ export const AddUsers = (props) => {
       Id: props.idU
     }
 
-    if (await axios.post(urlInsert, data)) {
-
+    if  (await axios.post(urlInsert, data)) { //Registro de nuevo usuario bitacora
+      (await axios.post(urlBitacoraInsert, dataB))
       swal('Usuario creado exitosamente.', '', 'success');
       //sendData(urlBitacoraUsuario,dataB)
     }
