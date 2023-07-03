@@ -19,8 +19,7 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales =
-  'http://localhost:3001/api/empleado/sucursal';
+
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
 const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
@@ -64,6 +63,9 @@ export const DatosEmpleado = ({
       fetch(urlSucursales).then(response => response.json())
         .then(data => setSucursales(data));
     }, []); */
+
+    const urlSucursales =
+  'http://localhost:3000/api/empleado/sucursal';
 
   useEffect(() => {
     axios.get(urlSucursales).then(response => {
