@@ -24,6 +24,7 @@ const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
 const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
 
 
