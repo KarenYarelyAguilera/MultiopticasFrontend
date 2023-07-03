@@ -23,8 +23,8 @@ const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
 
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado = 'http://localhost:3000/api/empleado'; //Api para crear el empleado
-const urlUpdEmpleado = 'http://localhost:3000/api/empleado/actualizar'
+const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+
 
 
 export const DatosEmpleado = (props) => {
@@ -66,7 +66,7 @@ export const DatosEmpleado = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
-
+  
   const navegate = useNavigate();
 
   const actualizarEmpleado = async () => {
@@ -138,7 +138,7 @@ export const DatosEmpleado = (props) => {
 
     }).catch(error => {
       console.log(error);
-      swal('Error al registrar el empleado', '', 'success')
+      swal('Error al registrar el cliente', '', 'success')
     })
 
   };
