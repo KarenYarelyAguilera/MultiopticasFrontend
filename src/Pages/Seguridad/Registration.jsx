@@ -7,8 +7,8 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-const urlIEmpleado = 'http://localhost:3000/api/empleado';
-const urlUsuario = 'http://localhost:3000/api/usuario/insert';
+const urlIEmpleado = 'http://localhost:3000/api/empleado/AutoRegistro';
+const urlUsuario = 'http://localhost:3000/api/usuario/AutoRegistro';
 
 export const Registration = ({
   msgError = '',
@@ -18,7 +18,7 @@ export const Registration = ({
 
 }) => {
 
-  const [Nombreusuario, setNombreusuario] = useState("");
+  const [Nombreusuario, setNombreusuario] = React.useState('');
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);
   const [mensaje, setMensaje] = useState(false);
 
@@ -65,7 +65,7 @@ export const Registration = ({
   };
 
   const handleProgress = async () => {
-    let nombre = document.getElementById('nombre').value; //Nombre de usuario
+    let nombreUsuario = document.getElementById('nombreUsuario').value; //Nombre de usuario
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
     let identidad = document.getElementById('Nidentidad').value;
@@ -74,12 +74,16 @@ export const Registration = ({
     let correo = document.getElementById('correo').value;
 
     let data = {
-      nombre: nombre,
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
       telEmple: telefono,
       idGenero: genero,
       numId: identidad,
+    };
+
+    let data2 = {
+      usuario: nombreUsuario,
+      nombre: nombres.toUpperCase(),
       correo: correo,
       clave: refContrasenia.current.value,
     };
@@ -91,7 +95,7 @@ export const Registration = ({
       console.log(error);
       swal('Error al registrar el empleado', '', 'success')
     })
-    await axios.post(urlUsuario, data).then(response => { });
+    await axios.post(urlUsuario, data2).then(response => { });
 
     navegate("/progress")
   }
@@ -113,12 +117,14 @@ export const Registration = ({
         </div>
 
         <div className="divInfoQuestionRegis">
+
+
           <div className="contInput">
             <TextCustom text="Nombre de Usuario"
               className="titleInput" />
             <input
               onKeyDown={(e) => {
-                setNombreusuario(e.target.value);
+
                 if (Nombreusuario == "") {
                   setErrorNombreusuario(true);
                   setMensaje("Los campos no deben estar vacios");
@@ -135,20 +141,24 @@ export const Registration = ({
                   }
                 }
               }}
+              onChange={e => setNombreusuario(e.target.value)}
               error={errorNombreusuario}
               type="text"
               helperText={mensaje}
-              name=""
+              name="input1"
               className="inputCustom"
               maxLength={15}
               placeholder="Nombre"
               variant="standard"
-              id="nombre"
+              id="nombreUsuario"
+              value={Nombreusuario}
               label="Usuario"
             />
             <p className='error'>{mensaje}</p>
           </div>
 
+
+          {/* textbox para nombre del empleado  */}
           <div className="contInput">
             <TextCustom text="Nombre" />
             <input
@@ -159,7 +169,7 @@ export const Registration = ({
                   setMsj('Los campos no deben estar vacios');
                 } else {
                   setErrorNombre(false);
-                  var preg_match = /^[a-zA-Z]+$/;
+                  var preg_match = /^[a-zA-Z\s]*$/;
                   if (!preg_match.test(Nombre)) {
                     setErrorNombre(true);
                     setMsj('Solo debe de ingresar letras');
@@ -294,7 +304,7 @@ export const Registration = ({
               onKeyDown={(e) => {
                 var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!expresion.test(correo)) {
-                  setErrorCorreo  (true)
+                  setErrorCorreo(true)
                   setTextoCorreo("Formato invalido");
                 }
                 else {
@@ -418,6 +428,7 @@ export const Registration = ({
           <button className="buttonCustomRegis" onClick={() => {
             handleProgress();
           }}>Siguiente</button>
+
         </div>
         <br />
         <span className="refInicioSesion">

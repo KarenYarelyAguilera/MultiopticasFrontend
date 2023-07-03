@@ -1,37 +1,33 @@
-import React from "react";
-import { TextCustom } from "../../TextCustom";
+import React, { useRef, useState } from 'react';
+
+import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
+import { FilledInput, IconButton, InputAdornment } from '@mui/material';
+
+
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
 
-export const PageFour = ({correo,id,autor}) => {
+export const PageFour = ({correo }) => {
   const navegate = useNavigate()
   const handleClick = ()=>{
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+    
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
 
     const data ={
       correo:correo,
-      clave:contra1,
-      id:id,
-      autor:autor
+      clave:contra1
     }
     if (contra1!==contra2) {
       swal("Las contraseñas no coinciden","","warning")
     }else{
 
-      axios.put(urlUpdPassword,data).then(response=>{
-        console.log(response.data);
-        if (response.data===false) {
-          swal("La contraseña no puede ser igual que la anterior","","error")
-        }else{
-          swal("Contraseña actualizada","","success").then(()=>navegate("/"))
-        } 
-      }) 
+      axios.put(urlUpdPassword,data).then(response=>swal("Contraseña actualizada","","success").then(()=>navegate("/"))) 
     }
   }
     return (
@@ -81,3 +77,5 @@ export const PageFour = ({correo,id,autor}) => {
       
     );
 };
+
+export default PageFour;
