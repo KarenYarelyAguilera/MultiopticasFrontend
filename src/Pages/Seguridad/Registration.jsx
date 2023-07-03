@@ -332,7 +332,7 @@ export const Registration = ({
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
 
-              onKeyDown={(e) => {
+              onChange={(e) => {
                 setContra1(e.target.value);
                 if (contra1 === "") {
                   setErrorContra1(true);
@@ -356,7 +356,7 @@ export const Registration = ({
               placeholder='Contraseña'
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
-              inputProps={{ maxLength: 20 }}
+              inputProps={{ maxLength: 20, minLenght:8 }}
               inputRef={refContrasenia}
               endAdornment={
 
@@ -381,7 +381,7 @@ export const Registration = ({
             <TextCustom text="Confirmar Contraseña" className="titleInput" />
             <div className="contInput">
               <FilledInput
-                onKeyDown={(e) => {
+                onChange={(e) => {
                   setContra2(e.target.value);
                   if (contra2 === "") {
                     setErrorContra2(true);
@@ -398,7 +398,7 @@ export const Registration = ({
                       setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
                       setErrorContra2(false);
                     }
-                    if (contra1 !== contra2) {
+                    if (contra1 == contra2) {
                       // Las contraseñas son iguales
                       setadvertencia("Las contraseñas coinciden.");
                     } else {
@@ -413,7 +413,7 @@ export const Registration = ({
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20 }}
+                inputProps={{ maxLength: 20, minLenght:8 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -446,6 +446,7 @@ export const Registration = ({
 
         <div className="divSubmitRegis">
           <button className="buttonCustomRegis"
+          type="submit"
            onClick={() => {
             var usuario = document.getElementById("usuario").value;
             var nombre = document.getElementById("nombre").value;
@@ -470,10 +471,10 @@ export const Registration = ({
             } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
               swal("El campo correo debe contener un correo válido.", "", "error");
             } 
-            else if (!/^[a-zA-Z0-9!@#$%^&*]+$/.test(document.getElementById("filled-adornment-password").value)) {
-              swal("El campo contraseña debe incluir letras, números y caracteres especiales", "", "error");
-            }
-          
+            else if(contra1 !== contra2) {
+              // Las contraseñas son iguales
+              swal("Las contraseñas deben de coincidir.", "", "error");
+            } 
             else {
               handleProgress();
             }
