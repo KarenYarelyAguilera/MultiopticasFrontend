@@ -16,16 +16,14 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = ({data,update}) => {
+export const ListaEmpleados = (props) => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
 
-  const urlEmployees = 'http://localhost:3001/api/empleado';
-  const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
-  const urlDelEmployees = 'http://localhost:3001/api/empleado/eliminar';
-  const urlgeneros = 'http://localhost:3001/api/empleado/genero';
-  const urlsucursales = 'http://localhost:3001/api/empleado/sucursal';
+  const urlEmployees = 'http://localhost:3000/api/empleado';
+  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+ 
 
 
   const [tableData, setTableData] = useState([]);
@@ -47,20 +45,6 @@ export const ListaEmpleados = ({data,update}) => {
       .get(urlEmployees)
       .then(response => {
         setTableData(response.data);
-      })
-      .catch(error => console.log(error));
-
-    axios
-      .get(urlgeneros)
-      .then(response => {
-        setGeneros(response.data);
-      })
-      .catch(error => console.log(error));
-
-    axios
-      .get(urlsucursales)
-      .then(response => {
-        setSucursales(response.data);
       })
       .catch(error => console.log(error));
   }, [cambio]);
@@ -148,42 +132,42 @@ export const ListaEmpleados = ({data,update}) => {
   }
 
   //funcion de actualizar
+
+
   function handleUpdt(id) {
+    // onRowClick={empleado => {
     swal({
       buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el empleado?:{' '}
-          {id.Usuario}
+          ¿Desea actualizar el empleado: {id.nombre} ?
         </div>
       ),
-    }).then(
-      op => {
+    }).then(op => {
       switch (op) {
         case 'update':
-        data(id)
-        update(true)
-        navegate('/usuarios/crearempleado')
-          break;
-        default:
-          break;
+          props.data(id)
+          props.update(true)
+          navegate('/usuarios/crearempleado')
       }
     });
-  };
+
+    //}//}//
+  }
 
   const handleBack = () => {
-    navegate('/empleados/lista');
+    navegate('/usuarios');
   };
 
-    return (
-      <div className="ContUsuarios">
-        <Button className="btnBack" onClick={handleBack}>
-          <ArrowBackIcon className="iconBack" />
-        </Button>
-        <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+  return (
+    <div className="ContUsuarios">
+      <Button className="btnBack" onClick={handleBack}>
+        <ArrowBackIcon className="iconBack" />
+      </Button>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
 
       <div
         style={{
