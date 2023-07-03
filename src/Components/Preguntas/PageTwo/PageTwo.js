@@ -42,13 +42,13 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
             onButtonClick('pagethree');
 
           }else{
-            swal("El correo que ingreso es erroneo o no esta registrado")
+            swal("El correo que ingreso es erroneo o no esta registrado", "", "error")
           }
   
          
         
         }).catch(() => {
-          swal("Verifique si el correo que ingreso es correcto");
+          swal("Verifique si el correo que ingreso es correcto", "", "error");
         });
         
       } else {
