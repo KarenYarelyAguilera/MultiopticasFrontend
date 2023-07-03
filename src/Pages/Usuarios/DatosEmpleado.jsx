@@ -19,51 +19,42 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales =
-  'http://localhost:3001/api/empleado/sucursal';
+const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
+
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
 const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
-const urlUpdateEmployees = 'http://localhost:3001/api/empleado/actualizar';
-const urlDelEmployees = 'http://localhost:3001/api/empleado/eliminar';
+const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
-export const DatosEmpleado =  ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+
+
+export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([]);
-//estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
-  const [iIdentidad, setiIdentidad] = React.useState(props.data.iIdentidad || '');
-  const [leyenda, setleyenda] = React.useState(false);
+  //estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
+  const [iIdentidad, setiIdentidad] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
 
-  const [Nombre, setNombre] = React.useState('');
+  const [Nombre, setNombre] = React.useState(props.data.nombre || '');
   const [errorNombre, setErrorNombre] = React.useState(false);
   const [Msj, setMsj] = React.useState(false);
 
-  const [Apellido, setApellido] = React.useState('');
+  const [Apellido, setApellido] = React.useState(props.data.apellido || '');
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
 
-  const [Telefono, setTelefono] = useState('');
+  const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
 
-  const [Identidad, setIdentidad] = useState(0);
+  const [Identidad, setIdentidad] = useState(parseInt(props.data.numeroIdentidad) || 0);
   const [Telefonoc, setTelefonoc] = useState(0);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    console.log(`Nuevo valor de ${name}: ${value}`);
-  };
 
   /*   useEffect(() => {
       fetch(urlSucursales).then(response => response.json())
@@ -79,8 +70,7 @@ export const DatosEmpleado =  ({
   
   const navegate = useNavigate();
 
-
-  const actualizar = async () => {
+  const actualizarEmpleado = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
@@ -88,6 +78,33 @@ export const DatosEmpleado =  ({
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
+    const data = {
+      nombre:nombres.toUpperCase(),
+      apellido:apellidos.toUpperCase(),
+      telEmple:telefono,
+      idSucursal:sucursal,
+      idGenero:genero,
+      numId:identidad,
+      IdEmpleado:props.data.IdEmpleado,
+    }
+
+    axios.put(urlUpdEmpleado,data).then(()=>{
+      swal("Empleado Actualizado Correctamente","","success").then(()=>{
+        navegate('/empleados/lista')
+      })
+    })
+
+  }
+
+  const insertEmpleado = async () => {
+    let identidad = document.getElementById('Nidentidad').value;
+    let nombres = document.getElementById('nombre').value;
+    let apellidos = document.getElementById('apellido').value;
+    let telefono = document.getElementById('phone').value;
+    let genero = parseInt(document.getElementById('genero').value);
+    let sucursal = parseInt(document.getElementById('sucursal').value);
+
+    //tienen que estar igual a las apis del node
     let data = {
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
@@ -96,59 +113,49 @@ export const DatosEmpleado =  ({
       idSucursal: sucursal,
       numId: identidad,
     };
-  
-    let dataB = {
-      Id: props.idU
-    }
-    if (await axios.put(urlUpdateEmployees, data)) {
-      swal(<h1>Empleado Actualizado Correctamente</h1>).then(()=>{props.limpiarData({});props.limpiarUpdate(false)});
-      navegate('/empleados/lista')
-    }
-  };
+    /* if (sendData(urlIEmpleado, data)) {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        swal({
+          title: '¿Desea crearle un usuario al empleado agregado?',
+          icon: 'question',
+          buttons: true,
+          dangerMode: true,
+          buttons: ['Cancelar', 'Aceptar'],
+        }).then(result => {
+          if (result) navegate('/usuarios/crearusuario');
+          else {
+            navegate('/empleados/lista');
+          }
+        });
 
-  const insertar = async () => {
- 
-      let identidad = document.getElementById('Nidentidad').value;
-      let nombres = document.getElementById('nombre').value;
-      let apellidos = document.getElementById('apellido').value;
-      let telefono = document.getElementById('phone').value;
-      let genero = parseInt(document.getElementById('genero').value);
-      let sucursal = parseInt(document.getElementById('sucursal').value);
-  
-   
-    let data = {
-      nombre: nombres.toUpperCase(),
-      apellido: apellidos.toUpperCase(),
-      telEmple: telefono,
-      idGenero: genero,
-      idSucursal: sucursal,
-      numId: identidad,
-    };
+        navegate('/empleados/lista');
+      });
+    } */
 
-    let dataB = {
-      Id: props.idU
-    }
+    await axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        navegate('/empleados/lista');
+      });
 
-    if (await axios.post(urlIEmpleado, data)) {
-      swal('Empleado creado exitosamente.', '', 'success');
-      //sendData(urlBitacoraUsuario,dataB)
-    }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al registrar el cliente', '', 'success')
+    })
+
   };
 
   const handleBack = () => {
-    props.limpiarData({})
-    props.limpiarUpdate(false)
     navegate('/usuarios');
   };
 
   return (
     <div className="ContUsuarios">
-      <Button className="btnBack" 
-      onClick={handleBack}>
+      <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Empleado</h2> : <h2>Registro de Empleado</h2>}
+        {props.actualizar ? <h2>Actualizar Empleado</h2> : <h2>Registro de Empleado</h2>}
+
         <h3>
           Complete todos los puntos para poder registrar los datos del empleado
         </h3>
@@ -164,7 +171,8 @@ export const DatosEmpleado =  ({
                 type="text"
                 name=""
                 maxLength={13}
-                minLength={13}
+                onChange={e => setIdentidad(parseInt(e.target.value))}
+                value={Identidad}
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
@@ -182,10 +190,9 @@ export const DatosEmpleado =  ({
                       setErrorIdentidad(false);
                       setleyenda('');
                     }
-                    
+
                   }
                 }}
-                onChange={e=>setiIdentidad(e.target.value)}
                 placeholder="Identidad"
                 id="Nidentidad"
               />
@@ -195,6 +202,7 @@ export const DatosEmpleado =  ({
             <div className="contInput">
               <TextCustom text="Nombre" />
               <input
+                onChange={e => setNombre(e.target.value)}
                 onKeyDown={e => {
                   setNombre(e.target.value);
                   if (Nombre == '') {
@@ -202,7 +210,7 @@ export const DatosEmpleado =  ({
                     setMsj('Los campos no deben estar vacios');
                   } else {
                     setErrorNombre(false);
-                    var preg_match =/^[a-zA-Z\s]*$/;
+                    var preg_match = /^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Nombre)) {
                       setErrorNombre(true);
                       setMsj('Solo debe de ingresar letras');
@@ -221,6 +229,7 @@ export const DatosEmpleado =  ({
                 placeholder="Nombre"
                 variant="standard"
                 id="nombre"
+                value={Nombre}
                 label="Usuario"
               />
               <p className="error">{Msj}</p>
@@ -229,6 +238,7 @@ export const DatosEmpleado =  ({
             <div className="contInput">
               <TextCustom text="Apellido" className="titleInput" />
               <input
+                onChange={e => setApellido(e.target.value)}
                 onKeyDown={e => {
                   setApellido(e.target.value);
                   if (Apellido == '') {
@@ -236,7 +246,7 @@ export const DatosEmpleado =  ({
                     setAviso('Los campos no deben estar vacios');
                   } else {
                     setErrorApellido(false);
-                    var preg_match =/^[a-zA-Z\s]*$/;
+                    var preg_match = /^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true);
                       setAviso('Solo deben de ingresar letras');
@@ -248,6 +258,7 @@ export const DatosEmpleado =  ({
                 }}
                 error={errorApellido}
                 type="text"
+                value={Apellido}
                 name=""
                 helperText={aviso}
                 maxLength={50}
@@ -269,6 +280,7 @@ export const DatosEmpleado =  ({
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
               <input
+                onChange={e => setTelefono(e.target.value)}
                 onKeyDown={e => {
                   setTelefono(e.target.value);
                   if (Telefono == '') {
@@ -294,6 +306,7 @@ export const DatosEmpleado =  ({
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
+                value={Telefono}
               />
               {<p className="error">{texto}</p>}
             </div>
@@ -316,7 +329,7 @@ export const DatosEmpleado =  ({
             </div>
 
             <div className="contBtnStepper">
-            {props.update ? <Button
+              <Button
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
@@ -344,45 +357,13 @@ export const DatosEmpleado =  ({
                   if (isNaN(Telefonoc) || isNaN(Identidad)) {
                     swal('Corrija los campos Erroneos', '', 'error');
                   } else {
-                    actualizar();
+                    props.actualizar ? actualizarEmpleado() : insertEmpleado();
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1>
-              </Button> : <Button
-                variant="contained"
-                className="btnStepper"
-                onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !== 'number'
-                  )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
-                  } else {
-                    insertar();
-                  }
-                }}
-              >
-                <h1>{'Finish' ? 'Crear Empleado' : 'Finish'}</h1>
-                </Button>}
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+
+              </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
               </Button> */}
