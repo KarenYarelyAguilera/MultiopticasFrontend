@@ -95,7 +95,7 @@ export const AddUsers = (props) => {
     let data = {
       idUsuario: props.data.id_Usuario,
       usuario: user.toLocaleUpperCase(),
-      nombreUsuario: nombre,
+      nombreUsuario: nombre.toLocalUpperCase(),
       clave: refContrasenia.current.value,
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,

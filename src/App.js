@@ -132,26 +132,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           />
 
           <Route
-            path="/empleados/lista"
-            element={
-              /*  <ProtectedRoute activo={activo}> */
-              <div className="flex">
-                <BarraLateral
-                  user={user}
-                  rol={rol}
-                  mail={mail}
-                  estado={access}
-                  Rol={Rol}
-                  obj={cObjeto}
-                />
-                <BarraHorizontal user={usuario} />
-                <ListaEmpleados></ListaEmpleados>
-              </div>
-              /*  </ProtectedRoute> */
-            }
-          />
-
-          <Route
             path="/promocion/listaPromocion"
             element={
               <ProtectedRoute activo={activo}>
@@ -221,16 +201,16 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={<Metodos1 correo={correo}></Metodos1>}
           ></Route>
 
-          {/* <Route
+           <Route
             path="/preguntasSeguridad"
             element={
-              <PreguntasSeguridad
+              <Metodos1
                 activo={activo}
                 user={usuario}
                 mail={correo}
               />
             }
-          ></Route> */}
+          ></Route> 
 
           <Route
             path="/progress"
@@ -519,7 +499,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaEmpleados update={update} />
+                <ListaEmpleados update={update} data={Data} />
               </div>
               //  </ProtectedRoute>
             }
@@ -879,7 +859,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosEmpleado></DatosEmpleado>
+                <DatosEmpleado actualizar={actualizar} update={update} data={data} Data={Data}></DatosEmpleado>
               </div>
               // </ProtectedRoute>
             }
