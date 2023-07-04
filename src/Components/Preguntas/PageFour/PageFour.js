@@ -10,7 +10,9 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 
+
 export const PageFour = ({correo,id, estado, autor }) => {
+
 
   const [clave1, setContra1] = useState("");
   const [msj, setMsjs] = useState("");
@@ -201,3 +203,4 @@ export const PageFour = ({correo,id, estado, autor }) => {
 };
 
 export default PageFour;
+
