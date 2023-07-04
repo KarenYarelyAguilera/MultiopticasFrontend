@@ -217,6 +217,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/progress"
             element={
               <Progress
+              estado={activo}
+              id={idUsuario}
               // activo={activo}
               // user={usuario}
               // mail={correo}

@@ -2,25 +2,29 @@
 import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
 import swal from '@sweetalert/with-react';
+import { useNavigate } from 'react-router';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export const PageThree = ({ onButtonClick, correo }) => {
+export const PageThree = ({ onButtonClick, correo, id, estado  }) => {
 
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/compararR';
-  const urlId = 'http://localhost:3000/api/token/id';
+  const urlBloquearUsu="http://localhost:3000/api/usuario/estado"
+  const urlInsertPregResp ="http://localhost:3000/api/preguntas/respuestas/agregar"
+ // const urlId = 'http://localhost:3000/api/token/id';
 
 //
-  const [id, setId] = useState(0);
+  //const [id, setId] = useState(0);
   const [pasar,setPasar]=useState(false)
 //
+const navegate = useNavigate();
 
  
-  
+  //para las preguntas
   useEffect(() => {
     //console.log(data);
     axios.get(urlPreguntas).then(response =>{
@@ -30,18 +34,18 @@ export const PageThree = ({ onButtonClick, correo }) => {
 
    
 
-  const data = {
+/*   const data = {
     "correo": correo,
-  }; 
+  };  */
 
    //correo y id_usuario
-    useEffect(() => {
+/*     useEffect(() => {
     console.log(data);
     axios.post(urlId, data).then(response => {
       setId(response.data);
     }).catch(error => console.log(error));
     }, [id]); 
-
+ */
 
 /*    const data2 = {
     "Id_Pregunta":Id_Pregunta,
@@ -62,26 +66,77 @@ export const PageThree = ({ onButtonClick, correo }) => {
    //
 
 
-  const handleClick = async () => {
-
+   const handleInsertPreg = async ()=>{
+    
+    
     const Id_Pregunta =parseInt(document.getElementById('Id_preguntas').value);
     const respuestap = document.getElementById('respuestap').value;
+    
 
 
     let data = {
+      correo: correo,
+      Id_Pregunta:respuestap,
+      respuesta: Id_Pregunta ,
+      idUser: id,
+
+    };
+
+   axios.post(urlInsertPregResp,data).then(()=>swal("Pregunta registrada correctamente","","success").then(()=>onButtonClick('pagefour')))
+   
+   }
+
+  const handleClick = async () => {
+
+
+    const Id_Pregunta =parseInt(document.getElementById('Id_preguntas').value);
+    const respuestap = document.getElementById('respuestap').value;
+    
+
+
+    let data = {
+      correo: correo,
       Id_Pregunta:Id_Pregunta,
       Respuesta: respuestap,
       Id_Usuario: id,
 
     };
 
-    console.log(data);
+   axios.post(urlInsertPregResp,data).then(()=>swal("Pregunta registrada correctamente","","success").then(()=>onButtonClick('pagefour')))
+    
+    
+    //Login Primera vez
 
-     await axios.post(urlRespuestas, data).then(response=>
-      setPasar(response.data));
-     console.log(pasar)
-     return pasar; 
+    //axios.post(urlInsertPregResp,data).then(()=>swal("Pregunta registrada correctamente","","success").then(()=>onButtonClick('pagefour')))
 
+    //Fin Login primera vez
+    //console.log(data);
+
+     await axios.post(urlRespuestas, data).then(response=>{
+
+      let dataId={
+        correo: correo,
+      }
+      
+      if (response.data==false) {
+
+          axios.put(urlBloquearUsu, dataId).then(response=>{
+          console.log(response.dataId);
+         });
+         navegate('/')
+          
+        swal(
+          '¡Usuario Bloqueado! comuniquese con el administrador.',
+          '',
+          'warning',
+        )
+      }else{
+        onButtonClick('pagefour')
+
+      }
+     });
+     
+     return pasar;
   };
  
 
@@ -119,6 +174,7 @@ export const PageThree = ({ onButtonClick, correo }) => {
           <TextCustom text="Respuesta:" className="titleInput" />
           <div className="contInput">
             <input
+             maxLength="20"
               type="text"
               name=""
               className="inputCustom"
@@ -129,13 +185,13 @@ export const PageThree = ({ onButtonClick, correo }) => {
           </div>
         </div>
         <div className='divSubmitQuestion'>
-          <input
+          {estado=="Nuevo"?<input
             className="btnSubmitPreguntas"
             type="button"
-            value="Siguiente"
-           // onClick={() => onButtonClick('pagefour')}
+            value="Registrar"
+            onClick={handleInsertPreg}
 
-              onClick={() => {
+             /*  onClick={() => {
 
               handleClick()
 
@@ -149,9 +205,32 @@ export const PageThree = ({ onButtonClick, correo }) => {
                   onButtonClick('pagefour')
                 } 
               
-            }}  
+            }}   */
 
-          />
+          />:<input
+          className="btnSubmitPreguntas"
+          type="button"
+          value="Siguiente"
+          onClick={handleClick}
+
+           /*  onClick={() => {
+
+            handleClick()
+
+              if (pasar===false) {
+                swal(
+                  'Por favor ingrese la respuesta correcta',
+                  '',
+                  'warning',
+                )
+              }else{
+                onButtonClick('pagefour')
+              } 
+            
+          }}   */
+
+        /> }
+          
         </div>
       </form>
     </main>
