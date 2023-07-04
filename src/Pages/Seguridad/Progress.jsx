@@ -8,7 +8,7 @@ import { MultiProgressPreguntas } from '../../Components/MultiStepProgressBar/Mu
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 
 export const Progress = props => {
-
+console.log(props.estado);
   const [correo1, setCorreo1] = useState('');
   const [Id,setId] = useState(0);
   
@@ -56,8 +56,8 @@ export const Progress = props => {
           {
             pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
             pagetwo: <PageTwo correo1={correo1} id={id} autor={autr}  onButtonClick={nextPage} />,
-            pagethree:<PageThree correo={correo1} id={Id}   onButtonClick={nextPage} />,
-            pagefour: <PageFour correo={correo1} id={Id} autor={autor}  />,
+            pagethree:<PageThree correo={correo1} id={props.id}  estado={props.estado}  onButtonClick={nextPage} />,
+            pagefour: <PageFour correo={correo1} id={props.id} autor={autor} estado={props.estado}  />,
 
           }[page]
         }

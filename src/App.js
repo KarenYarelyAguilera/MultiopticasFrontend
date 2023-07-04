@@ -131,7 +131,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-
           <Route
             path="/promocion/listaPromocion"
             element={
@@ -184,6 +183,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idUsuario={idUsuario}
                   />
                   <BarraHorizontal user={usuario} />
                   <Home></Home>
@@ -217,6 +217,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/progress"
             element={
               <Progress
+              estado={activo}
+              id={idUsuario}
               // activo={activo}
               // user={usuario}
               // mail={correo}
@@ -301,7 +303,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   id={idUsuario}
                 />
                 <BarraHorizontal user={usuario} />
-                <Usuarios rol={Rol} obj={obj}></Usuarios>
+                <Usuarios rol={Rol} obj={obj} id={idUsuario} ></Usuarios>
               </div>
               // </ProtectedRoute>
             }
@@ -860,7 +862,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosEmpleado idU={idUsuario} data={data} update={actualizar} limpiarData={Data} limpiarUpdate={update}> </DatosEmpleado>
+                <DatosEmpleado actualizar={actualizar} update={update} data={data} Data={Data}></DatosEmpleado>
               </div>
               // </ProtectedRoute>
             }
