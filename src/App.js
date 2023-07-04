@@ -131,6 +131,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
+
           <Route
             path="/promocion/listaPromocion"
             element={
@@ -860,7 +861,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
+
                 <DatosEmpleado actualizar={actualizar} update={update} data={data} Data={Data}></DatosEmpleado>
+
               </div>
               // </ProtectedRoute>
             }

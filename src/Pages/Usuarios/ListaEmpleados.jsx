@@ -16,7 +16,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = (props) => {
+export const ListaEmpleados = ({data,update}) => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
@@ -138,31 +138,30 @@ export const ListaEmpleados = (props) => {
   }
 
   //funcion de actualizar
-
-
   function handleUpdt(id) {
-    // onRowClick={empleado => {
     swal({
       buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
+        update: 'Actualizar',
+        cancel: 'Cancelar',
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el empleado: {id.nombre} ?
+          ¿Desea actualizar el empleado?:{' '}
+          {id.Usuario}
         </div>
       ),
-    }).then(op => {
+    }).then(
+      op => {
       switch (op) {
         case 'update':
+
           props.data(id)
           props.update(true)
           navegate('/usuarios/crearempleado')
+
       }
     });
-
-    //}//}//
-  }
+  };
 
   const handleBack = () => {
     navegate('/usuarios');

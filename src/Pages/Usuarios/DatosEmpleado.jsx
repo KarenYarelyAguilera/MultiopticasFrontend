@@ -399,4 +399,4 @@ export const DatosEmpleado = (props) => {
       </div>
     </div>
   );
-};
+}
