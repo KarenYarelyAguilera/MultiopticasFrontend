@@ -125,7 +125,7 @@ export const Login = props => {
   return (
     <div className="contPadre">
       <div className="contLogin">
-        <img src={logo} alt="logo" width="270px" />
+        <img src={logo} alt="logo" className='logoPrincipal' />
         <h1 className="titleHello">Hola, Bienvenido</h1>
         <div className="contHijoLogin">
           <div className="contInputLogin">
