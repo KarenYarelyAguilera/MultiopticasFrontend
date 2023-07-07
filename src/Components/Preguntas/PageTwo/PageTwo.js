@@ -97,7 +97,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
                     setTextoCorreo('');
                   }
                 }}
-                maxLength={30}
+                maxLength={50}
                 error={errorCorreo}
                 helperText={textoCorreo}
 

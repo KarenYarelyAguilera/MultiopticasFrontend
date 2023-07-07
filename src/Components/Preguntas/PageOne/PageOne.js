@@ -1,69 +1,35 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
 import '../../../Styles/RecuperacionPassword.css';
 
-
-
 export const PageOne = ({ onButtonClick, correo }) => {
-
-  const [email, setCorreo] = useState("");
-  const [textoCorreo, setTextoCorreo] = useState("");
-  const [errorCorreo, setErrorCorreo] = useState(false);
-
   return (
+
     <main>
+      <div className="titleRecuperacion">
+          <h2>Confirme tu correo electrónico</h2>
+          <h3>Confirma tu identidad introduciendo el correo que utilizaste a la hora de crear la cuenta</h3>
+        </div>
       <form className="measure">
-        <div className="contPrincipalRecu">
-          <div className="divInfoQuestionResp">
+        <div className="contPrincipalRecuperacion">
+          <div className='divInfoRecuperacion'>
 
-            <TextCustom
-              text="Ingrese su correo electronico:"
-              className="titleInput"
+          <TextCustom text="Respuesta:" className="titleInput" />
+          <div className="contInput">
+            <input
+              type="text"
+              name=""
+              className="inputCustom"
+              placeholder="Respuesta"
+              id='respuesta'
             />
-
-            <div className="contInput">
-              <input
-              onKeyDown={(e) => {
-                setCorreo(e.target.value)
-                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!expresion.test(email)) {
-                  setErrorCorreo(true)
-                  setTextoCorreo("Formato invalido");
-                }
-                else {
-                  setErrorCorreo(false);
-                  setTextoCorreo("");
-                }
-              }}
-              onClick={e => {
-                setCorreo(e.target.value);
-                if (email === '') {
-                  setErrorCorreo(true);
-                  setTextoCorreo('Los campos no deben estar vacios');
-                } else {
-                  setErrorCorreo(false);
-                  setTextoCorreo('');
-                }
-              }}
-              maxLength={30}
-              error={errorCorreo}
-              helperText={textoCorreo}
-                type="text"
-                name=""
-                className="inputCustom"
-                placeholder="Respuesta"
-                id='respuesta'
-              />
-            </div>
-            <p className='error'>{textoCorreo}</p>
+          </div>
           </div>
         </div>
-        
-        
-        <div className="divSubmitQuestion">
+        <div className='divSubmitRecuperacion'>
           <input
-            className="btnSubmitPreguntas"
+            className="btnSubmit"
             type="button"
             value="Siguiente"
             onClick={() => {
@@ -71,10 +37,9 @@ export const PageOne = ({ onButtonClick, correo }) => {
               onButtonClick('pagetwo')}}
           />
         </div>
-
-
       </form>
     </main>
+
   );
 };
 

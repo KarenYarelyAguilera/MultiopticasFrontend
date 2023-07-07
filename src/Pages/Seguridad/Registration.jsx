@@ -7,6 +7,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
+
 const urlIEmpleado = 'http://localhost:3000/api/empleado/AutoRegistro';
 const urlUsuario = 'http://localhost:3000/api/usuario/AutoRegistro';
 
@@ -313,7 +314,7 @@ export const Registration = ({
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
 
-              onKeyDown={(e) => {
+              onChange={(e) => {
                 setContra1(e.target.value);
                 if (contra1 === "") {
                   setErrorContra1(true);
@@ -337,7 +338,7 @@ export const Registration = ({
               placeholder='Contraseña'
               className="inputCustomPass"
               type={showPassword ? 'text' : 'password'}
-              inputProps={{ maxLength: 20 }}
+              inputProps={{ maxLength: 20, minLenght:8 }}
               inputRef={refContrasenia}
               endAdornment={
 
@@ -362,7 +363,7 @@ export const Registration = ({
             <TextCustom text="Confirmar Contraseña" className="titleInput" />
             <div className="contInput">
               <FilledInput
-                onKeyDown={(e) => {
+                onChange={(e) => {
                   setContra2(e.target.value);
                   if (contra2 === "") {
                     setErrorContra2(true);
@@ -379,7 +380,7 @@ export const Registration = ({
                       setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
                       setErrorContra2(false);
                     }
-                    if (contra1 !== contra2) {
+                    if (contra1 == contra2) {
                       // Las contraseñas son iguales
                       setadvertencia("Las contraseñas coinciden.");
                     } else {
@@ -394,7 +395,7 @@ export const Registration = ({
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20 }}
+                inputProps={{ maxLength: 20, minLenght:8 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -426,6 +427,7 @@ export const Registration = ({
           </div>
 
         <div className="divSubmitRegis">
+
 
           <button className="buttonCustomRegis" onClick={() => {
             handleProgress();

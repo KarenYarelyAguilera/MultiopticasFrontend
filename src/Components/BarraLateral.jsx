@@ -24,6 +24,7 @@ const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permis
 const urlBitacoraModEmple ="http://localhost:3000/api/bitacora/Empleado"
 const urlCierre ="http://localhost:3000/api/bitacora/Cierre"
 
+
 export const BarraLateral = (props) => {
 
   const data = {

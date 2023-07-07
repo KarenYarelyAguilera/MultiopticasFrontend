@@ -10,7 +10,9 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 
 
-export const PageFour = ({correo,id,autor }) => {
+
+export const PageFour = ({correo,id, estado, autor }) => {
+
 
   const [clave1, setContra1] = useState("");
   const [msj, setMsjs] = useState("");
@@ -26,6 +28,38 @@ export const PageFour = ({correo,id,autor }) => {
 
 
   const navegate = useNavigate()
+
+  const handleClickPrimerLogin = ()=>{
+
+    const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+    const urlUpdEstado = "http://localhost:3000/api/estado/activo"
+ 
+    
+    const contra1 = document.getElementById("contra1").value
+    const contra2 = document.getElementById("contra2").value
+
+    const data ={
+      correo:correo,
+      clave:contra1,
+      id:id,
+      autor:autor
+    }
+    if (contra1!==contra2) {
+      swal("Las contraseñas no coinciden","","warning")
+    }else{
+      
+      axios.put(urlUpdEstado,data)
+      axios.put(urlUpdPassword,data).then(response=>{
+        console.log(response.data);
+        if (response.data===false) {
+          swal("La contraseña no puede ser igual que la anterior","","error")
+        }else{
+          swal("Contraseña actualizada","","success").then(()=>navegate("/"))
+        } 
+      })
+    }
+  }
+ 
   const handleClick = ()=>{
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
@@ -149,13 +183,19 @@ export const PageFour = ({correo,id,autor }) => {
           </div>
         </div>
         <div className='divSubmitRecuperacion'>
-          <input
+          {estado==="Nuevo" ? <input
             className="btnSubmit"
             type="button"
-            value="Cambiar contraseña"
-            onClick={handleClick}
-          />
-        </div>
+            value="Finalizar"
+            onClick={handleClickPrimerLogin}
+          /> : <input
+          className="btnSubmit"
+          type="button"
+          value="Cambiar contraseña"
+          onClick={handleClick}
+        />
+       }
+      </div>    
       </form>
     </main>
       

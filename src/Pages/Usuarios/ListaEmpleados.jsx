@@ -1,47 +1,73 @@
-import { DataGrid, esES } from '@mui/x-data-grid';
-import { useState, useEffect, React } from 'react';
-import { useNavigate } from 'react-router';
-import swal from '@sweetalert/with-react';
-
-//Mui-Material-Icons
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { sendData } from '../../scripts/sendData';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
-import { Button } from '@mui/material';
 
+import InforUsers from '../../IMG/InforUsers.jpg';
+
+//Styles
 import '../../Styles/Usuarios.css';
-import { TextCustom } from '../../Components/TextCustom';
+
+//Components
+import VerticalStepper from '../../Components/VerticalStepper.jsx';
+import { TextCustom } from '../../Components/TextCustom.jsx';
+import swal from '@sweetalert/with-react';
+import { TextField } from '@mui/material';
 import axios from 'axios';
 
-export const ListaEmpleados = ({data,update}) => {
-  const [cambio, setCambio] = useState(0);
-  const [generos, setGeneros] = useState([]);
-  const [sucursales, setSucursales] = useState([]);
+const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
+/* const urlUsers =
+  'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
+const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
+
+
+
+export const DatosEmpleado = (props) => {
+  // const [activeStep, setActiveStep] = React.useState(0);
+
+  // const handleNext = () => {
+  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
+  // };
+  const [sucursales, setSucursales] = useState([]);
+  //estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
+  const [iIdentidad, setiIdentidad] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+  const [errorIdentidad, setErrorIdentidad] = React.useState(false);
+
+
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
 
 
   const urlDelBitacora = 'http://localhost:3000/api/bitacora/EliminarEmpleado';
 
 
+  const [Nombre, setNombre] = React.useState(props.data.nombre || '');
+  const [errorNombre, setErrorNombre] = React.useState(false);
+  const [Msj, setMsj] = React.useState(false);
 
-  const [tableData, setTableData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const [Nombre, setNombre] = useState('');
-  const [errorNombre, setErrorNombre] = useState(false);
-  const [Msj, setMsj] = useState(false);
+  const [Apellido, setApellido] = React.useState(props.data.apellido || '');
+  const [errorApellido, setErrorApellido] = React.useState(false);
+  const [aviso, setAviso] = React.useState(false);
 
-  const [Apellido, setApellido] = useState('');
-  const [errorApellido, setErrorApellido] = useState(false);
-  const [aviso, setAviso] = useState(false);
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
 
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
+  const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
+
+  const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
+  const [Telefonoc, setTelefonoc] = useState(0);
+
+  /*   useEffect(() => {
+      fetch(urlSucursales).then(response => response.json())
+        .then(data => setSucursales(data));
+    }, []); */
 
   useEffect(() => {
     axios
@@ -52,56 +78,61 @@ export const ListaEmpleados = ({data,update}) => {
       .catch(error => console.log(error));
   }, [cambio]);
 
-  const navegate = useNavigate();
 
-  const filteredData = tableData.filter(row =>
-    Object.values(row).some(
-      value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
-  );
+    const data = {
+      nombre:nombres.toUpperCase(),
+      apellido:apellidos.toUpperCase(),
+      telEmple:telefono,
+      idSucursal:sucursal,
+      idGenero:genero,
+      numId:identidad,
+      IdEmpleado:props.data.IdEmpleado,
+    }
 
-  const columns = [
-    //son los de la base no los de node
-    { field: 'IdEmpleado', headerName: 'ID', width: 190 },
-    { field: 'nombre', headerName: 'Nombre', width: 190 },
-    { field: 'apellido', headerName: 'Apellido', width: 190 },
-    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190 },
-    { field: 'departamento', headerName: 'Sucursal', width: 190 },
-    { field: 'descripcion', headerName: 'Genero', width: 190 },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 260,
+    axios.put(urlUpdEmpleado,data).then(()=>{
+      swal("Empleado Actualizado Correctamente","","success").then(()=>{
+        navegate('/empleados/lista')
+      })
+    })
 
-      renderCell: params => (
-        <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.IdEmpleado)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-        </div>
-      ),
-    },
-  ];
+  }
 
-  //funcion de eliminar
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
+  const insertEmpleado = async () => {
+    let identidad = document.getElementById('Nidentidad').value;
+    let nombres = document.getElementById('nombre').value;
+    let apellidos = document.getElementById('apellido').value;
+    let telefono = document.getElementById('phone').value;
+    let genero = parseInt(document.getElementById('genero').value);
+    let sucursal = parseInt(document.getElementById('sucursal').value);
 
-          <div className="logoModal">¿Desea Eliminar este empleado?</div>
-          <div className="contEditModal">
+    //tienen que estar igual a las apis del node
+    let data = {
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      telEmple: telefono,
+      idGenero: genero,
+      idSucursal: sucursal,
+      numId: identidad,
+    };
+    /* if (sendData(urlIEmpleado, data)) {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        swal({
+          title: '¿Desea crearle un usuario al empleado agregado?',
+          icon: 'question',
+          buttons: true,
+          dangerMode: true,
+          buttons: ['Cancelar', 'Aceptar'],
+        }).then(result => {
+          if (result) navegate('/usuarios/crearusuario');
+          else {
+            navegate('/empleados/lista');
+          }
+        });
 
-          </div>
+        navegate('/empleados/lista');
+      });
+    } */
+
 
         </div>
       ),
@@ -211,15 +242,8 @@ export const ListaEmpleados = ({data,update}) => {
             </Button>
           </div>
         </div>
-        <DataGrid
-          getRowId={tableData => tableData.IdEmpleado}
-          rows={filteredData}
-          columns={columns}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          //aqui iba el onrow
-          rowsPerPageOptions={[5]}
-        />
+
+        <img src={InforUsers} alt="No se encuentro la imagen" />
       </div>
     </div>
   );

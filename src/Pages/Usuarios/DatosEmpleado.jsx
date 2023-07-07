@@ -95,6 +95,7 @@ export const DatosEmpleado = (props) => {
     }
 
 
+
     let dataB={
       Id: props.idUsuario
     }
@@ -399,4 +400,4 @@ export const DatosEmpleado = (props) => {
       </div>
     </div>
   );
-}
+};
