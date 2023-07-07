@@ -1,8 +1,39 @@
 import React from "react";
 import { TextCustom } from "../../TextCustom";
 import '../../../Styles/RecuperacionPassword.css';
+import swal from "sweetalert";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
-export const PageFour = () => {
+
+export const PageFour = ({correo,id,autor}) => {
+  const navegate = useNavigate()
+  const handleClick = ()=>{
+
+    const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+    const contra1 = document.getElementById("contra1").value
+    const contra2 = document.getElementById("contra2").value
+
+    const data ={
+      correo:correo,
+      clave:contra1,
+      id:id,
+      autor:autor
+    }
+    if (contra1!==contra2) {
+      swal("Las contraseñas no coinciden","","warning")
+    }else{
+
+      axios.put(urlUpdPassword,data).then(response=>{
+        console.log(response.data);
+        if (response.data===false) {
+          swal("La contraseña no puede ser igual que la anterior","","error")
+        }else{
+          swal("Contraseña actualizada","","success").then(()=>navegate("/"))
+        } 
+      }) 
+    }
+  }
     return (
       <main>
       <div className="titleRecuperacion">
@@ -16,9 +47,10 @@ export const PageFour = () => {
           <TextCustom text="Nueva contraseña" className="titleInput" />
           <div className="contInput">
             <input
-              type="text"
+              type="password"
               name=""
               className="inputCustom"
+              id="contra1"
             />
           </div>
           </div>
@@ -28,9 +60,10 @@ export const PageFour = () => {
           <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
           <div className="contInput">
             <input
-              type="text"
+              type="password"
               name=""
               className="inputCustom"
+              id="contra2"
             />
           </div>
           </div>
@@ -38,8 +71,9 @@ export const PageFour = () => {
         <div className='divSubmitRecuperacion'>
           <input
             className="btnSubmit"
-            type="submit"
+            type="button"
             value="Cambiar contraseña"
+            onClick={handleClick}
           />
         </div>
       </form>

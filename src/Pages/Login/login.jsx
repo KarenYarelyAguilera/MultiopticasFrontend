@@ -21,13 +21,13 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const Login = props => {
-  const urlLogin = 'http://localhost:3001/api/login/compare';
-  const urlDUsuario = 'http://localhost:3001/api/login';
+  const urlLogin = 'http://localhost:3000/api/login/compare';
+  const urlDUsuario = 'http://localhost:3000/api/login';
   const urlFechaExpiracion =
     'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
   const urlBitacoraLogin =
-    'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=login';
+    'http://localhost:3000/api/bitacora/Login';
   const urlIntentos =
     'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
 
@@ -83,9 +83,9 @@ export const Login = props => {
       const respJsonUsr = await axios.post(urlDUsuario, data2); //sendData(urlDUsuario, data2);
       //const respJsonFec = await sendData(urlFechaExpiracion, data2);
 
-      // const dataBitacora = {
-      //   Id: respJsonUsr.data[0].Id_Usuario,
-      // };
+      const dataBitacora = {
+        Id: respJsonUsr.data[0].Id_Usuario,
+      };
 
       console.log(
         respJsonPss.data.result &&
@@ -110,7 +110,8 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
-        navegate('/dashboard');
+        axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
+        
       }
     } catch (error) {
       swal(
@@ -173,8 +174,18 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-              maxLength={13}
+              
               onKeyDown={e => {
+                setContra(e.target.value);
+                if (contra.length > 40) {
+                  setErrorContra(true);
+                  setMsj('A excedido al numero de caracteres');
+                } else {
+                  setErrorContra(false);
+                  setMsj('');
+                }
+              }}
+              onClick={ e => {
                 setContra(e.target.value);
                 if (contra === '') {
                   setErrorContra(true);
@@ -183,16 +194,10 @@ export const Login = props => {
                   setMsj('');
                   setErrorContra(false);
                 }
-                setContra(e.target.value);
-                if (contra.length > 47) {
-                  setErrorContra(true);
-                  setMsj('A excedido al numero de caracteres');
-                } else {
-                  setErrorContra(false);
-                  setMsj('');
-                }
-              }}
+              }
+              }
               error={errorContra}
+              inputProps={{maxLength:150}}
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"

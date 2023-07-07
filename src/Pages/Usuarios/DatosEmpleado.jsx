@@ -19,44 +19,47 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales =
-  'http://localhost:3001/api/empleado/sucursal';
+const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
+
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado =
-  'http://localhost:3001/api/empleado';
+const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
-export const DatosEmpleado = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+
+//URL de bitacora 
+const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
+
+
+
+export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([]);
-
+  //estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
 
-  const [Nombre, setNombre] = React.useState('');
+  const [Nombre, setNombre] = React.useState(props.data.nombre || '');
   const [errorNombre, setErrorNombre] = React.useState(false);
   const [Msj, setMsj] = React.useState(false);
 
-  const [Apellido, setApellido] = React.useState('');
+  const [Apellido, setApellido] = React.useState(props.data.apellido || '');
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
 
-  const [Telefono, setTelefono] = useState('');
+  const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
 
-  const [Identidad, setIdentidad] = useState(0);
+  const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
   /*   useEffect(() => {
@@ -70,9 +73,42 @@ export const DatosEmpleado = ({
     }).catch(error => console.log(error))
   }, []);
 
+  
   const navegate = useNavigate();
 
-  const handleNext = async () => {
+  const actualizarEmpleado = async () => {
+    let identidad = document.getElementById('Nidentidad').value;
+    let nombres = document.getElementById('nombre').value;
+    let apellidos = document.getElementById('apellido').value;
+    let telefono = document.getElementById('phone').value;
+    let genero = parseInt(document.getElementById('genero').value);
+    let sucursal = parseInt(document.getElementById('sucursal').value);
+
+    const data = {
+      nombre:nombres.toUpperCase(),
+      apellido:apellidos.toUpperCase(),
+      telEmple:telefono,
+      idSucursal:sucursal,
+      idGenero:genero,
+      numId:identidad,
+      IdEmpleado:props.data.IdEmpleado,
+    }
+
+
+    let dataB={
+      Id: props.idUsuario
+    }
+
+    axios.put(urlUpdEmpleado,data).then(()=>{
+        swal("Empleado Actualizado Correctamente","","success").then(()=>{
+          axios.post(urlUpdBitacora,dataB)
+        navegate('/empleados/lista')
+      })
+    })
+
+  }
+
+  const insertEmpleado = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
@@ -108,19 +144,31 @@ export const DatosEmpleado = ({
       });
     } */
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+
     await axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
+    swal('Empleado agregado con exito', '', 'success').then(result => {
+      axios.post(urlInsertBitacora, dataB)
         navegate('/empleados/lista');
       });
 
+      let dataB = {
+        Id: props.idUsuario
+      }
+      
     }).catch(error => {
       console.log(error);
       swal('Error al registrar el cliente', '', 'success')
+      axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
 
   const handleBack = () => {
+    props.Data({})
+    props.update(false)
     navegate('/usuarios');
   };
 
@@ -130,7 +178,8 @@ export const DatosEmpleado = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos del empleado</h2>
+        {props.actualizar ? <h2>Actualizar Empleado</h2> : <h2>Registro de Empleado</h2>}
+
         <h3>
           Complete todos los puntos para poder registrar los datos del empleado
         </h3>
@@ -146,10 +195,12 @@ export const DatosEmpleado = ({
                 type="text"
                 name=""
                 maxLength={13}
+                onChange={e => setIdentidad(e.target.value)}
+                value={Identidad}
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
+                  setIdentidad(e.target.value);
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');
@@ -163,7 +214,7 @@ export const DatosEmpleado = ({
                       setErrorIdentidad(false);
                       setleyenda('');
                     }
-                    
+
                   }
                 }}
                 placeholder="Identidad"
@@ -175,6 +226,7 @@ export const DatosEmpleado = ({
             <div className="contInput">
               <TextCustom text="Nombre" />
               <input
+                onChange={e => setNombre(e.target.value)}
                 onKeyDown={e => {
                   setNombre(e.target.value);
                   if (Nombre == '') {
@@ -182,7 +234,7 @@ export const DatosEmpleado = ({
                     setMsj('Los campos no deben estar vacios');
                   } else {
                     setErrorNombre(false);
-                    var preg_match =/^[a-zA-Z\s]*$/;
+                    var preg_match = /^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Nombre)) {
                       setErrorNombre(true);
                       setMsj('Solo debe de ingresar letras');
@@ -201,6 +253,7 @@ export const DatosEmpleado = ({
                 placeholder="Nombre"
                 variant="standard"
                 id="nombre"
+                value={Nombre}
                 label="Usuario"
               />
               <p className="error">{Msj}</p>
@@ -209,6 +262,7 @@ export const DatosEmpleado = ({
             <div className="contInput">
               <TextCustom text="Apellido" className="titleInput" />
               <input
+                onChange={e => setApellido(e.target.value)}
                 onKeyDown={e => {
                   setApellido(e.target.value);
                   if (Apellido == '') {
@@ -216,7 +270,7 @@ export const DatosEmpleado = ({
                     setAviso('Los campos no deben estar vacios');
                   } else {
                     setErrorApellido(false);
-                    var preg_match =/^[a-zA-Z\s]*$/;
+                    var preg_match = /^[a-zA-Z\s]*$/;
                     if (!preg_match.test(Apellido)) {
                       setErrorApellido(true);
                       setAviso('Solo deben de ingresar letras');
@@ -228,6 +282,7 @@ export const DatosEmpleado = ({
                 }}
                 error={errorApellido}
                 type="text"
+                value={Apellido}
                 name=""
                 helperText={aviso}
                 maxLength={50}
@@ -249,6 +304,7 @@ export const DatosEmpleado = ({
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
               <input
+                onChange={e => setTelefono(e.target.value)}
                 onKeyDown={e => {
                   setTelefono(e.target.value);
                   if (Telefono == '') {
@@ -274,6 +330,7 @@ export const DatosEmpleado = ({
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
+                value={Telefono}
               />
               {<p className="error">{texto}</p>}
             </div>
@@ -324,11 +381,12 @@ export const DatosEmpleado = ({
                   if (isNaN(Telefonoc) || isNaN(Identidad)) {
                     swal('Corrija los campos Erroneos', '', 'error');
                   } else {
-                    handleNext();
+                    props.actualizar ? actualizarEmpleado() : insertEmpleado();
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
@@ -341,4 +399,4 @@ export const DatosEmpleado = ({
       </div>
     </div>
   );
-};
+}

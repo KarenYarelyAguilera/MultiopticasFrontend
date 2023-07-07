@@ -18,10 +18,11 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { sendData } from '../scripts/sendData';
+import axios from 'axios';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
-const urlBitacoraUsuario ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Usuario"
-
+const urlBitacoraModEmple ="http://localhost:3000/api/bitacora/Empleado"
+const urlCierre ="http://localhost:3000/api/bitacora/Cierre"
 
 export const BarraLateral = (props) => {
 
@@ -35,17 +36,17 @@ export const BarraLateral = (props) => {
 
   const [permisos, setPermisos] = useState([])
 
-  useEffect(() => {
-    fetch(urlP, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => setPermisos(data)) 
-  }, [])
+  // useEffect(() => {
+  //   fetch(urlP, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setPermisos(data)) 
+  // }, [])
 
 
   let pantallas = Object.values(permisos).map(({ Id_Objeto }) => parseInt(Id_Objeto)) //permite acceder a la propiedad del objeto y aislarla a un array aparte
@@ -170,11 +171,11 @@ export const BarraLateral = (props) => {
 
 
   const logout = () => {
-    props.mail("")
-    props.user("")
-    props.access("inactivo")
-    props.rol("")
-  }
+    props.mail('');
+    props.user('');
+    props.access('inactivo');
+    props.rol('');
+  };
 
   const handleClick = event => {
     const sidebar = document.querySelector('.BarraLateral');
@@ -200,11 +201,36 @@ export const BarraLateral = (props) => {
         />
       </div>
 
-
-
       <div className="navPrincipal">
         <nav>
           <ul>
+            <li>
+              <Link
+                className="link"
+                to="/usuarios"
+                onClick={() =>{
+                  axios.post(urlBitacoraModEmple,dataB)
+                  props.obj(2)}}
+              >
+                {/* fetch(urlBitacoraUsuario, {
+             method: "POST",
+             headers: {
+               "Content-Type": "application/json",
+             },
+             body: JSON.stringify(dataB),
+           })
+           props.obj(2)}}> */}
+
+                <FontAwesomeIcon className="iconLi" icon={faUsers} />
+                <h1>USUARIOS</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/menuClientes">
+                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
+                <h1>CLIENTES</h1>
+              </Link>
+            </li>
 
             {/* <Usuario />
             <Ventas />
@@ -213,6 +239,7 @@ export const BarraLateral = (props) => {
             <Reportes />
             <Configuracion />
             <Recordatorios />
+
             <Seguridad /> */}
             <Inventario/>
            <Clientes/>
@@ -227,11 +254,13 @@ export const BarraLateral = (props) => {
         </nav>
       </div>
 
-
       <div className="logout">
         <ul>
           <li>
-            <Link className="linkLogout" to="/" onClick={logout}>
+            <Link className="linkLogout" to="/"  onClick={(logout) =>{
+              axios.post(urlCierre,dataB)
+              }}
+            >
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
               <h1>CERRAR SESIÓN</h1>
             </Link>

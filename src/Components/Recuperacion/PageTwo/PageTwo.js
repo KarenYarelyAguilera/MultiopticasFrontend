@@ -1,8 +1,45 @@
 import React from 'react';
 import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
+import swal from '@sweetalert/with-react';
+import axios from 'axios';
 
-export const PageTwo = ({ onButtonClick }) => {
+export const PageTwo = ({ onButtonClick,correo1,id, autor }) => {
+  const urlUserExist = "http://localhost:3000/api/login"
+  const urlEnviarCodigo = 'http://localhost:3000/api/token/enviarCodigo';
+
+  const data={
+    correo:correo1
+  }
+  
+
+  const handleClick = async () => {
+    const respuesta = document.getElementById('respuesta').value;
+    if (correo1 === respuesta) {
+      await axios.post(urlUserExist,data).then(response=>{
+
+        id(response.data[0].Id_Usuario)
+        autor(response.data[0].Nombre_Usuario)
+        if (response.data) {
+
+          const data2 = {
+            "correo": correo1,
+            "id": response.data[0].Id_Usuario,
+          };
+  
+           axios.post(urlEnviarCodigo, data2).then(()=> onButtonClick('pagethree'))
+        }else{
+          swal("El correo que ingreso es erroneo o no esta registrado")
+        }
+
+       
+      
+      })
+      
+    } else {
+      swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+    }
+  };
   return (
     <main>
       <div className="titleRecuperacion">
@@ -20,6 +57,7 @@ export const PageTwo = ({ onButtonClick }) => {
               name=""
               className="inputCustom"
               placeholder="Respuesta"
+              id='respuesta'
             />
           </div>
           </div>
@@ -27,9 +65,9 @@ export const PageTwo = ({ onButtonClick }) => {
         <div className='divSubmitRecuperacion'>
           <input
             className="btnSubmit"
-            type="submit"
+            type="button"
             value="Siguiente"
-            onClick={() => onButtonClick('pagethree')}
+            onClick={handleClick}
           />
         </div>
       </form>
