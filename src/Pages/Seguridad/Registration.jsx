@@ -131,25 +131,26 @@ export const Registration = ({
             <TextCustom text="Nombre de Usuario"
               className="titleInput" />
             <input
-              onKeyDown={(e) => {
-
-                if (Nombreusuario == "") {
+             onKeyDown={(e) => {
+            
+              setNombreusuario(e.target.value);
+              if (Nombreusuario === "") {
+                setErrorNombreusuario(true);
+                setMensaje("Los campos no deben estar vacíos");
+              } else {
+                setErrorNombreusuario(false);
+                var regex = /^[A-Z]+$/;
+                if (!regex.test(Nombreusuario)) {
                   setErrorNombreusuario(true);
-                  setMensaje("Los campos no deben estar vacios");
+                  setMensaje("Solo se deben ingresar letras mayúsculas sin espacios");
+                } else {
+                  setErrorNombreusuario(false);
+                  setMensaje("");
                 }
-                else {
-                  setErrorNombreusuario(false)
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(Nombreusuario)) {
-                    setErrorNombreusuario(true)
-                    setMensaje("Solo se debe de ingresar letras sin espacios vacios")
-                  } else {
-                    setErrorNombreusuario(false);
-                    setMensaje("");
-                  }
-                }
-              }}
-              onChange={e => setNombreusuario(e.target.value)}
+
+              }
+            }}
+
               error={errorNombreusuario}
               type="text"
               helperText={mensaje}
@@ -163,6 +164,8 @@ export const Registration = ({
               value={Nombreusuario}
 
               label="Usuario"
+             oninput="this.value = this.value.toUpperCase();" 
+
             />
             <p className='error'>{mensaje}</p>
           </div>
@@ -172,14 +175,22 @@ export const Registration = ({
           <div className="contInput">
             <TextCustom text="Nombre" />
             <input
-              onKeyDown={e => {
-                setNombre(e.target.value);
-                if (Nombre == '') {
+             onKeyDown={e => {
+              setNombre(e.target.value);
+              if (Nombre === '') {
+                setErrorNombre(true);
+                setMsj('Los campos no deben estar vacíos');
+              } else {
+                setErrorNombre(false);
+                var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                if (!regex.test(Nombre)) {
                   setErrorNombre(true);
-                  setMsj('Los campos no deben estar vacios');
+                  setMsj('Solo debe ingresar letras y un espacio entre palabras');
+                } else if (/(.)\1{2,}/.test(Nombre)) {
+                  setErrorNombre(true);
+                  setMsj('No se permiten letras consecutivas repetidas');
                 } else {
                   setErrorNombre(false);
-
                   var preg_match = /^[a-zA-Z\s]*$/;
 
                   if (!preg_match.test(Nombre)) {
@@ -189,8 +200,11 @@ export const Registration = ({
                     setErrorNombre(false);
                     setMsj('');
                   }
+
                 }
-              }}
+              }
+            }}
+            
               error={errorNombre}
               type="text"
               helperText={Msj}
@@ -208,23 +222,26 @@ export const Registration = ({
           <div className="contInput">
             <TextCustom text="Apellido" className="titleInput" />
             <input
-              onKeyDown={e => {
-                setApellido(e.target.value);
-                if (Apellido == '') {
+             onKeyDown={e => {
+              setApellido(e.target.value);
+              if (Apellido === '') {
+                setErrorApellido(true);
+                setAviso('Los campos no deben estar vacíos');
+              } else {
+                setErrorApellido(false);
+                var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                if (!regex.test(Apellido)) {
                   setErrorApellido(true);
-                  setAviso('Los campos no deben estar vacios');
+                  setAviso('Solo deben ingresar letras y un espacio entre palabras');
+                } else if (/(.)\1{2,}/.test(Apellido)) {
+                  setErrorApellido(true);
+                  setAviso('No se permiten letras consecutivas repetidas');
                 } else {
                   setErrorApellido(false);
-                  var preg_match = /^[a-zA-Z\s]+$/;
-                  if (!preg_match.test(Apellido)) {
-                    setErrorApellido(true);
-                    setAviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrorApellido(false);
-                    setAviso('');
-                  }
+                  setAviso('');
                 }
-              }}
+              }
+            }}
               error={errorApellido}
               type="text"
               name=""
@@ -239,28 +256,34 @@ export const Registration = ({
 
           <div className="contInput">
             <TextCustom text="Numero de Identidad" className="titleInput" />
-
             <input
               error={errorIdentidad}
               type="text"
               name=""
-              maxLength={13}
+              maxLength={15}
               className="inputCustom"
               onKeyDown={e => {
                 setiIdentidad(e.target.value);
                 setIdentidad(parseInt(e.target.value));
                 if (iIdentidad === '') {
                   setErrorIdentidad(true);
-                  setleyenda('Los campos no deben estar vacios');
+                  setleyenda('Los campos no deben estar vacíos');
                 } else {
                   setErrorIdentidad(false);
-                  var preg_match = /^[0-9]+$/;
-                  if (!preg_match.test(iIdentidad)) {
+                  var regex = /^\d{4}-\d{4}-\d{5}$/;
+                  if (!regex.test(iIdentidad)) {
                     setErrorIdentidad(true);
-                    setleyenda('Solo deben de ingresar numeros');
+                    setleyenda('El número de identidad debe tener el formato correcto');
                   } else {
                     setErrorIdentidad(false);
-                    setleyenda('');
+                    var primeroscuatrodigitos = parseInt(iIdentidad.substring(0, 4));
+                    if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                      setErrorIdentidad(true);
+                      setleyenda('El número de identidad es inválido');
+                    } else {
+                      setErrorIdentidad(false);
+                      setleyenda('');
+                    }
                   }
                 }
               }}
@@ -314,25 +337,24 @@ export const Registration = ({
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
 
-              onChange={(e) => {
-                setContra1(e.target.value);
-                if (contra1 === "") {
+            onChange={(e) => {
+              setContra1(e.target.value);
+              if (contra1 === "") {
+                setErrorContra1(true);
+                setMsjs("Los campos no deben estar vacíos");
+              } else {
+                setErrorContra1(false);
+                var regularExpression = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/;
+                if (!regularExpression.test(contra1)) {
                   setErrorContra1(true);
-                  setMsjs("Los campos no deben estar vacios");
+                  setMsjs("La contraseña debe contener al menos una letra, un número y un carácter especial");
+                } else {
+                  setErrorContra1(false);
+                  setMsjs("");
                 }
-                else {
-                  setErrorContra1(false)
-                  var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
-                  if (!regularExpression.test(contra1)) {
-                    setErrorContra1(true)
-                    setMsjs("");
-                  }
-                  else {
-                    setMsjs("La contraseña debe de tener letras, numeros y caracteres especiales");
-                    setErrorContra1(false);
-                  }
-                }
-              }}
+              }
+            }}
+
 
               id="filled-adornment-password"
               placeholder='Contraseña'
@@ -345,7 +367,6 @@ export const Registration = ({
                 <InputAdornment position="end">
                   <IconButton
                     maxLength={30}
-
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
                     onMouseDown={handleMouseDownPassword}
@@ -367,30 +388,13 @@ export const Registration = ({
                   setContra2(e.target.value);
                   if (contra2 === "") {
                     setErrorContra2(true);
-                    setadvertencia("Los campos no deben estar vacios");
+                    setadvertencia("Los campos no deben estar vacíos");
                   }
-                  else {
-                    setErrorContra2(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
-                    if (!regularExpression.test(contra2)) {
-                      setErrorContra2(true)
-                      setadvertencia("");
-                    }
-                    else {
-                      setadvertencia("La contraseña debe de tener letras, numeros y caracteres especiales");
-                      setErrorContra2(false);
-                    }
-                    if (contra1 == contra2) {
-                      // Las contraseñas son iguales
-                      setadvertencia("Las contraseñas coinciden.");
+                    if (contra2 === contra1) {
                     } else {
-                      // Las contraseñas son diferentes
-                      setadvertencia("Las contraseñas no coinciden.");
                     }
                   }
-                  
-                }}
-
+                }
                 id="filled-adornment-password"
                 placeholder='Contraseña'
                 className="inputCustomPass"
@@ -402,7 +406,6 @@ export const Registration = ({
                   <InputAdornment position="end">
                     <IconButton
                       maxLength={30}
-
                       aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
@@ -427,13 +430,40 @@ export const Registration = ({
           </div>
 
         <div className="divSubmitRegis">
-
-
-          <button className="buttonCustomRegis" onClick={() => {
-            handleProgress();
-          }}>Siguiente</button>
-
-
+          <button className="buttonCustomRegis"
+          type="submit"
+           onClick={() => {
+            var usuario = document.getElementById("usuario").value;
+            var nombre = document.getElementById("nombre").value;
+            var apellido = document.getElementById("apellido").value;
+            var Nidentidad = document.getElementById("Nidentidad").value;
+            var phone = document.getElementById("phone").value;
+            var correo = document.getElementById("correo").value;
+            var password = document.getElementById("filled-adornment-password").value;
+            
+            if (usuario === "" || nombre === "" || apellido === "" || Nidentidad === "" || phone === "" || password === "" || correo === "") {
+              swal("No deje campos vacíos.", "", "error");
+            } else if (!/^[a-zA-Z]+$/.test(usuario)) {
+              swal("El campo usuario solo acepta letras.", "", "error");
+            } else if (!/^[a-zA-Z\s]+$/.test(nombre)) {
+              swal("El campo nombre solo acepta letras.", "", "error");
+            } else if (!/^[a-zA-Z\s]+$/.test(apellido)) {
+              swal("El campo apellido solo acepta letras.", "", "error");
+            } else if (isNaN(parseInt(Nidentidad))) {
+              swal("El campo identidad solo acepta números.", "", "error");
+            } else if (isNaN(parseInt(phone))) {
+              swal("El campo teléfono solo acepta números.", "", "error");
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+              swal("El campo correo debe contener un correo válido.", "", "error");
+            } 
+            else if(contra1 !== contra2) {
+              swal("Las contraseñas deben de coincidir.", "", "error");
+            } 
+            else {
+              handleProgress();
+            }
+          }}  
+          >Siguiente</button>
         </div>
         <br />
         <span className="refInicioSesion">
