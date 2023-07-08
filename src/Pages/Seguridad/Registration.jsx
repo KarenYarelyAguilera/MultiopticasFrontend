@@ -7,7 +7,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
+
+const urlIEmpleado = 'http://localhost:3000/api/empleado/AutoRegistro';
+const urlUsuario = 'http://localhost:3000/api/usuario/AutoRegistro';
 
 export const Registration = ({
   msgError = '',
@@ -17,7 +19,7 @@ export const Registration = ({
 
 }) => {
 
-  const [Nombreusuario, setNombreusuario] = useState("");
+  const [Nombreusuario, setNombreusuario] = React.useState('');
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);
   const [mensaje, setMensaje] = useState(false);
 
@@ -68,7 +70,7 @@ export const Registration = ({
   };
 
   const handleProgress = async () => {
-    let usuario = document.getElementById('usuario').value; //Nombre de usuario
+    let nombreUsuario = document.getElementById('nombreUsuario').value; //Nombre de usuario
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
     let identidad = document.getElementById('Nidentidad').value;
@@ -77,12 +79,16 @@ export const Registration = ({
     let correo = document.getElementById('correo').value;
 
     let data = {
-      usuario:usuario.toUpperCase(),
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
-      telefonoEmpleado: telefono,
-      IdGenero: genero,
-      numeroIdentidad: identidad,
+      telEmple: telefono,
+      idGenero: genero,
+      numId: identidad,
+    };
+
+    let data2 = {
+      usuario: nombreUsuario,
+      nombre: nombres.toUpperCase(),
       correo: correo,
       clave: refContrasenia.current.value,
     };
@@ -94,6 +100,7 @@ export const Registration = ({
       console.log(error);
       swal('Error al registrar el empleado', '', 'success')
     })
+    await axios.post(urlUsuario, data2).then(response => { });
 
     navegate("/progress")
   }
@@ -118,6 +125,8 @@ export const Registration = ({
         </div>
 
         <div className="divInfoQuestionRegis">
+
+
           <div className="contInput">
             <TextCustom text="Nombre de Usuario"
               className="titleInput" />
@@ -138,18 +147,22 @@ export const Registration = ({
                   setErrorNombreusuario(false);
                   setMensaje("");
                 }
+
               }
             }}
-            
+
               error={errorNombreusuario}
               type="text"
               helperText={mensaje}
-              name=""
+              name="input1"
               className="inputCustom"
               maxLength={15}
               placeholder="Nombre"
               variant="standard"
-              id="usuario"
+
+              id="nombreUsuario"
+              value={Nombreusuario}
+
               label="Usuario"
              oninput="this.value = this.value.toUpperCase();" 
 
@@ -157,6 +170,8 @@ export const Registration = ({
             <p className='error'>{mensaje}</p>
           </div>
 
+
+          {/* textbox para nombre del empleado  */}
           <div className="contInput">
             <TextCustom text="Nombre" />
             <input
@@ -176,7 +191,16 @@ export const Registration = ({
                   setMsj('No se permiten letras consecutivas repetidas');
                 } else {
                   setErrorNombre(false);
-                  setMsj('');
+                  var preg_match = /^[a-zA-Z\s]*$/;
+
+                  if (!preg_match.test(Nombre)) {
+                    setErrorNombre(true);
+                    setMsj('Solo debe de ingresar letras');
+                  } else {
+                    setErrorNombre(false);
+                    setMsj('');
+                  }
+
                 }
               }
             }}
@@ -301,45 +325,12 @@ export const Registration = ({
             {<p className="error">{texto}</p>}
           </div>
 
-
-
-        <div className='contInput'>
-      <TextCustom text="Correo Electronico" className="titleInput"/>
-      <input
-        onKeyDown={(e) => {
-          setCorreo(e.target.value)
-          var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!expresion.test(correo)) {
-            setErrorCorreo(true)
-            setTextoCorreo("Formato invalido");
-          }
-          else {
-            setErrorCorreo(false);
-            setTextoCorreo("");
-          }
-        }}
-        onClick={e => {
-          setCorreo(e.target.value);
-          if (correo === '') {
-            setErrorCorreo(true);
-            setTextoCorreo('Los campos no deben estar vacios');
-          } else {
-            setErrorCorreo(false);
-            setTextoCorreo('');
-          }
-        }}
-              type="text"
-              name=""
-              id="correo"
-              className="inputCustom"
-              placeholder="Correo Electronico"
-              error={errorCorreo}
-              helperText={textoCorreo}
-              maxLength={30}
-
-            />
-            <p className='error'>{textoCorreo}</p>
-
+          <div className="sectInput">
+            <TextCustom text="Correo" className="titleInput" />
+            <div className="contInput">
+              <input type="text" name="" className="inputCustomRegis" />
+            </div>
+          </div>
         </div>
          
           <div className="contInput">
@@ -430,7 +421,7 @@ export const Registration = ({
           </div>
         </div>
 
-        <div className="sectinput">
+       <div className="sectinput">
             <TextCustom text="Genero" className="titleInput" />
             <select name="" className="inputCustomRegis" id="genero">
               <option value={1}>Masculino</option>

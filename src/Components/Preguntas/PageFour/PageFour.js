@@ -203,4 +203,3 @@ export const PageFour = ({correo,id, estado, autor }) => {
 };
 
 export default PageFour;
-

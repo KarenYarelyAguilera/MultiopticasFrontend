@@ -55,7 +55,7 @@ body{
     width: 100%;
     padding-top: 20px;
     height: auto;
-    background-color: aliceblue;
+    background-color: white;
     display: grid;
     grid-template-rows: repeat(2,2fr);
     grid-gap: 10px;
@@ -89,12 +89,207 @@ body{
 }
 /* VENTANA MODAL - LOGIN */
 
-
-
-
 p{
     color:red;
     font-size: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
+}
+
+.logoPrincipal{
+    width: 270px;
+}
+
+
+@media screen and (max-width: 999px) {
+    .contPadre{
+        /* display: flex !important; */
+        /* align-items: normal !important; */
+        grid-template-columns: none !important;
+        grid-template-rows: repeat(1,1fr) !important;
+        justify-content: normal !important;
+        background-position: top !important;
+    }
+
+    .contLogin{
+        grid-template-rows: 9% 10% 66% 0% !important;
+        height: 88vh !important;
+    }
+
+    .contHijoLogin{
+        width: 74% !important;
+        grid-gap: 50px !important;
+    }
+
+    .contImgLogin{
+        display: none !important;
+    }
+
+    .logoPrincipal{
+        width: 217px !important;
+    }
+
+    .titleHello{
+        font-size: 20px !important;
+    }
+
+    .inputCustomLogin{
+        padding: 4px !important;
+        padding-left: 10px !important;
+        font-size: 12px !important;
+    }
+
+    .contInputLogin .titleInput{
+        font-size: 15px !important;
+    }
+    
+    .errorMessage{
+        font-size: 10px !important;
+    }
+
+    .contInputLogin .inputCustomPass{
+        width: 106% !important;
+        height: 39px !important;
+        font-size: 12px !important;
+    }
+
+    .contRecuerdame{
+        font-size: 12px !important;
+        grid-template-columns: 17% 75% !important;
+    }
+
+    .btnRecuerdame {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    .btnOlvidar{
+        font-size: 12px !important;
+    }
+
+    .btnIngresar{
+        width: 96% !important;
+        height: 28px !important;
+        font-size: 13px !important;
+    }
+
+    .contButtons{
+        width: 75% !important;
+        margin-top: 0 !important;
+    }
+
+    .btnRegistrate{
+        margin-top: 0 !important;
+        font-size: 12px !important;
+    }
+
+    .contModal{
+        width: 79%;
+    height: 207px;
+    transition: 0.5s;
+    }
+
+    .contModal #parent-modal-title {
+        font-size: 15px;
+    }
+
+    .btnPreguntas, .btnCorreo{
+        width: 75%;
+        height: 45px !important;
+        font-size: 12px !important;
+    }
+}
+
+@media screen and (min-width: 500px) and (max-width: 999px){
+    .contModal{
+        width: 46%;
+    height: 207px;
+    transition: 0.5s;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .contLogin{
+        grid-template-rows: 9% 10% 66% 0% !important;
+        height: 67vh !important;
+    }
+
+    .contHijoLogin{
+        width: 59% !important;
+        grid-gap: 50px !important;
+    }
+
+    .contImgLogin{
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .logoPrincipal{
+        width: 217px !important;
+    }
+
+    .titleHello{
+        font-size: 20px !important;
+    }
+
+    .inputCustomLogin{
+        padding: 4px !important;
+        padding-left: 10px !important;
+        font-size: 12px !important;
+    }
+
+    .contInputLogin .titleInput{
+        font-size: 15px !important;
+    }
+    
+    .errorMessage{
+        font-size: 10px !important;
+    }
+
+    .contInputLogin .inputCustomPass{
+        width: 106% !important;
+        height: 39px !important;
+        font-size: 12px !important;
+    }
+
+    .contRecuerdame{
+        font-size: 12px !important;
+        grid-template-columns: 17% 75% !important;
+    }
+
+    .btnRecuerdame {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    .btnOlvidar{
+        font-size: 12px !important;
+    }
+
+    .btnIngresar{
+        width: 96% !important;
+        height: 28px !important;
+        font-size: 13px !important;
+    }
+
+    .contButtons{
+        width: 59% !important;
+        margin-top: 0 !important;
+    }
+
+    .btnRegistrate{
+        margin-top: 0 !important;
+        font-size: 12px !important;
+    }
+
+    .contModal{
+        width: 48%;
+    height: 207px;
+    transition: 0.5s;
+    }
+
+    .contModal #parent-modal-title {
+        font-size: 20px;
+    }
 }

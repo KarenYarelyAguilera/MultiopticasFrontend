@@ -21,7 +21,8 @@ import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
-const urlBitacoraUsuario ="http://localhost:3000/api/bitacora/Usuario"
+const urlBitacoraModEmple ="http://localhost:3000/api/bitacora/Empleado"
+const urlCierre ="http://localhost:3000/api/bitacora/Cierre"
 
 
 export const BarraLateral = (props) => {
@@ -209,7 +210,7 @@ export const BarraLateral = (props) => {
                 className="link"
                 to="/usuarios"
                 onClick={() =>{
-                  axios.post(urlBitacoraUsuario,dataB)
+                  axios.post(urlBitacoraModEmple,dataB)
                   props.obj(2)}}
               >
                 {/* fetch(urlBitacoraUsuario, {
@@ -257,7 +258,10 @@ export const BarraLateral = (props) => {
       <div className="logout">
         <ul>
           <li>
-            <Link className="linkLogout" to="/" onClick={logout}>
+            <Link className="linkLogout" to="/"  onClick={(logout) =>{
+              axios.post(urlCierre,dataB)
+              }}
+            >
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
               <h1>CERRAR SESIÓN</h1>
             </Link>

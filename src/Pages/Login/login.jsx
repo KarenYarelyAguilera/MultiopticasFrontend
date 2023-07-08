@@ -106,8 +106,7 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
-        axios.post(urlBitacoraLogin, dataBitacora).then(() => navegate('/dashboard'))
-
+        axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
       }
     } catch (error) {
       setContador(contador + 1)
@@ -122,7 +121,7 @@ export const Login = props => {
   return (
     <div className="contPadre">
       <div className="contLogin">
-        <img src={logo} alt="logo" width="270px" />
+        <img src={logo} alt="logo" className='logoPrincipal' />
         <h1 className="titleHello">Hola, Bienvenido</h1>
         <div className="contHijoLogin">
           <div className="contInputLogin">

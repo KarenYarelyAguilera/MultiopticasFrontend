@@ -27,6 +27,12 @@ const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el em
 const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
 
+//URL de bitacora 
+const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
+
+
 
 export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -88,8 +94,15 @@ export const DatosEmpleado = (props) => {
       IdEmpleado:props.data.IdEmpleado,
     }
 
+
+
+    let dataB={
+      Id: props.idUsuario
+    }
+
     axios.put(urlUpdEmpleado,data).then(()=>{
-      swal("Empleado Actualizado Correctamente","","success").then(()=>{
+        swal("Empleado Actualizado Correctamente","","success").then(()=>{
+          axios.post(urlUpdBitacora,dataB)
         navegate('/empleados/lista')
       })
     })
@@ -132,14 +145,24 @@ export const DatosEmpleado = (props) => {
       });
     } */
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+
     await axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
+    swal('Empleado agregado con exito', '', 'success').then(result => {
+      axios.post(urlInsertBitacora, dataB)
         navegate('/empleados/lista');
       });
 
+      let dataB = {
+        Id: props.idUsuario
+      }
+      
     }).catch(error => {
       console.log(error);
       swal('Error al registrar el cliente', '', 'success')
+      axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
