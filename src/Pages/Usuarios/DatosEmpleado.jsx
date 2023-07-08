@@ -53,7 +53,7 @@ export const DatosEmpleado = (props) => {
 
   const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
 
-  const [Identidad, setIdentidad] = useState(parseInt(props.data.numeroIdentidad) || 0);
+  const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
   /*   useEffect(() => {
@@ -145,6 +145,8 @@ export const DatosEmpleado = (props) => {
   };
 
   const handleBack = () => {
+    props.Data({})
+    props.update(false)
     navegate('/usuarios');
   };
 
@@ -171,12 +173,12 @@ export const DatosEmpleado = (props) => {
                 type="text"
                 name=""
                 maxLength={13}
-                onChange={e => setIdentidad(parseInt(e.target.value))}
+                onChange={e => setIdentidad(e.target.value)}
                 value={Identidad}
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(parseInt(e.target.value));
+                  setIdentidad(e.target.value);
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacios');

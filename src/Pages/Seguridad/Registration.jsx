@@ -7,8 +7,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-const urlIEmpleado = 'http://localhost:3000/api/empleado';
-const urlUsuario = 'http://localhost:3000/api/usuario/insert';
+const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
 
 export const Registration = ({
   msgError = '',
@@ -69,7 +68,7 @@ export const Registration = ({
   };
 
   const handleProgress = async () => {
-    let nombre = document.getElementById('nombre').value; //Nombre de usuario
+    let usuario = document.getElementById('usuario').value; //Nombre de usuario
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
     let identidad = document.getElementById('Nidentidad').value;
@@ -78,12 +77,12 @@ export const Registration = ({
     let correo = document.getElementById('correo').value;
 
     let data = {
-      nombre: nombre,
+      usuario:usuario.toUpperCase(),
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
-      telEmple: telefono,
-      idGenero: genero,
-      numId: identidad,
+      telefonoEmpleado: telefono,
+      IdGenero: genero,
+      numeroIdentidad: identidad,
       correo: correo,
       clave: refContrasenia.current.value,
     };
@@ -95,7 +94,6 @@ export const Registration = ({
       console.log(error);
       swal('Error al registrar el empleado', '', 'success')
     })
-    await axios.post(urlUsuario, data).then(response => { });
 
     navegate("/progress")
   }

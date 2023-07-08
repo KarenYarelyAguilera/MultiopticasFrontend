@@ -36,7 +36,7 @@ export const AddUsers = (props) => {
   const [errorContra2, setErrorContra2] = useState(false);
 
 
-  const [correo, setCorreo] = useState("");
+  const [correo, setCorreo] = useState(props.data.Correo_Electronico || "");
   const [texto, setTexto] = useState("");
   const [errorCorreo, setErrorCorreo] = useState(false);
 
@@ -341,7 +341,6 @@ export const AddUsers = (props) => {
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
-              
               {props.update ? <input
                 onKeyDown={(e) => {
                   setCorreo(e.target.value)
@@ -366,32 +365,6 @@ export const AddUsers = (props) => {
                 maxLength={30}
 
               /> : <input
-              onKeyDown={(e) => {
-                setCorreo(e.target.value)
-                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!expresion.test(correo)) {
-                  setErrorCorreo(true)
-                  setTexto("Formato invalido");
-                }
-                else {
-                  setErrorCorreo(false);
-                  setTexto("");
-                }
-              }}
-              type="text"
-              name="input2"
-              id="correo"
-              className="inputCustom"
-              placeholder="Correo Electronico"
-              error={errorCorreo}
-              helperText={texto}
-              value={correo}
-              maxLength={30}
-              
-
-            /> }
-              
-              <p className='error'>{texto}</p>
             </div>
 
             <div className="contInput">
