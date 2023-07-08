@@ -173,7 +173,7 @@ export const Login = props => {
               
               onKeyDown={e => {
                 setContra(e.target.value);
-                if (contra.length > 40) {
+                if (contra.length > 100) {
                   setErrorContra(true);
                   setMsj('A excedido al numero de caracteres');
                 } else {

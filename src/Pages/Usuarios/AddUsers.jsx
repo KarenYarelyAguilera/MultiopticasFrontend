@@ -27,9 +27,14 @@ export const AddUsers = (props) => {
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);
   const [mensaje, setMensaje] = useState(false);
 
-  const [contra, setContra] = useState("");
+  const [contra1, setContra1] = useState("");
   const [msj, setMsj] = useState("");
-  const [errorContra, setErrorContra] = useState(false);
+  const [errorContra1, setErrorContra1] = useState(false);
+
+  const [contra2, setContra2] = useState("");
+  const [adv, setadv] = useState("");
+  const [errorContra2, setErrorContra2] = useState(false);
+
 
   const [correo, setCorreo] = useState(props.data.Correo_Electronico || "");
   const [texto, setTexto] = useState("");
@@ -234,21 +239,21 @@ export const AddUsers = (props) => {
               <FilledInput
 
                 onKeyDown={(e) => {
-                  setContra(e.target.value);
-                  if (contra === "") {
-                    setErrorContra(true);
+                  setContra1(e.target.value);
+                  if (contra1 === "") {
+                    setErrorContra1(true);
                     setMsj("Los campos no deben estar vacios");
                   }
                   else {
-                    setErrorContra(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]$/;
-                    if (!regularExpression.test(contra)) {
-                      setErrorContra(true)
+                    setErrorContra1(false)
+                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                    if (!regularExpression.test(contra1)) {
+                      setErrorContra1(true)
                       setMsj("");
                     }
                     else {
                       setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
-                      setErrorContra(false);
+                      setErrorContra1(false);
                     }
                   }
                 }}
@@ -257,7 +262,7 @@ export const AddUsers = (props) => {
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20 }}
+                inputProps={{ maxLength: 20, minLenght: 8 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -283,30 +288,37 @@ export const AddUsers = (props) => {
               <FilledInput
 
                 onKeyDown={(e) => {
-                  setContra(e.target.value);
-                  if (contra === "") {
-                    setErrorContra(true);
-                    setMsj("Los campos no deben estar vacios");
+                  setContra2(e.target.value);
+                  if (contra2 === "") {
+                    setErrorContra2(true);
+                    setadv("Los campos no deben estar vacios");
                   }
                   else {
-                    setErrorContra(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]$/;
-                    if (!regularExpression.test(contra)) {
-                      setErrorContra(true)
-                      setMsj("");
+                    setErrorContra2(false)
+                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                    if (!regularExpression.test(contra2)) {
+                      setErrorContra2(true)
+                      setadv("");
                     }
                     else {
-                      setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
-                      setErrorContra(false);
+                      setadv("La contraseña debe de tener letras, numeros y caracteres especiales");
+                      setErrorContra2(false);
                     }
+                  if (contra1 == contra2) {
+                    // Las contraseñas son iguales
+                    setadv("Las contraseñas coinciden.");
+                  } else {
+                    // Las contraseñas son diferentes
+                    setadv("Las contraseñas no coinciden.");
                   }
+                }
                 }}
 
                 id="filled-adornment-password"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20 }}
+                inputProps={{ maxLength: 20, minLenght:8 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -324,38 +336,35 @@ export const AddUsers = (props) => {
                   </InputAdornment>
                 }
               ></FilledInput>
-              <p className='error'>{msj}</p>
+              <p className='error'>{adv}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
-              
-              <input
-              onChange={e=>setCorreo(e.target.value)}
+              {props.update ? <input
+                onKeyDown={(e) => {
+                  setCorreo(e.target.value)
+                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!expresion.test(correo)) {
+                    setErrorCorreo(true)
+                    setTexto("Formato invalido");
+                  }
+                  else {
+                    setErrorCorreo(false);
+                    setTexto("");
+                  }
+                }}
+                type="text"
+                name="input2"
+                id="correo"
+                className="inputCustom"
+                placeholder="Correo Electronico"
+                error={errorCorreo}
+                helperText={texto}
+                value={correo}
+                maxLength={30}
 
-              onKeyDown={(e) => {
-                setCorreo(e.target.value)
-                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!expresion.test(correo)) {
-                  setErrorCorreo(true)
-                  setTexto("Formato invalido");
-                }
-                else {
-                  setErrorCorreo(false);
-                  setTexto("");
-                }
-              }}
-              type="text"
-              name="input2"
-              id="correo"
-              className="inputCustom"
-              placeholder="Correo Electronico"
-              error={errorCorreo}
-              helperText={texto}
-              value={correo}
-              maxLength={30}
-            />               
-              <p className='error'>{texto}</p>
+              /> : <input
             </div>
 
             <div className="contInput">
@@ -401,6 +410,9 @@ export const AddUsers = (props) => {
                   else if (typeof (document.getElementById("correo").value) !== 'string') {
                     swal("El campo correo debe de incluir un correo", "", "error")
                   }
+                  else if(contra1 !== contra2) {
+                    swal("Las contraseñas deben de coincidir.", "", "error");
+                  } 
                   else {
                     actualizar()
                   }

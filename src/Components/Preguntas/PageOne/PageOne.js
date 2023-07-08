@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
 import '../../../Styles/RecuperacionPassword.css';
