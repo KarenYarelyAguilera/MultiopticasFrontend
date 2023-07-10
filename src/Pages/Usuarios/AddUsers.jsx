@@ -28,17 +28,22 @@ export const AddUsers = (props) => {
   const [mensaje, setMensaje] = useState(false);
 
   const [contra1, setContra1] = useState("");
-  const [msj, setMsj] = useState("");
+  const [msjs, setMsjs] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
 
   const [contra2, setContra2] = useState("");
-  const [adv, setadv] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
+  const [advertencia, setadvertencia] = useState(false);
 
 
   const [correo, setCorreo] = useState(props.data.Correo_Electronico || "");
   const [texto, setTexto] = useState("");
   const [errorCorreo, setErrorCorreo] = useState(false);
+
+
+  const [textoCorreo, setTextoCorreo] = useState("");
+  
+
 
   const refContrasenia = useRef(null);
   const navegate = useNavigate();
@@ -61,22 +66,14 @@ export const AddUsers = (props) => {
   //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
     'http://localhost:3000/api/empleado';
-    
   const urlRoles =
     'http://localhost:3000/api/Rol';
   const urlInsert =
     'http://localhost:3000/api/usuario/insert';
-
   const urlUpdateUser =
     'http://localhost:3000/api/usuario/update';
     const urlBitacoraUpdUsuario = 'http://localhost:3000/api/bitacora/ActualizacionUsuario'
 
-
-  const urlBitacoraInsert = 
-   'http://localhost:3000/api/bitacora/InsertUsuario';
-
-  const urlBitacoraUpdUsuario = 
-    'http://localhost:3000/api/bitacora/ActualizacionUsuario';
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -124,7 +121,7 @@ export const AddUsers = (props) => {
     if (await axios.put(urlUpdateUser, data)) {
       console.log(data);
       swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{
-        axios.post(urlBitacoraUpdUsuario,dataB) //----Registro de actualuzacion 
+        axios.post(urlBitacoraUpdUsuario,dataB)
         props.limpiarData({});
         props.limpiarUpdate(false)
       });
@@ -157,10 +154,10 @@ export const AddUsers = (props) => {
       Id: props.idU
     }
 
+    if (await axios.post(urlInsert, data)) {
 
-    if  (await axios.post(urlInsert, data)) { //Registro de nuevo usuario bitacora
-      (await axios.post(urlBitacoraInsert, dataB))
       swal('Usuario creado exitosamente.', '', 'success');
+      navegate('/usuarios/lista');
       //sendData(urlBitacoraUsuario,dataB)
     }
   };
@@ -208,24 +205,25 @@ export const AddUsers = (props) => {
               <TextCustom text="Nombre de Usuario"
                 className="titleInput" />
               <input
-                onKeyDown={(e) => {
-                  
-                  if (Nombreusuario == "") {
+                 onKeyDown={(e) => {
+            
+                  setNombreusuario(e.target.value);
+                  if (Nombreusuario === "") {
                     setErrorNombreusuario(true);
-                    setMensaje("Los campos no deben estar vacios");
-                  }
-                  else {
-                    setErrorNombreusuario(false)
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(Nombreusuario)) {
-                      setErrorNombreusuario(true)
-                      setMensaje("Solo debe de ingresar letras")
+                    setMensaje("Los campos no deben estar vacíos");
+                  } else {
+                    setErrorNombreusuario(false);
+                    var regex = /^[A-Z]+$/;
+                    if (!regex.test(Nombreusuario)) {
+                      setErrorNombreusuario(true);
+                      setMensaje("Solo se deben ingresar letras mayúsculas sin espacios");
                     } else {
                       setErrorNombreusuario(false);
                       setMensaje("");
                     }
                   }
                 }}
+          
                 onChange={e=>setNombreusuario(e.target.value)}
                 error={errorNombreusuario}
                 type="text"
@@ -246,32 +244,30 @@ export const AddUsers = (props) => {
             <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
-
-                onKeyDown={(e) => {
+                onChange={(e) => {
                   setContra1(e.target.value);
                   if (contra1 === "") {
                     setErrorContra1(true);
-                    setMsj("Los campos no deben estar vacios");
-                  }
-                  else {
-                    setErrorContra1(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
+                    setMsjs("Los campos no deben estar vacíos");
+                  } else {
+                    setErrorContra1(false);
+                    var regularExpression = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/;
                     if (!regularExpression.test(contra1)) {
-                      setErrorContra1(true)
-                      setMsj("");
-                    }
-                    else {
-                      setMsj("La contraseña debe de tener letras, numeros y caracteres especiales");
+                      setErrorContra1(true);
+                      setMsjs("La contraseña debe contener al menos una letra, un número y un carácter especial");
+                    } else {
                       setErrorContra1(false);
+                      setMsjs("");
                     }
                   }
                 }}
+              
 
                 id="filled-adornment-password"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20, minLenght: 8 }}
+                inputProps={{ maxLength: 20 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -289,45 +285,29 @@ export const AddUsers = (props) => {
                   </InputAdornment>
                 }
               ></FilledInput>
-              <p className='error'>{msj}</p>
+              <p className='error'>{msjs}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Confirme Contraseña" className="titleInput" />
               <FilledInput
-
-                onKeyDown={(e) => {
-                  setContra2(e.target.value);
-                  if (contra2 === "") {
-                    setErrorContra2(true);
-                    setadv("Los campos no deben estar vacios");
-                  }
-                  else {
-                    setErrorContra2(false)
-                    var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
-                    if (!regularExpression.test(contra2)) {
-                      setErrorContra2(true)
-                      setadv("");
+                  onChange={(e) => {
+                    setContra2(e.target.value);
+                    if (contra2 === "") {
+                      setErrorContra2(true);
+                      setadvertencia("Los campos no deben estar vacíos");
                     }
-                    else {
-                      setadv("La contraseña debe de tener letras, numeros y caracteres especiales");
-                      setErrorContra2(false);
+                      if (contra2 === contra1) {
+                      } else {
+                      }
                     }
-                  if (contra1 == contra2) {
-                    // Las contraseñas son iguales
-                    setadv("Las contraseñas coinciden.");
-                  } else {
-                    // Las contraseñas son diferentes
-                    setadv("Las contraseñas no coinciden.");
                   }
-                }
-                }}
-
+              
                 id="filled-adornment-password"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20, minLenght:8 }}
+                inputProps={{ maxLength: 20 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -345,35 +325,47 @@ export const AddUsers = (props) => {
                   </InputAdornment>
                 }
               ></FilledInput>
-              <p className='error'>{adv}</p>
+              <p className='error'>{advertencia}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
-              {props.update ? <input
-                onKeyDown={(e) => {
-                  setCorreo(e.target.value)
-                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                  if (!expresion.test(correo)) {
-                    setErrorCorreo(true)
-                    setTexto("Formato invalido");
-                  }
-                  else {
-                    setErrorCorreo(false);
-                    setTexto("");
-                  }
-                }}
-                type="text"
-                name="input2"
-                id="correo"
-                className="inputCustom"
-                placeholder="Correo Electronico"
-                error={errorCorreo}
-                helperText={texto}
-                value={correo}
-                maxLength={30}
-
-              /> : <input
+              
+              <input
+               onKeyDown={(e) => {
+                setCorreo(e.target.value)
+                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!expresion.test(correo)) {
+                  setErrorCorreo(true)
+                  setTextoCorreo("Formato invalido");
+                }
+                else {
+                  setErrorCorreo(false);
+                  setTextoCorreo("");
+                }
+              }}
+              onClick={e => {
+                setCorreo(e.target.value);
+                if (correo === '') {
+                  setErrorCorreo(true);
+                  setTextoCorreo('Los campos no deben estar vacios');
+                } else {
+                  setErrorCorreo(false);
+                  setTextoCorreo('');
+                }
+              }}
+              onChange={e=>setCorreo(e.target.value)}
+              type="text"
+              name="input2"
+              id="correo"
+              className="inputCustom"
+              placeholder="Correo Electronico"
+              error={errorCorreo}
+              helperText={texto}
+              value={correo}
+              maxLength={30}
+            />               
+            <p className='error'>{texto}</p>
             </div>
 
             <div className="contInput">
@@ -406,22 +398,21 @@ export const AddUsers = (props) => {
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
-
-                  if (document.getElementById("nombre").value == "" || document.getElementById("filled-adornment-password").value == "" || document.getElementById("correo").value == "") {
-                    swal("No deje campos vacios.", "", "error")
-                  }
-                  else if (typeof (document.getElementById("nombre").value) !== 'string') {
-                    swal("El campo nombre solo acepta letras", "", "error")
-                  }
-                  else if (typeof (document.getElementById("filled-adornment-password").value) !== 'string') {
-                    swal("El campo contraseña debe de incluir letras, numeros y caracteres especiales", "", "error")
-                  }
-                  else if (typeof (document.getElementById("correo").value) !== 'string') {
-                    swal("El campo correo debe de incluir un correo", "", "error")
-                  }
-                  else if(contra1 !== contra2) {
-                    swal("Las contraseñas deben de coincidir.", "", "error");
-                  } 
+                    var usuario = document.getElementById("nombre").value;
+                    var correo = document.getElementById("correo").value;
+                    var password = document.getElementById("filled-adornment-password").value;
+                    if (usuario === "" || password === "" || correo === "") {
+                      swal("No deje campos vacíos.", "", "error");}
+                      else if (!/^[A-Z]+$/.test(usuario)) {
+                        swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
+                        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                          swal("El campo correo debe contener un correo válido.", "", "error");
+                        } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                          swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                        } else if (contra1 !== contra2) {
+                          swal("Las contraseñas deben coincidir.", "", "error");
+                        }
+                 
                   else {
                     actualizar()
                   }
@@ -433,24 +424,24 @@ export const AddUsers = (props) => {
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
-
-                  if (document.getElementById("nombre").value == "" || document.getElementById("filled-adornment-password").value == "" || document.getElementById("correo").value == "") {
-                    swal("No deje campos vacios.", "", "error")
-                  }
-                  else if (typeof (document.getElementById("nombre").value) !== 'string') {
-                    swal("El campo nombre solo acepta letras", "", "error")
-                  }
-                  else if (typeof (document.getElementById("filled-adornment-password").value) !== 'string') {
-                    swal("El campo contraseña debe de incluir letras, numeros y caracteres especiales", "", "error")
-                  }
-                  else if (typeof (document.getElementById("correo").value) !== 'string') {
-                    swal("El campo correo debe de incluir un correo", "", "error")
-                  }
+                  var usuario = document.getElementById("nombre").value;
+                  var correo = document.getElementById("correo").value;
+                  var password = document.getElementById("filled-adornment-password").value;
+                  if (usuario === "" || password === "" || correo === "") {
+                    swal("No deje campos vacíos.", "", "error");}
+                    else if (!/^[A-Z]+$/.test(usuario)) {
+                      swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
+                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                        swal("El campo correo debe contener un correo válido.", "", "error");
+                      } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                        swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                      } else if (contra1 !== contra2) {
+                        swal("Las contraseñas deben coincidir.", "", "error");
+                      }
                   else {
                     insertar()
                   }
                 }}
-
               >
                 <h1>{'Finish' ? 'Crear Usuario' : 'Finish'}</h1>
               </Button>}

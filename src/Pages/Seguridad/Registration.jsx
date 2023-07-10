@@ -7,9 +7,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-
-const urlIEmpleado = 'http://localhost:3000/api/empleado/AutoRegistro';
-const urlUsuario = 'http://localhost:3000/api/usuario/AutoRegistro';
+const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
 
 export const Registration = ({
   msgError = '',
@@ -19,7 +17,7 @@ export const Registration = ({
 
 }) => {
 
-  const [Nombreusuario, setNombreusuario] = React.useState('');
+  const [Nombreusuario, setNombreusuario] = useState("");
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);
   const [mensaje, setMensaje] = useState(false);
 
@@ -70,7 +68,7 @@ export const Registration = ({
   };
 
   const handleProgress = async () => {
-    let nombreUsuario = document.getElementById('nombreUsuario').value; //Nombre de usuario
+    let usuario = document.getElementById('usuario').value; //Nombre de usuario
     let nombres = document.getElementById('nombre').value;
     let apellidos = document.getElementById('apellido').value;
     let identidad = document.getElementById('Nidentidad').value;
@@ -79,16 +77,12 @@ export const Registration = ({
     let correo = document.getElementById('correo').value;
 
     let data = {
+      usuario:usuario.toUpperCase(),
       nombre: nombres.toUpperCase(),
       apellido: apellidos.toUpperCase(),
-      telEmple: telefono,
-      idGenero: genero,
-      numId: identidad,
-    };
-
-    let data2 = {
-      usuario: nombreUsuario,
-      nombre: nombres.toUpperCase(),
+      telefonoEmpleado: telefono,
+      IdGenero: genero,
+      numeroIdentidad: identidad,
       correo: correo,
       clave: refContrasenia.current.value,
     };
@@ -100,7 +94,6 @@ export const Registration = ({
       console.log(error);
       swal('Error al registrar el empleado', '', 'success')
     })
-    await axios.post(urlUsuario, data2).then(response => { });
 
     navegate("/progress")
   }
@@ -125,8 +118,6 @@ export const Registration = ({
         </div>
 
         <div className="divInfoQuestionRegis">
-
-
           <div className="contInput">
             <TextCustom text="Nombre de Usuario"
               className="titleInput" />
@@ -147,22 +138,18 @@ export const Registration = ({
                   setErrorNombreusuario(false);
                   setMensaje("");
                 }
-
               }
             }}
-
+            
               error={errorNombreusuario}
               type="text"
               helperText={mensaje}
-              name="input1"
+              name=""
               className="inputCustom"
               maxLength={15}
               placeholder="Nombre"
               variant="standard"
-
-              id="nombreUsuario"
-              value={Nombreusuario}
-
+              id="usuario"
               label="Usuario"
              oninput="this.value = this.value.toUpperCase();" 
 
@@ -170,8 +157,6 @@ export const Registration = ({
             <p className='error'>{mensaje}</p>
           </div>
 
-
-          {/* textbox para nombre del empleado  */}
           <div className="contInput">
             <TextCustom text="Nombre" />
             <input
@@ -191,16 +176,7 @@ export const Registration = ({
                   setMsj('No se permiten letras consecutivas repetidas');
                 } else {
                   setErrorNombre(false);
-                  var preg_match = /^[a-zA-Z\s]*$/;
-
-                  if (!preg_match.test(Nombre)) {
-                    setErrorNombre(true);
-                    setMsj('Solo debe de ingresar letras');
-                  } else {
-                    setErrorNombre(false);
-                    setMsj('');
-                  }
-
+                  setMsj('');
                 }
               }
             }}
@@ -260,7 +236,7 @@ export const Registration = ({
               error={errorIdentidad}
               type="text"
               name=""
-              maxLength={15}
+              maxLength={13}
               className="inputCustom"
               onKeyDown={e => {
                 setiIdentidad(e.target.value);
@@ -270,7 +246,7 @@ export const Registration = ({
                   setleyenda('Los campos no deben estar vacíos');
                 } else {
                   setErrorIdentidad(false);
-                  var regex = /^\d{4}-\d{4}-\d{5}$/;
+                  var regex =/^\d{13}$/;
                   if (!regex.test(iIdentidad)) {
                     setErrorIdentidad(true);
                     setleyenda('El número de identidad debe tener el formato correcto');
@@ -325,12 +301,45 @@ export const Registration = ({
             {<p className="error">{texto}</p>}
           </div>
 
-          <div className="sectInput">
-            <TextCustom text="Correo" className="titleInput" />
-            <div className="contInput">
-              <input type="text" name="" className="inputCustomRegis" />
-            </div>
-          </div>
+
+
+        <div className='contInput'>
+      <TextCustom text="Correo Electronico" className="titleInput"/>
+      <input
+        onKeyDown={(e) => {
+          setCorreo(e.target.value)
+          var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!expresion.test(correo)) {
+            setErrorCorreo(true)
+            setTextoCorreo("Formato invalido");
+          }
+          else {
+            setErrorCorreo(false);
+            setTextoCorreo("");
+          }
+        }}
+        onClick={e => {
+          setCorreo(e.target.value);
+          if (correo === '') {
+            setErrorCorreo(true);
+            setTextoCorreo('Los campos no deben estar vacios');
+          } else {
+            setErrorCorreo(false);
+            setTextoCorreo('');
+          }
+        }}
+              type="text"
+              name=""
+              id="correo"
+              className="inputCustom"
+              placeholder="Correo Electronico"
+              error={errorCorreo}
+              helperText={textoCorreo}
+              maxLength={30}
+
+            />
+            <p className='error'>{textoCorreo}</p>
+
         </div>
          
           <div className="contInput">
@@ -421,7 +430,7 @@ export const Registration = ({
           </div>
         </div>
 
-       <div className="sectinput">
+        <div className="sectinput">
             <TextCustom text="Genero" className="titleInput" />
             <select name="" className="inputCustomRegis" id="genero">
               <option value={1}>Masculino</option>
@@ -432,7 +441,7 @@ export const Registration = ({
         <div className="divSubmitRegis">
           <button className="buttonCustomRegis"
           type="submit"
-           onClick={() => {
+          onClick={() => {
             var usuario = document.getElementById("usuario").value;
             var nombre = document.getElementById("nombre").value;
             var apellido = document.getElementById("apellido").value;
@@ -440,29 +449,52 @@ export const Registration = ({
             var phone = document.getElementById("phone").value;
             var correo = document.getElementById("correo").value;
             var password = document.getElementById("filled-adornment-password").value;
-            
+          
             if (usuario === "" || nombre === "" || apellido === "" || Nidentidad === "" || phone === "" || password === "" || correo === "") {
               swal("No deje campos vacíos.", "", "error");
-            } else if (!/^[a-zA-Z]+$/.test(usuario)) {
-              swal("El campo usuario solo acepta letras.", "", "error");
-            } else if (!/^[a-zA-Z\s]+$/.test(nombre)) {
-              swal("El campo nombre solo acepta letras.", "", "error");
+            } else if (!/^[A-Z]+$/.test(usuario)) {
+              swal("El campo usuario solo acepta letras mayúsculas sin espacios.", "", "error");
+            } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
+              swal("El campo nombre solo acepta letras y solo un espacio entre palabra.", "", "error");
+            } else if (/(.)\1{2,}/.test(nombre)) {
+              setErrorNombre(true);
+              swal("El campo nombre no acepta letras consecutivas repetidas.", "", "error");
             } else if (!/^[a-zA-Z\s]+$/.test(apellido)) {
-              swal("El campo apellido solo acepta letras.", "", "error");
+              swal("El campo apellido solo acepta letras y solo un espacio entre palabras.", "", "error");
+            } else if (/(.)\1{2,}/.test(apellido)) {
+              setErrorApellido(true);
+              swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
             } else if (isNaN(parseInt(Nidentidad))) {
               swal("El campo identidad solo acepta números.", "", "error");
-            } else if (isNaN(parseInt(phone))) {
-              swal("El campo teléfono solo acepta números.", "", "error");
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-              swal("El campo correo debe contener un correo válido.", "", "error");
-            } 
-            else if(contra1 !== contra2) {
-              swal("Las contraseñas deben de coincidir.", "", "error");
-            } 
-            else {
-              handleProgress();
+            } else {
+              setErrorIdentidad(false);
+              var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
+              if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                setErrorIdentidad(true);
+                setleyenda('El número de identidad es inválido');
+                swal("El número de identidad es inválido", "", "error");
+              } else {
+                setErrorIdentidad(false);
+                var regex = /^\d{13}$/;
+                if (!regex.test(Nidentidad)) {
+                  setErrorIdentidad(true);
+                  setleyenda('El número de identidad debe tener el formato correcto');
+                  swal("El número de identidad debe tener el formato correcto", "", "error");
+                } else if (isNaN(parseInt(phone))) {
+                  swal("El campo teléfono solo acepta números.", "", "error");
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                  swal("El campo correo debe contener un correo válido.", "", "error");
+                } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                  swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                } else if (contra1 !== contra2) {
+                  swal("Las contraseñas deben coincidir.", "", "error");
+                } else {
+                  handleProgress();
+                }
+              }
             }
-          }}  
+          }}
+          
           >Siguiente</button>
         </div>
         <br />

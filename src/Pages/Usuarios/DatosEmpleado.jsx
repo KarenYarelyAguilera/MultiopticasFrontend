@@ -201,21 +201,27 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 onKeyDown={e => {
                   setiIdentidad(e.target.value);
-                  setIdentidad(e.target.value);
+                  setIdentidad(parseInt(e.target.value));
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
-                    setleyenda('Los campos no deben estar vacios');
+                    setleyenda('Los campos no deben estar vacíos');
                   } else {
                     setErrorIdentidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(iIdentidad)) {
+                    var regex =/^\d{13}$/;
+                    if (!regex.test(iIdentidad)) {
                       setErrorIdentidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
+                      setleyenda('El número de identidad debe tener el formato correcto');
                     } else {
                       setErrorIdentidad(false);
-                      setleyenda('');
+                      var primeroscuatrodigitos = parseInt(iIdentidad.substring(0, 4));
+                      if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                        setErrorIdentidad(true);
+                        setleyenda('El número de identidad es inválido');
+                      } else {
+                        setErrorIdentidad(false);
+                        setleyenda('');
+                      }
                     }
-
                   }
                 }}
                 placeholder="Identidad"
@@ -230,15 +236,18 @@ export const DatosEmpleado = (props) => {
                 onChange={e => setNombre(e.target.value)}
                 onKeyDown={e => {
                   setNombre(e.target.value);
-                  if (Nombre == '') {
+                  if (Nombre === '') {
                     setErrorNombre(true);
-                    setMsj('Los campos no deben estar vacios');
+                    setMsj('Los campos no deben estar vacíos');
                   } else {
                     setErrorNombre(false);
-                    var preg_match = /^[a-zA-Z\s]*$/;
-                    if (!preg_match.test(Nombre)) {
+                    var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                    if (!regex.test(Nombre)) {
                       setErrorNombre(true);
-                      setMsj('Solo debe de ingresar letras');
+                      setMsj('Solo debe ingresar letras y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(Nombre)) {
+                      setErrorNombre(true);
+                      setMsj('No se permiten letras consecutivas repetidas');
                     } else {
                       setErrorNombre(false);
                       setMsj('');
@@ -266,15 +275,18 @@ export const DatosEmpleado = (props) => {
                 onChange={e => setApellido(e.target.value)}
                 onKeyDown={e => {
                   setApellido(e.target.value);
-                  if (Apellido == '') {
+                  if (Apellido === '') {
                     setErrorApellido(true);
-                    setAviso('Los campos no deben estar vacios');
+                    setAviso('Los campos no deben estar vacíos');
                   } else {
                     setErrorApellido(false);
-                    var preg_match = /^[a-zA-Z\s]*$/;
-                    if (!preg_match.test(Apellido)) {
+                    var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                    if (!regex.test(Apellido)) {
                       setErrorApellido(true);
-                      setAviso('Solo deben de ingresar letras');
+                      setAviso('Solo deben ingresar letras y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(Apellido)) {
+                      setErrorApellido(true);
+                      setAviso('No se permiten letras consecutivas repetidas');
                     } else {
                       setErrorApellido(false);
                       setAviso('');
@@ -358,37 +370,50 @@ export const DatosEmpleado = (props) => {
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
-                  if (
-                    document.getElementById('Nidentidad').value == '' ||
-                    document.getElementById('nombre').value == '' ||
-                    document.getElementById('apellido').value == ''
-                  ) {
-                    swal('No deje campos vacios.', '', 'error');
-                  } else if (typeof (parseInt(document.getElementById('Nidentidad').value) !== 'number'
-                  )
-                  ) {
-                    swal('El campo identidad solo acepta numeros', '', 'error');
-                  } else if (
-                    typeof document.getElementById('nombre').value !== 'string'
-                  ) {
-                    swal('El campo nombre solo acepta letras', '', 'error');
-                  }
-                  if (
-                    typeof document.getElementById('apellido').value !==
-                    'string'
-                  ) {
-                    swal('El campo apellido solo acepta letras', '', 'error');
-                  }
-                  if (isNaN(Telefonoc) || isNaN(Identidad)) {
-                    swal('Corrija los campos Erroneos', '', 'error');
+                  var Nidentidad = document.getElementById("Nidentidad").value;
+                  var nombre = document.getElementById("nombre").value;
+                  var apellido = document.getElementById("apellido").value;
+                  var phone = document.getElementById("phone").value;
+                
+                  if (nombre === "" || apellido === "" || Nidentidad === "" || phone === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
+                    swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
+                  } else if (/(.)\1{2,}/.test(nombre)) {
+                    setErrorNombre(true);
+                    swal("El campo nombre no acepta letras consecutivas repetidas.", "", "error");
+                  } else if (!/^[a-zA-Z\s]+$/.test(apellido)) {
+                    swal("El campo apellido solo acepta letras y solo un espacio entre palabras.", "", "error");
+                  } else if (/(.)\1{2,}/.test(apellido)) {
+                    setErrorApellido(true);
+                    swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
+                  } else if (isNaN(parseInt(Nidentidad))) {
+                    swal("El campo identidad solo acepta números.", "", "error");
                   } else {
-                    props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                    setErrorIdentidad(false);
+                    var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
+                    if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                      setErrorIdentidad(true);
+                      setleyenda('El número de identidad es inválido');
+                      swal("El número de identidad es inválido", "", "error");
+                    } else {
+                      setErrorIdentidad(false);
+                      var regex = /^\d{13}$/;
+                      if (!regex.test(Nidentidad)) {
+                        setErrorIdentidad(true);
+                        setleyenda('El número de identidad debe tener el formato correcto');
+                        swal("El número de identidad debe tener el formato correcto", "", "error");
+                      } else if (isNaN(parseInt(phone))) {
+                        swal("El campo teléfono solo acepta números.", "", "error");
+                      } else {
+                        props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                      }
+                    }
                   }
-                }}
-              >
-                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
-
-              </Button>
+                }}>
+                  {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                </Button>
+                
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
               </Button> */}
