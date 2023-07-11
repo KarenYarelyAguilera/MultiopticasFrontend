@@ -208,7 +208,7 @@ export const ListUsuarios = ({props,data,update,}) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Usuario
+              Nuevo
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
