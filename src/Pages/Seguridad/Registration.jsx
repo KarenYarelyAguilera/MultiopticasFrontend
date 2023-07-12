@@ -95,7 +95,7 @@ export const Registration = ({
       swal('Error al registrar el empleado', '', 'success')
     })
 
-    navegate("/progress")
+    navegate("/")
   }
 
   const handleLogin = () => {
