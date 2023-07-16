@@ -17,7 +17,7 @@ import axios from 'axios';
 
 
 const urlCliente =
-  'http://localhost:3001/api/clientes/clienteNuevo';
+  'http://localhost:3000/api/clientes/clienteNuevo';
 
 export const AddClientes = ({
   msgError = '',

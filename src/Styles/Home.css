@@ -265,8 +265,8 @@
 }
 
 .photo {
-  width: 85px;
-  height: 85px;
+  width: 90px;
+  height: 90px;
   border-radius: 100%;
 }
 
@@ -347,7 +347,7 @@
 }
 
 .BarraHorizontal .card-profile .tituloProfile h2 {
-  font-size: 30px;
+  font-size: 20px;
   display: none;
 }
 
