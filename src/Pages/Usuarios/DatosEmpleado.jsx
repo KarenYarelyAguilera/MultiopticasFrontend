@@ -314,23 +314,24 @@ export const DatosEmpleado = (props) => {
               <TextCustom text="Telefono" className="titleInput" />
               <input
                 onChange={e => setTelefono(e.target.value)}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
+                  if (e.target.value === '') {
+                    setTexto('Los campos no deben estar vacíos');
                     setErrorTelefono(true);
                   } else {
                     setErrorTelefono(false);
                     var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
+                    if (!preg_match.test(e.target.value)) {
                       setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
+                      setTexto('Solo deben ingresar números');
                     } else {
                       setErrorTelefono(false);
                       setTexto('');
                     }
                   }
                 }}
+                
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -369,9 +370,9 @@ export const DatosEmpleado = (props) => {
                   var Nidentidad = document.getElementById("Nidentidad").value;
                   var nombre = document.getElementById("nombre").value;
                   var apellido = document.getElementById("apellido").value;
-                  var phone = document.getElementById("phone").value;
+                  var telefono = document.getElementById("phone").value;
                 
-                  if (nombre === "" || apellido === "" || Nidentidad === "" || phone === "") {
+                  if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
                     swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
@@ -399,15 +400,20 @@ export const DatosEmpleado = (props) => {
                         setErrorIdentidad(true);
                         setleyenda('El número de identidad debe tener el formato correcto');
                         swal("El número de identidad debe tener el formato correcto", "", "error");
-                      } else if (isNaN(parseInt(phone))) {
+                      } else if (isNaN(parseInt(telefono))) {
+                        swal("El campo teléfono solo acepta números.", "", "error");
+                       
+                      }
+                      else if(! /^[0-9]+$/.test(telefono)){
                         swal("El campo teléfono solo acepta números.", "", "error");
                       }
+
                  else {
                     props.actualizar ? actualizarEmpleado() : insertEmpleado();
                   }
                 }}
               }
-            }
+            } 
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
 

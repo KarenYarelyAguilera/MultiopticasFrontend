@@ -172,6 +172,7 @@ export const BarraLateral = (props) => {
 
 
   const logout = () => {
+    axios.post(urlCierre,dataB)
     props.mail('');
     props.user('');
     props.access('inactivo');
@@ -259,7 +260,6 @@ export const BarraLateral = (props) => {
         <ul>
           <li>
             <Link className="linkLogout" to="/"  onClick={(logout) =>{
-              axios.post(urlCierre,dataB)
               }}
             >
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
