@@ -21,16 +21,22 @@ import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
 const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
-const urlBitacoraModEmple ="http://localhost:3000/api/bitacora/Empleado"
-const urlCierre ="http://localhost:3000/api/bitacora/Cierre"
 
+//--------------------URL DE BITACORAS----------------------------------
+const urlBitacoraModEmple =
+"http://localhost:3000/api/bitacora/Empleado";
+const urlCierre =
+"http://localhost:3000/api/bitacora/Cierre";
+const urlBitacoraConfig =
+"http://localhost:3000/api/bitacora/Configuracion";
+//-----------------------------------------------------------------------
 
 export const BarraLateral = (props) => {
 
   const data = {
     rol: props.Rol
   }
-
+//Funcion de bitacora 
   const dataB = {
     Id:props.idUsuario
   }
@@ -210,7 +216,7 @@ export const BarraLateral = (props) => {
                 className="link"
                 to="/usuarios"
                 onClick={() =>{
-                  axios.post(urlBitacoraModEmple,dataB)
+                  axios.post(urlBitacoraModEmple,dataB) //Bitacora del modulo de usuario/empleado 
                   props.obj(2)}}
               >
                 {/* fetch(urlBitacoraUsuario, {
@@ -222,7 +228,7 @@ export const BarraLateral = (props) => {
            })
            props.obj(2)}}> */}
 
-                <FontAwesomeIcon className="iconLi" icon={faUsers} />
+                <FontAwesomeIcon className="iconLi" icon={faUsers} />  
                 <h1>USUARIOS</h1>
               </Link>
             </li>
@@ -233,6 +239,48 @@ export const BarraLateral = (props) => {
               </Link>
             </li>
 
+            <li>
+          <Link className="link" to="/inventario">
+            <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
+            <h1>INVENTARIO</h1>
+          </Link>
+        </li>
+<li>
+          <Link className="link" to="/ventas">
+            <FontAwesomeIcon
+              className="iconLi"
+              icon={faHandHoldingDollar}
+            />
+            <h1>VENTAS</h1>
+          </Link>
+        </li>
+
+
+<li>
+          <Link className="link" to="/recordatorio">
+            <FontAwesomeIcon className="iconLi" icon={faCalendar} />
+            <h1>RECORDATORIOS</h1>
+          </Link>
+        </li>
+
+<li>
+          <Link className="link" to="/preguntasSeguridad">
+            <FontAwesomeIcon className="iconLi" icon={faFileLines} />
+            <h1>REPORTES</h1>
+          </Link>
+        </li>
+
+<li>
+          <Link className="link" to="/config" onClick={() =>{
+                  axios.post(urlBitacoraConfig,dataB) //Bitacora de etrar a la pantalla de configuracion 
+                  props.obj(2)}}
+          >
+            <FontAwesomeIcon className="iconLi" icon={faGear} />
+            <h1>CONFIGURACION</h1>
+          </Link>
+        </li>
+
+          
             {/* <Usuario />
             <Ventas />
             <Inventario/>

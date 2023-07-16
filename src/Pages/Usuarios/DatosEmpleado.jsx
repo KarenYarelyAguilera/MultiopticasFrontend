@@ -27,12 +27,12 @@ const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el em
 const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
 
 
-//URL de bitacora 
+//----------------------------------URL de bitacora --------------------------------------------
 const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
 const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
 const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
-
-
+const urlBitacoraSalirRE='http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
+//---------------------------------------------------------------- ------------------------------
 
 export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -95,14 +95,14 @@ export const DatosEmpleado = (props) => {
     }
 
 
-
+//Funcion de bitacora 
     let dataB={
       Id: props.idUsuario
     }
 
     axios.put(urlUpdEmpleado,data).then(()=>{
         swal("Empleado Actualizado Correctamente","","success").then(()=>{
-          axios.post(urlUpdBitacora,dataB)
+          axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
         navegate('/empleados/lista')
       })
     })
@@ -145,16 +145,18 @@ export const DatosEmpleado = (props) => {
       });
     } */
 
+//Funcion de bitacora 
     let dataB = {
       Id: props.idUsuario
     }
 
     await axios.post(urlIEmpleado, data).then(response => {
     swal('Empleado agregado con exito', '', 'success').then(result => {
-      axios.post(urlInsertBitacora, dataB)
+      axios.post(urlInsertBitacora, dataB) //Insert de Bitacora de un empleado nuevo  
         navegate('/empleados/lista');
       });
 
+  //Funcion de bitacora 
       let dataB = {
         Id: props.idUsuario
       }
@@ -162,14 +164,19 @@ export const DatosEmpleado = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al registrar el cliente', '', 'success')
-      axios.post(urlErrorInsertBitacora, dataB)
+      axios.post(urlErrorInsertBitacora, dataB)//Error al insertar un nuevo empleado (BITACORA)
     })
 
   };
 
+  //Funcion de bitacora 
+    let dataB = {
+     Id: props.idUsuario
+  }
   const handleBack = () => {
     props.Data({})
     props.update(false)
+    axios.post(urlBitacoraSalirRE,dataB)//BOTON DE RETROCESO API BITACORA 
     navegate('/usuarios');
   };
 

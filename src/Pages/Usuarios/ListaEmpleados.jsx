@@ -24,7 +24,13 @@ export const ListaEmpleados = (props) => {
   const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
  
+//--------------------URL DE BITACORA--------------------
+const urlDelBitacora = 
+'http://localhost:3000/api/bitacora/EliminarEmpleado';
 
+const urlBitacoraBotonSalirLE= 
+'http://localhost:3000/api/bitacora/SalirListaEmpleado';
+//--------------------------------------------------------
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -106,15 +112,22 @@ export const ListaEmpleados = (props) => {
     }).then(async op => {
       switch (op) {
         case null:
+          
           let data = {
             IdEmpleado: id,
           };
+
+          //Funcion de Bitacora 
+          let dataB = {
+            Id:props.idUsuario
+          }
 
           console.log(data);
 
           await axios
             .delete(urlDelEmployees, { data })
             .then(response => {
+              axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
               swal('Empleado eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
             })
@@ -158,7 +171,13 @@ export const ListaEmpleados = (props) => {
     //}//}//
   }
 
+ //Funcion de Bitacora 
+ let dataB = {
+  Id:props.idUsuario
+}
+
   const handleBack = () => {
+    axios.post (urlBitacoraBotonSalirLE,dataB)
     navegate('/usuarios');
   };
 
