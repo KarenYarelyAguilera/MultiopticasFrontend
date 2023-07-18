@@ -267,7 +267,7 @@ export const BarraLateral = (props) => {
 <li>
           <Link className="link" to="/preguntasSeguridad">
             <FontAwesomeIcon className="iconLi" icon={faFileLines} />
-            <h1>REPORTES</h1>
+            <h1>SEGURIDAD</h1>
           </Link>
         </li>
 
@@ -277,7 +277,7 @@ export const BarraLateral = (props) => {
                   props.obj(2)}}
           >
             <FontAwesomeIcon className="iconLi" icon={faGear} />
-            <h1>CONFIGURACION</h1>
+            <h1>MANTENIMIENTO</h1>
           </Link>
         </li>
 
