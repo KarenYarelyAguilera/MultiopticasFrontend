@@ -70,10 +70,21 @@ export const AddUsers = (props) => {
     'http://localhost:3000/api/Rol';
   const urlInsert =
     'http://localhost:3000/api/usuario/insert';
+
   const urlUpdateUser =
     'http://localhost:3000/api/usuario/update';
-    const urlBitacoraUpdUsuario = 'http://localhost:3000/api/bitacora/ActualizacionUsuario'
 
+  //------------URL DE BITACORA-----------------------
+  const urlBitacoraInsert = 
+     'http://localhost:3000/api/bitacora/InsertUsuario';
+    
+  const urlBitacoraUpdUsuario = 
+    'http://localhost:3000/api/bitacora/ActualizacionUsuario';
+
+  const urlBitacoraSalirRU=
+  'http://localhost:3000/api/bitacora/SalirRegistroUsuario'; 
+
+ //---------------------------------------------------------
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -113,7 +124,8 @@ export const AddUsers = (props) => {
       correo: correo,
       idRol: rol,
     };
-  
+   
+    //Funcion de Update de bitacora Usuario 
     let dataB = {
       Id: props.idU
     }
@@ -121,7 +133,7 @@ export const AddUsers = (props) => {
     if (await axios.put(urlUpdateUser, data)) {
       console.log(data);
       swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{
-        axios.post(urlBitacoraUpdUsuario,dataB)
+        axios.post(urlBitacoraUpdUsuario,dataB) //UPDATE DE BITACORA
         props.limpiarData({});
         props.limpiarUpdate(false)
       });
@@ -150,21 +162,28 @@ export const AddUsers = (props) => {
       rol: rol,
     };
 
+ //Funcion de bitacora 
     let dataB = {
       Id: props.idU
     }
 
     if (await axios.post(urlInsert, data)) {
-
+      (await axios.post(urlBitacoraInsert, dataB)) //Registro de nuevo usuario bitacora   
       swal('Usuario creado exitosamente.', '', 'success');
       navegate('/usuarios/lista');
       //sendData(urlBitacoraUsuario,dataB)
     }
   };
 
+ //Funcion de bitacora 
+  let dataB = { 
+    Id: props.idU
+  }
+
   const handleBack = () => {
     props.limpiarData({})
     props.limpiarUpdate(false)
+    axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
     navegate('/usuarios');
   }
 
