@@ -171,7 +171,7 @@ export const RegistroProducto2 = ({
               />
               <p class="error">{mensaje}</p>
             </div>
-
+            
             <div className="contInput">
               <TextCustom text="Cantidad Minima" className="titleInput" />
 

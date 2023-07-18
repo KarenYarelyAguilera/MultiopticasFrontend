@@ -427,7 +427,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/RegistroModelo"
+            path="/config/RegistroModelo"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
@@ -505,7 +505,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/RegistroMarcas"
+            path="/config/RegistroMarcas"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
@@ -545,7 +545,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menumodelos/lista"
+            path="/config/lista"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -584,7 +584,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
           <Route
-            path="/menuInventario/ListaMarcas"
+            path="/config/ListaMarcas"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
