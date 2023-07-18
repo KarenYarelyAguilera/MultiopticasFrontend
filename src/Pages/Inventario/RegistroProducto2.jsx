@@ -21,7 +21,7 @@ const urlProducto =
 const urlModelos =
   'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos';
 
-export const RegistroProducto = ({
+export const RegistroProducto2 = ({
   msgError = '',
   success = false,
   warning = false,
@@ -90,22 +90,6 @@ export const RegistroProducto = ({
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <select name="" className="selectCustom" id="modelo">
-                {Modelo.length ? (
-                  Modelo.map(pre => (
-                    <option key={pre.IdModelo} value={pre.IdModelo}>
-                      {pre.detalle}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div>
 
             <div className="contInput">
               <TextCustom text="Modelo" className="titleInput" />
