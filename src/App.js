@@ -155,7 +155,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/marcas/registroPromMarca"
             element={
-              <ProtectedRoute activo={activo}>
+              //<ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -168,7 +168,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <RegistroPromMarca></RegistroPromMarca>
                 </div>
-              </ProtectedRoute>
+             // </ProtectedRoute>
             }
           />
 
@@ -744,7 +744,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/menuVentas/listaGarantias"
             element={
-              <ProtectedRoute activo={activo}>
+              //<ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -757,7 +757,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaGarantia />
                 </div>
-              </ProtectedRoute>
+             // </ProtectedRoute>
             }
           ></Route>
 
@@ -824,7 +824,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/menuVentas/listaDescuento"
             element={
-              <ProtectedRoute activo={activo}>
+            //  <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -837,7 +837,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <ListaDescuento />
                 </div>
-              </ProtectedRoute>
+            //  </ProtectedRoute>
             }
           ></Route>
 
@@ -1131,7 +1131,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/menuVentas/RegistroDescuento"
             element={
-              <ProtectedRoute activo={activo}>
+             // <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -1144,7 +1144,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <RegistroDescuento />
                 </div>
-              </ProtectedRoute>
+            //  </ProtectedRoute>
             }
           ></Route>
 

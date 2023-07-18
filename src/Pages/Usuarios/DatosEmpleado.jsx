@@ -62,6 +62,11 @@ export const DatosEmpleado = (props) => {
   const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
+ 
+    
+
+
   /*   useEffect(() => {
       fetch(urlSucursales).then(response => response.json())
         .then(data => setSucursales(data));
@@ -105,6 +110,10 @@ export const DatosEmpleado = (props) => {
           axios.post(urlUpdBitacora,dataB)
         navegate('/empleados/lista')
       })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Empleado! , Sus campos pueden ser erroneos o ya existen en otro empleado.', '', 'error')
+      axios.post(urlErrorInsertBitacora, dataB)
     })
 
   }
@@ -149,21 +158,40 @@ export const DatosEmpleado = (props) => {
       Id: props.idUsuario
     }
 
-    await axios.post(urlIEmpleado, data).then(response => {
-    swal('Empleado agregado con exito', '', 'success').then(result => {
-      axios.post(urlInsertBitacora, dataB)
-        navegate('/empleados/lista');
-      });
 
-      let dataB = {
-        Id: props.idUsuario
+     // Validacion para que no cree empleado con la misma Identidad
+    const dataValida={
+      numId:identidad
+    }
+
+    /* await axios.post(urlEmpleadoExist,dataValida).then(response=>{
+      if (response.dataValida) {
+        swal("El numero de Identidad ya es existente en los registros.");
+      }else{
+     axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB)
+          navegate('/empleados/lista');
+          });
+        }).catch(error => {
+          console.log(error);
+          swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+          axios.post(urlErrorInsertBitacora, dataB)
+        })
       }
-      
-    }).catch(error => {
-      console.log(error);
-      swal('Error al registrar el cliente', '', 'success')
-      axios.post(urlErrorInsertBitacora, dataB)
-    })
+    }) */
+
+    axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB)
+          navegate('/empleados/lista');
+          });
+        }).catch(error => {
+          console.log(error);
+          swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+          axios.post(urlErrorInsertBitacora, dataB)
+        })
+
 
   };
 
@@ -371,7 +399,7 @@ export const DatosEmpleado = (props) => {
                   var apellido = document.getElementById("apellido").value;
                   var phone = document.getElementById("phone").value;
                 
-                  if (nombre === "" || apellido === "" || Nidentidad === "" || phone === "") {
+                  if (nombre === "" || apellido === "" || Nidentidad === "" || phone === "" ) {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
                     swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
