@@ -23,14 +23,14 @@ export const PageFour = ({correo,id,autor }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfi, setShowPasswordConfi] = useState(false);
 
-
+  
+  const urlUpdEstadoA  = "http://localhost:3000/api/Estado/Activo"
 
   const navegate = useNavigate()
-  const handleClick = ()=>{
+  
+  const handleClick = async ()=>{
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
- 
-    
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
 
@@ -43,17 +43,19 @@ export const PageFour = ({correo,id,autor }) => {
     if (contra1!==contra2) {
       swal("Las contraseñas no coinciden","","warning")
     }else{
-
-      axios.put(urlUpdPassword,data).then(response=>{
+      console.log(data);
+     await axios.put(urlUpdPassword,data).then(response=>{
         console.log(response.data);
         if (response.data===false) {
           swal("La contraseña no puede ser igual que la anterior","","error")
         }else{
-          swal("Contraseña actualizada","","success").then(()=>navegate("/"))
+          axios.put(urlUpdEstadoA,data).then(()=>swal("Contraseña actualizada","","success").then(()=>navegate("/")))
+          
         } 
-      })
+      }) 
     }
   }
+
     return (
       <main>
       <div className="titleRecuperacion">

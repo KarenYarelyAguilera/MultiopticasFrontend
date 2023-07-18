@@ -217,7 +217,7 @@ const urlBitacoraBotonSalirLE=
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Empleado
+              Nuevo
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

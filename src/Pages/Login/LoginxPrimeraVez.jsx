@@ -1,13 +1,13 @@
-import { PageOne } from '../../Components/Preguntas/PageOne/PageOne';
-import { PageTwo } from '../../Components/Preguntas/PageTwo/PageTwo';
-import { PageThree } from '../../Components/Preguntas/PageThree/PageThree';
-import { PageFour } from '../../Components/Preguntas/PageFour/PageFour';
+import { PageOne } from '../../Components/LoginPorPrimeraVez/PageOne/PageOne';
+import { PageTwo } from '../../Components/LoginPorPrimeraVez/PageTwo/PageTwo';
+import { PageThree } from '../../Components/LoginPorPrimeraVez/PageThree/PageThree';
+import { PageFour } from '../../Components/LoginPorPrimeraVez/PageFour/PageFour';
 // import "./App.css";
 import React, { useState } from 'react';
 import { MultiProgressPreguntas } from '../../Components/MultiStepProgressBar/MultiProgressPreguntas';
 import passwordRecovery from '../../IMG/passwordrecovery.png';
 
-export const Progress = props => {
+export const LoginxPrimeraVez = props => {
 
   const [correo1, setCorreo1] = useState('');
   const [Id,setId] = useState(0);
@@ -48,7 +48,7 @@ export const Progress = props => {
     <div className="divSection">
       <div className="divInfoQuestion">
         <div className="titleRecuPassword">
-          <h2>Preguntas de Seguridad</h2>
+          <h2>Login por primera vez</h2>
           <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
         </div>
         <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
@@ -56,7 +56,7 @@ export const Progress = props => {
           {
             pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
             pagetwo: <PageTwo correo1={correo1} id={id} autor={autr}  onButtonClick={nextPage} />,
-            pagethree:<PageThree correo={correo1} id={Id}   onButtonClick={nextPage} />,
+            pagethree:<PageThree correo={correo1} id={Id} autor={autor}   onButtonClick={nextPage} />,
             pagefour: <PageFour correo={correo1} id={Id} autor={autor}  />,
 
           }[page]
