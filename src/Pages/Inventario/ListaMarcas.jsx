@@ -49,7 +49,7 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID', width: 600 },
+    { field: 'IdMarca', headerName: 'ID Marca', width: 600 },
     { field: 'descripcion', headerName: 'Marca', width: 600 },
 
     {
@@ -159,7 +159,7 @@ export const ListaMarcas = () => {
 
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/config');
   };
 
   return (

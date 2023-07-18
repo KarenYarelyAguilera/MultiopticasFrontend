@@ -61,9 +61,11 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID', width: 400 },
-    { field: 'descripcion', headerName: 'Marca', width: 400 },
-    { field: 'detalle', headerName: 'Modelo', width: 400 },
+    { field: 'IdModelo', headerName: 'ID Modelo', width: 300 },
+    { field: 'descripcion', headerName: 'Marca', width: 300 },
+    { field: 'detalle', headerName: 'Modelo', width: 300 },
+    { field: 'año', headerName: 'Año', width: 300 },
+    
 
     {
       field: 'borrar',
@@ -188,7 +190,7 @@ export const ListaModelos = () => {
 
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/config');
   };
 
   return (
@@ -242,7 +244,7 @@ export const ListaModelos = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          
         />
        
       </div>

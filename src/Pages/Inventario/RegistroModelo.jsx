@@ -57,7 +57,7 @@ export const RegistroModelo = ({
   };
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/config');
   };
 
   return (
@@ -90,30 +90,40 @@ export const RegistroModelo = ({
                 )}
               </select>
             </div>
-
+            
             <div className="contInput">
-              <TextCustom text="Descripcion de Modelo" className="titleInput" />
+              <TextCustom text="Modelo" className="titleInput" />
+
               <input
-               onKeyDown={e => {
-                setdescripcion(e.target.value);
-                if (descrpcion == '') {
-                  setErrordescripcion(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                    setErrordescripcion(false);
-                    setaviso('');
-                  }
-                }
-              }
+               
+                // error={errorprecio}
                 type="text"
                 name=""
-                maxLength={50}
-                className="inputCustomText"
-                placeholder="Descripcion de Modelo"
-                id="modelo"
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Modelo"
+                id="Modelo"
               />
-               <p class="error">{aviso}</p>
+              {/* <p class="error">{aviso}</p> */}
             </div>
+
+            <div className="contInput">
+              <TextCustom text="Año" className="titleInput" />
+
+              <input
+               
+                // error={errorprecio}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Año"
+                id="Año"
+              />
+              {/* <p class="error">{aviso}</p> */}
+            </div>
+            
+
 
             <div className="contBtnStepper">
               <Button
