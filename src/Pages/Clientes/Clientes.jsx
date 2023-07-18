@@ -12,14 +12,14 @@ import { Link } from 'react-router-dom';
 
 export const Clientes = () => {
   const dataCards = [
+    // {
+    //   titulo: 'Registro de Cliente',
+    //   imagen:
+    //     'https://static.vecteezy.com/system/resources/previews/018/030/753/non_2x/support-business-consulting-customer-man-online-consultant-service-abstract-circle-background-flat-color-icon-free-vector.jpg',
+    //   vinculo: '/menuClientes/nuevoCliente',
+    // },
     {
-      titulo: 'Registro de Cliente',
-      imagen:
-        'https://static.vecteezy.com/system/resources/previews/018/030/753/non_2x/support-business-consulting-customer-man-online-consultant-service-abstract-circle-background-flat-color-icon-free-vector.jpg',
-      vinculo: '/menuClientes/nuevoCliente',
-    },
-    {
-      titulo: 'Lista de Clientes',
+      titulo: 'Clientes',
       imagen:
         'https://static.vecteezy.com/system/resources/previews/021/272/476/non_2x/isometric-flat-3d-illustration-concept-of-man-filling-personal-data-form-free-vector.jpg',
       vinculo: '/menuClientes/lista',
@@ -31,7 +31,7 @@ export const Clientes = () => {
     //   vinculo: '/menuClientes/registroCliente',
     // },
     {
-      titulo: 'Listas De Expedientes',
+      titulo: 'Expedientes',
       imagen:
         'https://static.vecteezy.com/system/resources/previews/021/238/368/non_2x/documents-icon-design-free-vector.jpg',
       vinculo: '/menuClientes/listaExpedientes',
