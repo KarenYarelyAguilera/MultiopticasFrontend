@@ -186,7 +186,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                     idUsuario={idUsuario}
                   />
-                  <BarraHorizontal user={usuario} />
+                  <BarraHorizontal user={Rol} correo={mail}/>
                   <Home></Home>
                 </div>
               </ProtectedRoute>

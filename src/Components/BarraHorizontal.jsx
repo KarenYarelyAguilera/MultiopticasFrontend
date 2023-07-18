@@ -13,6 +13,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
+import MulltiOpticaOjo from '../IMG/MultiopticaOjo.png';
+
 
 export const BarraHorizontal = (props, { onChange = () => null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,10 +23,11 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
     {
       username: props.user,
       imagen:
-        'https://www.paredro.com/wp-content/uploads/2015/08/shutterstock_188419790-e1439475344980.jpg',
+      'https://cdn-icons-png.flaticon.com/512/720/720236.png?w=740&t=st=1689459960~exp=1689460560~hmac=8c9bf5afa3c6ccd991cb7e78acd18787ecc6f7ced31c7511f54195373ccfcd14',
       iniciales: 'MS',
     },
   ];
+  
 
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -162,8 +165,8 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
                       </div>
                     </div>
 
-                    <div className="tituloProfile">
-                      <h1>Hola</h1>
+                    <div >
+                      <h1>Usuario:</h1>
                       <h2>{persona.username}</h2>
                     </div>
                   </div>

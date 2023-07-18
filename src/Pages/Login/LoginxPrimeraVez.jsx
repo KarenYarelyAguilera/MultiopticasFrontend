@@ -56,7 +56,7 @@ export const LoginxPrimeraVez = props => {
           {
             pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
             pagetwo: <PageTwo correo1={correo1} id={id} autor={autr}  onButtonClick={nextPage} />,
-            pagethree:<PageThree correo={correo1} id={Id}   onButtonClick={nextPage} />,
+            pagethree:<PageThree correo={correo1} id={Id} autor={autor}   onButtonClick={nextPage} />,
             pagefour: <PageFour correo={correo1} id={Id} autor={autor}  />,
 
           }[page]

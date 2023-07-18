@@ -8,13 +8,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export const PageThree = ({ onButtonClick, correo, id  }) => {
+export const PageThree = ({ onButtonClick, correo, id, autor  }) => {
 
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
-  const urlRespuestas = 'http://localhost:3000/api/preguntas/compararR';
-  const urlBloquearUsu="http://localhost:3000/api/usuario/estado"
- // const urlId = 'http://localhost:3000/api/token/id';
+  const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
+  // const urlBloquearUsu="http://localhost:3000/api/usuario/estado"
+  // const urlId = 'http://localhost:3000/api/token/id';
 
 //
   //const [id, setId] = useState(0);
@@ -74,40 +74,20 @@ const navegate = useNavigate();
 
 
     let data = {
-      correo: correo,
-      Id_Pregunta:Id_Pregunta,
-      Respuesta: respuestap,
-      Id_Usuario: id,
-
+      idPregunta:Id_Pregunta,
+      respuesta: respuestap,
+      idUser: id,
+      creadoPor:autor
     };
 
 
     //console.log(data);
 
      await axios.post(urlRespuestas, data).then(response=>{
-
-      let dataId={
-        correo: correo,
-      }
-      if (response.data==false) {
-
-          axios.put(urlBloquearUsu, dataId).then(response=>{
-          console.log(response.dataId);
-         });
-         navegate('/')
-          
-        swal(
-          '¡Usuario Bloqueado! comuniquese con el administrador.',
-          '',
-          'warning',
-        )
-      }else{
-        onButtonClick('pagefour')
-
-      }
-     });
+      swal("Pregunta registrada correctamente","","success").then(()=>onButtonClick('pagefour'))
+      });
      
-     return pasar;
+  
   };
  
 
