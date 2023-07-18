@@ -13,24 +13,39 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import axios from 'axios';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const Bitacora = () => {
+export const Bitacora = (props) => {
   const [cambio,setCambio] = useState(0)
 
+const urlBitacora=
+"http://localhost:3000/api/bitacora";
 
-  const urlProducto ="http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Bitacora";
+const urlSalirListaBitacora=
+"http://localhost:3000/api/bitacora/SalirListaBitacora";
+
+
+//   const urlProducto =
+// "http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Bitacora";
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlProducto)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get(urlBitacora).then(response => {
+        setTableData(response.data);
+      })
+      .catch(error => console.log(error));
   }, [cambio]);
+
+  // useEffect(() => {
+  //   fetch(urlBitacora)
+  //     .then(response => response.json())
+  //     .then(data => setTableData(data));
+  // }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -43,11 +58,11 @@ export const Bitacora = () => {
   );
 
   const columns = [
-    { field: 'IdBitacora', headerName: 'ID Bitacora', width: 240 },
-    { field: 'Nombre_Usuario', headerName: 'Usuario', width: 260 },
-    { field: 'Objeto', headerName: 'Pantalla', width: 260 },
-    { field: 'accion', headerName: 'Accion', width: 260 },
-    { field: 'Descripcion', headerName: 'Descripcion', width: 260 },
+    { field: 'IdBitacora', headerName: 'ID Bitacora', width: 170 },
+    { field: 'Id_Usuario', headerName: 'Usuario', width: 170 },
+    { field: 'Id_Objeto', headerName: 'Pantalla', width: 170 },
+    { field: 'accion', headerName: 'Acción', width: 180 },
+    { field: 'descripcion', headerName: 'Descripción', width: 320 },
     { field: 'fecha', headerName: 'Fecha', width: 260 },
 
   ];
@@ -59,7 +74,14 @@ export const Bitacora = () => {
   function handleDel(id) {
 
   }
-  const handleBack = () => {
+
+ //Funcion de bitacora 
+ let dataB = { 
+  Id:props.idUsuario
+}
+
+  const handleBack = () => { 
+    axios.post(urlSalirListaBitacora,dataB) //BOTON DE RETROCESO API BITACORA 
     navegate('/config');
   };
 
