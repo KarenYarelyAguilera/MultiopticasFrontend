@@ -1,33 +1,37 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
+
 
 //Styles
 import '../../Styles/Usuarios.css';
 
 //Components
 
+import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import { TextField } from '@mui/material';
+import axios from 'axios'; 
 
 
-const urlProveedores = 'http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=nProveedor';
+//APIS DE PROVEEDOR
+const urlProveedor = //CREAR
+  'http://localhost:3000/api/proveedor/NuevoProveedor';
+const urlUpdProveedor = //ACTUALIZAR
+  'http://localhost:3000/api/proveedor/ActualizarProveedor';
+const urlDelProveedor = //BORRAR
+  'http://localhost:3000/api/proveedor/EliminarProveedor';
 
-export const RegistroProveedores = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+export const RegistroProveedores = (props) => {
   
   const [proveedores, setProveedores]= useState([]);
- 
-  const navegate = useNavigate();
 
   const [proveed, setproveed] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
@@ -65,9 +69,11 @@ export const RegistroProveedores = ({
   const [parrafo, setparrafo] = React.useState('');
   const [errorcorreo, setErrorcorreo] = React.useState(false);
 
+  const navegate = useNavigate();
+
 
   const handleNext = () => {
-    let nombreProveedor = document.getElementById("nombreProveedor").value
+    let CiaProveedora = document.getElementById("CiaProveedora").value
     let encargado = document.getElementById("encargado").value;
     let pais = document.getElementById("pais").value;
     let ciudad = document.getElementById("ciudad").value;
@@ -77,23 +83,27 @@ export const RegistroProveedores = ({
     let correoElectronico = document.getElementById("correoElectronico").value;
  
     let data = {
-      nombre:nombreProveedor,
+      CiaProveedora:CiaProveedora,
       encargado:encargado,
       pais:pais,
       ciudad:ciudad,
-      codigoP:codigoPostal,
+      codigoPostal:codigoPostal,
       direccion:direccion,
       telefono:telefono,
-      correo:correoElectronico
+      correoElectronico:correoElectronico
     };
     
- console.log(data) 
-
-    if (sendData(urlProveedores, data)) {
+    //Consumo de API y lanzamiento se alerta
+    axios.post(urlProveedor, data).then(response => {
       swal('Proveedor agregado con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaProveedore');
+        //axios.post(urlInsertBitacora, dataB)
+        navegate('/menuInventario/ListaProveedores');
       });
-    }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear Proveedor, porfavor revise los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
   };
 
   const handleBack = () => {
@@ -140,7 +150,7 @@ export const RegistroProveedores = ({
                 maxLength={50}
                 className="inputCustom"
                 placeholder="nombreProveedor"
-                id="nombreProveedor"
+                id="CiaProveedora"
               />
               <p class="error">{msj}</p>
             </div>

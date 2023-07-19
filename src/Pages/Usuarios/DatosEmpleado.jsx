@@ -19,20 +19,20 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
+const urlSucursales = 'http://localhost:3000/api/empleado/sucursal';
 
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
-const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
+const urlIEmpleado = 'http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado = 'http://localhost:3000/api/empleado/actualizar'
 
 
-//URL de bitacora 
-const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
-const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
-const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
-
-
+//----------------------------------URL de bitacora --------------------------------------------
+const urlUpdBitacora = 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora = 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
+const urlBitacoraSalirRE = 'http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
+//---------------------------------------------------------------- ------------------------------
 
 export const DatosEmpleado = (props) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -63,8 +63,8 @@ export const DatosEmpleado = (props) => {
   const [Telefonoc, setTelefonoc] = useState(0);
 
   const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
- 
-    
+
+
 
 
   /*   useEffect(() => {
@@ -78,7 +78,7 @@ export const DatosEmpleado = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
-  
+
   const navegate = useNavigate();
 
   const actualizarEmpleado = async () => {
@@ -90,24 +90,24 @@ export const DatosEmpleado = (props) => {
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
     const data = {
-      nombre:nombres.toUpperCase(),
-      apellido:apellidos.toUpperCase(),
-      telEmple:telefono,
-      idSucursal:sucursal,
-      idGenero:genero,
-      numId:identidad,
-      IdEmpleado:props.data.IdEmpleado,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      telEmple: telefono,
+      idSucursal: sucursal,
+      idGenero: genero,
+      numId: identidad,
+      IdEmpleado: props.data.IdEmpleado,
     }
 
 
-
-    let dataB={
+    //Funcion de bitacora 
+    let dataB = {
       Id: props.idUsuario
     }
 
-    axios.put(urlUpdEmpleado,data).then(()=>{
-        swal("Empleado Actualizado Correctamente","","success").then(()=>{
-          axios.post(urlUpdBitacora,dataB)
+    axios.put(urlUpdEmpleado, data).then(() => {
+      swal("Empleado Actualizado Correctamente", "", "success").then(() => {
+        axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
         navegate('/empleados/lista')
       })
     }).catch(error => {
@@ -154,14 +154,16 @@ export const DatosEmpleado = (props) => {
       });
     } */
 
+    //Funcion de bitacora 
     let dataB = {
       Id: props.idUsuario
     }
 
 
-     // Validacion para que no cree empleado con la misma Identidad
-    const dataValida={
-      numId:identidad
+
+    // Validacion para que no cree empleado con la misma Identidad
+    const dataValida = {
+      numId: identidad
     }
 
     /* await axios.post(urlEmpleadoExist,dataValida).then(response=>{
@@ -184,20 +186,43 @@ export const DatosEmpleado = (props) => {
     axios.post(urlIEmpleado, data).then(response => {
       swal('Empleado agregado con exito', '', 'success').then(result => {
         axios.post(urlInsertBitacora, dataB)
-          navegate('/empleados/lista');
-          });
-        }).catch(error => {
-          console.log(error);
-          swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
-          axios.post(urlErrorInsertBitacora, dataB)
-        })
+        navegate('/empleados/lista');
+      });
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+      axios.post(urlErrorInsertBitacora, dataB)
+    })
+
+
+    await axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB) //Insert de Bitacora de un empleado nuevo  
+        navegate('/empleados/lista');
+      });
+
+      //Funcion de bitacora 
+      let dataB = {
+        Id: props.idUsuario
+      }
+
+    }).catch(error => {
+      console.log(error);
+      swal('Error al registrar el Empleado', '', 'success')
+      axios.post(urlErrorInsertBitacora, dataB)//Error al insertar un nuevo empleado (BITACORA)
+    })
 
 
   };
 
+  //Funcion de bitacora 
+  let dataB = {
+    Id: props.idUsuario
+  }
   const handleBack = () => {
     props.Data({})
     props.update(false)
+    axios.post(urlBitacoraSalirRE, dataB)//BOTON DE RETROCESO API BITACORA 
     navegate('/usuarios');
   };
 
@@ -277,7 +302,7 @@ export const DatosEmpleado = (props) => {
                   }
                 }}
                 onChange={e => setNombre(e.target.value)}
-                
+
                 error={errorNombre}
                 type="text"
                 helperText={Msj}
@@ -342,23 +367,24 @@ export const DatosEmpleado = (props) => {
               <TextCustom text="Telefono" className="titleInput" />
               <input
                 onChange={e => setTelefono(e.target.value)}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   setTelefono(e.target.value);
-                  if (Telefono == '') {
-                    setTexto('Los campos no deben estar vacios');
+                  if (e.target.value === '') {
+                    setTexto('Los campos no deben estar vacíos');
                     setErrorTelefono(true);
                   } else {
                     setErrorTelefono(false);
                     var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(Telefono)) {
+                    if (!preg_match.test(e.target.value)) {
                       setErrorTelefono(true);
-                      setTexto('Solo deben de ingresar numeros');
+                      setTexto('Solo deben ingresar números');
                     } else {
                       setErrorTelefono(false);
                       setTexto('');
                     }
                   }
                 }}
+
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -397,9 +423,9 @@ export const DatosEmpleado = (props) => {
                   var Nidentidad = document.getElementById("Nidentidad").value;
                   var nombre = document.getElementById("nombre").value;
                   var apellido = document.getElementById("apellido").value;
-                  var phone = document.getElementById("phone").value;
-                
-                  if (nombre === "" || apellido === "" || Nidentidad === "" || phone === "" ) {
+                  var telefono = document.getElementById("phone").value;
+
+                  if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
                     swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
@@ -427,15 +453,21 @@ export const DatosEmpleado = (props) => {
                         setErrorIdentidad(true);
                         setleyenda('El número de identidad debe tener el formato correcto');
                         swal("El número de identidad debe tener el formato correcto", "", "error");
-                      } else if (isNaN(parseInt(phone))) {
+                      } else if (isNaN(parseInt(telefono))) {
+                        swal("El campo teléfono solo acepta números.", "", "error");
+
+                      }
+                      else if (! /^[0-9]+$/.test(telefono)) {
                         swal("El campo teléfono solo acepta números.", "", "error");
                       }
-                 else {
-                    props.actualizar ? actualizarEmpleado() : insertEmpleado();
+
+                      else {
+                        props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                      }
+                    }
                   }
-                }}
-              }
-            }
+                }
+                }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
 

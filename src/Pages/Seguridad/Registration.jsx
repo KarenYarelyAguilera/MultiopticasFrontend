@@ -110,9 +110,8 @@ export const Registration = ({
       }
     
     })
-   
 
-    
+    navegate("/")
   }
 
   const handleLogin = () => {

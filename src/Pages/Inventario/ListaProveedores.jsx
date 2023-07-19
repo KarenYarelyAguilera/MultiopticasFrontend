@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
-import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,16 +17,56 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaProveedores = () => {
+export const ListaProveedores = (props) => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlProveedores ='http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores';
+  const urlProveedores ='http://localhost:3000/api/proveedor';
+  const urlDelProveedor ='http://localhost:3000/api/proveedor/EliminarProveedor';
 
   
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [proveed, setproveed] = useState('');
+  const [leyenda, setleyenda] = useState('');
+  const [errorproveedor, setErrorproveedor] = useState(false);
+
+  const [codigopostal, setcodigopostal] = useState('');
+  const [aviso, setaviso] = useState('');
+  const [errorcodigopostal, setErrorcodigopostal] = useState(false);
+
+  const [nombre, setnombre] = useState('');
+  const [msj, setmsj] = useState('');
+  const [errornombre, setErrornombre] = useState(false);
+ 
+  const [encargado, setencargado] = useState('');
+  const [mensaje, setmensaje] = useState('');
+  const [errorencargado, setErrorencargado] = useState(false);
+
+  const [pais, setpais] = useState('');
+  const [avi, setavi] = useState('');
+  const [errorpais, setErrorpais] = useState(false);
+
+  const [ciudad, setciudad] =  useState('');
+  const [advertencia, setadvertencia] = useState('');
+  const [errorciudad, setErrorciudad] = useState(false);
+
+  const [direccion, setdireccion] = useState('');
+  const [validacion, setvalidacion] = useState('');
+  const [errordireccion, setErrordireccion] = useState(false);
+
+  const [tel, settel] = useState('');
+  const [adv, setadv] = useState('');
+  const [errortel, setErrortel] = useState(false);
+
+  const [correo, setcorreo] = useState('');
+  const [parrafo, setparrafo] = useState('');
+  const [errorcorreo, setErrorcorreo] = useState(false);
+
+
+  
 
   useEffect(() => {
     fetch(urlProveedores)
@@ -46,7 +86,7 @@ export const ListaProveedores = () => {
 
   const columns = [
     { field: 'IdProveedor', headerName: 'ID Proveedor', width: 150 },
-    { field: 'nombreProveedor', headerName: 'Empresa', width: 150 },
+    { field: 'CiaProveedora', headerName: 'Empresa Proveedora', width: 150 },
     { field: 'encargado', headerName: 'Encargado', width: 150 },
     { field: 'pais', headerName: 'Pais', width: 150 },
     { field: 'ciudad', headerName: 'Cuidad', width: 150 },

@@ -161,8 +161,8 @@ export const ListUsuarios = ({props,data,update,}) => {
       op => {
       switch (op) {
         case 'update':
-        data(id)
-        update(true)
+        props.data(id)
+        props.update(true)
         navegate('/usuarios/crearusuario')
           break;
         default:
