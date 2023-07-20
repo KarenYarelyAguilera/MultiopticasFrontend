@@ -87,6 +87,8 @@ import { DetalleExpediente } from './Pages/Clientes/DetalleExpediente.jsx';
 import { RegistroProducto2 } from './Pages/Inventario/RegistroProducto2.jsx';
 import { Perfil } from './Pages/Perfil.jsx';
 import { PerfilStepper } from './Pages/PerfilStepper.jsx';
+import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
+import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -537,6 +539,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/config/MetodosDePago"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <MetodosDePago />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/empleados/lista"
             element={
@@ -611,6 +633,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMarcas />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaMetodosDePago"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaMetodosDePago />
                 </div>
               </ProtectedRoute>
             }

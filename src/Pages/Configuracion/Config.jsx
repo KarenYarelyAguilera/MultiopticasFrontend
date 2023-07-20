@@ -55,7 +55,16 @@ export const Configuracion = ()=>{
           titulo: 'Lista de Marcas',
           vinculo: '/config/ListaMarcas',
         },
-        
+        {
+          imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
+          titulo: 'Metodos De Pago',
+          vinculo: '/config/MetodosDePago',
+        },
+        {
+          imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
+          titulo: 'Lista Metodos De Pago',
+          vinculo: '/config/ListaMetodosDePago',
+        },
       ];
 
       return (
