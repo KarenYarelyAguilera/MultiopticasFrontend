@@ -22,7 +22,7 @@ import { TextField } from '@mui/material';
 const urlMarca =
   'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
 
-export const DetalleExpediente = ({
+export const Diagnostico = ({
   msgError = '',
   success = false,
   warning = false,
@@ -39,13 +39,7 @@ export const DetalleExpediente = ({
 
   const navegate = useNavigate();
 
-  const [marca, setmarca] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
-  const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
+ 
 
   const handleNext = () => {
     let id = parseInt(document.getElementById("idMarca").value)
@@ -66,36 +60,25 @@ export const DetalleExpediente = ({
     navegate('/menuClientes/DatosExpediente');
   };
 
+  
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Detalle De Expediente</h2>
+        <h2>Diagnostico</h2>
         <h3>
-          Complete todos los puntos para completar el Detalle de Expediente.
+        Complete todos los datos para el historial del paciente.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
+            
             <div className="contInput">
-              <TextCustom text="Fecha de Consulta" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Consulta"
-                id="fecha"
-                value={fechaActual}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Optometrista" className="titleInput" />
+              <TextCustom text="Esfera OD" className="titleInput" />
 
               <input
                onKeyDown={e => {
@@ -104,64 +87,156 @@ export const DetalleExpediente = ({
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Optometrista"
-                id="Optometrista"
+                placeholder="Esfera OD"
+                id="ODEsfera"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Asesor de Venta" className="titleInput" />
+              <TextCustom text="Esfera OI" className="titleInput" />
 
               <input
-               onKeyDown={e => {
-                
-              }}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Asesor de Venta"
-                id="Asesor"
+                placeholder="Esfera OI"
+                id="OIEsfera"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Cilindro OD" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Cilindro OD"
+                id="ODCilindro"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Eje OD" className="titleInput" />
+
+              <input
+            
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Eje OD"
+                id="ODEje"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Adicion OD" className="titleInput" />
+              <input
+               
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Adicion OD"
+                id="AdicionOD"
               />
             
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha de Expiracion" className="titleInput" />
+              <TextCustom text="Adicion OI" className="titleInput" />
+
               <input
-                type="date"
+             
+                type="text"
                 name=""
-                maxLength={8}
+                maxLength={40}
                 className="inputCustom"
-                placeholder="Fecha de Expiracion"
-                id="fecha"
-                value={fechaActual}
-                disabled
+                placeholder="Adicion OI"
+                id="AdicionOI"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Antecedentes Clinicos" className="titleInput" />
+              <TextCustom text="Altura OD" className="titleInput" />
+
               <input
                 type="text"
                 name=""
-                maxLength={100}
+                maxLength={40}
                 className="inputCustom"
-                placeholder="Antecedentes Clinicos"
-                id="antecendentes"
+                placeholder="Altura OD"
+                id="AlturaOD"
               />
+            </div>
 
+            <div className="contInput">
+              <TextCustom text="Altura OI" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Altura OI"
+                id="AlturaOI"
+              />
+        
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OD" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OD"
+                id="Marca"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OI" className="titleInput" />
+
+              <input
+           
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OI"
+                id="Marca"
+              />
+               
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Enfermedad Presentada" className="titleInput" />
+              <input
+             
+                type="text"
+                name=""
+                maxLength={100}
+                className="inputCustomText"
+                placeholder="Enfermedad Presentada"
+                id="direccion"
+              />
+               
             </div> 
 
+            
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  navegate('/menuClientes/Diagnostico');
-                }}
+                onClick={handleNext}
               >
-                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
@@ -170,14 +245,16 @@ export const DetalleExpediente = ({
           </div>
         </div>
 
-        <img
+      { /* <imgn
           src={
             'https://static.vecteezy.com/system/resources/previews/010/351/676/non_2x/rewriting-text-color-icon-illustration-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"
-        />
+        /> */}
       </div>
     </div>
   );
 };
+
+
