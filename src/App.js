@@ -85,6 +85,8 @@ import { LoginxPrimeraVez } from './Pages/Login/LoginxPrimeraVez.jsx';
 import { DatosExpediente } from './Pages/Clientes/DatosExpediente.jsx';
 import { DetalleExpediente } from './Pages/Clientes/DetalleExpediente.jsx';
 import { RegistroProducto2 } from './Pages/Inventario/RegistroProducto2.jsx';
+import { Perfil } from './Pages/Perfil.jsx';
+import { PerfilStepper } from './Pages/PerfilStepper.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -233,6 +235,17 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 // activo={activo}
                 // user={usuario}
                 // mail={correo}
+              />
+            }
+          ></Route>
+
+<Route
+            path="/perfilStepper"
+            element={
+              <PerfilStepper
+              // activo={activo}
+              // user={usuario}
+              // mail={correo}
               />
             }
           ></Route>
@@ -1229,6 +1242,17 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <RegistroSucursal />
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/perfil"
+            element={
+              // <ProtectedRoute activo={activo}>
+                <div className="">
+                  <Perfil />
+                </div>
+              // </ProtectedRoute>
             }
           ></Route>
 
