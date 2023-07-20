@@ -428,6 +428,185 @@
   color: gray;
 }
 
+/* CONTENEDOR PERFIL */
+.ContProfile {
+  position: relative;
+  top: 50px;
+  left: 55px;
+  width: calc(100% - 250px);
+  height: auto;
+  display: grid;
+  grid-template-rows: 15% 80%;
+  grid-gap: 50px;
+  transition: 0.5s ease;
+}
+
+.ContProfile .infoAddUser{
+  width: 80%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    grid-gap: 0 !important;
+}
+
+.ContProfile .btnBack {
+  position: absolute;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+
+.ContProfile .btnBack:hover{
+  background-color: #316ee6;
+}
+
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
+  background-color: none !important;
+}
+
+.ContProfile .btnBack .iconBack {
+  font-size: 50px;
+  color: white;
+}
+
+.BarraLateral.close ~ .ContProfile {
+  left: 145px;
+  width: calc(90% - 20px);
+}
+
+.ContProfile .titleAddUser {
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-template-rows: repeat(2, 70px);
+  justify-items: center;
+}
+
+.ContProfile .titleAddUser h2 {
+  font-size: 55px;
+  color: #316ee6;
+}
+
+.ContProfile .titleAddUser h3 {
+  font-size: 16px;
+  color: gray;
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal2 {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-rows: repeat(2, 2fr);
+    grid-gap: 50px;
+}
+
+.section2{
+  width: 100%;
+  height: auto;
+}
+
+.contPreguntasProfile{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: 14% 80% 44%;
+}
+
+.contPreguntasInputs{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: repeat(3,3fr);
+  grid-gap: 15px;
+}
+
+.contPreguntasProfile .contPadrePreRes .contPreguntasInputs .selectCustom {
+  width: auto;
+  height: 45px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.contPreguntasProfile .titlesPreguntasProfile{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+ 
+.contPreguntasProfile .contPadrePreRes{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.contRespuestasInputs{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: repeat(3,3fr);
+  grid-gap: 15px;
+}
+
+.contRespuestasInputs .inputCustom {
+  width: auto;
+  padding: 11px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.contUpdatePassword{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 20% 47% 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+.contUpdatePassword .inputCustomUpdatePassword{
+  width: 85%;
+  height: 45px;
+  padding-left: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.inputCustomUpdatePassword:before{
+  border-bottom: none !important;
+}
+
+.contUpdatePassword .btnUpdatePassword{
+  width: 100%;
+  height: 40px;
+  background-color: #316ee6;
+  border-radius: 25px;
+  border: none;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+}
+/* CONTENEDOR PERFIL */
+
 .infoAddUser {
   width: 70%;
   height: auto;

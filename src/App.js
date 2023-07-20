@@ -88,6 +88,10 @@ import { Registration } from './Pages/Seguridad/Registration.jsx';
 import { LoginxPrimeraVez } from './Pages/Login/LoginxPrimeraVez.jsx';
 
 import { RegistroProducto2 } from './Pages/Inventario/RegistroProducto2.jsx';
+import { Perfil } from './Pages/Perfil.jsx';
+import { PerfilStepper } from './Pages/PerfilStepper.jsx';
+import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
+import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
 
 
 function App() {
@@ -234,6 +238,17 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <LoginxPrimeraVez
                 estado={activo}
                 id={idUsuario}
+              // activo={activo}
+              // user={usuario}
+              // mail={correo}
+              />
+            }
+          ></Route>
+
+<Route
+            path="/perfilStepper"
+            element={
+              <PerfilStepper
               // activo={activo}
               // user={usuario}
               // mail={correo}
@@ -431,7 +446,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/RegistroModelo"
+            path="/config/RegistroModelo"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
@@ -509,7 +524,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/RegistroMarcas"
+            path="/config/RegistroMarcas"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
@@ -523,6 +538,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 />
                 <BarraHorizontal user={usuario} />
                 <RegistroMarcas />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/MetodosDePago"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <MetodosDePago />
               </div>
               //  </ProtectedRoute>
             }
@@ -549,7 +584,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menumodelos/lista"
+            path="/config/lista"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -588,7 +623,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
           <Route
-            path="/menuInventario/ListaMarcas"
+            path="/config/ListaMarcas"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -602,6 +637,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMarcas />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaMetodosDePago"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaMetodosDePago />
                 </div>
               </ProtectedRoute>
             }
@@ -1253,6 +1308,17 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <RegistroSucursal />
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/perfil"
+            element={
+              // <ProtectedRoute activo={activo}>
+                <div className="">
+                  <Perfil />
+                </div>
+              // </ProtectedRoute>
             }
           ></Route>
 
