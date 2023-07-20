@@ -17,7 +17,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaMarcas = () => {
+export const ListaMetodosDePago = () => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
@@ -49,8 +49,8 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID Marca', width: 600 },
-    { field: 'descripcion', headerName: 'Marca', width: 600 },
+    { field: 'ID Tipo Pago', headerName: 'ID Tipo Pago', width: 600 },
+    { field: 'Metodo', headerName: 'Metodo', width: 600 },
 
     {
       field: 'borrar',
@@ -124,7 +124,7 @@ export const ListaMarcas = () => {
     swal({
       content: (
         <div>
-          <div className="logoModal">Desea Elimiar esta marca?</div>
+          <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
           <div className="contEditModal">
             
           </div>
@@ -167,7 +167,7 @@ export const ListaMarcas = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Marcas</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Metodos De Pago</h2>
 
       <div
         style={{
@@ -194,11 +194,11 @@ export const ListaMarcas = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroMarcas');
+                navegate('/config/MetodosDePago');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Marca
+              Nuevo Metodo
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
