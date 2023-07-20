@@ -144,9 +144,9 @@ const urlBitacoraBotonSalirLE=
     });
   }
 
-  //funcion de actualizar
+  
 
-
+//funcion de actualizar
   function handleUpdt(id) {
     // onRowClick={empleado => {
     swal({

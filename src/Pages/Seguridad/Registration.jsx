@@ -8,6 +8,7 @@ import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
 const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
+const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
 
 export const Registration = ({
   msgError = '',
@@ -87,12 +88,27 @@ export const Registration = ({
       clave: refContrasenia.current.value,
     };
 
-    await axios.post(urlIEmpleado, data).then(response => {
-      swal('Proceso exitoso', '', 'success').then(result => {
-      });
-    }).catch(error => {
-      console.log(error);
-      swal('Error al registrar el empleado', '', 'success')
+    const dataValida={
+      numId:identidad
+    }
+
+    await axios.post(urlEmpleadoExist,dataValida).then(response=>{
+      
+      
+      if (response.dataValida) {
+        swal("El numero de Identidad no es suyo.");
+
+      }else{
+         axios.post(urlIEmpleado, data).then(response => {
+          swal('Proceso exitoso', '', 'success').then(result => {
+            navegate("/")
+          });
+        }).catch(error => {
+          console.log(error);
+          swal('Error al registrar el empleado', '', 'error')
+        })
+      }
+    
     })
 
     navegate("/")
