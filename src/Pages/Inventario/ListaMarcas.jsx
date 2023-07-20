@@ -16,28 +16,22 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
-export const ListaMarcas = () => {
-
-  const [cambio, setcambio] = useState(0)
+export const ListaMarcas = ({props,data,update}) => {
   const [marcah, setMarcah] = useState()
+  const [cambio, setCambio] = useState(0)
 
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
-
-  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
-  
-  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
+  const urlMarcas = 'http://localhost:3000/api/marcas';
+  const urlDelMarca = 'http://localhost:3000/api/marcas/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
+  
   useEffect(() => {
-    fetch(urlMarcas)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get(urlMarcas).then(response=>setTableData(response.data))
   }, [cambio]);
-
+  
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -49,117 +43,100 @@ export const ListaMarcas = () => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID Marca', width: 600 },
-    { field: 'descripcion', headerName: 'Marca', width: 600 },
+    { field: 'IdMarca', headerName: 'ID Marca', width: 500 },
+    { field: 'descripcion', headerName: 'Marca', width: 500 },
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 200,
+      width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdMarca)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdMarca)}
+            onClick={() => handleDel(params.row.IdMarca)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
         </div>
       ),
+      
     },
   ];
 
-  function handleUpdt(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <input
-                type="text"
-                id="marca"
-                className="inputCustom"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
+//BOTON DE RETROCEDER 
+  const handleBack = () => {
+    navegate('/config');
+  };
 
-      switch (op) {
-        case true:
-          let data = {
-            IdMarca: id,
-            descripcion: document.getElementById("marca").value,
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateMarca, data)) {
-            swal(<h1>Marca Actualizada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
+//FUNCION DE ELIMINAR 
   function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">Desea Elimiar esta marca?</div>
+          <div className="logoModal">¿Desea Elimiar esta marca?</div>
           <div className="contEditModal">
-            
           </div>
         </div>
       ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
+      buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+      },
+    }).then(async(op) => {
 
       switch (op) {
         case null:
+
           let data = {
             IdMarca: id
           };
     
           console.log(data);
     
-    
-          if (sendData(urlDelMarca, data)) {
-            swal(<h1>Marca Eliminada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
+          await axios.delete(urlDelMarca,{data}).then(response=>{
+            swal("Marca eliminada correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar la marca","","error")
+          })
+         
+        break;
       
         default:
-          break;
+        break;
       }
-      
     });
-
-  }
-
-
-
-  const handleBack = () => {
-    navegate('/config');
+  };
+ 
+  //FUNCION DE ACTUALIZAR 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar la marca?: {id.marca} ?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+          update(true)
+      navegate('/config/RegistroMarcas')
+      break;
+      default:
+      break;
+      }
+    });
   };
 
   return (
@@ -194,7 +171,7 @@ export const ListaMarcas = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroMarcas');
+                navegate('/config/RegistroMarcas');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

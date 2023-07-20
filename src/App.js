@@ -544,7 +544,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroMarcas />
+                <RegistroMarcas
+                  limpiarData={Data}
+                  limpiarUpdate={update}
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  Data={Data} />
               </div>
               //  </ProtectedRoute>
             }
@@ -643,7 +649,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaMarcas />
+                  <ListaMarcas
+                  update={update} 
+                  data={Data} 
+                  />
                 </div>
               </ProtectedRoute>
             }
