@@ -52,7 +52,7 @@ export const RegistroProducto2 = (props) => {
   const [descrpcion, setdescripcion] = React.useState('');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
-
+//Se usa para mostrar informacion en un listbox
   useEffect(() => {
     fetch(urlModelos)
       .then(response => response.json())
@@ -115,7 +115,7 @@ export const RegistroProducto2 = (props) => {
       descripcion: descripcion,
     };
 
-    //Consumo de API y lanzamiento se alertq 
+    //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
         //axios.post(urlInsertBitacora, dataB)
@@ -142,7 +142,6 @@ export const RegistroProducto2 = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Producto</h2> : <h2>Registro de Producto</h2>}
-      
         <h3>Complete todos los puntos para poder registrar el producto.</h3>
       </div>
       <div className="infoAddUser">
@@ -229,7 +228,7 @@ export const RegistroProducto2 = (props) => {
               />
               <p class="error">{mensaje}</p>
             </div>
-            
+
             <div className="contInput">
               <TextCustom text="Cantidad Minima" className="titleInput" />
 
@@ -309,8 +308,7 @@ export const RegistroProducto2 = (props) => {
                   } else if (isNaN(parseInt(cantidadMax))) {
                     swal("El campo cantiadMax solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(precio))) {
-                    swal("El campo  solo acepta números.", "", "error");
-
+                    swal("El campo precio solo acepta números.", "", "error");
                   } else
                     props.actualizar ? actualizarProducto() : handleNext();
                 }

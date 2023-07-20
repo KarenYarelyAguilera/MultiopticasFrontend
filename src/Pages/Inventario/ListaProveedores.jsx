@@ -1,5 +1,5 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -19,15 +19,20 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaProveedores = (props) => {
 
-  const [cambio, setcambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
+  const [Modelo, setModelo] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
-
+//URLS
   const urlProveedores ='http://localhost:3000/api/proveedor';
   const urlDelProveedor ='http://localhost:3000/api/proveedor/EliminarProveedor';
 
-  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  
+         //COLOCAR APIS DE BITACORA AQUI---
+  //-------------------------------------------------------------------
 
   const [proveed, setproveed] = useState('');
   const [leyenda, setleyenda] = useState('');
@@ -65,9 +70,7 @@ export const ListaProveedores = (props) => {
   const [parrafo, setparrafo] = useState('');
   const [errorcorreo, setErrorcorreo] = useState(false);
 
-
-  
-
+  //Pa' cargar los proveedores
   useEffect(() => {
     fetch(urlProveedores)
       .then(response => response.json())
@@ -102,16 +105,13 @@ export const ListaProveedores = (props) => {
       width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdProveedor)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -120,25 +120,86 @@ export const ListaProveedores = (props) => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  //FUNCION DE ELIMINAR 
+  function handleDel(IdProveedor) {
+    swal({
+      content: (
+        <div>
+
+          <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
+          <div className="contEditModal">
+
+          </div>
+
+        </div>
+      ),
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
+      switch (op) {
+        case null:
+
+          let data = {
+            IdProveedor: IdProveedor,
+          };
+
+          //Funcion de Bitacora 
+          /*  let dataB = {
+             Id:props.idUsuario
+           } */
+
+          console.log(data);
+
+          await axios
+            .delete(urlDelProveedor, { data })
+            .then(response => {
+              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+              swal('Proveedor eliminado correctamente', '', 'success');
+              setCambio(cambio + 1);
+            })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar el Proveedor', '', 'error');
+            });
+
+          break;
+
+        default:
+          break;
+      }
+    });
   }
+
+  //FUNCION DE ACTUALIZAR
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar el proveedor: {id.CiaProveedora} ?
+        </div>
+      ),
+    }).then(
+      op => {
+        switch (op) {
+          case 'update':
+            props.data(id)
+            props.update(true)
+            navegate('/menuInventario/RegistroProveedores')
+            break;
+          default:
+            break;
+        }
+      });
+  };
+
+   //Funcion de Bitacora 
+   let dataB = {
+    Id: props.idUsuario
+  }
+
   const handleBack = () => {
     navegate('/config');
   };

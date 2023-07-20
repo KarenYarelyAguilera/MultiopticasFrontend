@@ -1,9 +1,9 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
-import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,18 +17,43 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaPromocion = () => {
+export const ListaPromocion = (props) => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlMarcas ='http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=Promociones';
+  const urlPromociones ='http://localhost:3000/api/promociones';
+  const urlDelPromocion = 'http://localhost:3000/api/promociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  //COLOCAR APIS DE BITACORA AQUI---
+  //-------------------------------------------------------------------
+  
+
+  const [descrpcion, setdescripcion] = useState('');
+  const [msj, setmsj] = useState('');
+  const [errordescripcion, setErrordescripcion] = useState(false);
+  
+  const [porcentaje, setporcentaje] = useState('');
+  const [errorporcentaje, setErrorporcentaje] = useState(false);
+  const [aviso, setaviso] = useState(false);
+
+  const [fechaInicial, setfechaInicial] = useState('');
+  const [mensaje, setmensaje] = useState('');
+  const [errorfechaInicial, setErrorfechaInicial] = useState(false);
+
+  const [fechaFinal, setfechaFinal] = useState('');
+  const [mensajeF, setmensajeF] = useState('');
+  const [errorfechaFinal, setErrorfechaFinal] = useState(false);
+
+  const [cantidadmin, setcantidadmin] = useState('');
+  const [advertencia, setadvertencia] = useState('');
+  const [errorcantidadmin, setErrorcantidadmin] = useState(false);
+
   useEffect(() => {
-    fetch(urlMarcas)
+    fetch(urlPromociones)
       .then(response => response.json())
       .then(data => setTableData(data));
   }, [cambio]);
@@ -45,28 +70,25 @@ export const ListaPromocion = () => {
 
   const columns = [
     { field: 'IdPromocion', headerName: 'ID Promocion', width: 250 },
+    { field: 'descripcion', headerName: 'Descripcion', width: 250 },
+    { field: 'descPorcent', headerName: 'Porcentaje', width: 250 },
     { field: 'fechaInicial', headerName: 'Fecha inicial', width: 250 },
     { field: 'fechaFinal', headerName: 'Fecha final', width: 250 },
     { field: 'estado', headerName: 'Estado', width: 250 },
-    { field: 'Descuento', headerName: 'Porcentaje', width: 250 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 250 },
-
+   
     {
       field: 'borrar',
       headerName: 'Acciones',
       width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdPromocion)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -75,26 +97,85 @@ export const ListaPromocion = () => {
     },
   ];
 
-  
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  //FUNCION DE ELIMINAR 
+  function handleDel(IdPromocion) {
+    swal({
+      content: (
+        <div>
+
+          <div className="logoModal">¿Desea Eliminar esta Promocion?</div>
+          <div className="contEditModal">
+
+          </div>
+
+        </div>
+      ),
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
+      switch (op) {
+        case null:
+
+          let data = {
+            IdPromocion: IdPromocion,
+          };
+
+          //Funcion de Bitacora 
+          /*  let dataB = {
+             Id:props.idUsuario
+           } */
+
+          console.log(data);
+
+          await axios
+            .delete(urlDelPromocion, { data })
+            .then(response => {
+              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+              swal('Promocion eliminada correctamente', '', 'success');
+              setcambio(cambio + 1);
+            })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar la promocion', '', 'error');
+            });
+
+          break;
+
+        default:
+          break;
+      }
+    });
   }
+  
+//FUNCION DE ACTUALIZAR
+function handleUpdt(id) {
+  swal({
+    buttons: {
+      update: 'ACTUALIZAR',
+      cancel: 'CANCELAR',
+    },
+    content: (
+      <div className="logoModal">
+        ¿Desea actualizar la promocion: {id.descripcion} ?
+      </div>
+    ),
+  }).then(
+    op => {
+      switch (op) {
+        case 'update':
+          props.data(id)
+          props.update(true)
+          navegate('/menuVentas/RegistroPromociones')
+          break;
+        default:
+          break;
+      }
+    });
+};
+
+//Funcion de Bitacora 
+let dataB = {
+  Id: props.idUsuario
+}
   const handleBack = () => {
     navegate('/config');
   };
@@ -104,7 +185,7 @@ export const ListaPromocion = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Sucursal</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Promociones</h2>
 
       <div
         style={{
@@ -131,11 +212,11 @@ export const ListaPromocion = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/RegistroSucursal');
+                navegate('/menuVentas/RegistroPromociones');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Sucursal
+              Nueva
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
