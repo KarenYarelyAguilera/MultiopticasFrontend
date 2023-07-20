@@ -1,6 +1,7 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -19,17 +20,20 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaExpedientes = () => {
 
+  const [cambio, setCambio] = useState(0);
+
   const urlExpedientes = 'http://localhost/APIS-Multioptica/Expediente/controller/expediente.php?op=Expedientes';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlExpedientes)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, []);
+    axios.get(urlExpedientes).then(response =>{
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, [cambio]);
 
+     
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -51,16 +55,14 @@ export const ListaExpedientes = () => {
   }
 
   const columns = [
-    { field: 'IdExpediente', headerName: 'ID', width: 190 },
-    { field: 'Cliente', headerName: 'Cliente', width: 190 },
-    { field: 'estado', headerName: 'Estado', width: 190, valueGetter: ({ value }) => traducirEstado(value) },
-    { field: 'fechaConsulta', headerName: 'Fecha de consulta', width: 190 },
-    { field: 'fechaExpiracion', headerName: 'Fecha de expiracion', width: 190 },
-    { field: 'CreadoPor', headerName: 'Creado Por', width: 190 },
+    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 200 },
+    { field: 'IdCliente', headerName: 'Cliente', width: 200 },
+    { field: 'fechaCreacion', headerName: 'Fecha de consulta', width: 200},
+    { field: 'IdEmpleado', headerName: 'Creado por', width: 200 },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 400,
 
       renderCell: params => (
         <div className="contActions">
@@ -82,97 +84,7 @@ export const ListaExpedientes = () => {
   ];
 
   function handleButtonClick(id) {
-    // swal(
-    //   <div>
-    //     <div className="logoModal">Datos a actualizar</div>
-    //     <div className="contEditModal">
-    //       <div className="contInput">
-    //         <TextCustom text="Cliente" className="titleInput" />
-    //         <input
-    //           type="text"
-    //           id="nombre"
-    //           className="inputCustom"
-    //           value={usuario.row.Usuario}
-    //         />
-    //       </div>
-
-    //       <div className="contInput">
-    //         <TextCustom
-    //           text="Nombre de Usuario"
-    //           className="titleInput"
-    //         />
-    //         <input
-    //           type="text"
-    //           id="nombreUsuario"
-    //           className="inputCustom"
-    //           value={usuario.row.Nombre_Usuario}
-    //         />
-    //       </div>
-    //       <div className="contInput">
-    //         <TextCustom text="Estado" className="titleInput" />
-    //         <input
-    //           type="text"
-    //           className="inputCustom"
-    //           id="EstadoUsuario"
-    //           value={usuario.row.Estado_Usuario}
-    //         />
-    //       </div>
-    //       <div className="contInput">
-    //         <TextCustom
-    //           text="Contraseña"
-    //           className="titleInput"
-    //         />
-    //         <input
-    //           type="text"
-    //           id="contrasenia"
-    //           className="inputCustom"
-    //         />
-    //       </div>
-    //       <div className="contInput">
-    //         <TextCustom text="Rol" className="titleInput" />
-    //         <select id="rol" className="selectCustom">
-    //           {roles.length ? (
-    //             roles.map(pre => (
-    //               <option key={pre.Id_Rol} value={pre.Id_Rol}>
-    //                 {pre.Rol}
-    //               </option>
-    //             ))
-    //           ) : (
-    //             <option value="No existe informacion">
-    //               No existe informacion
-    //             </option>
-    //           )}
-    //         </select>
-    //       </div>
-    //       <div className="contInput">
-    //         <TextCustom text="Email" className="titleInput" />
-    //         <input
-    //           type="text"
-    //           id="Email"
-    //           className="inputCustom"
-    //           value={usuario.row.Correo_Electronico}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>,
-    // ).then(() => {
-    //   let data = {
-    //     Usuario: document.getElementById('nombre').value,
-    //     Nombre_Usuario:
-    //       document.getElementById('nombreUsuario').value,
-    //     Estado_Usuario:
-    //       document.getElementById('EstadoUsuario').value,
-    //     Contrasenia: document.getElementById('contrasenia').value,
-    //     Id_Rol: document.getElementById('rol').value,
-    //     Correo_Electronico:
-    //       document.getElementById('Email').value,
-    //     Id_usuario: usuario.row.id_Usuario,
-    //   };
-
-    //   if (sendData(urlUpdateUser, data)) {
-    //     swal(<h1>Usuario Actualizado Correctamente</h1>);
-    //   }
-    // });
+ 
   }
   const handleBack = () => {
     navegate('/menuClientes');
@@ -210,7 +122,7 @@ export const ListaExpedientes = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuClientes/registroCliente');
+                navegate('/menuClientes/DatosExpediente');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
