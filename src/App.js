@@ -1149,6 +1149,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+
           <Route
             path="/menuVentas/DetalleVentaPromocion"
             element={
