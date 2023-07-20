@@ -147,6 +147,7 @@ export const DatosExpediente = ({
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
+          
         </div>
       </div>
     </div>

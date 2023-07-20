@@ -60,6 +60,7 @@ export const Diagnostico = ({
     navegate('/menuClientes/DatosExpediente');
   };
 
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
