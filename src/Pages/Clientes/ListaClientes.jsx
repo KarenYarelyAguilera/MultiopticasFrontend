@@ -222,10 +222,10 @@ export const ListaClientes = () => {
       //   swal(<h1>Cliente Actualizado Correctamente</h1>);
       //   setCambio(cambio + 1)
       // }
-      await axios.put(urlUpdateCliente,data).then(response=>{
-        swal(<h1>Cliente Actualizado Correctamente</h1>);
-        setCambio(cambio + 1)
-      })
+      //await axios.put(urlUpdateCliente,data).then(response=>{
+       // swal(<h1>Cliente Actualizado Correctamente</h1>);
+       // setCambio(cambio + 1)
+     // })
 
     });
 
