@@ -8,9 +8,6 @@ import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
-
-
-
 //Styles
 import '../../Styles/Usuarios.css';
 
