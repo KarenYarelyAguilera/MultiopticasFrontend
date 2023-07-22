@@ -41,7 +41,7 @@ export const Perfil = ({
   };
 
   const handlePerfilStepper = () => {
-  navegate("/perfilStepper");
+  navegate("/Preguntas/lista");
   };
 
   const handleNext = () => {
@@ -140,9 +140,9 @@ export const Perfil = ({
         
         <section className='section2'>
 
-        <div className="contPreguntasProfile">
+        {/* <div className="contPreguntasProfile"> */}
           <div className="titlesPreguntasProfile">
-            <TextCustom text="Preguntas" className="titleInput" />
+            {/* <TextCustom text="Preguntas" className="titleInput" />
             <TextCustom text="Respuestas" className="titleInput" />
           </div>
           <div className="contPadrePreRes">
@@ -192,7 +192,48 @@ export const Perfil = ({
                 id="Respuesta3"
               />
             </div>
+          </div> */}
+
+<div className="contUpdatePassword">
+          <TextCustom text="Preguntas:" className="titleInput" />
+          <FilledInput
+                onChange={(e) => {
+                  setContra2(e.target.value);
+                  if (contra2 === "") {
+                    setErrorContra2(true);
+                    setadvertencia("Los campos no deben estar vacíos");
+                  }
+                  }
+                }
+                id="filled-adornment-password"
+                placeholder='******************'
+                className="inputCustomUpdatePassword"
+                type={showPassword ? 'text' : 'password'}
+                inputProps={{ maxLength: 20, minLenght:8 }}
+                inputRef={refContrasenia}
+                endAdornment={
+
+                  
+                    <IconButton
+                      maxLength={30}
+                     
+                     
+                      
+        
+                    >
+                      
+                    </IconButton>
+                 
+                }
+              ></FilledInput>
+
+              <button 
+               className="btnUpdatePassword"
+               type='submit' 
+               onClick={handlePerfilStepper}
+              >Modificar Preguntas</button>
           </div>
+        
 
           <div className="contUpdatePassword">
           <TextCustom text="Contraseña:" className="titleInput" />
