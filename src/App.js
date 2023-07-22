@@ -89,6 +89,7 @@ import { Perfil } from './Pages/Perfil.jsx';
 import { PerfilStepper } from './Pages/PerfilStepper.jsx';
 import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
 import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
+import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 
 function App() {
   const [obj, setobj] = useState(0);
@@ -574,6 +575,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 />
                 <BarraHorizontal user={usuario} />
                 <ListaEmpleados update={update} data={Data} />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/Preguntas/lista"
+            element={
+              //<ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <ListaPreguntas update={update} data={Data} />
               </div>
               //  </ProtectedRoute>
             }
