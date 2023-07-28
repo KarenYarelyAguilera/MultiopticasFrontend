@@ -7,15 +7,24 @@ import { MultiProgressPerfil } from '../Components/MultiStepProgressBar/MultiPro
 import passwordRecovery from '../IMG/passwordrecovery.png';
 
 export const PerfilStepper = props => {
+  
+
+  /* const correo = {
+    correo:props.correo
+  }
+  console.log(correo) */
+  const [clave, setClave] = useState('');
 
   const [correo1, setCorreo1] = useState('');
   const [Id,setId] = useState(0);
-  
   const [autor,setAutor]=useState("");
 
   const crr1 = correo=>setCorreo1(correo);
   const id = idd=>setId(idd);
   const autr= aut=>setAutor(aut);
+
+  const clv = clav=>setClave(clav);
+
 
 
   const [page, setPage] = useState('pageone');
@@ -32,9 +41,6 @@ export const PerfilStepper = props => {
       case '2':
         setPage('pagetwo');
         break;
-      case '3':
-        alert('Ooops! Seems like you did not fill the form.');
-        break;
       default:
         setPage('1');
     }
@@ -50,9 +56,9 @@ export const PerfilStepper = props => {
         <MultiProgressPerfil page={page} onPageNumberClick={nextPageNumber} />
         {
           {
-            pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
-            pagetwo: <PageTwo correo1={correo1} id={id} autor={autr}  onButtonClick={nextPage} />,
-            pagethree:<PageThree correo={correo1} id={Id} autor={autor}   onButtonClick={nextPage} />,
+            pageone: <PageOne correo={props.infoPerfil.Correo_Electronico}  onButtonClick={nextPage} />,
+            pagetwo: <PageTwo correo={props.infoPerfil.Correo_Electronico}  id={props.infoPerfil.Id_Usuario} autor={props.infoPerfil.Nombre_Usuario}  onButtonClick={nextPage} />,
+          
 
           }[page]
         }
