@@ -92,6 +92,7 @@ import { Perfil } from './Pages/Perfil.jsx';
 import { PerfilStepper } from './Pages/PerfilStepper.jsx';
 import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
 import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
+import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 
 
 function App() {
@@ -117,6 +118,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const update = upd => setActualizar(upd);
   const registroclientes  = reg => setregistros(reg);
 
+
+//hook para manipular el perfil y sus variables
+  const [infoPerfil, setinfoPefil]=useState({}); 
+  const perfil=prfl=>setinfoPefil(prfl);
+
+
+
   return (
     <div>
       <BrowserRouter>
@@ -141,6 +149,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 rol={rol}
                 mail={mail}
                 idUsuario={id}
+                vPerfil={perfil}
               />
             }
           />
@@ -199,7 +208,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                     idUsuario={idUsuario}
                   />
-                  <BarraHorizontal user={Rol} correo={mail} />
+
+                  <BarraHorizontal user={usuario} correo={mail}/>
                   <Home></Home>
                 </div>
               </ProtectedRoute>
@@ -247,16 +257,35 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/perfilStepper"
             element={
               <PerfilStepper
-              // activo={activo}
-              // user={usuario}
-              // mail={correo}
+                // activo={activo}
+                // user={usuario}
+                // mail={correo}
+                infoPerfil={infoPerfil}
+              //idUsuario={idUsuario}
+
               />
             }
           ></Route>
+
+          <Route
+            path="/perfilStepper"
+            element={
+              <PerfilStepper
+                // activo={activo}
+                // user={usuario}
+                // mail={correo}
+                infoPerfil={infoPerfil}
+              //idUsuario={idUsuario}
+
+              />
+            }
+          ></Route>
+
+
 
           <Route
             path="/registration"
@@ -602,6 +631,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <ListaEmpleados update={update} data={Data} />
               </div>
               //  </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/Preguntas/lista"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                    idUsuario={id}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPreguntas update={update} data={Data} idUsuario={idUsuario} />
+                </div>
+              </ProtectedRoute>
             }
           ></Route>
 
@@ -1350,13 +1400,18 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-<Route
+          <Route
             path="/config/perfil"
             element={
               // <ProtectedRoute activo={activo}>
-                <div className="">
-                  <Perfil />
-                </div>
+              <div className="">
+                <Perfil 
+                  infoPerfil={infoPerfil}
+                 
+                 
+                
+                />
+              </div>
               // </ProtectedRoute>
             }
           ></Route>

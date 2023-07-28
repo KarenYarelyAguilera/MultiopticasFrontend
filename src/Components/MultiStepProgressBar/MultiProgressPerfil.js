@@ -7,8 +7,6 @@ export const MultiProgressPerfil = ({ page, onPageNumberClick }) => {
   if (page === "pageone") {
     stepPercentage = 0;
   } else if (page === "pagetwo") {
-    stepPercentage = 50;
-  } else if (page === "pagethree") {
     stepPercentage = 100;
   } else {
     stepPercentage = 0;
@@ -31,16 +29,6 @@ export const MultiProgressPerfil = ({ page, onPageNumberClick }) => {
           <div
             className={`indexedStep ${accomplished ? "accomplished" : null}`}
             onClick={() => onPageNumberClick("2")}
-          >
-            {index + 1}
-          </div>
-        )}
-      </Step>
-      <Step>
-        {({ accomplished, index }) => (
-          <div
-            className={`indexedStep ${accomplished ? "accomplished" : null}`}
-            onClick={() => onPageNumberClick("3")}
           >
             {index + 1}
           </div>
