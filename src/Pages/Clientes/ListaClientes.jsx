@@ -20,7 +20,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaClientes = () => {
+export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
 
   const urlClientes =
@@ -32,6 +32,7 @@ export const ListaClientes = () => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  
 
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export const ListaClientes = () => {
 
   const navegate = useNavigate();
 
+  
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -50,9 +52,11 @@ export const ListaClientes = () => {
     ),
   );
 
-  const handleNewExpediente = () => {
-    navegate('/menuClientes/nuevoExpediente');
+  const handleNewExpediente = (id) => {
+    props.datosclientes(id)
+    navegate('/menuClientes/DatosExpediente');
   }
+  
 
   const columns = [
     { field: 'idCliente', headerName: 'ID', width: 165 },
@@ -74,6 +78,7 @@ export const ListaClientes = () => {
           <Button
             className="btnEdit"
             onClick={() => handleUpdt(params.row.idCliente)}
+            
           >
             <EditIcon></EditIcon>
           </Button>
@@ -86,7 +91,7 @@ export const ListaClientes = () => {
 
           <Button
             className="btnAddExpe"
-            onClick={() => handleNewExpediente()}
+            onClick={() => handleNewExpediente(params.row)}
           >
             <AddIcon></AddIcon>
           </Button>
@@ -222,14 +227,15 @@ export const ListaClientes = () => {
       //   swal(<h1>Cliente Actualizado Correctamente</h1>);
       //   setCambio(cambio + 1)
       // }
-      await axios.put(urlUpdateCliente,data).then(response=>{
-        swal(<h1>Cliente Actualizado Correctamente</h1>);
-        setCambio(cambio + 1)
-      })
+      //await axios.put(urlUpdateCliente,data).then(response=>{
+       // swal(<h1>Cliente Actualizado Correctamente</h1>);
+       // setCambio(cambio + 1)
+     // })
 
     });
 
   }
+  
   const handleBack = () => {
     navegate('/menuClientes');
   };

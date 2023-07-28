@@ -85,7 +85,7 @@ export const Inventario = props => {
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/008/323/514/non_2x/3d-realistic-data-folder-icon-illustration-vector.jpg',
       titulo: 'Registro de Producto',
-      vinculo: '/menuInventario/RegistroProducto', 
+      vinculo: '/menuInventario/RegistroProducto2', 
     },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/006/945/991/non_2x/my-order-list-illustration-exclusive-design-inspiration-vector.jpg',

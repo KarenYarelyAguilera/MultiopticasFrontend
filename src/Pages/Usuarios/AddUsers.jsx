@@ -172,6 +172,8 @@ export const AddUsers = (props) => {
       swal('Usuario creado exitosamente.', '', 'success');
       navegate('/usuarios/lista');
       //sendData(urlBitacoraUsuario,dataB)
+    }else{
+      swal('!Error al crear Usuario! Ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
     }
   };
 
