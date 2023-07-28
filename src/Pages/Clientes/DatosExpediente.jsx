@@ -90,6 +90,13 @@ export const DatosExpediente = ( props) => {
           >
             <EditIcon></EditIcon>
           </Button>
+
+          <Button
+            className="btnImprimirExp"
+//onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
+          </Button>
           
         </div>
       ),
@@ -100,7 +107,7 @@ export const DatosExpediente = ( props) => {
     console.log(id);
     swal(
       <div>
-        <div className="logoModal">DIAGNOSTICO</div>
+        <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
         <div className="contInput">
               <TextCustom text="Fecha de Consulta" className="titleInput" />
