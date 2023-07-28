@@ -99,8 +99,6 @@ export const AddClientes = ({
       correo:correo
     }
 
-
-
     await axios.post(urlCliente,data).then(response=>{
       swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuClientes/lista');
@@ -415,16 +413,7 @@ export const AddClientes = ({
               }else {
                 handleNext();
               }
-
-
-
-
 }
-
-
-
-
-
               }}}
               
               variant="contained"

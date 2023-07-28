@@ -95,6 +95,7 @@ import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx
 
 
 function App() {
+  const [registros, setregistros] = useState({});
   const [obj, setobj] = useState(0);
   const [Rol, setRol] = useState('');
   const [correo, setCorreo] = useState('');
@@ -114,6 +115,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const id = idd => setIdUsuario(idd);
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
+  const registroclientes  = reg => setregistros(reg);
 
   return (
     <div>
@@ -820,7 +822,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaClientes />
+                <ListaClientes datosclientes={registroclientes} />
               </div>
               // </ProtectedRoute>
             }
@@ -1275,7 +1277,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosExpediente />
+                <DatosExpediente datosclientes={registros} />
               </div>
               // {/* </ProtectedRoute> */}
             }

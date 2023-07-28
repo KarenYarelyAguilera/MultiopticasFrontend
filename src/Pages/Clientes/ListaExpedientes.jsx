@@ -24,7 +24,7 @@ export const ListaExpedientes = () => {
 
   const [cambio, setCambio] = useState(0);
 
-  const urlExpedientes = 'http://localhost/APIS-Multioptica/Expediente/controller/expediente.php?op=Expedientes';
+  const urlExpedientes = 'http://localhost:3000/api/Expediente';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,6 +34,8 @@ export const ListaExpedientes = () => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+
+  
 
      
   const navegate = useNavigate();
@@ -57,11 +59,12 @@ export const ListaExpedientes = () => {
   }
 
   const columns = [
-    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 200 },
-    { field: 'IdCliente', headerName: 'Cliente', width: 200 },
-    { field: 'fechaCreacion', headerName: 'Fecha de consulta', width: 200},
-    { field: 'IdEmpleado', headerName: 'Creado por', width: 200 },
+    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 300 },
+    { field: 'Cliente', headerName: 'Cliente', width: 300 },
+    { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
+    { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
     {
+
       field: 'borrar',
       headerName: 'Acciones',
       width: 400,
