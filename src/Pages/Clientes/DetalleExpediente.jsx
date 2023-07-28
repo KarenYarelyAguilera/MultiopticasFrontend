@@ -33,8 +33,12 @@ export const DetalleExpediente = (props) => {
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-
-
+  const [fechaDespues, setFechaDespues] = useState(() => {
+    const fechaHoy = new Date();
+    fechaHoy.setFullYear(fechaHoy.getFullYear() + 1);
+    return fechaHoy.toISOString().slice(0, 10);
+  });
+  
   useEffect(() => {
     setTableData([]);
   }, []);
@@ -55,11 +59,22 @@ export const DetalleExpediente = (props) => {
     let dia = fecha.getDate().toString().padStart(2, "0");
 
     let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+    // Agregar un año a la fecha actual
+
+    let fechadespues = new Date(fechaExpiracion)
+fechadespues.setFullYear(fechadespues.getFullYear() + 1);
+
+let year = fechadespues.getFullYear().toString();
+let month = (fechadespues.getMonth() + 1).toString().padStart(2, "0");
+let day = fechadespues.getDate().toString().padStart(2, "0");
+
+let fechaModificada = year + "/" + month + "/" + day;
     
     let data = {
       fechaConsulta:fechaFormateada,
       Optometrista:Optometrista,
-      fechaExpiracion:fechaExpiracion,
+      fechaExpiracion:fechaModificada,
       AsesorVenta:AsesorVenta,
       Antecedentes:Antecedentes,
    }
@@ -148,7 +163,7 @@ export const DetalleExpediente = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de Expiracion"
                 id="fechaexpiracion"
-                value={fechaActual}
+                value={fechaDespues}
                 disabled
               />
             </div>
