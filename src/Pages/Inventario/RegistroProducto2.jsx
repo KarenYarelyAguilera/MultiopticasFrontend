@@ -154,7 +154,7 @@ export const RegistroProducto2 = (props) => {
                 {Modelo.length ? (
                   Modelo.map(pre => (
                     <option key={pre.IdModelo} value={pre.IdModelo}>
-                      {pre.detalle}
+                      {pre.Modelo}
                     </option>
                   ))
                 ) : (

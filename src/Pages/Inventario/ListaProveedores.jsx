@@ -1,4 +1,4 @@
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -23,15 +23,20 @@ export const ListaProveedores = (props) => {
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
-//URLS
-  const urlProveedores ='http://localhost:3000/api/proveedor';
-  const urlDelProveedor ='http://localhost:3000/api/proveedor/EliminarProveedor';
+  //URLS
+  const urlProveedores = 'http://localhost:3000/api/proveedor';
+  const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
+
+  const urlPaises = 'http://localhost:3000/api/paises';
+  const urlCiudades = 'http://localhost:3000/api/ciudades';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  
-         //COLOCAR APIS DE BITACORA AQUI---
+  const [Pais, setPais] = useState([]);
+  const [Ciudad, setCiudad] = useState([]);
+
+  //COLOCAR APIS DE BITACORA AQUI---
   //-------------------------------------------------------------------
 
   const [proveed, setproveed] = useState('');
@@ -45,16 +50,16 @@ export const ListaProveedores = (props) => {
   const [nombre, setnombre] = useState('');
   const [msj, setmsj] = useState('');
   const [errornombre, setErrornombre] = useState(false);
- 
+
   const [encargado, setencargado] = useState('');
   const [mensaje, setmensaje] = useState('');
   const [errorencargado, setErrorencargado] = useState(false);
 
-  const [pais, setpais] = useState('');
+
   const [avi, setavi] = useState('');
   const [errorpais, setErrorpais] = useState(false);
 
-  const [ciudad, setciudad] =  useState('');
+
   const [advertencia, setadvertencia] = useState('');
   const [errorciudad, setErrorciudad] = useState(false);
 
@@ -75,6 +80,12 @@ export const ListaProveedores = (props) => {
     fetch(urlProveedores)
       .then(response => response.json())
       .then(data => setTableData(data));
+    fetch(urlPaises)
+      .then(response => response.json())
+      .then(data => setPais(data));
+    fetch(urlCiudades)
+      .then(response => response.json())
+      .then(data => setCiudad(data));
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -91,13 +102,13 @@ export const ListaProveedores = (props) => {
     { field: 'IdProveedor', headerName: 'ID Proveedor', width: 150 },
     { field: 'CiaProveedora', headerName: 'Empresa Proveedora', width: 150 },
     { field: 'encargado', headerName: 'Encargado', width: 150 },
-    { field: 'pais', headerName: 'Pais', width: 150 },
-    { field: 'ciudad', headerName: 'Cuidad', width: 150 },
-    { field: 'codigoPostal', headerName: 'Codigo Postal', width: 150 },
+    { field: 'Pais', headerName: 'Pais', width: 150 },
+    { field: 'Ciudad', headerName: 'Ciudad', width: 150 },
+    { field: 'Productos', headerName: 'Producto', width: 150 },
     { field: 'direccion', headerName: 'Direccion', width: 150 },
     { field: 'telefono', headerName: 'Telefono', width: 150 },
     { field: 'correoElectronico', headerName: 'Correo Electronico', width: 150 },
-   
+
 
     {
       field: 'borrar',
@@ -195,8 +206,8 @@ export const ListaProveedores = (props) => {
       });
   };
 
-   //Funcion de Bitacora 
-   let dataB = {
+  //Funcion de Bitacora 
+  let dataB = {
     Id: props.idUsuario
   }
 
@@ -257,120 +268,120 @@ export const ListaProveedores = (props) => {
           rowsPerPageOptions={[5]}
 
 
-//----------------ni idea para que es------------
-           // onRowClick={usuario => {
-          //   swal({
-          //     buttons: {
-          //       update: 'Actualizar',
-          //       cancel: 'Cancelar',
-          //     },
-          //     content: (
-          //       <div className="logoModal">
-          //         Que accion desea realizar con el cliente:{' '}
-          //         {usuario.row.Usuario}
-          //       </div>
-          //     ),
-          //   }).then(op => {
-          //     switch (op) {
-          //       case 'update':
-          //         swal(
-          //           <div>
-          //             <div className="logoModal">Datos a actualizar</div>
-          //             <div className="contEditModal">
-          //               <div className="contInput">
-          //                 <TextCustom text="Usuario" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   id="nombre"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Usuario}
-          //                 />
-          //               </div>
+        //----------------ni idea para que es------------
+        // onRowClick={usuario => {
+        //   swal({
+        //     buttons: {
+        //       update: 'Actualizar',
+        //       cancel: 'Cancelar',
+        //     },
+        //     content: (
+        //       <div className="logoModal">
+        //         Que accion desea realizar con el cliente:{' '}
+        //         {usuario.row.Usuario}
+        //       </div>
+        //     ),
+        //   }).then(op => {
+        //     switch (op) {
+        //       case 'update':
+        //         swal(
+        //           <div>
+        //             <div className="logoModal">Datos a actualizar</div>
+        //             <div className="contEditModal">
+        //               <div className="contInput">
+        //                 <TextCustom text="Usuario" className="titleInput" />
+        //                 <input
+        //                   type="text"
+        //                   id="nombre"
+        //                   className='inputCustom'
+        //                   value={usuario.row.Usuario}
+        //                 />
+        //               </div>
 
-          //               <div className="contInput">
-          //                 <TextCustom
-          //                   text="Nombre de Usuario"
-          //                   className="titleInput"
-          //                 />
-          //                 <input
-          //                   type="text"
-          //                   id="nombreUsuario"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Nombre_Usuario}
-          //                 />
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Estado" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   className='inputCustom'
-          //                   id="EstadoUsuario"
-          //                   value={usuario.row.Estado_Usuario}
-          //                 />
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom
-          //                   text="Contraseña"
-          //                   className="titleInput"
-          //                 />
-          //                 <input type="text" id="contrasenia" className='inputCustom'/>
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Rol" className="titleInput" />
-          //                 <select id="rol" className="selectCustom">
-          //                   {roles.length ? (
-          //                     roles.map(pre => (
-          //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
-          //                         {pre.Rol}
-          //                       </option>
-          //                     ))
-          //                   ) : (
-          //                     <option value="No existe informacion">
-          //                       No existe informacion
-          //                     </option>
-          //                   )}
-          //                 </select>
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Email" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   id="Email"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Correo_Electronico}
-          //                 />
-          //               </div>
-          //             </div>
-          //           </div>,
-          //         ).then(() => {
-          //           let data = {
-          //             Usuario: document.getElementById('nombre').value,
-          //             Nombre_Usuario:
-          //               document.getElementById('nombreUsuario').value,
-          //             Estado_Usuario:
-          //               document.getElementById('EstadoUsuario').value,
-          //             Contrasenia: document.getElementById('contrasenia').value,
-          //             Id_Rol: document.getElementById('rol').value,
-          //             Correo_Electronico:
-          //               document.getElementById('Email').value,
-          //             Id_usuario: usuario.row.id_Usuario,
-          //           };
+        //               <div className="contInput">
+        //                 <TextCustom
+        //                   text="Nombre de Usuario"
+        //                   className="titleInput"
+        //                 />
+        //                 <input
+        //                   type="text"
+        //                   id="nombreUsuario"
+        //                   className='inputCustom'
+        //                   value={usuario.row.Nombre_Usuario}
+        //                 />
+        //               </div>
+        //               <div className="contInput">
+        //                 <TextCustom text="Estado" className="titleInput" />
+        //                 <input
+        //                   type="text"
+        //                   className='inputCustom'
+        //                   id="EstadoUsuario"
+        //                   value={usuario.row.Estado_Usuario}
+        //                 />
+        //               </div>
+        //               <div className="contInput">
+        //                 <TextCustom
+        //                   text="Contraseña"
+        //                   className="titleInput"
+        //                 />
+        //                 <input type="text" id="contrasenia" className='inputCustom'/>
+        //               </div>
+        //               <div className="contInput">
+        //                 <TextCustom text="Rol" className="titleInput" />
+        //                 <select id="rol" className="selectCustom">
+        //                   {roles.length ? (
+        //                     roles.map(pre => (
+        //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
+        //                         {pre.Rol}
+        //                       </option>
+        //                     ))
+        //                   ) : (
+        //                     <option value="No existe informacion">
+        //                       No existe informacion
+        //                     </option>
+        //                   )}
+        //                 </select>
+        //               </div>
+        //               <div className="contInput">
+        //                 <TextCustom text="Email" className="titleInput" />
+        //                 <input
+        //                   type="text"
+        //                   id="Email"
+        //                   className='inputCustom'
+        //                   value={usuario.row.Correo_Electronico}
+        //                 />
+        //               </div>
+        //             </div>
+        //           </div>,
+        //         ).then(() => {
+        //           let data = {
+        //             Usuario: document.getElementById('nombre').value,
+        //             Nombre_Usuario:
+        //               document.getElementById('nombreUsuario').value,
+        //             Estado_Usuario:
+        //               document.getElementById('EstadoUsuario').value,
+        //             Contrasenia: document.getElementById('contrasenia').value,
+        //             Id_Rol: document.getElementById('rol').value,
+        //             Correo_Electronico:
+        //               document.getElementById('Email').value,
+        //             Id_usuario: usuario.row.id_Usuario,
+        //           };
 
-          //           if (sendData(urlUpdateUser, data)) {
-          //             swal(<h1>Usuario Actualizado Correctamente</h1>);
-          //           }
-          //         });
-          //         break;
-          //       default:
-          //         break;
-          //     }
-          //   });
-          // }}
+        //           if (sendData(urlUpdateUser, data)) {
+        //             swal(<h1>Usuario Actualizado Correctamente</h1>);
+        //           }
+        //         });
+        //         break;
+        //       default:
+        //         break;
+        //     }
+        //   });
+        // }}
 
-          />
+        />
       </div>
     </div>
   );
-  
-    
+
+
 };
