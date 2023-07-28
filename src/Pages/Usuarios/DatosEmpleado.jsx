@@ -404,7 +404,7 @@ export const DatosEmpleado = (props) => {
                 {sucursales.length ? (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                      {pre.departamento}
+                      {pre.IdSucursal}
                     </option>
                   ))
                 ) : (
