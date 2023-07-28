@@ -31,6 +31,10 @@ export const Login = props => {
   const urlIntentos =
     'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
 
+
+
+  const urlUsuario= 'http://localhost:3000/api/usuario'; //para el perfil
+
   const [usuario, setUsuario] = useState('');
   const [prueba, setprueba] = useState('');
   const [errorUsuario, setErrorUsuario] = useState(false);
@@ -106,7 +110,15 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
-        axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
+
+        //para el perfil
+        const dataPerfil={
+          Correo_Electronico:refUsuario.current.value,
+        }
+
+        await axios.post(urlUsuario, dataPerfil).then((responsePerfil)=>props.vPerfil(responsePerfil.data))//consumo de api para obntener los datos del perfil
+
+        await axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
       }
     } catch (error) {
       setContador(contador + 1)
@@ -125,7 +137,7 @@ export const Login = props => {
         <h1 className="titleHello">Hola, Bienvenido</h1>
         <div className="contHijoLogin">
           <div className="contInputLogin">
-            <TextCustom text="Usuario" className="titleInput" />
+            <TextCustom text="Correo" className="titleInput" />
             <input
               onKeyDown={e => {
                 setUsuario(e.target.value);
@@ -155,7 +167,7 @@ export const Login = props => {
                 }
               }}
               error={errorUsuario}
-              placeholder="Usuario"
+              placeholder="Correo"
               className="inputCustomLogin"
               maxLength={50}
               ref={refUsuario}
