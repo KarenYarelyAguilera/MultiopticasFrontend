@@ -24,8 +24,16 @@ const urlUpdSucursal = //ACTUALIZAR
   'http://localhost:3000/api/sucursal/actualizar';
 const urlDelSucursal = //BORRAR
   'http://localhost:3000/apisucursal/eliminar';
+  const urlDepartamentos = //MUESTRA LOS DEPTOS
+  'http://localhost:3000/api/departamentos';
+  const urlCiudades = //MUESTRA CIUDADES
+  'http://localhost:3000/api/ciudades';
+
 
 export const RegistroSucursal = (props) => {
+
+  const [Departamento, setDepartamento] = useState([]);
+  const [Ciudad, setCiudad] = useState([]);
 
   const [departamento, setdepartamento] = React.useState('');
   const [errordepartamento, setErrordepartamento] = React.useState(false);
@@ -46,19 +54,28 @@ export const RegistroSucursal = (props) => {
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
+  useEffect(() => {
+    fetch(urlDepartamentos)
+      .then(response => response.json())
+      .then(data => setDepartamento(data));
+      fetch(urlCiudades)
+      .then(response => response.json())
+      .then(data => setCiudad(data));
+  }, []);
+
   const navegate = useNavigate();
 
   //ACTUALIZAR
   const actualizarSucursal = async () => {
 
-    let departamento = document.getElementById('departamento').value;
-    let ciudad = document.getElementById('ciudad').value;
+    let departamento = parseInt(document.getElementById('departamento').value);
+    let ciudad = parseInt(document.getElementById('ciudad').value);
     let direccion = document.getElementById('direccion').value;
     let telefono = document.getElementById('telefono').value;
 
     const data = {
-      departamento: departamento,
-      ciudad: ciudad,
+      IdDepartamento: departamento,
+      IdCiudad: ciudad,
       direccion: direccion,
       telefono: telefono,
       IdSucursal: props.data.IdSucursal, //El dato de IdProducto se obtiene de Producto seleccionado.
@@ -85,14 +102,14 @@ export const RegistroSucursal = (props) => {
 
   //INSERTAR  
   const handleNext = () => {
-    let departamento = document.getElementById('departamento').value;
-    let ciudad = document.getElementById('ciudad').value;
+    let departamento = parseInt(document.getElementById('departamento').value);
+    let ciudad = parseInt(document.getElementById('ciudad').value);
     let direccion = document.getElementById('direccion').value;
     let telefono = document.getElementById('telefono').value;
 
     let data = {
-      departamento: departamento,
-      ciudad: ciudad,
+      IdDepartamento: departamento,
+      IdCiudad: ciudad,
       direccion: direccion,
       telefono: telefono
     };
@@ -132,31 +149,37 @@ export const RegistroSucursal = (props) => {
           <div className="InputContPrincipal1">
             <div className="contInput">
               <TextCustom text="Departamento" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={50}
-                className="inputCustom"
-
-                placeholder="departamento"
-                id="departamento"
-              />
+              <select name="" className="selectCustom" id="departamento">
+                {Departamento.length ? (
+                  Departamento.map(pre => (
+                    <option key={pre.IdDepartamento} value={pre.IdDepartamento}>
+                      {pre.departamento}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
 
             </div>
 
             <div className="contInput">
               <TextCustom text="Ciudad" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={50}
-                className="inputCustom"
-
-                placeholder="ciudad"
-                id="ciudad"
-              />
+              <select name="" className="selectCustom" id="ciudad">
+                {Ciudad.length ? (
+                  Ciudad.map(pre => (
+                    <option key={pre.IdCiudad} value={pre.IdCiudad}>
+                      {pre.ciudad}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
 
             </div>
 
@@ -204,12 +227,8 @@ export const RegistroSucursal = (props) => {
                   var direccion = document.getElementById('direccion').value;
                   var telefono = document.getElementById('telefono').value;
 
-                  if (departamento === "" || ciudad === "" || direccion === "" || telefono === "") {
+                  if (direccion === "" || telefono === "") {
                     swal("No deje campos vacíos.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(departamento)) {
-                    swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(ciudad)) {
-                    swal("El campo ciudad solo acepta letras y solo un espacio entre palabras.", "", "error");
                   } else if (isNaN(parseInt(telefono))) {
                     swal("El campo telefono solo acepta números.", "", "error");
                   } else

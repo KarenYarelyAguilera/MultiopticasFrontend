@@ -25,18 +25,25 @@ const urlUpdProveedor = //ACTUALIZAR
   'http://localhost:3000/api/proveedor/ActualizarProveedor';
 const urlDelProveedor = //BORRAR
   'http://localhost:3000/api/proveedor/EliminarProveedor';
+const urlPaises = //Paises
+  'http://localhost:3000/api/paises';
+const urlCiudades = //Ciudades
+  'http://localhost:3000/api/ciudades';
+
 
 export const RegistroProveedores = (props) => {
 
   const [proveedores, setProveedores] = useState([]);
+  const [Pais, setPais] = useState([]);
+  const [Ciudad, setCiudad] = useState([]);
 
   const [proveed, setproveed] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
   const [errorproveedor, setErrorproveedor] = React.useState(false);
 
-  const [codigopostal, setcodigopostal] = React.useState('');
+  const [productos, setProductos] = React.useState('');
   const [aviso, setaviso] = React.useState('');
-  const [errorcodigopostal, setErrorcodigopostal] = React.useState(false);
+  const [errorProductos, setErrorProductos] = React.useState(false);
 
   const [nombre, setnombre] = React.useState('');
   const [msj, setmsj] = React.useState('');
@@ -46,11 +53,9 @@ export const RegistroProveedores = (props) => {
   const [mensaje, setmensaje] = React.useState('');
   const [errorencargado, setErrorencargado] = React.useState(false);
 
-  const [pais, setpais] = React.useState('');
   const [avi, setavi] = React.useState('');
   const [errorpais, setErrorpais] = React.useState(false);
 
-  const [ciudad, setciudad] = React.useState('');
   const [advertencia, setadvertencia] = React.useState('');
   const [errorciudad, setErrorciudad] = React.useState(false);
 
@@ -66,6 +71,15 @@ export const RegistroProveedores = (props) => {
   const [parrafo, setparrafo] = React.useState('');
   const [errorcorreo, setErrorcorreo] = React.useState(false);
 
+  useEffect(() => {
+    fetch(urlPaises)
+      .then(response => response.json())
+      .then(data => setPais(data));
+    fetch(urlCiudades)
+      .then(response => response.json())
+      .then(data => setCiudad(data));
+  }, []);
+
   const navegate = useNavigate();
 
   //ACTUALIZAR
@@ -73,9 +87,9 @@ export const RegistroProveedores = (props) => {
 
     let CiaProveedora = document.getElementById("CiaProveedora").value
     let encargado = document.getElementById("encargado").value;
-    let pais = document.getElementById("pais").value;
-    let ciudad = document.getElementById("ciudad").value;
-    let codigoPostal = document.getElementById("codigoPostal").value;
+    let pais = parseInt(document.getElementById("pais").value);
+    let ciudad = parseInt(document.getElementById("ciudad").value);
+    let productos = document.getElementById("productos").value;
     let direccion = document.getElementById("direccion").value;
     let telefono = document.getElementById("telefono").value;
     let correoElectronico = document.getElementById("correoElectronico").value;
@@ -83,9 +97,9 @@ export const RegistroProveedores = (props) => {
     const data = {
       CiaProveedora: CiaProveedora,
       encargado: encargado,
-      pais: pais,
-      ciudad: ciudad,
-      codigoPostal: codigoPostal,
+      IdPais: pais,
+      IdCiudad: ciudad,
+      Productos: productos,
       direccion: direccion,
       telefono: telefono,
       correoElectronico: correoElectronico,
@@ -115,9 +129,9 @@ export const RegistroProveedores = (props) => {
   const handleNext = () => {
     let CiaProveedora = document.getElementById("CiaProveedora").value
     let encargado = document.getElementById("encargado").value;
-    let pais = document.getElementById("pais").value;
-    let ciudad = document.getElementById("ciudad").value;
-    let codigoPostal = document.getElementById("codigoPostal").value;
+    let pais = parseInt(document.getElementById("pais").value);
+    let ciudad = parseInt(document.getElementById("ciudad").value);
+    let productos = document.getElementById("productos").value;
     let direccion = document.getElementById("direccion").value;
     let telefono = document.getElementById("telefono").value;
     let correoElectronico = document.getElementById("correoElectronico").value;
@@ -125,12 +139,12 @@ export const RegistroProveedores = (props) => {
     let data = {
       CiaProveedora: CiaProveedora,
       encargado: encargado,
-      pais: pais,
-      ciudad: ciudad,
-      codigoPostal: codigoPostal,
+      IdPais: pais,
+      IdCiudad: ciudad,
+      Productos: productos,
       direccion: direccion,
       telefono: telefono,
-      correoElectronico: correoElectronico
+      correoElectronico: correoElectronico,
     };
 
     //Consumo de API y lanzamiento se alerta
@@ -196,33 +210,16 @@ export const RegistroProveedores = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Codigo Postal" className="titleInput" />
+              <TextCustom text="Productos" className="titleInput" />
 
               <input
 
-                onKeyDown={e => {
-                  setcodigopostal(e.target.value);
-                  if (codigopostal === '') {
-                    setErrorcodigopostal(true);
-                    setaviso('Los campos no deben estar vacios');
-                  } else {
-                    setErrorcodigopostal(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(codigopostal)) {
-                      setErrorcodigopostal(true);
-                      setaviso('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorcodigopostal(false);
-                      setaviso('');
-                    }
-                  }
-                }}
                 type="text"
                 name=""
-                maxLength={15}
+                maxLength={200}
                 className="inputCustom"
-                placeholder="codigoPostal"
-                id="codigoPostal"
+                placeholder="Producto que le ofrece..."
+                id="productos"
               />
               <p class="error">{aviso}</p>
             </div>
@@ -259,33 +256,19 @@ export const RegistroProveedores = (props) => {
 
             <div className="contInput">
               <TextCustom text="Pais" className="titleInput" />
-
-              <input
-                onKeyDown={e => {
-                  setpais(e.target.value);
-                  if (pais == '') {
-                    setErrorpais(true);
-                    setavi('Los campos no deben estar vacios');
-                  } else {
-                    setErrorpais(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(pais)) {
-                      setErrorpais(true);
-                      setavi('Solo deben de ingresar letras');
-                    } else {
-                      setErrorpais(false);
-                      setavi('');
-                    }
-                  }
-                }}
-                type="text"
-                name=""
-                maxLength={25}
-                className="inputCustom"
-                placeholder="pais"
-                id="pais"
-              />
-              <p class="error">{avi}</p>
+              <select name="" className="selectCustom" id="pais">
+                {Pais.length ? (
+                  Pais.map(pre => (
+                    <option key={pre.IdPais} value={pre.IdPais}>
+                      {pre.Pais}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
 
             <div className="contInput">
@@ -322,34 +305,19 @@ export const RegistroProveedores = (props) => {
 
             <div className="contInput">
               <TextCustom text="Ciudad" className="titleInput" />
-
-              <input
-                onKeyDown={e => {
-                  setciudad(e.target.value);
-                  if (ciudad == '') {
-                    setErrorciudad(true);
-                    setadvertencia('Los campos no deben estar vacios');
-                  } else {
-                    setErrorciudad(false);
-                    var preg_match = /^[a-zA-Z]+$/;
-                    if (!preg_match.test(ciudad)) {
-                      setErrorciudad(true);
-                      setadvertencia('Solo deben de ingresar letras');
-                    } else {
-                      setErrorciudad(false);
-                      setadvertencia('');
-                    }
-                  }
-                }}
-
-                type="text"
-                name=""
-                maxLength={25}
-                className="inputCustom"
-                placeholder="ciudad"
-                id="ciudad"
-              />
-              <p class="error">{advertencia}</p>
+              <select name="" className="selectCustom" id="ciudad">
+                {Ciudad.length ? (
+                  Ciudad.map(pre => (
+                    <option key={pre.IdCiudad} value={pre.IdCiudad}>
+                      {pre.ciudad}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
 
             <div className="contInput">
@@ -416,30 +384,19 @@ export const RegistroProveedores = (props) => {
                   //Validaciones previo a ejecutar el boton
                   var CiaProveedora = document.getElementById("CiaProveedora").value
                   var encargado = document.getElementById("encargado").value;
-                  var pais = document.getElementById("pais").value;
-                  var ciudad = document.getElementById("ciudad").value;
-                  var codigoPostal = document.getElementById("codigoPostal").value;
+                  var productos = document.getElementById("productos").value;
                   var direccion = document.getElementById("direccion").value;
                   var telefono = document.getElementById("telefono").value;
                   var correoElectronico = document.getElementById("correoElectronico").value;
 
-                  if (CiaProveedora === "" || encargado === "" || pais === "" || ciudad === "" || codigoPostal === "" || direccion === "" || telefono === "" || correoElectronico === "") {
+                  if (CiaProveedora === "" || encargado === "" || productos === "" || direccion === "" || telefono === "" || correoElectronico === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(encargado)) {
                     swal("El campo encargado solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(pais)) {
-                    swal("El campo pais solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(ciudad)) {
-                    swal("El campo ciudad solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (isNaN(parseInt(codigoPostal))) {
-                    swal("El campo Codigo Postal solo acepta números.", "", "error");
                   } else if (isNaN(parseInt(telefono))) {
                     swal("El campo teléfono solo acepta números.", "", "error");
                   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoElectronico)) {
                     swal("El campo correo debe contener un correo válido.", "", "error");
-                    
-                  
-
                   } else
                     props.actualizar ? actualizarProveedor() : handleNext();
                 }
