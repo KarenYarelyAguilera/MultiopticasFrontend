@@ -1401,18 +1401,102 @@ button {
 /* Ventana Modal - swal */
 
 /*RECORDATORIO*/
-.contPrimary{
+.contRecordatorios{
   width: 100%;
-
+  height: 82vh;
   display: grid;
-  grid-template-rows: repeat(2,2fr);
-  grid-gap: 50px;
+  grid-template-columns: 35% 59%;
+  grid-gap: 100px;
+}
+
+.contRecordCitas{
+  width: 100%;
+  height: 80vh;
+  display: grid;
+  grid-template-rows: repeat(2, 2fr);
+  grid-gap: 10px;
+}
+
+.cardCitas{
+  width: 100%;
+  height: auto;
+  background-color: #fcfcfc;
+  border: 5px solid #f4f3f3;
+  border-radius: 25px;
+  transition: 0.5s;
+  padding: 30px;
+}
+
+.cardCitas:hover{
+  box-shadow: 4px 7px 19px 0px rgba(199,199,199,1);
+}
+
+.cardCitas h1{
+  font-size: 30px;
+  padding-bottom: 5px;
+}
+
+.cardCitas h2{
+  font-size: 20px;
+  text-align: left;
+  color: #666666;
+  padding-bottom: 15px;
+}
+
+.cardCitas hr{
+  width: 100%;
+  height: 2px;
+  background-color: #e8e5e5;
+  border: none;
+  border-radius: 25px;
+}
+
+.cardCitas .listCitas{
+  width: 98%;
+  height: 215px;
+  padding-top: 40px;
+  padding-left: 20px;
+  display: grid;
+  grid-template-rows: repeat(5, 5fr);
+}
+
+.cardCitas .listCitas div{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 82% 15%;
+}
+
+.cardCitas .listCitas span{
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.cardCitas .listCitas .fechaCita{
+  color: #316ee6;
+}
+
+.cardCitas .listCitas .advertencia{
+  max-width: 40%;
+  font-size: 22px;
+  text-align: center;
+  color: #666666;
+  padding: 80px;
+  position: relative;
+  left: 100px;
+}
+
+.contPrimaryRecord{
+  width: 100%;
+  display: grid;
+  grid-gap: 20px;
 }
 
 .calendar{
+  height: 70vh !important;
   text-transform: uppercase;
 }
-
 
 .contAddRecordatorio{
   width: 40%;
@@ -1441,5 +1525,65 @@ button {
   cursor: pointer;
   border: none;
   box-shadow: 2px 2px 15px 5px solid black;
+}
+
+.contPrincipalNewCita{
+  width: 90%;
+  padding-top: 40px;
+  padding-left: 40px;
+  height: auto;
+  display: grid;
+  grid-gap: 25px;
+}
+
+.contNewCita{
+  width: 80%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 10px;
+}
+
+.contNewCitaButtons{
+  width: 80%;
+  height: auto;
+  display: grid;
+  grid-gap: 10px;
+  justify-items: center;
+}
+
+.contNewCitaButtons .btnAgregarCita{
+  width: 40%;
+  height: auto;
+  padding: 15px;
+  background-color: #316ee6;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+}
+
+.contNewCitaButtons .btnCancelar{
+  width: 40%;
+  height: auto;
+  padding: 15px;
+  background-color:rgb(163, 33, 33);
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+}
+
+.contNewCita .inputCustomText {
+  width: 355px;
+  height: 180px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
 }
 /*RECORDATORIO*/
