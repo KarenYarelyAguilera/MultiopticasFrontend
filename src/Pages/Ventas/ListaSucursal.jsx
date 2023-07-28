@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
-import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,19 +17,43 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaSucursal = () => {
+export const ListaSucursal = (props) => {
   const [roles, setRoles] = useState([]);
+  const [cambio, setCambio] = useState(0)
 
-  const urlSucursal ='http://localhost/APIS-Multioptica/Gestion/controller/gestion.php?op=sucursales';
+  const urlSucursales = 'http://localhost:3000/api/sucursales'; 
+  const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar'; 
   
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [departamento, setdepartamento] = useState('');
+  const [errordepartamento, setErrordepartamento] = useState(false);
+  const [aviso, setaviso] = useState(false);
+
+  const [ciudad, setciudad] = useState('');
+  const [mensaje, setmensaje] = useState('');
+  const [errorciudad, setErrorciudad] = useState(false);
+
+  const [direccion, setdireccion] = useState('');
+  const [advertencia, setadvertencia] = useState('');
+  const [errordireccion, setErrordireccion] = useState(false);
+
+  const [descrpcion, setdescripcion] = useState('');
+  const [msj, setmsj] = useState('');
+  const [errordescripcion, setErrordescripcion] = useState(false);
+
+  const [errorTelefono, setErrorTelefono] = useState(false);
+  const [texto, setTexto] = useState(false);
+
+           //COLOCAR APIS DE BITACORA AQUI---
+  //-------------------------------------------------------------------
+
   useEffect(() => {
-    fetch(urlSucursal)
+    fetch(urlSucursales)
       .then(response => response.json())
       .then(data => setTableData(data));
-  }, []);
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -54,16 +78,13 @@ export const ListaSucursal = () => {
       width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdSucursal)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -72,25 +93,86 @@ export const ListaSucursal = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  //FUNCION DE ELIMINAR 
+  function handleDel(IdSucursal) {
+    swal({
+      content: (
+        <div>
+
+          <div className="logoModal">¿Desea Eliminar esta Sucursal?</div>
+          <div className="contEditModal">
+
+          </div>
+
+        </div>
+      ),
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
+      switch (op) {
+        case null:
+
+          let data = {
+            IdSucursal: IdSucursal,
+          };
+
+          //Funcion de Bitacora 
+          /*  let dataB = {
+             Id:props.idUsuario
+           } */
+
+          console.log(data);
+
+          await axios
+            .delete(urlDelSucursal, { data })
+            .then(response => {
+              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+              swal('Sucursal eliminada correctamente', '', 'success');
+              setCambio(cambio + 1);
+            })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar la sucursal', '', 'error');
+            });
+
+          break;
+
+        default:
+          break;
+      }
+    });
   }
+
+    //FUNCION DE ACTUALIZAR
+    function handleUpdt(id) {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar la sucursal: {id.ciudad} ?
+          </div>
+        ),
+      }).then(
+        op => {
+          switch (op) {
+            case 'update':
+              props.data(id)
+              props.update(true)
+              navegate('/config/RegistroSucursal')
+              break;
+            default:
+              break;
+          }
+        });
+    };
+  
+    //Funcion de Bitacora 
+    let dataB = {
+      Id: props.idUsuario
+    }
+
   const handleBack = () => {
     navegate('/config');
   };
@@ -127,11 +209,11 @@ export const ListaSucursal = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/RegistroSucursal');
+                navegate('/config/RegistroSucursal');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Sucursal
+              Nueva 
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

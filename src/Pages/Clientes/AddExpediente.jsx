@@ -6,6 +6,7 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -29,7 +30,7 @@ export const AddExpediente = ({
   const [Empleado, setEmpleado] = useState([])
 
   useEffect(() => {
-    fetch(urlEmployees)
+    axios.get(urlEmployees)
       .then(response => response.json())
       .then(data => setEmpleado(data));
   }, []);

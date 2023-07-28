@@ -6,6 +6,8 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
+import { DataGrid, esES } from '@mui/x-data-grid';
 
 
 //Styles
@@ -19,51 +21,63 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
-
-export const DetalleExpediente = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  
+const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlExpediente='http://localhost:3000/api/Expediente'
+const urlClientes = 'http://localhost:3000/api/clientes'
 
 
+
+export const DetalleExpediente = (props) => {
 
   const navegate = useNavigate();
-
-  const [marca, setmarca] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
+  const [tableData, setTableData] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
 
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
-    let data = {
-      IdMarca: id ,
-      descripcion:marca 
-    }
+
+  useEffect(() => {
+    setTableData([]);
+  }, []);
+
+
+  const handleNext = async() => {
+    let fechaConsulta = document.getElementById('fechaconsulta').value;
+    let fechaExpiracion = document.getElementById('fechaexpiracion').value;
+    let AsesorVenta= document.getElementById('Asesor').value;
+    let Optometrista= document.getElementById('optometrista').value;
+    let Antecedentes= document.getElementById('antecedentes').value;
+
+
+    let fecha = new Date(fechaConsulta)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
-      });
-    }
+    let data = {
+      fechaConsulta:fechaFormateada,
+      Optometrista:Optometrista,
+      fechaExpiracion:fechaExpiracion,
+      AsesorVenta:AsesorVenta,
+      Antecedentes:Antecedentes,
+   }
+
+   await axios.post(urlNuevoDiagnostico,data).then(response=>{
+    swal('Registro creado con exito', '', 'success').then(result => {
+      navegate('/menuClientes/DatosExpediente');
+    });
+
+  }).catch(error=>{
+    console.log(error);
+    swal("Error al registrar.", "", "error")
+  })
+
   };
 
   const handleBack = () => {
-    navegate('/menuClientes');
+    navegate('/menuClientes/DatosExpediente');
   };
 
   return (
@@ -81,65 +95,31 @@ export const DetalleExpediente = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Promocion" className="titleInput" />
-
+              <TextCustom text="Fecha de Consulta" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
+                type="date"
                 name=""
-                maxLength={40}
+                maxLength={8}
                 className="inputCustom"
-                placeholder="Promocion"
-                id="Marca"
+                placeholder="Fecha de Consulta"
+                id="fechaconsulta"
+                value={fechaActual}
+                disabled
               />
-               <p class="error">{aviso}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Optometrista" className="titleInput" />
-
               <input
                onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
               }}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Optometrista"
-                id="Marca"
+                id="optometrista"
               />
-               <p class="error">{aviso}</p>
             </div>
 
             <div className="contInput">
@@ -147,41 +127,27 @@ export const DetalleExpediente = ({
 
               <input
                onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
+                
               }}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Asesor de Venta"
-                id="Marca"
+                id="Asesor"
               />
-               <p class="error">{aviso}</p>
+            
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha de Expriracion" className="titleInput" />
+              <TextCustom text="Fecha de Expiracion" className="titleInput" />
               <input
                 type="date"
                 name=""
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Fecha de Expiracion"
-                id="fecha"
+                id="fechaexpiracion"
                 value={fechaActual}
                 disabled
               />
@@ -190,426 +156,28 @@ export const DetalleExpediente = ({
             <div className="contInput">
               <TextCustom text="Antecedentes Clinicos" className="titleInput" />
               <input
-             
                 type="text"
                 name=""
                 maxLength={100}
-                className="inputCustomText"
+                className="inputCustom"
                 placeholder="Antecedentes Clinicos"
-                id="direccion"
+                id="antecendentes"
               />
-               
+
             </div> 
 
-            <div className="contInput">
-              {/* <TextCustom text="Esfera" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p> */}
-            </div>
-
-            <div className="titleAddUser">
-       
-        <h3>
-          
-        </h3>
-      </div>
-
-            <div className="contInput">
-            
-            </div>
-            
-            <h3>
-            Diagnostico
-        </h3>
-
-            <div className="contInput">
-              {/* <TextCustom text="Esfera" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p> */}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Esfera OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera OD"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Esfera OI" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera OI"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Cilindro OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Cilindro OD"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Eje OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Eje OI"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Adicion OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Adicion OD"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Adicion OI" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Adicion OI"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Altura OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Altura OD"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Altura OI" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Altura OI"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="DP OD" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="DP OD"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="DP OI" className="titleInput" />
-
-              <input
-               onKeyDown={e => {
-                setnombremarca(e.target.value);
-                if (nombremarca == '') {
-                  setErrornombremarca(true);
-                  setaviso('Los campos no deben estar vacios');
-                } else {
-                  setErrornombremarca(false);
-                  var preg_match = /^[a-zA-Z]+$/;
-                  if (!preg_match.test(nombremarca)) {
-                    setErrornombremarca(true);
-                    setaviso('Solo deben de ingresar letras');
-                  } else {
-                    setErrornombremarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="DP OI"
-                id="Marca"
-              />
-               <p class="error">{aviso}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Enfermedad Presentada" className="titleInput" />
-              <input
-             
-                type="text"
-                name=""
-                maxLength={100}
-                className="inputCustomText"
-                placeholder="Enfermedad Presentada"
-                id="direccion"
-              />
-               
-            </div> 
-
-            
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+
+                onClick= {handleNext} //INSERTA 
+               /*  onClick={() => {
+
+                  navegate('/menuClientes/Diagnostico');
+                }} */
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
