@@ -19,19 +19,19 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales ='http://localhost:3000/api/empleado/sucursal';
+const urlSucursales = 'http://localhost:3000/api/empleado/sucursal';
 
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado ='http://localhost:3000/api/empleado'; //Api para crear el empleado
-const urlUpdEmpleado ='http://localhost:3000/api/empleado/actualizar'
+const urlIEmpleado = 'http://localhost:3000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado = 'http://localhost:3000/api/empleado/actualizar'
 
 
 //----------------------------------URL de bitacora --------------------------------------------
-const urlUpdBitacora= 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
-const urlInsertBitacora= 'http://localhost:3000/api/bitacora/RegistroEmpleado';
-const urlErrorInsertBitacora= 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
-const urlBitacoraSalirRE='http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
+const urlUpdBitacora = 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora = 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
+const urlBitacoraSalirRE = 'http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
 //---------------------------------------------------------------- ------------------------------
 
 export const DatosEmpleado = (props) => {
@@ -62,6 +62,11 @@ export const DatosEmpleado = (props) => {
   const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
+
+
+
+
   /*   useEffect(() => {
       fetch(urlSucursales).then(response => response.json())
         .then(data => setSucursales(data));
@@ -73,7 +78,7 @@ export const DatosEmpleado = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
-  
+
   const navegate = useNavigate();
 
   const actualizarEmpleado = async () => {
@@ -85,26 +90,30 @@ export const DatosEmpleado = (props) => {
     let sucursal = parseInt(document.getElementById('sucursal').value);
 
     const data = {
-      nombre:nombres.toUpperCase(),
-      apellido:apellidos.toUpperCase(),
-      telEmple:telefono,
-      idSucursal:sucursal,
-      idGenero:genero,
-      numId:identidad,
-      IdEmpleado:props.data.IdEmpleado,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
+      telEmple: telefono,
+      idSucursal: sucursal,
+      idGenero: genero,
+      numId: identidad,
+      IdEmpleado: props.data.IdEmpleado,
     }
 
 
-//Funcion de bitacora 
-    let dataB={
+    //Funcion de bitacora 
+    let dataB = {
       Id: props.idUsuario
     }
 
-    axios.put(urlUpdEmpleado,data).then(()=>{
-        swal("Empleado Actualizado Correctamente","","success").then(()=>{
-          axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+    axios.put(urlUpdEmpleado, data).then(() => {
+      swal("Empleado Actualizado Correctamente", "", "success").then(() => {
+        axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
         navegate('/empleados/lista')
       })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Empleado! , Sus campos pueden ser erroneos o ya existen en otro empleado.', '', 'error')
+      axios.post(urlErrorInsertBitacora, dataB)
     })
 
   }
@@ -145,38 +154,75 @@ export const DatosEmpleado = (props) => {
       });
     } */
 
-//Funcion de bitacora 
+    //Funcion de bitacora 
     let dataB = {
       Id: props.idUsuario
     }
 
+
+
+    // Validacion para que no cree empleado con la misma Identidad
+    const dataValida = {
+      numId: identidad
+    }
+
+    /* await axios.post(urlEmpleadoExist,dataValida).then(response=>{
+      if (response.dataValida) {
+        swal("El numero de Identidad ya es existente en los registros.");
+      }else{
+     axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB)
+          navegate('/empleados/lista');
+          });
+        }).catch(error => {
+          console.log(error);
+          swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+          axios.post(urlErrorInsertBitacora, dataB)
+        })
+      }
+    }) */
+
+    axios.post(urlIEmpleado, data).then(response => {
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB)
+        navegate('/empleados/lista');
+      });
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+      axios.post(urlErrorInsertBitacora, dataB)
+    })
+
+
     await axios.post(urlIEmpleado, data).then(response => {
-    swal('Empleado agregado con exito', '', 'success').then(result => {
-      axios.post(urlInsertBitacora, dataB) //Insert de Bitacora de un empleado nuevo  
+      swal('Empleado agregado con exito', '', 'success').then(result => {
+        axios.post(urlInsertBitacora, dataB) //Insert de Bitacora de un empleado nuevo  
         navegate('/empleados/lista');
       });
 
-  //Funcion de bitacora 
+      //Funcion de bitacora 
       let dataB = {
         Id: props.idUsuario
       }
-      
+
     }).catch(error => {
       console.log(error);
-      swal('Error al registrar el cliente', '', 'success')
+      swal('Error al registrar el Empleado', '', 'success')
       axios.post(urlErrorInsertBitacora, dataB)//Error al insertar un nuevo empleado (BITACORA)
     })
+
 
   };
 
   //Funcion de bitacora 
-    let dataB = {
-     Id: props.idUsuario
+  let dataB = {
+    Id: props.idUsuario
   }
   const handleBack = () => {
     props.Data({})
     props.update(false)
-    axios.post(urlBitacoraSalirRE,dataB)//BOTON DE RETROCESO API BITACORA 
+    axios.post(urlBitacoraSalirRE, dataB)//BOTON DE RETROCESO API BITACORA 
     navegate('/usuarios');
   };
 
@@ -256,7 +302,7 @@ export const DatosEmpleado = (props) => {
                   }
                 }}
                 onChange={e => setNombre(e.target.value)}
-                
+
                 error={errorNombre}
                 type="text"
                 helperText={Msj}
@@ -338,7 +384,7 @@ export const DatosEmpleado = (props) => {
                     }
                   }
                 }}
-                
+
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -378,7 +424,7 @@ export const DatosEmpleado = (props) => {
                   var nombre = document.getElementById("nombre").value;
                   var apellido = document.getElementById("apellido").value;
                   var telefono = document.getElementById("phone").value;
-                
+
                   if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
@@ -409,18 +455,19 @@ export const DatosEmpleado = (props) => {
                         swal("El número de identidad debe tener el formato correcto", "", "error");
                       } else if (isNaN(parseInt(telefono))) {
                         swal("El campo teléfono solo acepta números.", "", "error");
-                       
+
                       }
-                      else if(! /^[0-9]+$/.test(telefono)){
+                      else if (! /^[0-9]+$/.test(telefono)) {
                         swal("El campo teléfono solo acepta números.", "", "error");
                       }
 
-                 else {
-                    props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                      else {
+                        props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                      }
+                    }
                   }
-                }}
-              }
-            } 
+                }
+                }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
 

@@ -52,16 +52,16 @@ export const Inventario = props => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
       vinculo: "/menuInventario/ListaCompra", 
     },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
-      titulo: 'Registro de la Marca',
-      vinculo: '/menuInventario/RegistroMarcas',
-    },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
-      titulo: 'Lista de Marcas',
-      vinculo: '/menuInventario/ListaMarcas',
-    },
+    // {
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
+    //   titulo: 'Registro de la Marca',
+    //   vinculo: '/menuInventario/RegistroMarcas',
+    // },
+    // {
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
+    //   titulo: 'Lista de Marcas',
+    //   vinculo: '/menuInventario/ListaMarcas',
+    // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
       titulo: 'Registro Promocion de Marca',
@@ -72,20 +72,20 @@ export const Inventario = props => {
       titulo: 'Lista Promocion de Marcas',
       vinculo: '/promocion/listaPromocion',
     },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
-      titulo: 'Registro de Modelo',
-      vinculo: '/menuInventario/RegistroModelo',
-    },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/008/296/869/non_2x/to-do-list-concept-illustration-free-vector.jpg',
-      titulo: 'Lista de Modelo',
-      vinculo: '/menumodelos/lista',
-    },
+    // {
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
+    //   titulo: 'Registro de Modelo',
+    //   vinculo: '/menuInventario/RegistroModelo',
+    // },
+    // {
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/008/296/869/non_2x/to-do-list-concept-illustration-free-vector.jpg',
+    //   titulo: 'Lista de Modelo',
+    //   vinculo: '/menumodelos/lista',
+    // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/008/323/514/non_2x/3d-realistic-data-folder-icon-illustration-vector.jpg',
       titulo: 'Registro de Producto',
-      vinculo: '/menuInventario/RegistroProducto', 
+      vinculo: '/menuInventario/RegistroProducto2', 
     },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/006/945/991/non_2x/my-order-list-illustration-exclusive-design-inspiration-vector.jpg',

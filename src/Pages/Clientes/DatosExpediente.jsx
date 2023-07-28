@@ -4,6 +4,7 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
 
 import swal from '@sweetalert/with-react';
 
@@ -19,152 +20,351 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
+//URL
+ const urlNuevoExpediente='http://localhost:3000/api/Expediente/NuevoExpediente'
+const urlEliminarExpediente='http://localhost:3000/api/Expediente/DeleteExpediente'
+const urlExpediente='http://localhost:3000/api/Expediente'
+const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlDiagnosticos='http://localhost:3000/api/ExpedienteDetalle'
 
-const urlCompra = 'http://localhost/APIS-Multioptica/compra/controller/compra.php?op=InsertCompra';
-const urlCompraDetalle = 'http://localhost/APIS-Multioptica/compra/controller/compra.php?op=InsertCompraDetalle';
-const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
-const urlProveedor = "http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores";
-const urlUpdInventario = "http://localhost/APIS-Multioptica/inventario/controller/inventario.php?op=uInventario"
-const urlKardex ="http://localhost/APIS-Multioptica/Kardex/Controller/kardex.php?op=InsertKardex"
+const urlClientes = 'http://localhost:3000/api/clientes';
+//const urlEmployees='http://localhost:3000/api/empleado'
+const urlEmployees =
+'http://localhost:3000/api/empleado';
 
-export const DatosExpediente = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  idUsuario,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
+export const DatosExpediente = ( props) => {
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-
-  const [tableData, setTableData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [total, setTotal] = useState(0)
-  const [producto, setProducto] = useState([]);
-  const [proveedor, setProveedor] = useState([]);
-  const [cantidad, setCantidad] = useState(0);
-  const [costo, setCosto] = useState(0);
+  const [tableData, setTableData] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState('');
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-  const [compras,setCompras] = useState([])
-  const [cambio,setCambio]=useState(0)
+  const [Empleado, setIdEmpleado] = useState([]);
+  const [cambio, setCambio] = useState(0);
 
 
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorcantidad, setErrorcantidad] = React.useState(false);
-  const [cantid, setcantid] = React.useState(false);
-
-  const [aviso, setaviso] = React.useState('');
-  const [errorcocompra, setErrorcoscompra] = React.useState(false);
-  const [cosCompra, setcosCompra] = React.useState(false);
-
-  const [cantidadc, setcantidadc] = useState(0);
-  const [costoc, setcostoc] = useState(0);
-
-
-
+  
   useEffect(() => {
-    // fetch()
-    //   .then(response => response.json())
-    //   .then(data => setTableData(data));
-    fetch(urlProducto)
-      .then(response => response.json())
-      .then(data => setProducto(data));
-    fetch(urlProveedor)
-      .then(response => response.json())
-      .then(data => setProveedor(data));
+    setTableData([]);
+    axios.get(urlEmployees).then(response => {
+      setIdEmpleado(response.data)
+    }).catch(error => console.log(error))
   }, []);
 
-  useEffect(()=>{
-    console.log(compras);
-    setTableData(compras)
-  },[cambio])
-
+//DIAGNOSTICO
   useEffect(() => {
-    setTotal(cantidad * costo);
-  }, [cantidad, costo]);
+    axios.get(urlDiagnosticos).then(response =>{
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, [cambio]);
+
+  const filteredData = tableData.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+
+
+  const handleBack = () => {
+    navegate('/menuClientes/ListaExpedientes');
+  };
 
   const navegate = useNavigate();
 
-  const AggDataGrid = () => {
-    let dataGrid = {
-      Producto:parseInt(document.getElementById("producto").value),
-      Proveedor:parseInt(document.getElementById("proveedor").value),
-      Cantidad:cantidad,
-      Fecha:fechaActual,
-      Costo:costo,
-      Total:total
-    }
-
-    setCambio(cambio+1)
-    setCompras([...compras,dataGrid])
-
-    
-  }
-
-  const handleBack = () => {
-    navegate('/menuClientes');
-  };
-
   const columns = [
-    { field: 'Cliente', headerName: 'Cliente', width: 145},
-    { field: 'Fecha de Consulta', headerName: 'Fecha de Consulta', width: 145 },
-    { field: 'Doctor', headerName: 'Doctor', width: 145 },
-    { field: 'Asesor de Ventas', headerName: 'Asesor de Ventas', width: 145 },
-    
+    { field: 'fechaConsulta', headerName: 'Fecha de Consulta', width: 250 },
+    { field: 'Optometrista', headerName: 'Optometrista', width: 250 },
+    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250 },
+
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 260,
+
+      renderCell: params => (
+        <div className="contActions1">
+          <Button
+            className="btnEdit"
+            onClick={() => handleUpdt(params.row.idCliente)}
+          >
+            <EditIcon></EditIcon>
+          </Button>
+
+          <Button
+            className="btnImprimirExp"
+//onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
+          </Button>
+          
+        </div>
+      ),
+    },
   ];
+   //PANTALLA MODAL---------------------------------------------------------------------------
+  function handleUpdt(id) {
+    console.log(id);
+    swal(
+      <div>
+        <div className="logoModal">DATOS GENERALES</div>
+        <div className="contEditModal">
+        <div className="contInput">
+              <TextCustom text="Fecha de Consulta" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Consulta"
+                id="fechaconsulta"
+                value={fechaActual}
+                disabled
+              />
+            </div>
+            
+            <div className="contInput">
+              <TextCustom text="Optometrista" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Optometrista"
+                id="Optometrista"
+                disabled
+              />
+            </div>
+            <div className="contInput">
+              <TextCustom text="Asesor de Venta" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Asesor de Venta"
+                id="Asesor"
+                disabled
+              />
+            </div>
+            <div className="contInput">
+              <TextCustom text="Fecha de Expiracion" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Expiracion"
+                id="fechaexpiracion"
+                value={fechaActual}
+                disabled
+              />
+            </div>
+            <div className="contInput">
+              <TextCustom text="Antecedentes Clinicos" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={100}
+                className="inputCustom"
+                placeholder="Antecedentes Clinicos"
+                id="antecendentes"
+                disabled
+              />
+            </div> 
+            <h3>
+            ----------------DIAGNOSTICO-----------------
+            </h3>
+            <div className="contInput">
+              <TextCustom text="Esfera OD" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Esfera OD"
+                id="ODEsfera"
+                disabled
+              />
+            </div>
+            <div className="contInput">
+              <TextCustom text="Esfera OI" className="titleInput" />
 
-  var idCounter=0
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Esfera OI"
+                id="OIEsfera"
+                disabled
+              />
+            </div>
 
-  const generateRowId = () => {
-    idCounter += 1;
-    return idCounter;
-  };
+            <div className="contInput">
+              <TextCustom text="Cilindro OD" className="titleInput" />
 
-  const GuardarCompra = ()=>{
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Cilindro OD"
+                id="ODCilindro"
+                disabled
+              />
+            </div>
 
-    const totalCompras = compras.reduce((accumulator, current) => {
-      return accumulator + current.Total;
-    }, 0);
+            <div className="contInput">
+              <TextCustom text="Eje OD" className="titleInput" />
+              <input
+            
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Eje OD"
+                id="ODEje"
+                disabled
+              />
+            </div>
 
-    let dataCompra ={
-      IdProveedor:compras[0].Proveedor,
-      fechaCompra:compras[0].Fecha,
-      totalCompra:totalCompras
-    }
-    
-    if (sendData(urlCompra,dataCompra)) {
-      for (let i = 0; i < compras.length; i++) {
+            <div className="contInput">
+              <TextCustom text="Adicion OD" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Adicion OD"
+                id="AdicionOD"
+                disabled
+              />
+            
+            </div>
 
-       const dataInventario={
-          cantidad:parseInt(compras[i].Cantidad),
-          idProducto:compras[i].Producto,
-          mes:new Date(compras[i].Fecha).getMonth()+1,
-          anio:new Date(compras[i].Fecha).getFullYear()
-        }
+            <div className="contInput">
+              <TextCustom text="Adicion OI" className="titleInput" />
 
-       const dataDetalle = {
-        Cantidad:parseInt(compras[i].Cantidad),
-        IdProducto:compras[i].Producto,
-        CostoCompra: parseInt(compras[i].Costo)
-       } 
-       const dataKardex ={
-        IdTipoMovimiento:1,
-        IdProducto:compras[i].Producto,
-        fechaYHora:compras[0].Fecha,
-        cantidad:parseInt(compras[i].Cantidad),
-        Id_Usuario:idUsuario
-       }
+              <input
+             
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Adicion OI"
+                id="AdicionOI"
+                disabled
+              />
+            </div>
 
-       sendData(urlCompraDetalle,dataDetalle)
-       sendData(urlUpdInventario,dataInventario)
-       sendData(urlKardex,dataKardex)
-      }
-      swal("Compra registrada con exito","","success")
-    }
+            <div className="contInput">
+              <TextCustom text="Altura OD" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Altura OD"
+                id="AlturaOD"
+                disabled
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Altura OI" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Altura OI"
+                id="AlturaOI"
+                disabled
+              />
+        
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OD" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OD"
+                id="DistanciapupilarOD"
+                disabled
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OI" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OI"
+                id="DistanciapupilarOI"
+                disabled
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Enfermedad presentada" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Enfermedad presentada"
+                id="enfermedadpresentada"
+                disabled
+              />
+            </div>
+        </div>
+      </div>,
+    ).then( async() => {
+    });
 
   }
+
+  //Insertar un nuevo expediente
+  
+  const handleNext = async () => {
+   let Cliente = document.getElementById('cliente').value;
+   let Empleado = document.getElementById('empleado').value;
+   let fechaCreacion= document.getElementById('fecha').value;
+
+    let fecha = new Date(fechaCreacion)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+    let data = {
+      IdCliente:Cliente,
+      fechaCreacion:fechaFormateada,
+      IdEmpleado:Empleado,
+   }
+
+   await axios.post(urlNuevoExpediente,data).then(response=>{
+     swal('Expediente creado con exito', '', 'success').then(result => {
+       navegate('/menuClientes/ListaExpedientes');
+     });
+
+   }).catch(error=>{
+     console.log(error);
+     swal("Error al registrar expediente.", "", "error")
+   })
+
+  };
 
   return (
     <div className="ContUsuarios">
@@ -173,100 +373,88 @@ export const DatosExpediente = ({
       </Button>
       <div className="titleAddUser">
         <h2>Datos de Expediente</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los datos Expediente.
-        </h3>
+        <h3>Complete todos los datos para poder crear el expediente.</h3>
       </div>
       <div className="infoAddCompra">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-
-          <div className="contInput">
+            <div className="contInput">
               <TextCustom text="Cliente" className="titleInput" />
               <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Cliente"
-                id="fecha"
-                value={fechaActual}
-                disabled
+                 type="text"
+                 name="input1"
+                 className="inputCustom"
+                 maxLength={15}
+                 placeholder="Cliente"
+                 variant="standard"
+                 id="cliente"
+                 label="Usuario"
+                 value={props.datosclientes.idCliente}
+                 disabled
               />
             </div>
-
             <div className="contInput">
               <TextCustom text="Fecha de Creacion" className="titleInput" />
               <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Creacion"
-                id="fecha"
-                value={fechaActual}
-                disabled
+               type="date"
+               name=""
+               maxLength={8}
+               className="inputCustom"
+               placeholder="Fecha de Creacion"
+               id="fecha"
+               value={fechaActual}
+               onChange={(e) => setFechaActual(e.target.value)}
+               disabled
               />
             </div>
             <div className="contInput">
+              <TextCustom text="Empleado" className="titleInput" />
+            
+              <select id="empleado"
+              value={props.datosclientes.IdEmpleado}
+               className="selectCustom">
+            
+                {Empleado.length ? (
+                  Empleado.map(pre => (
+                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
+                      {pre.nombre}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                
+                )}
+              </select>
+              
+            </div>
+            {/* <div className="contInput">
               <TextCustom text="Creado Por" className="titleInput" />
-
               <input
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Creado Por"
-                id="cantidad"
-                onKeyDown={e => {
-                  setcantid(e.target.value);
-                  if (cantid === '' ) {
-                    setErrorcantidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorcantidad(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(cantid)) {
-                      setErrorcantidad(true);
-                      setleyenda('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorcantidad(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-                onClick={e => {
-                  setcantid(e.target.value);
-                  if (cantid === '') {
-                    setErrorcantidad(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  } else {
-                    setErrorcantidad(false);
-                    setleyenda('');
-                  }
-                }}
-                 
+                id="empleado"
+                value={props.datosclientes.IdEmpleado}
+                onKeyDown={(e) => {}}
+                onClick={(e) => {}}
               />
-               <p class="error">{leyenda}</p>
-            </div>
-
-
+              <p class="error"></p>
+            </div> */}
             <div className="contBtnStepper1">
-              <Button
-              onClick={AggDataGrid}
-              
-                variant="contained"
-                className="btnStepper"
-              >
+              <Button 
+              onClick={() => {
+                navegate('/menuClientes/DetalleExpediente');
+              }}
+              variant="contained" className="btnStepper">
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
             </div>
           </div>
         </div>
-
         <div
           style={{
             height: 400,
@@ -286,29 +474,31 @@ export const DatosExpediente = ({
               className="inputSearch"
               placeholder="Buscar"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
-              <Button
-                className="btnCreate1"
-                onClick={GuardarCompra}
-              >
+              <Button 
+              onClick= {handleNext} //INSERTA 
+              className="btnCreate1">
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
-              <Button className="btnReport1" onClick={()=>{setCompras([]);setCambio(cambio+1)}}>
+              <Button className="btnReport1" onClick={() => {}}>
                 Cancelar
               </Button>
             </div>
           </div>
           <DataGrid
-            getRowId={generateRowId}
             rows={tableData}
             columns={columns}
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />
+            getRowId={(row) => row.IdExpedienteDetalle} 
+/>
+
+          
+
         </div>
       </div>
     </div>

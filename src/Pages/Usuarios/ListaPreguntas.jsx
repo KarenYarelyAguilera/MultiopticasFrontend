@@ -16,7 +16,9 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = (props) => {
+//import { PageThree } from '../../Components/LoginPorPrimeraVez/PageThree/PageThree';
+
+export const ListaPreguntas = (props) => {
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
@@ -32,6 +34,10 @@ const urlBitacoraBotonSalirLE=
 'http://localhost:3000/api/bitacora/SalirListaEmpleado';
 //--------------------------------------------------------
 
+
+const urlPyR= 'http://localhost:3000/api/pregYresp'
+
+
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -46,9 +52,13 @@ const urlBitacoraBotonSalirLE=
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
+  const dataId = {
+    Id_Usuario:props.idUsuario,
+  }; 
+  //axios para que me traiga las preguntas y respuestas
   useEffect(() => {
     axios
-      .get(urlEmployees)
+      .post(urlPyR,dataId)
       .then(response => {
         setTableData(response.data);
       })
@@ -67,26 +77,32 @@ const urlBitacoraBotonSalirLE=
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdEmpleado', headerName: 'ID', width: 190 },
-    { field: 'nombre', headerName: 'Nombre', width: 190 },
-    { field: 'apellido', headerName: 'Apellido', width: 190 },
-    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190 },
-    { field: 'departamento', headerName: 'Sucursal', width: 190 },
-    { field: 'descripcion', headerName: 'Genero', width: 190 },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
+    { field: 'Respuesta', headerName: 'Respuestas', width: 550,
+      valueGetter: (params) => {
+        // Obtener la respuesta original
+        const originalRespuesta = params.row.Respuesta;
+        
+        // Crear un string de asteriscos con la misma longitud que la respuesta original
+        const asterisks = '*'.repeat(originalRespuesta.length);
+        
+        return asterisks;
+      },},
+    
     {
       field: 'borrar',
       headerName: 'Acciones',
       width: 260,
 
+
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row.Id_Usuario)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdEmpleado)}
+            onClick={() => handleDel(params.row.Id_Usuario)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -101,7 +117,7 @@ const urlBitacoraBotonSalirLE=
       content: (
         <div>
 
-          <div className="logoModal">¿Desea Eliminar este empleado?</div>
+          <div className="logoModal">¿Desea Eliminar esta Pregunta?</div>
           <div className="contEditModal">
 
           </div>
@@ -128,12 +144,12 @@ const urlBitacoraBotonSalirLE=
             .delete(urlDelEmployees, { data })
             .then(response => {
               axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Empleado eliminado correctamente', '', 'success');
+              swal('Pregunta eliminada correctamente', '', 'success');
               setCambio(cambio + 1);
             })
             .catch(error => {
               console.log(error);
-              swal('Error al eliminar el empleado', '', 'error');
+              swal('Error al eliminar pregunta', '', 'error');
             });
 
           break;
@@ -144,9 +160,9 @@ const urlBitacoraBotonSalirLE=
     });
   }
 
-  
+  //funcion de actualizar
 
-//funcion de actualizar
+
   function handleUpdt(id) {
     // onRowClick={empleado => {
     swal({
@@ -156,7 +172,7 @@ const urlBitacoraBotonSalirLE=
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el empleado: {id.nombre} ?
+          ¿Desea modificar esta pregunta: ?
         </div>
       ),
     }).then(op => {
@@ -164,7 +180,7 @@ const urlBitacoraBotonSalirLE=
         case 'update':
           props.data(id)
           props.update(true)
-          navegate('/usuarios/crearempleado')
+          //navegate('../Components/LoginPorPrimeraVez/PageThree/PageThree')
       }
     });
 
@@ -177,8 +193,8 @@ const urlBitacoraBotonSalirLE=
 }
 
   const handleBack = () => {
-    axios.post (urlBitacoraBotonSalirLE,dataB)
-    navegate('/usuarios');
+    //axios.post (urlBitacoraBotonSalirLE,dataB)
+    navegate('/config/perfil');
   };
 
   return (
@@ -186,7 +202,7 @@ const urlBitacoraBotonSalirLE=
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Preguntas y Respuestas</h2>
 
       <div
         style={{
@@ -213,20 +229,20 @@ const urlBitacoraBotonSalirLE=
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearempleado');
+                navegate('');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport">
+            {/* <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
-            </Button>
+            </Button> */}
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdEmpleado}
+          getRowId={tableData => tableData.Id_Pregunta}//este id me permite traer la lista
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

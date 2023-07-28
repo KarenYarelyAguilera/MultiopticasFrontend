@@ -10,8 +10,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from "date-fns/locale/es";
 import { TextCustom } from '../Components/TextCustom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 
@@ -46,15 +48,17 @@ const events = [
   },
 ];
 
-export const Recordatorio = () => {
+export const RecordatorioCitas = () => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
-
   const navegate = useNavigate();
 
   const handleAddEvent = () => {
-    navegate("/recordatorioCitas");
+    setAllEvents([...allEvents, newEvent]);
+  };
 
+  const handleBack = () => {
+    navegate('/recordatorio');
   };
 
   const objectDate = new Date();
@@ -63,35 +67,6 @@ export const Recordatorio = () => {
   const year = objectDate.getFullYear();
   let format1 = month + "/" + day + "/" + year;
 
-  const citas = [
-    {
-      paciente: "Kevin Lopez",
-      fecha: format1,
-    },
-    {
-      paciente: "Michael Sosa",
-      fecha: format1,
-    },
-    {
-      paciente: "Juan Perez",
-      fecha: format1,
-    }
-  ];
-
-  const proximasCitas = [
-    // {
-    //   paciente: "Manuel Gonzales",
-    //   fecha: format1,
-    // },
-    // {
-    //   paciente: "Juan Lopez",
-    //   fecha: format1,
-    // },
-    // {
-    //   paciente: "Ana Salgado",
-    //   fecha: format1,
-    // }
-  ];
 
   // const onSelectSlot = useCallback(slotInfo => {
   //   swal(
@@ -125,44 +100,60 @@ export const Recordatorio = () => {
 
   return (
     <div className='ContUsuarios'>
+      <Button className="btnBack" style={{top: "-35px"}} onClick={handleBack}>
+        <ArrowBackIcon className="iconBack" />
+      </Button>
       <div className="contRecordatorios">
         <div className="contRecordCitas">
           <div className="cardCitas">
-            <h1>Citas</h1>
-            <h2>Citas programadas para este mes</h2>
+            <h1>Nueva Cita</h1>
             <hr />
-            <div className="listCitas">
-              {citas.length ? (
-                citas.map((citasM, index) => (
-                  <div key={index}>
-                    <span><KeyboardArrowRightIcon/>{citasM.paciente}</span>
-                    <span className='fechaCita'>{citasM.fecha}</span>
-                  </div>
-                  ))
-                  ) : (
-                    <h1>No tienes citas programadas en este momento.</h1>
-              )}
+            <div className="contPrincipalNewCita">
+            <div className="contNewCita">
+            <TextCustom text="Cliente" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Cliente"
+                id="Cliente"
+                disabled
+              />
             </div>
-          </div>
 
-          <div className="cardCitas">
-            <h1>Proximas citas</h1>
-            <hr />
-            <div className="listCitas">
-              {proximasCitas.length ? (
-                proximasCitas.map((proximasCitasM, index) => (
-                  <div key={index}>
-                    <span><KeyboardArrowRightIcon/>{proximasCitasM.paciente}</span>
-                    <span className='fechaCita'>{proximasCitasM.fecha}</span>
-                  </div>
-                  ))
-                  ) : (
-                    <h1 className='advertencia'>No tienes proximas citas programadas en este momento.</h1>
-              )}
+            <div className="contNewCita">
+            <TextCustom text="Fecha" className="titleInput" />
+              <DatePicker
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholderText="Fecha"
+              />
+            </div>
+
+            <div className="contNewCita">
+            <TextCustom text="Nota" className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustomText"
+                placeholder="Cliente"
+                id="Cliente"
+                disabled
+              />
+            </div>
+
+            <div className="contNewCitaButtons">
+              <button className='btnAgregarCita'>Aceptar</button>
+              <button className='btnCancelar'>Cancelar</button>
+            </div>
             </div>
           </div>
           </div>
-      <section className="contPrimaryRecord">
+      <section className="contPrimary">
         <Calendar
           messages={{
             next: "Siguiente",
@@ -184,7 +175,38 @@ export const Recordatorio = () => {
           style={{ width: '103%', height: '80vh' }}
           // onSelectSlot={onSelectSlot}
         ></Calendar>
-          <button onClick={handleAddEvent} className='btnGuardarRecor'>Agregar Cita</button>
+        {/* <div className="contAddRecordatorio">
+          <div className="inputConte">
+          <TextCustom text='Titulo' className='titleInput'/>
+          <input
+            type="text"
+            placeholder="Titulo"
+            className='inputCustom'
+            value={newEvent.title}
+            onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
+          />
+          </div>
+          <div className='inputConte'>
+          <TextCustom text='Fecha Inicial' className='titleInput'/>
+          <DatePicker
+            placeholderText="Fecha"
+            className='inputCustom'
+            selected={newEvent.start}
+            onChange={start => setNewEvent({ ...newEvent, start })}
+          />
+
+          </div>
+          <div className="inputConte">
+          <TextCustom text='Fecha Final' className='titleInput'/>
+          <DatePicker
+            placeholderText="Fecha"
+            selected={newEvent.end}
+            className='inputCustom'
+            onChange={end => setNewEvent({ ...newEvent, end })}
+          />
+          </div>
+          <button onClick={handleAddEvent} className='btnGuardarRecor'>Guardar</button>
+        </div> */}
       </section>
       </div>
     </div>

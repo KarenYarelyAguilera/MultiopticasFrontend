@@ -15,27 +15,23 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
 
-const urlProducto =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertProducto';
-const urlModelos =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Modelos';
+//APIS DE PRODUCTO
+const urlProducto = //CREAR
+  'http://localhost:3000/api/productos/crear';
+const urlUpdProducto = //ACTUALIZAR
+  'http://localhost:3000/api/productos/actualizar';
+const urlDelProducto = //BORRAR
+  'http://localhost:3000/api/productos/eliminar';
+const urlModelos = //MOSTRAR MODELOS
+  'http://localhost:3000/api/modelos';
 
-export const RegistroProducto2 = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+
+
+export const RegistroProducto2 = (props) => {
+  
   const [Modelo, setModelo] = useState([]);
-
-  useEffect(() => {
-    fetch(urlModelos)
-      .then(response => response.json())
-      .then(data => setModelo(data));
-  }, []);
-
-  const navegate = useNavigate();
 
   const [leyenda, setleyenda] = React.useState('');
   const [errorproducto, setErrorproducto] = React.useState(false);
@@ -56,23 +52,84 @@ export const RegistroProducto2 = ({
   const [descrpcion, setdescripcion] = React.useState('');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
+//Se usa para mostrar informacion en un listbox
+  useEffect(() => {
+    fetch(urlModelos)
+      .then(response => response.json())
+      .then(data => setModelo(data));
+  }, []);
 
+  const navegate = useNavigate();
+
+    //ACTUALIZAR
+    const actualizarProducto = async () => {
+
+      let precio = parseFloat(document.getElementById('precio').value);
+      let cantidadMin = parseInt(document.getElementById('cantidadMin').value);
+      let cantidadMax = parseInt(document.getElementById('cantidadMax').value);
+      let descripcion = document.getElementById('descripcion').value;
+  
+      const data = {
+        precio: precio,
+        cantidadMin: cantidadMin,
+        cantidadMax: cantidadMax,
+        descripcion: descripcion,
+        IdProducto: props.data.IdProducto, //El dato de IdProducto se obtiene de Producto seleccionado.
+      }
+  
+  
+      //Funcion de bitacora 
+      /*  let dataB={
+         Id: props.idUsuario
+       } */
+  
+      axios.put(urlUpdProducto, data).then(() => {
+        swal("Producto Actualizado Correctamente", "", "success").then(() => {
+          //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+          navegate('/menuInventario/ListaProductos');
+        })
+      }).catch(error => {
+        console.log(error);
+        swal('Error al Actualizar Producto! , porfavor revise todos los campos.', '', 'error')
+        // axios.post(urlErrorInsertBitacora, dataB)
+      })
+  
+    }
+
+  //INSERTAR
   const handleNext = () => {
+    //Variables que almacenaran lo que entre en los input
+    let modelo = parseInt(document.getElementById('modelo').value);
+    let precio = parseFloat(document.getElementById('precio').value);
+    let cantidadMin = parseInt(document.getElementById('cantidadMin').value);
+    let cantidadMax = parseInt(document.getElementById('cantidadMax').value);
+    let descripcion = document.getElementById('descripcion').value;
+
+
     let data = {
-      IdProducto: parseInt(document.getElementById('idProducto').value),
-      IdModelo: parseInt(document.getElementById('modelo').value),
-      precio: document.getElementById('precio').value,
-      cantidadMin: parseInt(document.getElementById('cantMin').value),
-      cantidadMax: parseInt(document.getElementById('cantMax').value),
-      descripcion: document.getElementById('producto').value,
+      //IdProducto: parseInt(document.getElementById('idProducto').value),
+      IdModelo: modelo,
+      precio: precio,
+      cantidadMin: cantidadMin,
+      cantidadMax: cantidadMax,
+      descripcion: descripcion,
     };
 
-    if (sendData(urlProducto, data)) {
+    //Consumo de API y lanzamiento se alerta
+    axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
+        //axios.post(urlInsertBitacora, dataB)
         navegate('/menuInventario/ListaProductos');
       });
-    }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear Producto, los modelos deben ser unicos como tu.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
+
   };
+
+
 
   const handleBack = () => {
     navegate('/inventario');
@@ -84,7 +141,7 @@ export const RegistroProducto2 = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro de Producto</h2>
+        {props.actualizar ? <h2>Actualizar Producto</h2> : <h2>Registro de Producto</h2>}
         <h3>Complete todos los puntos para poder registrar el producto.</h3>
       </div>
       <div className="infoAddUser">
@@ -97,7 +154,7 @@ export const RegistroProducto2 = ({
                 {Modelo.length ? (
                   Modelo.map(pre => (
                     <option key={pre.IdModelo} value={pre.IdModelo}>
-                      {pre.detalle}
+                      {pre.Modelo}
                     </option>
                   ))
                 ) : (
@@ -167,7 +224,7 @@ export const RegistroProducto2 = ({
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Cantidad Maxima"
-                id="cantMax"
+                id="cantidadMax"
               />
               <p class="error">{mensaje}</p>
             </div>
@@ -199,7 +256,7 @@ export const RegistroProducto2 = ({
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Cantidad Minima"
-                id="cantMin"
+                id="cantidadMin"
               />
               <p class="error">{advertencia}</p>
             </div>
@@ -226,7 +283,7 @@ export const RegistroProducto2 = ({
                 maxLength={60}
                 className="inputCustomText"
                 placeholder="Descripcion del Producto"
-                id="producto"
+                id="descripcion"
               />
               <p class="error">{msj}</p>
             </div>
@@ -235,13 +292,35 @@ export const RegistroProducto2 = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  //Validaciones previo a ejecutar el boton
+                  var precio = parseFloat(document.getElementById('precio').value);
+                  var cantidadMin = parseInt(document.getElementById('cantidadMin').value);
+                  var cantidadMax = parseInt(document.getElementById('cantidadMax').value);
+                  var descripcion = document.getElementById('descripcion').value;
+
+                  if (precio === "" || cantidadMin === "" || cantidadMax === "" || descripcion === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                 /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
+                    swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
+                  } else if (isNaN(parseInt(cantidadMin))) {
+                    swal("El campo cantidadMin solo acepta números.", "", "error");
+                  } else if (isNaN(parseInt(cantidadMax))) {
+                    swal("El campo cantiadMax solo acepta números.", "", "error");
+                  } else if (isNaN(parseFloat(precio))) {
+                    swal("El campo precio solo acepta números.", "", "error");
+                  } else
+                    props.actualizar ? actualizarProducto() : handleNext();
+                }
+                }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>
         </div>
+
+
 
         <img
           src={

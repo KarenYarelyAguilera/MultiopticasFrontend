@@ -16,22 +16,28 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
-import axios from 'axios';
 
-export const ListaMarcas = ({props,data,update}) => {
+export const ListaMetodosDePago = () => {
+
+  const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
-  const [cambio, setCambio] = useState(0)
 
-  const urlMarcas = 'http://localhost:3000/api/marcas';
-  const urlDelMarca = 'http://localhost:3000/api/marcas/eliminar';
+  const urlMarcas =
+    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
+
+  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
+  
+  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   useEffect(() => {
-    axios.get(urlMarcas).then(response=>setTableData(response.data))
+    fetch(urlMarcas)
+      .then(response => response.json())
+      .then(data => setTableData(data));
   }, [cambio]);
-  
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -43,100 +49,117 @@ export const ListaMarcas = ({props,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID Marca', width: 500 },
-    { field: 'descripcion', headerName: 'Marca', width: 500 },
+    { field: 'ID Tipo Pago', headerName: 'ID Tipo Pago', width: 600 },
+    { field: 'Metodo', headerName: 'Metodo', width: 600 },
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 200,
 
       renderCell: params => (
-        <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+        <div className="contActions">
+          <Button
+            className="btnEdit"
+            onClick={() => handleUpdt(params.row.IdMarca)}
+          >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdMarca)}
+           onClick={() => handleDel(params.row.IdMarca)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
         </div>
       ),
-      
     },
   ];
 
-//BOTON DE RETROCEDER 
-  const handleBack = () => {
-    navegate('/config');
-  };
+  function handleUpdt(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">Datos a actualizar</div>
+          <div className="contEditModal">
+            <div className="contInput">
+              <TextCustom text="Marca" className="titleInput" />
+              <input
+                type="text"
+                id="marca"
+                className="inputCustom"
+              />
+            </div>
+          </div>
+        </div>
+      ),
+      buttons: ["Cancelar","Actualizar"]
+    }).then((op) => {
 
-//FUNCION DE ELIMINAR 
+      switch (op) {
+        case true:
+          let data = {
+            IdMarca: id,
+            descripcion: document.getElementById("marca").value,
+          };
+    
+          console.log(data);
+    
+    
+          if (sendData(urlUpdateMarca, data)) {
+            swal(<h1>Marca Actualizada Correctamente</h1>);
+            setcambio(cambio+1)
+          }
+          break;
+      
+        default:
+          break;
+      }
+      
+    });
+
+  }
+
   function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea Elimiar esta marca?</div>
+          <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
           <div className="contEditModal">
+            
           </div>
         </div>
       ),
-      buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
-      },
-    }).then(async(op) => {
+      buttons: ["Eliminar","Cancelar"]
+    }).then((op) => {
 
       switch (op) {
         case null:
-
           let data = {
             IdMarca: id
           };
     
           console.log(data);
     
-          await axios.delete(urlDelMarca,{data}).then(response=>{
-            swal("Marca eliminada correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
-            console.log(error);
-            swal("Error al eliminar la marca","","error")
-          })
-         
-        break;
+    
+          if (sendData(urlDelMarca, data)) {
+            swal(<h1>Marca Eliminada Correctamente</h1>);
+            setcambio(cambio+1)
+          }
+          break;
       
         default:
-        break;
+          break;
       }
+      
     });
-  };
- 
-  //FUNCION DE ACTUALIZAR 
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar la marca?: {id.marca} ?
-        </div>
-      ),
-    }).then((op) => {
-      switch (op) {
-          case 'update':
-          data(id)
-          update(true)
-      navegate('/config/RegistroMarcas')
-      break;
-      default:
-      break;
-      }
-    });
+
+  }
+
+
+
+  const handleBack = () => {
+    navegate('/config');
   };
 
   return (
@@ -144,7 +167,7 @@ export const ListaMarcas = ({props,data,update}) => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Marcas</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Metodos De Pago</h2>
 
       <div
         style={{
@@ -171,11 +194,11 @@ export const ListaMarcas = ({props,data,update}) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroMarcas');
+                navegate('/config/MetodosDePago');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Marca
+              Nuevo Metodo
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
