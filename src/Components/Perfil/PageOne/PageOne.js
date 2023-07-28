@@ -4,8 +4,11 @@ import { TextCustom } from '../../TextCustom';
 import '../../../Styles/RecuperacionPassword.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
+import swal from 'sweetalert';
+import axios from 'axios';
 
-export const PageOne = ({ onButtonClick, correo }) => {
+export const PageOne = ({ correo, onButtonClick }) => {
+ 
 
   const [contra2, setContra2] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
@@ -14,9 +17,44 @@ export const PageOne = ({ onButtonClick, correo }) => {
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
   const refContrasenia = useRef(null);
+
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
+
+
+ 
+
+  const handleClick = ()=>{
+
+    const urlCompararContra = "http://localhost:3000/api/login/compare"
+
+
+    const contra1 = document.getElementById("contra1").value
+    //const contra2 = document.getElementById("contra2").value
+
+    const data ={
+      correo:correo,
+      clave:contra1,
+    }
+
+    axios.post(urlCompararContra,data).then(response=>{
+      console.log(response.data);
+      if (response.data.result===false) {
+        swal("La contraseña no es correcta","","error")
+      }else{
+        onButtonClick('pagetwo')
+      } 
+
+    })
+  }
+
+  
+
+ 
+
+
+
   return (
 
     <main>
@@ -36,8 +74,9 @@ export const PageOne = ({ onButtonClick, correo }) => {
                   }
                   }
                 }
-                id="filled-adornment-password"
+                id="contra1"
                 placeholder='******************'
+                //value={props.infoPerfil.Contrasenia} 
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
                 inputProps={{ maxLength: 20, minLenght:8 }}
@@ -65,8 +104,7 @@ export const PageOne = ({ onButtonClick, correo }) => {
             className="btnSubmit"
             type="button"
             value="Siguiente"
-            onClick={() => {
-              onButtonClick('pagetwo')}}
+            onClick={handleClick}
           />
         </div>
       </form>

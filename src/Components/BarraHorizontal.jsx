@@ -3,6 +3,21 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import {
+  faClipboardList,
+  faPeopleRoof,
+  faHandHoldingDollar,
+  faCalendar,
+  faUsers,
+  faFileLines,
+  faShieldHalved,
+  faGear,
+  faRightFromBracket,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { sendData } from '../scripts/sendData';
+import axios from 'axios';
+
 //muiMaterial
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Menu from '@mui/material/Menu';
@@ -40,9 +55,27 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
 
   //
   const handleProfile = () => {
-    navigate('/dashboard/profile');
+    let data = {
+      username: props.user,
+    };
+
+    console.log(data);
+    navigate('/config/perfil');
     onChange();
   };
+
+
+  const handlePerfil = (user) => {
+    let data = {
+      username: props.user,
+    };
+
+    console.log(data);
+
+    navigate('/config/perfil');
+    onChange();
+  };
+
 
   return (
     <div className="BarraHorizontal">
@@ -156,7 +189,7 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
                 <div key={index}>
                   <div className="cols-miprofile">
                     <div className="rowsspan">
-                      <div className="imgavatar-profile">
+                      <div className="imgavatar-profile" onClick={handleProfile}>
                         {persona.imagen ? (
                           <img className="photo" src={persona.imagen} alt="" />
                         ) : (
@@ -178,20 +211,34 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
           </div>
           {/* <Avatar /> Profile */}
         </MenuItem>
-        <div className="list-web">
+
+
+
+        <div className="list-web"  onClick={handleProfile}>
           <MenuItem
             className="MenuItem"
-            style={{ borderTop: '1px solid #EFEFEF', height: '62px' }}
-            onClick={''}
-          >
+            style={{ borderTop: '1px solid #EFEFEF', height: '62px' }}>
             <ListItemIcon>
               <FontAwesomeIcon className="iconDrop" icon={faCircleUser} />
             </ListItemIcon>
-            <Link className="linkDropDown" to="">
+            <Link className="linkDropDown" >
               Perfil
             </Link>
           </MenuItem>
         </div>
+
+        <div className="list-web" >
+          <MenuItem
+            className="MenuItem"
+            style={{ borderTop: '1px solid #EFEFEF', height: '62px',  backgroundColor: '', }}   >
+            <Link className="linkDropDown" to="/"  onClick={(logout) => { }}>
+              <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
+              Salir
+            </Link>
+          </MenuItem>
+        </div>
+      
+        
       </Menu>
     </div>
   );
