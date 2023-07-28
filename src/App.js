@@ -93,6 +93,7 @@ import { PerfilStepper } from './Pages/PerfilStepper.jsx';
 import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
 import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
 import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
+import { RecordatorioCitas } from './Pages/RecordatorioCitas.jsx';
 
 
 function App() {
@@ -1479,7 +1480,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/recordatorio"
             element={
-              <ProtectedRoute activo={activo}>
+              // <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -1492,7 +1493,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <Recordatorio></Recordatorio>
                 </div>
-              </ProtectedRoute>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/recordatorioCitas"
+            element={
+              // <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <RecordatorioCitas></RecordatorioCitas>
+                </div>
+              // </ProtectedRoute>
             }
           ></Route>
         </Routes>
