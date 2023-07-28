@@ -205,7 +205,7 @@
   position: relative;
   height: 115px;
   left: 355px;
-  width: calc(94.5% - 250px);
+  width: calc(94.5% - 295px);
   border-bottom: 2px solid rgba(209, 209, 209, 0.545);
   transition: 0.5s ease;
 }
