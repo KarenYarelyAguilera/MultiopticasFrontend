@@ -16,50 +16,55 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
-
-export const MetodosDePago = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  
-
-
+//URL DE INSERTAR Y ACTUALIZAR 
+const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
+const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
+export const MetodosDePago  = (props) => {
 
   const navegate = useNavigate();
 
-  const [marca, setmarca] = React.useState('');
+  const [descripcion, setDescripcion] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
+  const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
-
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+//CREAR
+  const handleNext = async () => {
+    let descripcion = document.getElementById("descripcion").value
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
+      descripcion: descripcion,
     }
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
-      });
+    if (await axios.post(urlInsertMetodoPago, data)) {
+      swal('Metodo de pago creado exitosamente.','', 'success');
+      navegate('/config/ListaMetodosDePago');
     }
   };
+
+//ACTUALIZAR
+const actualizarMetodoPago = async () => {
+
+  let descripcion = document.getElementById("descripcion").value;
+
+  const data = {
+
+    descripcion:descripcion,
+    IdTipoPago: props.data.IdTipoPago, 
+  }
+
+  axios.put(urlUpdateMetodoPago, data).then(() => {
+    swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
+      navegate('/config/ListaMetodosDePago');
+    })
+  }).catch(error => {
+    console.log(error);
+    swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')
+    // axios.post(urlErrorInsertBitacora, dataB)
+  })
+
+};
 
   const handleBack = () => {
     navegate('/config');
@@ -71,9 +76,9 @@ export const MetodosDePago = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Metodos De Pago</h2>
+      {props.update ? <h2>Actualizacion de Metodo de Pago</h2> : <h2>Registro de Metodos de Pago</h2>}
         <h3>
-          Complete todos los puntos para poder registrar los metodos de pago.
+          Complete todos los puntos para poder registrar los Metodos de Pago.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -92,7 +97,7 @@ export const MetodosDePago = ({
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Tipo de Pago"
-                id="Marca"
+                id="descripcion"
               />
                {/* <p class="error">{aviso}</p> */}
             </div>
@@ -101,7 +106,12 @@ export const MetodosDePago = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var descripcion = document.getElementById("descripcion").value;
+
+                  props.actualizar ? actualizarMetodoPago() : handleNext();
+                }
+                }
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
