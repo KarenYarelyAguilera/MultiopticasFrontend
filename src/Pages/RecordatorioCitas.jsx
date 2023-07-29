@@ -1,5 +1,5 @@
 
-import React, { useCallback, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -11,10 +11,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import es from "date-fns/locale/es";
 import { TextCustom } from '../Components/TextCustom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import swal from '@sweetalert/with-react';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
+
+import axios from 'axios';
 
 
 const locales = {
@@ -52,6 +55,23 @@ export const RecordatorioCitas = () => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
   const navegate = useNavigate();
+
+  const [Nombre, setNombre] = useState([]);
+  const [tableData, setTableData] = useState([]);
+
+
+  const urlCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
+  const urlClientes = 'http://localhost:3000/api/clientes';
+  
+
+  //para las preguntas
+  useEffect(() => {
+    axios.get(urlClientes).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, []);
+
+
 
   const handleAddEvent = () => {
     setAllEvents([...allEvents, newEvent]);
@@ -98,9 +118,47 @@ export const RecordatorioCitas = () => {
   //   );
   // }, []);
 
+
+
+
+  const handleClick = async () => {
+
+
+    let idCliente = parseInt(document.getElementById('idClientes').value);
+    let Nota = document.getElementById('nota').value;
+    let fecha = document.getElementById('fecha').value
+
+
+
+
+    let data = {
+      // IdRecordatorio:IdRecordatorio,
+      IdCliente: idCliente,
+      Nota: Nota,
+      fecha: fecha,
+
+    };
+
+
+    //console.log(data);
+
+    await axios.post(urlCitas, data).then(response => {
+      swal('Cita agregado con éxito', '', 'success').then(result => {
+        navegate('/recordatorio');
+      });
+
+    }).catch(error => {
+      console.log(error);
+      swal("Error al agendar cita.", "", "error")
+
+    });
+    return navegate('/recordatorio');
+  };
+
+
   return (
     <div className='ContUsuarios'>
-      <Button className="btnBack" style={{top: "-35px"}} onClick={handleBack}>
+      <Button className="btnBack" style={{ top: "-35px" }} onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="contRecordatorios">
@@ -109,73 +167,84 @@ export const RecordatorioCitas = () => {
             <h1>Nueva Cita</h1>
             <hr />
             <div className="contPrincipalNewCita">
-            <div className="contNewCita">
-            <TextCustom text="Cliente" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Cliente"
-                id="Cliente"
-                disabled
-              />
-            </div>
+              <div className="contNewCita">
+                <TextCustom text="Cliente" className="titleInput" />
+                <div className="contInput">
+                  <select id="idClientes" className="inputCustomPreguntas">
+                    {tableData.length ? (
+                      tableData.map(pre => (
+                        <option key={pre.idCliente} value={pre.idCliente}>
+                          {pre.nombre}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="No existe informacion">
+                        No existe informacion
+                      </option>
+                    )}
+                  </select>
+                </div>
+              </div>
 
-            <div className="contNewCita">
-            <TextCustom text="Fecha" className="titleInput" />
-              <DatePicker
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholderText="Fecha"
-              />
-            </div>
 
-            <div className="contNewCita">
-            <TextCustom text="Nota" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustomText"
-                placeholder="Cliente"
-                id="Cliente"
-                disabled
-              />
-            </div>
 
-            <div className="contNewCitaButtons">
-              <button className='btnAgregarCita'>Aceptar</button>
-              <button className='btnCancelar'>Cancelar</button>
-            </div>
+              <div className="contNewCita">
+                <TextCustom text="Fecha" className="titleInput" />
+                <DatePicker
+                  type="text"
+                  name=""
+                  maxLength={40}
+                  className="inputCustom"
+                  placeholderText="Fecha"
+                  id="fecha"
+                />
+              </div>
+
+
+              <div className="contNewCita">
+                <TextCustom text="Nota" className="titleInput" />
+                <input
+                  type="text"
+                  name=""
+                  maxLength={40}
+                  className="inputCustomText"
+                  placeholder="Nota"
+                  id="nota"
+                />
+              </div>
+
+
+              <div className="contNewCitaButtons">
+                <button className='btnAgregarCita' onClick={handleClick}>Agregar</button>
+                <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
+              </div>
             </div>
           </div>
-          </div>
-      <section className="contPrimary">
-        <Calendar
-          messages={{
-            next: "Siguiente",
-                    previous: "Atras",
-                    today: "Hoy",
-                    month: "Mes",
-                    week: "Semana",
-                    day: "Día"
-          }}
-          selectable
-          popup={true}
-          onSelectSlot={(e)=>console.log(e)}
-          culture='es'
-          localizer={localizer}
-          events={allEvents}
-          className='calendar'
-          startAccessor="start"
-          endAccessor="end"
-          style={{ width: '103%', height: '80vh' }}
+        </div>
+
+        <section className="contPrimary">
+          <Calendar
+            messages={{
+              next: "Siguiente",
+              previous: "Atras",
+              today: "Hoy",
+              month: "Mes",
+              week: "Semana",
+              day: "Día"
+            }}
+            selectable
+            popup={true}
+            onSelectSlot={(e) => console.log(e)}
+            culture='es'
+            localizer={localizer}
+            events={allEvents}
+            className='calendar'
+            startAccessor="start"
+            endAccessor="end"
+            style={{ width: '103%', height: '80vh' }}
           // onSelectSlot={onSelectSlot}
-        ></Calendar>
-        {/* <div className="contAddRecordatorio">
+          ></Calendar>
+          {/* <div className="contAddRecordatorio">
           <div className="inputConte">
           <TextCustom text='Titulo' className='titleInput'/>
           <input
@@ -207,7 +276,9 @@ export const RecordatorioCitas = () => {
           </div>
           <button onClick={handleAddEvent} className='btnGuardarRecor'>Guardar</button>
         </div> */}
-      </section>
+        </section>
+
+        
       </div>
     </div>
   );

@@ -1511,7 +1511,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <RecordatorioCitas></RecordatorioCitas>
+                  <RecordatorioCitas ></RecordatorioCitas>
                 </div>
               </ProtectedRoute>
             }
