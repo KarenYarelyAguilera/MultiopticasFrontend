@@ -94,6 +94,8 @@ import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
 import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
 import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 import { RecordatorioCitas } from './Pages/RecordatorioCitas.jsx';
+import { MenuCompras } from './Pages/Compras/MenuCompras.jsx';
+import { PreguntasPerfil } from './Pages/PreguntasPerfil.jsx';
 
 
 function App() {
@@ -273,13 +275,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/perfilStepper"
+            path="/preguntasPerfil"
             element={
-              <PerfilStepper
+              <PreguntasPerfil
                 // activo={activo}
                 // user={usuario}
                 // mail={correo}
-                infoPerfil={infoPerfil}
+                // infoPerfil={infoPerfil}
               //idUsuario={idUsuario}
 
               />
@@ -1066,6 +1068,25 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/compras"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex" style={{ width: '99%' }}>
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <MenuCompras></MenuCompras>
+                </div>
+             // </ProtectedRoute>
+            }
+          ></Route>
           <Route
             path="/ventas"
             element={
