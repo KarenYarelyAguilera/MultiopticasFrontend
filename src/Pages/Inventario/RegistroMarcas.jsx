@@ -37,47 +37,47 @@ export const RegistroMarcas = (props) => {
   const [nombremarca, setnombremarca] = React.useState('');
   const [aviso, setaviso] = React.useState('');
   const [errornombremarca, setErrornombremarca] = React.useState(false);
-  
+
   //INSERTAR MARCA 
 
   const handleNext = async () => {
     let marca = document.getElementById("Marca").value;
 
     let data = {
-      descripcion:marca 
+      descripcion: marca
     }
-    
+
     if (await axios.post(urlInsertMarca, data)) {
-      swal('Marca creada exitosamente.','', 'success');
+      swal('Marca creada exitosamente.', '', 'success');
       navegate('/config/ListaMarcas');
     }
 
   };
 
-//ACTUALIZAR
-const actualizarMarca = async () => {
+  //ACTUALIZAR
+  const actualizarMarca = async () => {
 
-  let marca = document.getElementById("Marca").value;
+    let marca = document.getElementById("Marca").value;
 
-  const data = {
+    const data = {
 
-    descripcion:marca,
-    IdMarca: props.data.IdMarca, //El dato de IdProducto se obtiene de Producto seleccionado.
-  }
+      descripcion: marca,
+      IdMarca: props.data.IdMarca, //El dato de IdProducto se obtiene de Producto seleccionado.
+    }
 
-  axios.put(urlUpdateMarca, data).then(() => {
-    swal("Marca Actualizada Correctamente", "", "success").then(() => {
-      navegate('/config/ListaMarcas');
+    axios.put(urlUpdateMarca, data).then(() => {
+      swal("Marca Actualizada Correctamente", "", "success").then(() => {
+        navegate('/config/ListaMarcas');
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Narca! , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
     })
-  }).catch(error => {
-    console.log(error);
-    swal('Error al Actualizar Narca! , porfavor revise todos los campos.', '', 'error')
-    // axios.post(urlErrorInsertBitacora, dataB)
-  })
 
-};
+  };
 
-//BOTON DE RETROCESO 
+  //BOTON DE RETROCESO 
   const handleBack = () => {
     navegate('/config');
   };
@@ -89,14 +89,14 @@ const actualizarMarca = async () => {
       </Button>
 
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Marca</h2> : <h2>Registro de Marcas</h2>}
+        {props.update ? <h2>Actualizacion de Marca</h2> : <h2>Registro de Marcas</h2>}
         <h3>Complete todos los puntos para poder registrar los datos de la Marca.</h3>
       </div>
 
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-             <div className="contInput">
+            <div className="contInput">
               <TextCustom text="Nombre de la Marca" className="titleInput" />
 
               <input
@@ -115,16 +115,16 @@ const actualizarMarca = async () => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={()=> {
+                onClick={() => {
                   var Marca = document.getElementById("Marca").value;
 
                   props.actualizar ? actualizarMarca() : handleNext();
                 }
-              }
+                }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
-             
+
             </div>
           </div>
         </div>

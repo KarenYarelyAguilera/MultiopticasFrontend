@@ -741,7 +741,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/menuInventario/Kardex"
             element={
-              <ProtectedRoute activo={activo}>
+            //  <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -754,7 +754,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
                   <Kardex />
                 </div>
-              </ProtectedRoute>
+             // </ProtectedRoute>
             }
           ></Route>
 
@@ -993,7 +993,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaDescuento />
+                <ListaDescuento update={update} data={Data}/>
               </div>
               //  </ProtectedRoute>
             }
@@ -1313,7 +1313,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroDescuento />
+                <RegistroDescuento
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  Data={Data}
+                ></RegistroDescuento>
               </div>
               //  </ProtectedRoute>
             }

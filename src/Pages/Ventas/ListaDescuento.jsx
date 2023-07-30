@@ -16,24 +16,21 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
-export const ListaDescuento = () => {
-  const [roles, setRoles] = useState([]);
+export const ListaDescuento = ({props,data,update}) => {
+  const [marcah, setMarcah] = useState()
+  const [cambio, setCambio] = useState(0)
 
-  const urlDescuentos =
-    'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=Descuentos';
-    const urlUpdateDescuento ="http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=UpdateDescuento"
-  const urlDelDescuento = 
-    'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=DeleteDescuento';
+//URL DE DESCUENTO
+const urlListaDescuentos = 'http://localhost:3000/api/Descuento';
+const urlDelDescuento = 'http://localhost:3000/api/Descuento/BorrarDescuento';
 
-  const [tableData, setTableData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [cambio, setcambio] = useState(0)
-
+const [tableData, setTableData] = useState([]);
+const [searchTerm, setSearchTerm] = useState('');
+ 
   useEffect(() => {
-    fetch(urlDescuentos)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get (urlListaDescuentos).then(response=> setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -45,23 +42,21 @@ export const ListaDescuento = () => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
-
+  
+  //ESTRUCTURA DE LA TABLA 
   const columns = [
-    { field: 'IdDescuento', headerName: 'ID Descuento', width: 300 },
-    { field: 'estado', headerName: 'Estado', width: 300 },
-    { field: 'DescuentoCliente', headerName: 'Descuento del Cliente', width: 300 },
-    { field: 'DescuentoEmpleado', headerName: 'Descuento del Empleado', width: 300 },
+    { field: 'IdDescuento', headerName: 'ID Descuento', width: 210 },
+    { field: 'estado', headerName: 'Estado', width: 210 },
+    { field: 'descPorcent', headerName: 'Descuento del Cliente', width: 210 },
+    { field: 'descPorcentEmpleado', headerName: 'Descuento del Empleado', width: 210 },
     {
       field: 'borrar',
       headerName: 'Acciones',
       width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdate(params)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdate(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
@@ -75,76 +70,24 @@ export const ListaDescuento = () => {
     },
   ];
 
-  function handleUpdate(fila) {
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <TextCustom text="Estado" className="titleInput" />
-            <select name="" id="estado">
-              <option value={1}>Activo</option>
-              <option value={2}>Inctivo</option>
-            </select>
-          </div>
-
-          <div className="contInput">
-            <TextCustom
-              text="Descuento de cliente"
-              className="titleInput"
-            />
-            <input
-              type="text"
-              id="descCliente"
-              className='inputCustom'
-              value={fila.row.DescuentoCliente}
-            />
-          </div>
-          <div className="contInput">
-            <TextCustom text="Estado" className="titleInput" />
-            <input
-              type="text"
-              className='inputCustom'
-              id="descEmpleado"
-              value={fila.row.DescuentoEmpleado}
-            />
-         </div>
-        </div>
-      </div>,
-    ).then(() => {
-
-    let descCliente = parseFloat(document.getElementById("descCliente").value)
-    let descEmpleado = parseFloat(document.getElementById("descEmpleado").value)
-    let estado = parseInt(document.getElementById("estado").value)
-
-    let data = {
-      estado:estado,
-      descPorcent:descCliente,
-      descPorcentEmpleado:descEmpleado,
-      IdDescuento:fila.row.IdDescuento
-    };
-      
-
-
-      if (sendData(urlUpdateDescuento, data)) {
-        swal(<h1>Usuario Actualizado Correctamente</h1>);
-        setcambio(cambio+1)
-      }
-    });
-  }
-
+ //FUNCION DE ELIMINAR 
   function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">Desea Elimiar esta Descuento?</div>
+          <div className="logoModal">
+          ¿Desea Elimiar este Descuento?</div>
           <div className="contEditModal">
-
           </div>
         </div>
       ),
-      buttons: ["Eliminar", "Cancelar"]
-    }).then((op) => {
+
+      buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+      },
+     
+    }).then(async(op) => {
 
       switch (op) {
         case null:
@@ -155,22 +98,65 @@ export const ListaDescuento = () => {
 
           console.log(data);
 
-
-          if (sendData(urlDelDescuento, data)) {
-            swal(<h1>Descuento Eliminado Correctamente</h1>);
-            setcambio(cambio + 1)
-          }
+          await axios.delete(urlDelDescuento,{data}).then(response=>{
+            swal("Descuento eliminado correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar el descuento","","error")
+          })
           break;
-
-        default:
+          default:
           break;
       }
-
     });
+  };
 
-  }
+  //FUNCION DE ACTUALIZAR 
+  function handleUpdate (id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar el descuento ?: {id.descuento}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+         update(true)
+      navegate('/menuVentas/RegistroDescuento')
+      break;
+      default:
+      break;
+      }
+    });
+  };
 
-  
+  //   let descCliente = parseFloat(document.getElementById("descCliente").value)
+  //   let descEmpleado = parseFloat(document.getElementById("descEmpleado").value)
+  //   let estado = parseInt(document.getElementById("estado").value)
+
+  //   let data = {
+  //     estado:estado,
+  //     descPorcent:descCliente,
+  //     descPorcentEmpleado:descEmpleado,
+  //     IdDescuento:fila.row.IdDescuento
+  //   };
+      
+
+  //     if (sendData(urlUpdateDescuento, data)) {
+  //       swal(<h1>Usuario Actualizado Correctamente</h1>);
+  //       setcambio(cambio+1)
+  //     }
+  //   });
+  // };
+
+    //BOTON DE RETROCEDER 
   const handleBack = () => {
     navegate('/ventas');
   };
@@ -219,6 +205,7 @@ export const ListaDescuento = () => {
             </Button>
           </div>
         </div>
+
         <DataGrid
           getRowId={tableData => tableData.IdDescuento}
           rows={filteredData}
