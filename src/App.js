@@ -96,6 +96,7 @@ import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 import { RecordatorioCitas } from './Pages/RecordatorioCitas.jsx';
 import { MenuCompras } from './Pages/Compras/MenuCompras.jsx';
 import { PreguntasPerfil } from './Pages/PreguntasPerfil.jsx';
+import{ EditarPreguntas } from './Pages/EditarPreguntas.jsx';
 
 
 function App() {
@@ -277,16 +278,45 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/preguntasPerfil"
             element={
-              <PreguntasPerfil
-                // activo={activo}
-                // user={usuario}
-                // mail={correo}
-                // infoPerfil={infoPerfil}
-              //idUsuario={idUsuario}
-
-              />
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <PreguntasPerfil 
+                    update={update}
+                    data={Data} 
+                    idUsuario={idUsuario} 
+                    infoPerfil={infoPerfil}
+                    user={usuario}
+                  />
+                </div>
+              </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="/editarPreguntas"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <EditarPreguntas
+                    update={update}
+
+                    data={data}
+                    
+                    idUsuario={idUsuario}
+                    infoPerfil={infoPerfil}
+                    user={usuario}
+
+
+                  />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+
+
+
+
 
 
 

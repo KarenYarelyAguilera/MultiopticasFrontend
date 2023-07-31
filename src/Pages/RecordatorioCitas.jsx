@@ -158,7 +158,7 @@ export const RecordatorioCitas = () => {
 
   return (
     <div className='ContUsuarios'>
-      <Button className="btnBack" style={{ top: "-35px" }} onClick={handleBack}>
+      <Button className="btnBack" style={{ top: "-50px" }} onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="contRecordatorios">
@@ -190,14 +190,16 @@ export const RecordatorioCitas = () => {
 
               <div className="contNewCita">
                 <TextCustom text="Fecha" className="titleInput" />
-                <DatePicker
+                {/* <DatePicker
                   type="text"
                   name=""
                   maxLength={40}
                   className="inputCustom"
                   placeholderText="Fecha"
                   id="fecha"
-                />
+                /> */}
+
+                <input type="date"  id="fecha" ></input>
               </div>
 
 
@@ -222,63 +224,7 @@ export const RecordatorioCitas = () => {
           </div>
         </div>
 
-        <section className="contPrimary">
-          <Calendar
-            messages={{
-              next: "Siguiente",
-              previous: "Atras",
-              today: "Hoy",
-              month: "Mes",
-              week: "Semana",
-              day: "Día"
-            }}
-            selectable
-            popup={true}
-            onSelectSlot={(e) => console.log(e)}
-            culture='es'
-            localizer={localizer}
-            events={allEvents}
-            className='calendar'
-            startAccessor="start"
-            endAccessor="end"
-            style={{ width: '103%', height: '80vh' }}
-          // onSelectSlot={onSelectSlot}
-          ></Calendar>
-          {/* <div className="contAddRecordatorio">
-          <div className="inputConte">
-          <TextCustom text='Titulo' className='titleInput'/>
-          <input
-            type="text"
-            placeholder="Titulo"
-            className='inputCustom'
-            value={newEvent.title}
-            onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
-          />
-          </div>
-          <div className='inputConte'>
-          <TextCustom text='Fecha Inicial' className='titleInput'/>
-          <DatePicker
-            placeholderText="Fecha"
-            className='inputCustom'
-            selected={newEvent.start}
-            onChange={start => setNewEvent({ ...newEvent, start })}
-          />
-
-          </div>
-          <div className="inputConte">
-          <TextCustom text='Fecha Final' className='titleInput'/>
-          <DatePicker
-            placeholderText="Fecha"
-            selected={newEvent.end}
-            className='inputCustom'
-            onChange={end => setNewEvent({ ...newEvent, end })}
-          />
-          </div>
-          <button onClick={handleAddEvent} className='btnGuardarRecor'>Guardar</button>
-        </div> */}
-        </section>
-
-        
+ 
       </div>
     </div>
   );
