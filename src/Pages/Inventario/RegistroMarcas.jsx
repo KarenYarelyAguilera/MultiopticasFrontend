@@ -79,7 +79,7 @@ const actualizarMarca = async () => {
 
 //BOTON DE RETROCESO 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/config/ListaMarcas');
   };
 
   return (

@@ -96,6 +96,14 @@ import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 import { RecordatorioCitas } from './Pages/RecordatorioCitas.jsx';
 import { MenuCompras } from './Pages/Compras/MenuCompras.jsx';
 import { PreguntasPerfil } from './Pages/PreguntasPerfil.jsx';
+import { RegistroDepartamento } from './Pages/Configuracion/RegistroDepartamento.jsx';
+import { ListaDepartamentos } from './Pages/Configuracion/ListaDepartamentos.jsx';
+import { RegistroCiudad } from './Pages/Configuracion/RegistroCiudad.jsx';
+import { ListaCiudad } from './Pages/Configuracion/ListaCiudad.jsx';
+import { RegistroPais } from './Pages/Configuracion/RegistroPais.jsx';
+import { ListaPais } from './Pages/Configuracion/ListaPais.jsx';
+import { RegistroGenero } from './Pages/Configuracion/RegistroGenero.jsx';
+import { ListaGenero } from './Pages/Configuracion/ListaGenero.jsx';
 
 
 function App() {
@@ -617,6 +625,86 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/config/RegistroDepartamento"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroDepartamento />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/RegistroCiudad"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroCiudad />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/RegistroPais"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroPais />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/RegistroGenero"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroGenero />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/empleados/lista"
             element={
@@ -735,6 +823,86 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMetodosDePago />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaDepartamentos"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaDepartamentos />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaCiudad"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaCiudad />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaPais"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPais />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/config/ListaGenero"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaGenero />
                 </div>
               </ProtectedRoute>
             }

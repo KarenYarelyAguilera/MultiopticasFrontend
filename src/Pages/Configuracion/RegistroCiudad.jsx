@@ -21,7 +21,7 @@ import { TextField } from '@mui/material';
 const urlMarca =
   'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
 
-export const MetodosDePago = ({
+export const RegistroCiudad = ({
   msgError = '',
   success = false,
   warning = false,
@@ -62,7 +62,7 @@ export const MetodosDePago = ({
   };
 
   const handleBack = () => {
-    navegate('/config/ListaMetodosDePago');
+    navegate('/config/ListaCiudad');
   };
 
   return (
@@ -71,9 +71,9 @@ export const MetodosDePago = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Metodos De Pago</h2>
+        <h2>Registro De Ciudad</h2>
         <h3>
-          Complete todos los puntos para poder registrar los metodos de pago.
+          Complete todos los puntos para poder registrar las ciudades.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -83,7 +83,7 @@ export const MetodosDePago = ({
 
             <div className="contInput">
 
-              <TextCustom text="Tipo de Pago" className="titleInput" />
+              <TextCustom text="Ciudad" className="titleInput" />
 
               <input
                
@@ -91,8 +91,8 @@ export const MetodosDePago = ({
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Tipo de Pago"
-                id="Marca"
+                placeholder="Ciudad"
+                id="Ciudad"
               />
                {/* <p class="error">{aviso}</p> */}
             </div>
