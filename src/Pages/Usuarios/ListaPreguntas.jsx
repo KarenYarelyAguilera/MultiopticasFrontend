@@ -1,6 +1,6 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
-import { useNavigate } from 'react-router';
+import { Await, useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 
 //Mui-Material-Icons
@@ -16,15 +16,14 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
+
 //import { PageThree } from '../../Components/LoginPorPrimeraVez/PageThree/PageThree';
 
 export const ListaPreguntas = (props) => {
   const [cambio, setCambio] = useState(0);
-  const [generos, setGeneros] = useState([]);
-  const [sucursales, setSucursales] = useState([]);
+/*   const [generos, setGeneros] = useState([]);
+  const [sucursales, setSucursales] = useState([]); */
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
-  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
  
 //--------------------URL DE BITACORA--------------------
 const urlDelBitacora = 
@@ -36,12 +35,19 @@ const urlBitacoraBotonSalirLE=
 
 
 const urlPyR= 'http://localhost:3000/api/pregYresp'
+const urlDelRespuesta= 'http://localhost:3000/api/eliminarRespuesta'
+const urlPregunta = 'http://localhost:3000/api/pregunta';
 
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [Nombre, setNombre] = useState('');
+  const [Preguntas, setPreguntas] = useState([]);
+
+
+  const navegate = useNavigate();
+
+ /*  const [Nombre, setNombre] = useState('');
   const [errorNombre, setErrorNombre] = useState(false);
   const [Msj, setMsj] = useState(false);
 
@@ -50,22 +56,17 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
   const [aviso, setAviso] = useState(false);
 
   const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
+  const [texto, setTexto] = useState(false); */
 
   const dataId = {
     Id_Usuario:props.idUsuario,
   }; 
   //axios para que me traiga las preguntas y respuestas
   useEffect(() => {
-    axios
-      .post(urlPyR,dataId)
-      .then(response => {
-        setTableData(response.data);
-      })
+    axios.post(urlPyR,dataId).then(response => {
+      setTableData(response.data);})
       .catch(error => console.log(error));
   }, [cambio]);
-
-  const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -77,8 +78,9 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
 
   const columns = [
     //son los de la base no los de node
-    { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
-    { field: 'Respuesta', headerName: 'Respuestas', width: 550,
+    { field: 'Id_Pregunta', headerName: 'Id_Pregunta', width: 150 },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 350 },
+    { field: 'Respuesta', headerName: 'Respuestas', width: 250,
       valueGetter: (params) => {
         // Obtener la respuesta original
         const originalRespuesta = params.row.Respuesta;
@@ -97,12 +99,11 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row.Id_Usuario)}>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.Id_Usuario)}
+            className="btnDelete" onClick={() => handleDel(params.row.Id_Pregunta)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -116,12 +117,8 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
     swal({
       content: (
         <div>
-
-          <div className="logoModal">¿Desea Eliminar esta Pregunta?</div>
-          <div className="contEditModal">
-
-          </div>
-
+          <div className="logoModal">¿Desea Eliminar esta Respuesta? </div>
+          <div className="contEditModal"></div>
         </div>
       ),
       buttons: ['Eliminar', 'Cancelar'],
@@ -130,26 +127,17 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
         case null:
           
           let data = {
-            IdEmpleado: id,
+            Id_Pregunta:id,
           };
-
-          //Funcion de Bitacora 
-          let dataB = {
-            Id:props.idUsuario
-          }
-
           console.log(data);
 
-          await axios
-            .delete(urlDelEmployees, { data })
-            .then(response => {
-              axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Pregunta eliminada correctamente', '', 'success');
+          await axios.delete(urlDelRespuesta, { data }).then(response => {
+              swal('Respuesta eliminada correctamente', '', 'success');
               setCambio(cambio + 1);
             })
             .catch(error => {
               console.log(error);
-              swal('Error al eliminar pregunta', '', 'error');
+              swal('Error al eliminar respuesta', '', 'error');
             });
 
           break;
@@ -161,10 +149,19 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
   }
 
   //funcion de actualizar
+ function handleUpdt(id) {
+    console.log(id);
 
+    /* let data = {
+      Id_Pregunta:id,
+    }; */
+    
+   props.data({
+      Id_Pregunta: id.Id_Pregunta,
+      Pregunta:id.Pregunta,
+   })
+   
 
-  function handleUpdt(id) {
-    // onRowClick={empleado => {
     swal({
       buttons: {
         update: 'ACTUALIZAR',
@@ -172,28 +169,102 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
       },
       content: (
         <div className="logoModal">
-          ¿Desea modificar esta pregunta: ?
+          ¿Desea modificar esta pregunta: ? {id.Id_Pregunta}
         </div>
       ),
     }).then(op => {
       switch (op) {
         case 'update':
+
+          let data = {
+            Id_Pregunta: id,
+          };
+          console.log(data)
+
           props.data(id)
           props.update(true)
-          //navegate('../Components/LoginPorPrimeraVez/PageThree/PageThree')
+
+          navegate("/editarPreguntas");
       }
     });
+  } 
 
-    //}//}//
+
+
+
+/*   function handleUpdt(id) {
+
+    console.log(id);
+    
+    swal(
+      <div>
+        <div className="logoModal">Datos a actualizar</div>
+        <div className="contEditModal">
+          <div className="contInput">
+            <TextCustom text="Pregunta:" className="titleInput" />
+            <input
+              type="text"
+              id="Preguntas"
+              className='inputCustom'
+              placeholder="Pregunta"
+              value={id.Pregunta}
+            />
+          </div>
+  
+          <div className='contInput'>
+            <TextCustom text="Respuesta:" className="titleInput" />
+            <input
+              maxLength="20"
+              type="text"
+              name=""
+              className="inputCustom"
+              placeholder="Respuesta"
+              id='respuestap'
+              value={columns.Respuesta}
+            />
+          </div>
+        
+          
+        </div>
+      </div>
+    ).then( async() => {
+  
+      let Pregunta = document.getElementById('Preguntas').value
+      let Respuesta = document.getElementById('respuestap').value
+      
+  
+  
+      let data = {
+        Pregunta:Pregunta,
+        Respuesta: Respuesta,
+        Id_Pregunta: id,
+      };
+
+
+      let dataId = {
+        Id_Pregunta: id,
+      };
+  
+   
+       await axios.get(urlPregunta,dataId).then(response => {
+          setPreguntas(response.data);
+          console.log(response.data);
+        }).catch(error => console.log(error))
+     
+  
+
+
+  
+  
+    });
+  
   }
+ */
 
- //Funcion de Bitacora 
- let dataB = {
-  Id:props.idUsuario
-}
+
+
 
   const handleBack = () => {
-    //axios.post (urlBitacoraBotonSalirLE,dataB)
     navegate('/config/perfil');
   };
 
@@ -226,10 +297,10 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            <Button
+            <Button 
               className="btnCreate"
               onClick={() => {
-                navegate('');
+                navegate('/preguntasPerfil');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
