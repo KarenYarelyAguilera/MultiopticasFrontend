@@ -130,7 +130,7 @@ export const RegistroSucursal = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/config/listaSucursal');
   };
 
   return (

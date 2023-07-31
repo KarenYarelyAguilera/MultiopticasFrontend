@@ -223,7 +223,7 @@ export const ListaSucursal = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva
+              Nueva Sucursal
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
