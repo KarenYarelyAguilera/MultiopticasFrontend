@@ -12,17 +12,12 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
-import axios from 'axios';
-
-const handleChange = (event) => {
-  const { name, value } = event.target;
-  console.log(`Nuevo valor de ${name}: ${value}`);
-};
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlProductos = 'http://localhost:3000/api/productos';
-const urlUpdateGarantia = 'http://localhost:3000/garantias/actualizar';
-const urlInsertGarantia = 'http://localhost:3000/garantias/crear';
+const urlProductos = 'http://localhost:3000/api/productos'; //API DE PRODUCTO
+const urlUpdateGarantia = 'http://localhost:3000/garantias/actualizar';//API DE ACTUALIZAR
+const urlInsertGarantia = 'http://localhost:3000/garantias/crear';//CREAR 
 
 
 export const RegistroGarantia = (props) => {
@@ -51,11 +46,6 @@ export const RegistroGarantia = (props) => {
     let mesesGarantia = document.getElementById ("mesesGarantia").value;
     let IdProducto = parseInt(document.getElementById ("IdProducto").value);
     let estado = parseInt(document.getElementById ("estado").value);
-    
-    // let IdProducto = parseInt(document.getElementById("IdProducto").value)
-    // let mesesGarantia = document.getElementById("mesesGarantia").value
-    // let estado = parseInt(document.getElementById("estado").value)  
-    // let descripcion = document.getElementById("descripcion").value
 
     let data = {
       descripcion: descripcion,
@@ -64,12 +54,18 @@ export const RegistroGarantia = (props) => {
       estado: estado,
     };
 
-    //URL DE INSERTAR LA GARANTIA 
-    if (await axios.post(urlInsertGarantia, data)) {
-      swal('Garantia creada exitosamente.','', 'success');
+     //Consumo de API y lanzamiento se alerta
+  axios.post(urlInsertGarantia, data).then(response => {
+    swal('Garantia creada exitosamente', '', 'success').then(result => {
       navegate('/menuVentas/listaGarantias');
-    }
-  };
+    });
+  }).catch(error => {
+    console.log(error);
+    swal('Error al crear la garantia , porfavor revise los campos.', '', 'error')
+ 
+  }
+  )
+};
 
   //ACTUALIZAR
 const actualizarGarantia = async () => {
@@ -85,12 +81,12 @@ const actualizarGarantia = async () => {
   // let descripcion = document.getElementById("descripcion").value
 
   //El dato de IdProducto se obtiene de Producto seleccionado.
-  let data = { 
+ const data = { 
       descripcion: descripcion,
       mesesGarantia: mesesGarantia,
       IdProducto: IdProducto,
       estado: estado,
-    IdGarantia:props.data.IdGarantia,
+     IdGarantia:props.data.IdGarantia,
   }
 
   axios.put(urlUpdateGarantia,data).then(() => {
@@ -126,7 +122,7 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="ID Producto" className="titleInput" />
               
-              <select name="" className="selectCustom" id="producto">
+              <select name="" className="selectCustom" id="IdProducto">
                 {Productos.length ? (
                   Productos.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
@@ -218,7 +214,7 @@ const actualizarGarantia = async () => {
                 maxLength={100}
                 className="inputCustomText"
                 placeholder="Descripcion"
-                id="descripcion"
+                id="mesesGarantia"
               />
               <p class="error">{leyenda}</p>
             </div>
@@ -230,32 +226,28 @@ const actualizarGarantia = async () => {
               className="btnStepper"
 
                onClick={() => {
-                let descripcion  = document.getElementById ("descripcion").value;
-                let mesesGarantia = document.getElementById ("mesesGarantia").value;
-                let IdProducto = parseInt(document.getElementById ("IdProducto").value);
-                let estado = parseInt(document.getElementById ("estado").value);
-
+                 //Validaciones previo a ejecutar el boton
+                var descripcion  = document.getElementById ("descripcion").value;
+                var mesesGarantia = document.getElementById ("mesesGarantia").value;
+                
+                if ( descripcion ==="" || mesesGarantia ==="" )
+                {
+                  swal ("No deje campos vacios.","","error");
+                }
 
                 props.actualizar ? actualizarGarantia() : handleNext();
                 
-                //   swal('Garantia agregada con exito', '', 'success')
-                // navegate('/menuVentas/listaGarantias')
-                // handleNext();
-              }
-              }
+                    }
+                }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
             </div>
           </div>
         </div>
 
         <img
-          src={
-            'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'}
+          src={'https://static.vecteezy.com/system/resources/previews/015/655/076/non_2x/health-insurance-icon-isometric-style-vector.jpg'}
           className='imgCont'
           alt="No se encuentro la imagen"
         />
