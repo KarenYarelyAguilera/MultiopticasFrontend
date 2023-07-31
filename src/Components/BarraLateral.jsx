@@ -5,6 +5,7 @@ import MulltiOpticaOjo from '../IMG/MultiopticaOjo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useEffect } from 'react';
 
+
 import {
   faClipboardList,
   faPeopleRoof,
@@ -16,32 +17,30 @@ import {
   faGear,
   faRightFromBracket,
   faChevronRight,
+  faCartShopping
 } from '@fortawesome/free-solid-svg-icons';
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
-const urlP = "http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos"
+const urlP =
+  'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos';
 
 //--------------------URL DE BITACORAS----------------------------------
-const urlBitacoraModEmple =
-"http://localhost:3000/api/bitacora/Empleado";
-const urlCierre =
-"http://localhost:3000/api/bitacora/Cierre";
-const urlBitacoraConfig =
-"http://localhost:3000/api/bitacora/Configuracion";
+const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
+const urlCierre = 'http://localhost:3000/api/bitacora/Cierre';
+const urlBitacoraConfig = 'http://localhost:3000/api/bitacora/Configuracion';
 //-----------------------------------------------------------------------
 
-export const BarraLateral = (props) => {
-
+export const BarraLateral = props => {
   const data = {
-    rol: props.Rol
-  }
-//Funcion de bitacora 
+    rol: props.Rol,
+  };
+  //Funcion de bitacora
   const dataB = {
-    Id:props.idUsuario
-  }
+    Id: props.idUsuario,
+  };
 
-  const [permisos, setPermisos] = useState([])
+  const [permisos, setPermisos] = useState([]);
 
   // useEffect(() => {
   //   fetch(urlP, {
@@ -52,22 +51,22 @@ export const BarraLateral = (props) => {
   //     body: JSON.stringify(data),
   //   })
   //     .then((response) => response.json())
-  //     .then((data) => setPermisos(data)) 
+  //     .then((data) => setPermisos(data))
   // }, [])
 
-
-  let pantallas = Object.values(permisos).map(({ Id_Objeto }) => parseInt(Id_Objeto)) //permite acceder a la propiedad del objeto y aislarla a un array aparte
-  let consulta = Object.values(permisos).map(({ Permiso_Consultar }) => Permiso_Consultar)
+  let pantallas = Object.values(permisos).map(({ Id_Objeto }) =>
+    parseInt(Id_Objeto),
+  ); //permite acceder a la propiedad del objeto y aislarla a un array aparte
+  let consulta = Object.values(permisos).map(
+    ({ Permiso_Consultar }) => Permiso_Consultar,
+  );
 
   //------------------------Componentes del menu-------------------------
   const Usuario = () => {
-    if (consulta[0] === "s" && pantallas[0] === 2) {
-
+    if (consulta[0] === 's' && pantallas[0] === 2) {
       return (
         <li>
-
           <Link className="link" to="/usuarios" onClick={() => props.obj(2)}>
-          
             {/* fetch(urlBitacoraUsuario, {
               method: "POST",
               headers: {
@@ -80,13 +79,13 @@ export const BarraLateral = (props) => {
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
             <h1>USUARIOS</h1>
           </Link>
-        </li>)
+        </li>
+      );
     }
-
-  }
+  };
 
   const Inventario = () => {
-    if (consulta[1] === "s" && pantallas[1] === 3) {
+    if (consulta[1] === 's' && pantallas[1] === 3) {
       return (
         <li>
           <Link className="link" to="/inventario">
@@ -94,13 +93,12 @@ export const BarraLateral = (props) => {
             <h1>INVENTARIO</h1>
           </Link>
         </li>
-      )
+      );
     }
-
-  }
+  };
 
   const Clientes = () => {
-    if (consulta[2] === "s" && pantallas[2] === 4) {
+    if (consulta[2] === 's' && pantallas[2] === 4) {
       return (
         <li>
           <Link className="link" to="/menuClientes">
@@ -108,77 +106,76 @@ export const BarraLateral = (props) => {
             <h1>CLIENTES</h1>
           </Link>
         </li>
-      )
+      );
     }
-  }
+  };
 
   const Recordatorios = () => {
-
-    if (consulta[3] === "s" && pantallas[3] === 5) {
+    if (consulta[3] === 's' && pantallas[3] === 5) {
       return (
         <li>
           <Link className="link" to="/recordatorio">
             <FontAwesomeIcon className="iconLi" icon={faCalendar} />
             <h1>RECORDATORIOS</h1>
           </Link>
-        </li>)
+        </li>
+      );
     }
-  }
+  };
 
   const Reportes = () => {
-    if (consulta[4] === "s" && pantallas[4] === 6) {
+    if (consulta[4] === 's' && pantallas[4] === 6) {
       return (
         <li>
           <Link className="link" to="/preguntasSeguridad">
             <FontAwesomeIcon className="iconLi" icon={faFileLines} />
             <h1>REPORTES</h1>
           </Link>
-        </li>)
+        </li>
+      );
     }
-  }
+  };
 
   const Seguridad = () => {
-    if (consulta[5] === "s" && pantallas[5] === 7) {
+    if (consulta[5] === 's' && pantallas[5] === 7) {
       return (
         <li>
           <Link className="link" to="">
             <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
             <h1>SEGURIDAD</h1>
           </Link>
-        </li>)
-
+        </li>
+      );
     }
-  }
+  };
   const Configuracion = () => {
-    if (consulta[6] === "s" && pantallas[6] === 8) {
+    if (consulta[6] === 's' && pantallas[6] === 8) {
       return (
         <li>
           <Link className="link" to="/config">
             <FontAwesomeIcon className="iconLi" icon={faGear} />
             <h1>CONFIGURACION</h1>
           </Link>
-        </li>)
+        </li>
+      );
     }
-  }
+  };
 
   const Ventas = () => {
-    if (consulta[7] === "s" && pantallas[7] === 9) {
+    if (consulta[7] === 's' && pantallas[7] === 9) {
       return (
         <li>
           <Link className="link" to="/ventas">
-            <FontAwesomeIcon
-              className="iconLi"
-              icon={faHandHoldingDollar}
-            />
+            <FontAwesomeIcon className="iconLi" icon={faHandHoldingDollar} />
             <h1>VENTAS</h1>
           </Link>
-        </li>)
+        </li>
+      );
     }
-  }
-
+  };
 
   const logout = () => {
-    axios.post(urlCierre,dataB)
+    axios.post(urlCierre, dataB);
     props.mail('');
     props.user('');
     props.access('inactivo');
@@ -216,9 +213,10 @@ export const BarraLateral = (props) => {
               <Link
                 className="link"
                 to="/usuarios"
-                onClick={() =>{
-                  axios.post(urlBitacoraModEmple,dataB) //Bitacora del modulo de usuario/empleado 
-                  props.obj(2)}}
+                onClick={() => {
+                  axios.post(urlBitacoraModEmple, dataB); //Bitacora del modulo de usuario/empleado
+                  props.obj(2);
+                }}
               >
                 {/* fetch(urlBitacoraUsuario, {
              method: "POST",
@@ -229,7 +227,7 @@ export const BarraLateral = (props) => {
            })
            props.obj(2)}}> */}
 
-                <FontAwesomeIcon className="iconLi" icon={faUsers} />  
+                <FontAwesomeIcon className="iconLi" icon={faUsers} />
                 <h1>USUARIOS</h1>
               </Link>
             </li>
@@ -241,47 +239,59 @@ export const BarraLateral = (props) => {
             </li>
 
             <li>
-          <Link className="link" to="/inventario">
-            <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
-            <h1>INVENTARIO</h1>
-          </Link>
-        </li>
-<li>
-          <Link className="link" to="/ventas">
-            <FontAwesomeIcon
-              className="iconLi"
-              icon={faHandHoldingDollar}
-            />
-            <h1>VENTAS</h1>
-          </Link>
-        </li>
+              <Link className="link" to="/inventario">
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
+                <h1>INVENTARIO</h1>
+              </Link>
+            </li>
+            <li>
+              <Link className="link" to="/ventas">
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faHandHoldingDollar}
+                />
+                <h1>VENTAS</h1>
+              </Link>
+            </li>
 
+            <li>
+              <Link className="link" to="/compras">
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faCartShopping}
+                />
+                <h1>COMPRAS</h1>
+              </Link>
+            </li>
 
-<li>
-          <Link className="link" to="/recordatorio">
-            <FontAwesomeIcon className="iconLi" icon={faCalendar} />
-            <h1>RECORDATORIOS</h1>
-          </Link>
-        </li>
+            <li>
+              <Link className="link" to="/recordatorio">
+                <FontAwesomeIcon className="iconLi" icon={faCalendar} />
+                <h1>RECORDATORIOS</h1>
+              </Link>
+            </li>
 
-<li>
-          <Link className="link" to="/preguntasSeguridad">
-            <FontAwesomeIcon className="iconLi" icon={faFileLines} />
-            <h1>SEGURIDAD</h1>
-          </Link>
-        </li>
+            <li>
+              <Link className="link" to="/config/roles">
+                <FontAwesomeIcon className="iconLi" icon={faFileLines} />
+                <h1>SEGURIDAD</h1>
+              </Link>
+            </li>
 
-<li>
-          <Link className="link" to="/config" onClick={() =>{
-                  axios.post(urlBitacoraConfig,dataB) //Bitacora de etrar a la pantalla de configuracion 
-                  props.obj(2)}}
-          >
-            <FontAwesomeIcon className="iconLi" icon={faGear} />
-            <h1>MANTENIMIENTO</h1>
-          </Link>
-        </li>
+            <li>
+              <Link
+                className="link"
+                to="/config"
+                onClick={() => {
+                  axios.post(urlBitacoraConfig, dataB); //Bitacora de etrar a la pantalla de configuracion
+                  props.obj(2);
+                }}
+              >
+                <FontAwesomeIcon className="iconLi" icon={faGear} />
+                <h1>MANTENIMIENTO</h1>
+              </Link>
+            </li>
 
-          
             {/* <Usuario />
             <Ventas />
             <Inventario/>
@@ -291,15 +301,14 @@ export const BarraLateral = (props) => {
             <Recordatorios />
 
             <Seguridad /> */}
-            <Inventario/>
-           <Clientes/>
-            <Ventas/>
-            <Recordatorios/>
-            <Usuario/>
-            <Reportes/>
-            <Seguridad/>
-            <Configuracion/>
-
+            <Inventario />
+            <Clientes />
+            <Ventas />
+            <Recordatorios />
+            <Usuario />
+            <Reportes />
+            <Seguridad />
+            <Configuracion />
           </ul>
         </nav>
       </div>
@@ -307,9 +316,7 @@ export const BarraLateral = (props) => {
       <div className="logout">
         <ul>
           <li>
-            <Link className="linkLogout" to="/"  onClick={(logout) =>{
-              }}
-            >
+            <Link className="linkLogout" to="/" onClick={logout => {}}>
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
               <h1>CERRAR SESIÓN</h1>
             </Link>
