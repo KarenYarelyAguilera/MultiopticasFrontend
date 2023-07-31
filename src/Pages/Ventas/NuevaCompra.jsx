@@ -19,13 +19,11 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
+import axios from 'axios';
 
-const urlCompra = 'http://localhost/APIS-Multioptica/compra/controller/compra.php?op=InsertCompra';
-const urlCompraDetalle = 'http://localhost/APIS-Multioptica/compra/controller/compra.php?op=InsertCompraDetalle';
-const urlProducto = "http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Productos";
-const urlProveedor = "http://localhost/APIS-Multioptica/proveedor/controller/proveedor.php?op=proveedores";
-const urlUpdInventario = "http://localhost/APIS-Multioptica/inventario/controller/inventario.php?op=uInventario"
-const urlKardex ="http://localhost/APIS-Multioptica/Kardex/Controller/kardex.php?op=InsertKardex"
+const urlCompra = 'http://localhost:3000/api/compra/NuevaCompra';
+const urlProducto = "http://localhost:3000/api/productos";
+const urlProveedor = "http://localhost:3000/api/proveedor";
 
 export const NuevaCompra = ({
   msgError = '',
@@ -65,9 +63,6 @@ export const NuevaCompra = ({
 
 
   useEffect(() => {
-    // fetch()
-    //   .then(response => response.json())
-    //   .then(data => setTableData(data));
     fetch(urlProducto)
       .then(response => response.json())
       .then(data => setProducto(data));
@@ -77,7 +72,6 @@ export const NuevaCompra = ({
   }, []);
 
   useEffect(()=>{
-    console.log(compras);
     setTableData(compras)
   },[cambio])
 
@@ -89,12 +83,12 @@ export const NuevaCompra = ({
 
   const AggDataGrid = () => {
     let dataGrid = {
-      Producto:parseInt(document.getElementById("producto").value),
-      Proveedor:parseInt(document.getElementById("proveedor").value),
-      Cantidad:cantidad,
-      Fecha:fechaActual,
-      Costo:costo,
-      Total:total
+      idUsuario:idUsuario,
+      idProducto:parseInt(document.getElementById("producto").value),
+      idProveedor:parseInt(document.getElementById("proveedor").value),
+      cantidad:parseInt(document.getElementById("cantidad").value),
+      fechaYHora:fechaActual,
+      costo:parseFloat(document.getElementById("costo").value),
     }
 
     setCambio(cambio+1)
@@ -108,11 +102,11 @@ export const NuevaCompra = ({
   };
 
   const columns = [
-    { field: 'Proveedor', headerName: 'Proveedor', width: 145},
-    { field: 'Producto', headerName: 'Producto', width: 145 },
-    { field: 'Cantidad', headerName: 'Cantidad', width: 145 },
-    { field: 'Fecha', headerName: 'Fecha', width: 145 },
-    { field: 'Costo', headerName: 'Costo de la Compra', width: 145 },
+    { field: 'idProveedor', headerName: 'Proveedor', width: 145},
+    { field: 'idProducto', headerName: 'Producto', width: 145 },
+    { field: 'cantidad', headerName: 'Cantidad', width: 145 },
+    { field: 'fechaYHora', headerName: 'Fecha', width: 145 },
+    { field: 'costo', headerName: 'Costo de la Compra', width: 145 },
     { field: 'Total', headerName: 'Total', width: 145 },
   ];
 
@@ -123,48 +117,15 @@ export const NuevaCompra = ({
     return idCounter;
   };
 
-  const GuardarCompra = ()=>{
-
-    const totalCompras = compras.reduce((accumulator, current) => {
-      return accumulator + current.Total;
-    }, 0);
-
-    let dataCompra ={
-      IdProveedor:compras[0].Proveedor,
-      fechaCompra:compras[0].Fecha,
-      totalCompra:totalCompras
+  const GuardarCompra = async ()=>{
+    let data = {
+      "arrCompras": compras
     }
-    
-    if (sendData(urlCompra,dataCompra)) {
-      for (let i = 0; i < compras.length; i++) {
-
-       const dataInventario={
-          cantidad:parseInt(compras[i].Cantidad),
-          idProducto:compras[i].Producto,
-          mes:new Date(compras[i].Fecha).getMonth()+1,
-          anio:new Date(compras[i].Fecha).getFullYear()
-        }
-
-       const dataDetalle = {
-        Cantidad:parseInt(compras[i].Cantidad),
-        IdProducto:compras[i].Producto,
-        CostoCompra: parseInt(compras[i].Costo)
-       } 
-       const dataKardex ={
-        IdTipoMovimiento:1,
-        IdProducto:compras[i].Producto,
-        fechaYHora:compras[0].Fecha,
-        cantidad:parseInt(compras[i].Cantidad),
-        Id_Usuario:idUsuario
-       }
-
-       sendData(urlCompraDetalle,dataDetalle)
-       sendData(urlUpdInventario,dataInventario)
-       sendData(urlKardex,dataKardex)
-      }
+    console.log(data);
+    await axios.post(urlCompra,data).then(()=>{
       swal("Compra registrada con exito","","success")
-    }
-
+    })
+   
   }
 
   return (
@@ -189,7 +150,7 @@ export const NuevaCompra = ({
                 {proveedor.length ? (
                   proveedor.map(pre => (
                     <option key={pre.IdProveedor} value={pre.IdProveedor}>
-                      {pre.nombreProveedor}
+                      {pre.CiaProveedora}
                     </option>
                   ))
                 ) : (
@@ -205,7 +166,7 @@ export const NuevaCompra = ({
                 {producto.length ? (
                   producto.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.producto}
+                      {pre.descripcion}
                     </option>
                   ))
                 ) : (
@@ -313,19 +274,6 @@ export const NuevaCompra = ({
                <p class="error">{aviso}</p>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Total" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder={total}
-                value={total}
-                id="total"
-                disabled
-              />
-            </div>
 
             <div className="contBtnStepper1">
               <Button
