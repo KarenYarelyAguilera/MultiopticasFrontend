@@ -40,8 +40,13 @@ export const Perfil = (props) => {
   };
 
   const handlePreguntas = () => {
-    navegate("/preguntasPerfil");
+    navegate("/Preguntas/lista");
   };
+
+  
+ /*  const handlePreguntas = () => {
+    navegate("/preguntasPerfil");
+  }; */
 
 
 

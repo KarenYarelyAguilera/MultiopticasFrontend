@@ -104,6 +104,7 @@ import { RegistroPais } from './Pages/Configuracion/RegistroPais.jsx';
 import { ListaPais } from './Pages/Configuracion/ListaPais.jsx';
 import { RegistroGenero } from './Pages/Configuracion/RegistroGenero.jsx';
 import { ListaGenero } from './Pages/Configuracion/ListaGenero.jsx';
+import{ EditarPreguntas } from './Pages/EditarPreguntas.jsx';
 
 
 function App() {
@@ -285,16 +286,45 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/preguntasPerfil"
             element={
-              <PreguntasPerfil
-                // activo={activo}
-                // user={usuario}
-                // mail={correo}
-                // infoPerfil={infoPerfil}
-              //idUsuario={idUsuario}
-
-              />
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <PreguntasPerfil 
+                    update={update}
+                    data={Data} 
+                    idUsuario={idUsuario} 
+                    infoPerfil={infoPerfil}
+                    user={usuario}
+                  />
+                </div>
+              </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="/editarPreguntas"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <EditarPreguntas
+                    update={update}
+
+                    data={data}
+                    
+                    idUsuario={idUsuario}
+                    infoPerfil={infoPerfil}
+                    user={usuario}
+
+
+                  />
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+
+
+
+
 
 
 
@@ -1705,7 +1735,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <RecordatorioCitas></RecordatorioCitas>
+                  <RecordatorioCitas ></RecordatorioCitas>
                 </div>
               </ProtectedRoute>
             }
