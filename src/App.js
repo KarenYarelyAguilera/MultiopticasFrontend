@@ -1063,7 +1063,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaExpedientes />
+                  <ListaExpedientes data={Data} />
                 </div>
               </ProtectedRoute>
             }
@@ -1522,7 +1522,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosExpediente datosclientes={registros} />
+                <DatosExpediente id={data} datosclientes={registros} />
               </div>
               // {/* </ProtectedRoute> */}
             }
@@ -1542,7 +1542,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DetalleExpediente />
+                <DetalleExpediente data={Data}/>
               </div>
 
               // {/* </ProtectedRoute> */}
@@ -1563,7 +1563,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <Diagnostico />
+                <Diagnostico data={data}/>
               </div>
 
               // {/* </ProtectedRoute> */}

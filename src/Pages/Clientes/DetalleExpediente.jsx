@@ -27,7 +27,7 @@ const urlClientes = 'http://localhost:3000/api/clientes'
 
 
 
-export const DetalleExpediente = () => {
+export const DetalleExpediente = (props) => {
 
   const navegate = useNavigate();
   const [tableData, setTableData] = React.useState([]);
@@ -78,10 +78,11 @@ let fechaModificada = year + "/" + month + "/" + day;
       AsesorVenta:AsesorVenta,
       Antecedentes:Antecedentes,
    }
+   props.data(data)
 
    //await axios.post(urlNuevoDiagnostico,data).then(response=>{
    // swal('Registro creado con exito', '', 'success').then(result => {
-      navegate('/menuClientes/DatosExpediente');
+      navegate('/menuClientes/Diagnostico');
     //});
 
  // }).catch(error=>{
