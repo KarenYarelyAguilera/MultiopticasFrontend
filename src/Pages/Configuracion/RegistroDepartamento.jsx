@@ -16,58 +16,53 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
-import axios from 'axios';
 
 
-//URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
-const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
-export const MetodosDePago  = (props) => {
+const urlMarca =
+  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+
+export const RegistroDepartamento = ({
+  msgError = '',
+  success = false,
+  warning = false,
+  props,
+}) => {
+  // const [activeStep, setActiveStep] = React.useState(0);
+
+  // const handleNext = () => {
+  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
+  // };
+  
+
+
 
   const navegate = useNavigate();
 
-  const [descripcion, setDescripcion] = React.useState('');
+  const [marca, setmarca] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
-  const [errorDescripcion, setErrorDescripcion] = React.useState(false);
+  const [errorMarca, setErrorMarca] = React.useState(false);
 
-//CREAR
-  const handleNext = async () => {
-    let descripcion = document.getElementById("descripcion").value
+  const [nombremarca, setnombremarca] = React.useState('');
+  const [aviso, setaviso] = React.useState('');
+  const [errornombremarca, setErrornombremarca] = React.useState(false);
+
+  const handleNext = () => {
+    let id = parseInt(document.getElementById("idMarca").value)
+    let marca = document.getElementById("Marca").value
     let data = {
-      descripcion: descripcion,
+      IdMarca: id ,
+      descripcion:marca 
     }
     
-    if (await axios.post(urlInsertMetodoPago, data)) {
-      swal('Metodo de pago creado exitosamente.','', 'success');
-      navegate('/config/ListaMetodosDePago');
+    if (sendData(urlMarca, data)) {
+      swal('Marca agregada con exito', '', 'success').then(result => {
+        navegate('/menuInventario/ListaMarcas');
+      });
     }
   };
 
-//ACTUALIZAR
-const actualizarMetodoPago = async () => {
-
-  let descripcion = document.getElementById("descripcion").value;
-
-  const data = {
-
-    descripcion:descripcion,
-    IdTipoPago: props.data.IdTipoPago, 
-  }
-
-  axios.put(urlUpdateMetodoPago, data).then(() => {
-    swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
-      navegate('/config/ListaMetodosDePago');
-    })
-  }).catch(error => {
-    console.log(error);
-    swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')
-    // axios.post(urlErrorInsertBitacora, dataB)
-  })
-
-};
-
   const handleBack = () => {
-    navegate('/config/ListaMetodosDePago');
+    navegate('/config/ListaDepartamentos');
   };
 
   return (
@@ -76,9 +71,9 @@ const actualizarMetodoPago = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Metodo de Pago</h2> : <h2>Registro de Metodos de Pago</h2>}
+        <h2>Registro De Departamento</h2>
         <h3>
-          Complete todos los puntos para poder registrar los Metodos de Pago.
+          Complete todos los puntos para poder registrar los departamentos.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -88,7 +83,7 @@ const actualizarMetodoPago = async () => {
 
             <div className="contInput">
 
-              <TextCustom text="Tipo de Pago" className="titleInput" />
+              <TextCustom text="Departamento" className="titleInput" />
 
               <input
                
@@ -96,8 +91,8 @@ const actualizarMetodoPago = async () => {
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Tipo de Pago"
-                id="descripcion"
+                placeholder="Departamento"
+                id="Departamento"
               />
                {/* <p class="error">{aviso}</p> */}
             </div>
@@ -106,12 +101,7 @@ const actualizarMetodoPago = async () => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  var descripcion = document.getElementById("descripcion").value;
-
-                  props.actualizar ? actualizarMetodoPago() : handleNext();
-                }
-                }
+                onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>

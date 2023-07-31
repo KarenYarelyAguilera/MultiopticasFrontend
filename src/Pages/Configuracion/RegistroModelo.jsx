@@ -57,7 +57,7 @@ export const RegistroModelo = ({
   };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/config/lista');
   };
 
   return (

@@ -390,7 +390,7 @@ export const ConfigRol = props => {
   };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/config/roles');
   };
 
   const IOSSwitch = styled(props => (
@@ -455,7 +455,7 @@ export const ConfigRol = props => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleRol">
-        <h2>Configuracion de Roles</h2>
+        <h2>Seguridad de Roles</h2>
       </div>
       <div className="infoConfigRol">
         <div className="PanelConfigRol">
