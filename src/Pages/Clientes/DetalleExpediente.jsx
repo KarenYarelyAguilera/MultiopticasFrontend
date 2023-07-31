@@ -27,7 +27,7 @@ const urlClientes = 'http://localhost:3000/api/clientes'
 
 
 
-export const DetalleExpediente = (props) => {
+export const DetalleExpediente = () => {
 
   const navegate = useNavigate();
   const [tableData, setTableData] = React.useState([]);
@@ -49,7 +49,7 @@ export const DetalleExpediente = (props) => {
     let fechaExpiracion = document.getElementById('fechaexpiracion').value;
     let AsesorVenta= document.getElementById('Asesor').value;
     let Optometrista= document.getElementById('optometrista').value;
-    let Antecedentes= document.getElementById('antecedentes').value;
+    let Antecedentes= document.getElementById('antecendentes').value;
 
 
     let fecha = new Date(fechaConsulta)
@@ -79,15 +79,15 @@ let fechaModificada = year + "/" + month + "/" + day;
       Antecedentes:Antecedentes,
    }
 
-   await axios.post(urlNuevoDiagnostico,data).then(response=>{
-    swal('Registro creado con exito', '', 'success').then(result => {
+   //await axios.post(urlNuevoDiagnostico,data).then(response=>{
+   // swal('Registro creado con exito', '', 'success').then(result => {
       navegate('/menuClientes/DatosExpediente');
-    });
+    //});
 
-  }).catch(error=>{
-    console.log(error);
-    swal("Error al registrar.", "", "error")
-  })
+ // }).catch(error=>{
+   // console.log(error);
+    //swal("Error al registrar.", "", "error")
+//})
 
   };
 

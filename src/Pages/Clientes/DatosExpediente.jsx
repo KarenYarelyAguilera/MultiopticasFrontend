@@ -6,9 +6,12 @@ import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 
+
 import swal from '@sweetalert/with-react';
 
 //Mui-Material-Icons
+
+
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -118,7 +121,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Fecha de Consulta"
                 id="fechaconsulta"
-                value={fechaActual}
+                //value={fechaActual}
                 disabled
               />
             </div>
@@ -156,7 +159,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Fecha de Expiracion"
                 id="fechaexpiracion"
-                value={fechaActual}
+                //value={fechaActual}
                 disabled
               />
             </div>
@@ -470,11 +473,11 @@ export const DatosExpediente = ( props) => {
               }}
             />
             <input
-              type="text"
-              className="inputSearch"
-              placeholder="Buscar"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+               type="text"
+               className="inputSearch"
+               placeholder="Buscar"
+               value={searchTerm}
+               onChange={e => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
               <Button 
@@ -496,9 +499,6 @@ export const DatosExpediente = ( props) => {
             rowsPerPageOptions={[5]}
             getRowId={(row) => row.IdExpedienteDetalle} 
 />
-
-          
-
         </div>
       </div>
     </div>
