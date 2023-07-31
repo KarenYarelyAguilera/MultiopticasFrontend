@@ -16,26 +16,25 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
-export const ListaMetodosDePago = () => {
+export const ListaMetodosDePago = ({props,data,update}) => {
 
   const [cambio, setcambio] = useState(0)
-  const [marcah, setMarcah] = useState()
 
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
-
-  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
-  
-  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
+  //URLS
+  const urlMetodosPago = 'http://localhost:3000/api/tipopago';
+  const urlDelMetodosPago = 'http://localhost:3000/api/tipopago/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [descripcion, setDescripcion] = useState('');
+  const [msj, setmsj] = useState('');
+  const [errorDescripcion, setErrorDescripcion] = useState(false);
+
   useEffect(() => {
-    fetch(urlMarcas)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get(urlMetodosPago).then(response=>setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -48,26 +47,23 @@ export const ListaMetodosDePago = () => {
     ),
   );
 
-  const columns = [
-    { field: 'ID Tipo Pago', headerName: 'ID Tipo Pago', width: 600 },
-    { field: 'Metodo', headerName: 'Metodo', width: 600 },
-
+ const columns = [
+    { field: 'IdProveedor', headerName: 'IdTipoPago', width: 600 },
+    { field: 'CiaProveedora', headerName: 'Metodo', width: 600 },
+  
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 200,
+      width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdMarca)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdMarca)}
+            onClick={() => handleDel(params.row.IdTipoPago)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -76,85 +72,80 @@ export const ListaMetodosDePago = () => {
     },
   ];
 
-  function handleUpdt(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <input
-                type="text"
-                id="marca"
-                className="inputCustom"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
-
+//FUNCION DE ACTUALIZAR
+function handleUpdt(id) {
+  swal({
+    buttons: {
+      update: 'ACTUALIZAR',
+      cancel: 'CANCELAR',
+    },
+    content: (
+      <div className="logoModal">
+        ¿Desea actualizar el Metodo de Pago: {id.descripcion} ?
+      </div>
+    ),
+  }).then(
+    op => {
       switch (op) {
-        case true:
-          let data = {
-            IdMarca: id,
-            descripcion: document.getElementById("marca").value,
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateMarca, data)) {
-            swal(<h1>Marca Actualizada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
+        case 'update':
+          props.data(id)
+          props.update(true)
+          navegate('/config/MetodosDePago')
           break;
-      
         default:
           break;
       }
-      
     });
+};
 
-  }
+//FUNCION DE ELIMINAR 
+function handleDel(IdTipoPago) {
+  swal({
+    content: (
+      <div>
 
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
-          <div className="contEditModal">
-            
-          </div>
+        <div className="logoModal">¿Desea Eliminar este Metodo de Pago?</div>
+        <div className="contEditModal">
+
         </div>
-      ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
 
-      switch (op) {
-        case null:
-          let data = {
-            IdMarca: id
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlDelMarca, data)) {
-            swal(<h1>Marca Eliminada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
+      </div>
+    ),
+    buttons: ['Eliminar', 'Cancelar'],
+  }).then(async op => {
+    switch (op) {
+      case null:
 
-  }
+        let data = {
+          IdTipoPago: IdTipoPago,
+        };
+
+        //Funcion de Bitacora 
+        /*  let dataB = {
+           Id:props.idUsuario
+         } */
+
+        console.log(data);
+
+        await axios
+          .delete(urlDelMetodosPago, { data })
+          .then(response => {
+            //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+            swal('Metodo de Pago eliminado correctamente', '', 'success');
+            setcambio(cambio + 1);
+          })
+          .catch(error => {
+            console.log(error);
+            swal('Error al eliminar el Metodo de Pago', '', 'error');
+          });
+
+        break;
+
+      default:
+        break;
+    }
+  });
+}
 
 
 

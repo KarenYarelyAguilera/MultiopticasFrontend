@@ -49,7 +49,7 @@ export const DetalleExpediente = (props) => {
     let fechaExpiracion = document.getElementById('fechaexpiracion').value;
     let AsesorVenta= document.getElementById('Asesor').value;
     let Optometrista= document.getElementById('optometrista').value;
-    let Antecedentes= document.getElementById('antecedentes').value;
+    let Antecedentes= document.getElementById('antecendentes').value;
 
 
     let fecha = new Date(fechaConsulta)
@@ -78,16 +78,17 @@ let fechaModificada = year + "/" + month + "/" + day;
       AsesorVenta:AsesorVenta,
       Antecedentes:Antecedentes,
    }
+   props.data(data)
 
-   await axios.post(urlNuevoDiagnostico,data).then(response=>{
-    swal('Registro creado con exito', '', 'success').then(result => {
-      navegate('/menuClientes/DatosExpediente');
-    });
+   //await axios.post(urlNuevoDiagnostico,data).then(response=>{
+   // swal('Registro creado con exito', '', 'success').then(result => {
+      navegate('/menuClientes/Diagnostico');
+    //});
 
-  }).catch(error=>{
-    console.log(error);
-    swal("Error al registrar.", "", "error")
-  })
+ // }).catch(error=>{
+   // console.log(error);
+    //swal("Error al registrar.", "", "error")
+//})
 
   };
 

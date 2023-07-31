@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,21 +18,23 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaProductoPromocion = () => {
+export const ListaProductoPromocion = (props) => {
+  const [cambio, setCambio] = useState(0)
   const [roles, setRoles] = useState([]);
 
-  const urlPromocionProducto ='http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=ProductoPromociones';
-
+ //URLS
+ const urlProductosProm = 'http://localhost:3000/api/productopromociones';
+ const urlDelProductosProm = 'http://localhost:3000/api/productopromociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlPromocionProducto)
+    fetch(urlProductosProm)
       .then(response => response.json())
       .then(data => setTableData(data));
    
-  }, []);
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -45,8 +48,8 @@ export const ListaProductoPromocion = () => {
 
   const columns = [ 
     { field: 'IdProductoPromocion', headerName: 'ID Producto Promocion', width: 380 },
-    { field: 'IdPromocion', headerName: 'Promocion', width: 380 },
-    { field: 'IdProducto', headerName: 'Producto', width: 380 },
+    { field: 'Promocion', headerName: 'Promocion', width: 380 },
+    { field: 'Producto', headerName: 'Producto', width: 380 },
     
     
     {
@@ -55,16 +58,13 @@ export const ListaProductoPromocion = () => {
       width: 380,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdProductoPromocion)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -73,25 +73,81 @@ export const ListaProductoPromocion = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
+  //FUNCION DE ELIMINAR 
+  function handleDel(IdProductoPromocion) {
+    swal({
+      content: (
+        <div>
+
+          <div className="logoModal">¿Desea Eliminar esta Promocion de Producto?</div>
+          <div className="contEditModal">
+
+          </div>
+
+        </div>
+      ),
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
+      switch (op) {
+        case null:
+
+          let data = {
+            IdProductoPromocion: IdProductoPromocion,
+          };
+
+          //Funcion de Bitacora 
+          /*  let dataB = {
+             Id:props.idUsuario
+           } */
+
+          console.log(data);
+
+          await axios
+            .delete(urlDelProductosProm, { data })
+            .then(response => {
+              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+              swal('Promocion de Producto eliminada correctamente', '', 'success');
+              setCambio(cambio + 1);
+            })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar la Promocion de Producto', '', 'error');
+            });
+
+          break;
+
+        default:
+          break;
+      }
+    });
   }
+
+    //FUNCION DE ACTUALIZAR
+    function handleUpdt(id) {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar la Promocion de Producto?
+          </div>
+        ),
+      }).then(
+        op => {
+          switch (op) {
+            case 'update':
+              props.data(id)
+              props.update(true)
+              navegate('/menuVentas/PromocionProducto')
+              break;
+            default:
+              break;
+          }
+        });
+    };
+
   const handleBack = () => {
     navegate('/ventas');
   };

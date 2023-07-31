@@ -20,7 +20,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaExpedientes = () => {
+export const ListaExpedientes = (props) => {
 
   const [cambio, setCambio] = useState(0);
 
@@ -35,9 +35,9 @@ export const ListaExpedientes = () => {
     }).catch(error => console.log(error))
   }, [cambio]);
 
-  
 
-     
+
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -70,27 +70,40 @@ export const ListaExpedientes = () => {
       width: 400,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+
+          <Button
+            className="btnAddExpe"
+            onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
     },
   ];
 
-  function handleButtonClick(id) {
- 
+
+  const handleNewExpediente = (expediente)=>{
+    let data={
+      id:expediente.IdExpediente,
+      idCliente:expediente.Cliente
+    }
+     props.data(data)
+     navegate('/menuClientes/DatosExpediente');
   }
+
   const handleBack = () => {
     navegate('/menuClientes');
   };
