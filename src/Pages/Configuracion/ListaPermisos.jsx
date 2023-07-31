@@ -11,18 +11,25 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
-export const ListaPermisos = () => {
-  const urlPermisosvista =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=verpermisos';
+
+export const ListaPermisos = (props) => {
+
+  const [marcah, setMarcah] = useState()
+  const [cambio, setCambio] = useState(0)
+
+  const urlPermisosvista ='http://localhost:3000/api/Permisos';//Lista de permisos
+  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  //Llama a toda los datos que estan en permisos 
   useEffect(() => {
-    fetch(urlPermisosvista)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, []);
+    axios.get (urlPermisosvista).then(response=> setTableData(response.data))
+  }, [cambio]);
+
+  const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -32,36 +39,18 @@ export const ListaPermisos = () => {
     ),
   );
 
-  const navegate = useNavigate();
 
   const columns = [
-    { field: 'Rol', headerName: 'Rol', width: 130 },
-    { field: 'Descripcion', headerName: 'Descripcion del modulo', width: 300 },
-    {
-      field: 'Permiso_Consultar',
-      headerName: 'Permiso para Consultar',
-      width: 200,
-    },
-    {
-      field: 'Permiso_Insercion',
-      headerName: 'Permiso para Insertar',
-      width: 200,
-    },
-    {
-      field: 'Permiso_Actualizacion',
-      headerName: 'Permiso para Actualizar',
-      width: 200,
-    },
-    {
-      field: 'Permiso_Eliminacion',
-      headerName: 'Permiso para Eliminar',
-      width: 200,
-    },
+    {field: 'Id_Rol', headerName: 'Rol', width: 130 },
+    {field: 'Rol', headerName: 'Descripcion del modulo', width: 300 },
+    {field: 'Permiso_Insercion', headerName: 'Permiso para Insertar',width: 200,},
+    {field: 'Permiso_Eliminacion',headerName: 'Permiso para Eliminar',width: 200,},
+    {field: 'Permiso_Actualizacion',headerName: 'Permiso para Actualizar',width: 200,},
+    {field: 'Permiso_Consultar', headerName: 'Permiso para Consultar', width: 200,},
 
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 180,
+    {field: 'borrar',
+    headerName: 'Acciones',
+    width: 190,
 
       renderCell: params => (
         <div className="contActions">
@@ -233,13 +222,9 @@ export const ListaPermisos = () => {
                           document.getElementById('Email').value,
                         Id_usuario: usuario.row.id_Usuario,
                       };
-
-                      // if (sendData(urlUpdateUser, data)) {
-                      //   swal(<h1>Usuario Actualizado Correctamente</h1>);
-                      // }
                     });
                     break;
-                  default:
+                    default:
                     break;
                 }
               });

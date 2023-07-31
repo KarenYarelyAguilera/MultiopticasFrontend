@@ -1,3 +1,4 @@
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
@@ -16,19 +17,26 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
-export const ListaGarantia = () => {
+export const ListaGarantia = ({props,data,update}) => {
 
-  const urlGarantias ='http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=Garantias';
+  const [marcah, setMarcah] = useState()
+  const [cambio, setCambio] = useState(0)
+
+  //URL DE GARANTIA GET Y DELETE 
+  const urlGarantias ='http://localhost:3000/api/garantias';
+  const urlDelGarantias ='http://localhost:3000/api/garantias/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlGarantias)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, []);
+    axios.get(urlGarantias).then(response => { 
+      setTableData(response.data);
+      })
+      .catch(error => console.log(error));
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -43,9 +51,9 @@ export const ListaGarantia = () => {
   const columns = [
     { field: 'IdGarantia', headerName: 'ID Garantia', width: 210 },
     { field: 'descripcion', headerName: 'Descripcion', width: 210 },
-    { field: 'Meses', headerName: 'Meses Garantia', width: 210 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 210 },
-    { field: 'estado', headerName: 'Meses', width: 210 },
+    { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
+    { field: 'producto', headerName: 'Producto', width: 210 },
+    { field: 'estado', headerName: 'Estado', width: 210 },
     
     {
       field: 'borrar',
@@ -53,16 +61,13 @@ export const ListaGarantia = () => {
       width: 190,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleDel(params.row.IdGarantia)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -71,27 +76,73 @@ export const ListaGarantia = () => {
     },
   ];
 
-  function handleButtonClick(id) {
-    fetch(`/api/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+  //FUNCION DE ELIMINAR 
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea Elimiar esta garantia?</div>
+          <div className="contEditModal">
+          </div>
+        </div>
+      ),
+      buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
       },
-      body: JSON.stringify({
-        /* los nuevos datos que se van a actualizar */
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Aquí puedes actualizar los datos en el estado de tu aplicación
-        // para reflejar los cambios en la interfaz de usuario.
-      })
-      .catch(error => {
-        // Manejar cualquier error que pueda ocurrir durante la actualización
-      });
-  }
+    }).then(async(op) => {
+
+      switch (op) {
+        case null:
+
+          let data = {
+            IdGarantia: id,
+          };
+    
+          console.log(data);
+    
+          await axios.delete(urlDelGarantias,{data}).then(response=>{
+            swal("Garantia eliminada correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar la garantia","","error")
+          })
+        break;
+        default:
+        break;
+      }
+    });
+  };
+
+  //BOTON DE RETROCEDER 
   const handleBack = () => {
     navegate('/ventas');
+  };
+
+   //FUNCION DE ACTUALIZAR 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar la Garantia?: {id.Garantia} ?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+          update(true)
+      navegate('/menuVentas/RegistroGarantia')
+      break;
+      default:
+      break;
+      }
+    });
   };
 
   return (
@@ -145,115 +196,6 @@ export const ListaGarantia = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          
-          // onRowClick={usuario => {
-          //   swal({
-          //     buttons: {
-          //       update: 'Actualizar',
-          //       cancel: 'Cancelar',
-          //     },
-          //     content: (
-          //       <div className="logoModal">
-          //         Que accion desea realizar con el cliente:{' '}
-          //         {usuario.row.Usuario}
-          //       </div>
-          //     ),
-          //   }).then(op => {
-          //     switch (op) {
-          //       case 'update':
-          //         swal(
-          //           <div>
-          //             <div className="logoModal">Datos a actualizar</div>
-          //             <div className="contEditModal">
-          //               <div className="contInput">
-          //                 <TextCustom text="Usuario" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   id="nombre"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Usuario}
-          //                 />
-          //               </div>
-
-          //               <div className="contInput">
-          //                 <TextCustom
-          //                   text="Nombre de Usuario"
-          //                   className="titleInput"
-          //                 />
-          //                 <input
-          //                   type="text"
-          //                   id="nombreUsuario"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Nombre_Usuario}
-          //                 />
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Estado" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   className='inputCustom'
-          //                   id="EstadoUsuario"
-          //                   value={usuario.row.Estado_Usuario}
-          //                 />
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom
-          //                   text="Contraseña"
-          //                   className="titleInput"
-          //                 />
-          //                 <input type="text" id="contrasenia" className='inputCustom'/>
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Rol" className="titleInput" />
-          //                 <select id="rol" className="selectCustom">
-          //                   {roles.length ? (
-          //                     roles.map(pre => (
-          //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
-          //                         {pre.Rol}
-          //                       </option>
-          //                     ))
-          //                   ) : (
-          //                     <option value="No existe informacion">
-          //                       No existe informacion
-          //                     </option>
-          //                   )}
-          //                 </select>
-          //               </div>
-          //               <div className="contInput">
-          //                 <TextCustom text="Email" className="titleInput" />
-          //                 <input
-          //                   type="text"
-          //                   id="Email"
-          //                   className='inputCustom'
-          //                   value={usuario.row.Correo_Electronico}
-          //                 />
-          //               </div>
-          //             </div>
-          //           </div>,
-          //         ).then(() => {
-          //           let data = {
-          //             Usuario: document.getElementById('nombre').value,
-          //             Nombre_Usuario:
-          //               document.getElementById('nombreUsuario').value,
-          //             Estado_Usuario:
-          //               document.getElementById('EstadoUsuario').value,
-          //             Contrasenia: document.getElementById('contrasenia').value,
-          //             Id_Rol: document.getElementById('rol').value,
-          //             Correo_Electronico:
-          //               document.getElementById('Email').value,
-          //             Id_usuario: usuario.row.id_Usuario,
-          //           };
-
-          //           if (sendData(urlUpdateUser, data)) {
-          //             swal(<h1>Usuario Actualizado Correctamente</h1>);
-          //           }
-          //         });
-          //         break;
-          //       default:
-          //         break;
-          //     }
-          //   });
-          // }}
         />
       </div>
     </div>
