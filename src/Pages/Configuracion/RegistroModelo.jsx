@@ -102,7 +102,7 @@ const actualizarModelo = async () => {
 
   //BOTON DE RETROCESO
   const handleBack = () => {
-    navegate('/config');
+    navegate('/config/lista');
   };
 
   return (

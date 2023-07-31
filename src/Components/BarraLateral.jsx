@@ -272,7 +272,7 @@ export const BarraLateral = props => {
             </li>
 
             <li>
-              <Link className="link" to="/preguntasSeguridad">
+              <Link className="link" to="/config/roles">
                 <FontAwesomeIcon className="iconLi" icon={faFileLines} />
                 <h1>SEGURIDAD</h1>
               </Link>
