@@ -53,7 +53,7 @@ export const ListaClientes = (props) => {
   );
 
   const handleNewExpediente = (id) => {
-    props.datosclientes(id)
+    props.datosclientes({idCliente:id.idCliente})
     navegate('/menuClientes/DatosExpediente');
   }
   

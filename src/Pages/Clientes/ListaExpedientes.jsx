@@ -100,6 +100,7 @@ export const ListaExpedientes = (props) => {
       id:expediente.IdExpediente,
       idCliente:expediente.Cliente
     }
+    console.log(expediente);
      props.data(data)
      navegate('/menuClientes/DatosExpediente');
   }

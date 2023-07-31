@@ -46,6 +46,8 @@ export const DatosExpediente = ( props) => {
 
   
   useEffect(() => {
+    console.log(props.id.idCliente);
+    console.log(props.datosclientes.idCliente);
     setTableData([]);
     axios.get(urlEmployees).then(response => {
       setIdEmpleado(response.data)
@@ -70,6 +72,8 @@ export const DatosExpediente = ( props) => {
 
 
   const handleBack = () => {
+    props.dataa({})
+    props.datosclientess({})
     navegate('/menuClientes/ListaExpedientes');
   };
 
@@ -406,7 +410,7 @@ export const DatosExpediente = ( props) => {
                  variant="standard"
                  id="cliente"
                  label="Usuario"
-                 value={props.datosclientes.idCliente || props.idCliente}
+                 value={props.id.idCliente || props.datosclientes.idCliente}
                  disabled
               />
             </div>

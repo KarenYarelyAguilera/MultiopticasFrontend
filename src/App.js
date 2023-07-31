@@ -1522,7 +1522,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosExpediente id={data} datosclientes={registros} />
+                <DatosExpediente id={data} datosclientes={registros} dataa={Data} datosclientess={registroclientes} />
               </div>
               // {/* </ProtectedRoute> */}
             }
