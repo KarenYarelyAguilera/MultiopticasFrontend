@@ -30,7 +30,7 @@ import { Metodos1 } from './Pages/Seguridad/Metodos1.jsx';
 
 //Configuracion
 import { Configuracion } from './Pages/Configuracion/Config.jsx';
-import { ConfigRol } from './Pages/Configuracion/ConfRol.jsx';
+import { ConfigRol } from './Pages/Seguridad/ConfRol.jsx';
 import { ListaPermisos } from './Pages/Configuracion/ListaPermisos.jsx';
 
 //Clientes
@@ -47,10 +47,10 @@ import { Diagnostico } from './Pages/Clientes/Diagnostico.jsx';
 //Inventario
 import { Inventario } from './Pages/Inventario/Inventario.jsx';
 import { RegistroInventario } from './Pages/Inventario/RegistroInventario.jsx';
-import { ListaModelos } from './Pages/Inventario/ListaModelos.jsx';
-import { RegistroModelo } from './Pages/Inventario/RegistroModelo.jsx';
-import { ListaMarcas } from './Pages/Inventario/ListaMarcas.jsx';
-import { RegistroMarcas } from './Pages/Inventario/RegistroMarcas.jsx';
+import { ListaModelos } from './Pages/Configuracion/ListaModelos.jsx';
+import { RegistroModelo } from './Pages/Configuracion/RegistroModelo.jsx';
+import { ListaMarcas } from './Pages/Configuracion/ListaMarcas.jsx';
+import { RegistroMarcas } from './Pages/Configuracion/RegistroMarcas.jsx';
 import { RegistroProducto } from './Pages/Inventario/RegistroProducto.jsx';
 import { ListaProductos } from './Pages/Inventario/ListaProductos.jsx';
 
@@ -60,8 +60,8 @@ import { NuevaVenta } from './Pages/Ventas/NuevaVenta.jsx';
 import { DetalleVenta } from './Pages/Ventas/DetalleVenta.jsx';
 import { RegistroGarantia } from './Pages/Ventas/RegistroGarantia.jsx';
 import { ListaGarantia } from './Pages/Ventas/ListaGarantia.jsx';
-import { RegistroSucursal } from './Pages/Ventas/RegistroSucursal.jsx';
-import { ListaSucursal } from './Pages/Ventas/ListaSucursal.jsx';
+import { RegistroSucursal } from './Pages/Configuracion/RegistroSucursal.jsx';
+import { ListaSucursal } from './Pages/Configuracion/ListaSucursal.jsx';
 import { ListaDescuento } from './Pages/Ventas/ListaDescuento.jsx';
 import { RegistroDescuento } from './Pages/Ventas/RegistroDecuento.jsx';
 import { ListaVenta } from './Pages/Ventas/ListaVenta.jsx';

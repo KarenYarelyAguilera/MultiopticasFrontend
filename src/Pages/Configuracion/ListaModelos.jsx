@@ -225,7 +225,7 @@ export const ListaModelos = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroModelo');
+                navegate('/config/RegistroModelo');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
