@@ -23,7 +23,7 @@ import { TextField } from '@mui/material';
 
 const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
 
-export const Diagnostico = ( ) => {
+export const Diagnostico = (props) => {
 
 const navegate = useNavigate();
  
@@ -36,9 +36,9 @@ const navegate = useNavigate();
       let EjeOjoDerecho = document.getElementById('ODEje').value;
       let EjeOjoIzquierdo= document.getElementById('OIEje').value;
       let AdicionOjoDerecho = document.getElementById('AdicionOD').value;
-      let AdicionOjoIzquierdo = document.getElementById('AdicionID').value;
+      let AdicionOjoIzquierdo = document.getElementById('AdicionOI').value;
       let AlturaOjoDerecho= document.getElementById('AlturaOD').value;
-      let AlturaOjoIzquierdo = document.getElementById('AlturaID').value;
+      let AlturaOjoIzquierdo = document.getElementById('AlturaOI').value;
       let DistanciaPupilarOjoDerecho = document.getElementById('DistanciapupilarOD').value;
       let DistanciaPupilarOjoIzquierdo= document.getElementById('DistanciapupilarOI').value;
       let EnfermedadPresentada = document.getElementById('Enfermedadpresentada').value;
@@ -65,6 +65,8 @@ const navegate = useNavigate();
       //fechaConsulta
      // fechaExpiracion
     }
+    data = {...props.data,...data}
+    console.log(data);
     
     await axios.post(urlNuevoDiagnostico,data).then(response=>{
       swal('Diagnostico creado con exito', '', 'success').then(result => {
