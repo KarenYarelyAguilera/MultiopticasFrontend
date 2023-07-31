@@ -1,6 +1,6 @@
+import React from 'react';
 
 import { DataGrid,esES } from '@mui/x-data-grid';
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -18,37 +18,28 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
+export const ListaModelos = ({props,data,update}) => {
 
-export const ListaModelos = () => {
-
-  const [cambio, setcambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
-
-    const urlModelos =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=modelos';
-    
-
-  const urlUpdateModelo = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updModelo'
+  const [Modelo, setModelo] = useState([]);
+  const [roles, setRoles] = useState([]);
   
-  const urlDelModelo = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delModelo'
+
+  //URL DE LAS APIS DE MODELO
+  const urlModelos ='http://localhost:3000/api/modelos'; //LLama todos los datos de la tabla de modelo.
+  const urlDelModelo = 'http://localhost:3000/api/modelo/eliminar'; //Elimina datos de modelo.
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [Marca, setMarca] = useState([])
 
-  useEffect(() => {
-    fetch(urlModelos)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, [cambio]);
-
-  useEffect(()=>{
-    fetch(urlMarcas).then(response =>response.json()).then(data=>setMarca(data))
-  },[])
+ //Pa' cargar los proveedores
+ useEffect(() => {
+  axios.get(urlModelos).then(response=>setTableData(response.data))
+}, [cambio]);
 
   const navegate = useNavigate();
 
@@ -61,138 +52,103 @@ export const ListaModelos = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID Modelo', width: 300 },
-    { field: 'descripcion', headerName: 'Marca', width: 300 },
-    { field: 'detalle', headerName: 'Modelo', width: 300 },
-    { field: 'año', headerName: 'Año', width: 300 },
-    
+    { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
+    { field: 'IdMarca', headerName: 'Marca', width: 200 },
+    { field: 'detalle', headerName: 'Modelo', width: 190},
+    { field: 'anio', headerName: 'Año', width: 190 },
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 200,
+      width: 190,
 
       renderCell: params => (
         <div className="contActions">
           <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdModelo)}
-          >
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.IdModelo)}
-          >
+           onClick={() => handleDel(params.row.IdModelo)}>
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
         </div>
       ),
     },
   ];
+ 
+  
+//FUNCION DE ELIMINAR 
+function handleDel(id) {
+  swal({
+    content: (
+      <div>
+        <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
+        <div className="contEditModal"> 
+        </div>
+      </div>
+    ),
 
+    buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+    },
+  }).then(async (op) => {
+
+    switch (op) {
+      case null:
+        let data = {
+          IdModelo:id
+        }; 
+        console.log(data);
+
+        await axios .delete(urlDelModelo,{data}) .then(response => {
+            swal('Modelo eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal('Error al eliminar el modelo', '', 'error');
+          });
+
+        break;
+        default:
+        break;
+    }
+  });
+};
+  
+  //FUNCION DE ACTUALIZAR DATOS 
   function handleUpdt(id) {
     swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
       content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Modelo" className="titleInput" />
-              <input
-                type="text"
-                id="modelo"
-                className="inputCustom"
-              />
-            </div>
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <select name="" className="selectCustom" id="marca">
-              {Marca.length ? (
-                  Marca.map(pre => (
-                    <option key={pre.IdMarca} value={pre.IdMarca}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div>
-          </div>
+        <div className="logoModal">
+          ¿Desea actualizar el modelo?: {id.IdMarca} ?
         </div>
       ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
+    }).then((op)  => {
+        switch (op) {
+          case 'update':
+            data(id)
+            update(true)
+            navegate('/config/RegistroModelo')
+            break;
+            default:
+            break;
+        }
+      });
+  };
 
-      switch (op) {
-        case true:
-          let data = {
-            idModelo: id,
-            detalle: document.getElementById("modelo").value,
-            idMarca:parseInt(document.getElementById("marca").value)
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateModelo, data)) {
-            swal(<h1>Modelo Actualizado Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar esta marca?</div>
-          <div className="contEditModal">
-            
-          </div>
-        </div>
-      ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
-
-      switch (op) {
-        case null:
-          let data = {
-            idModelo: id
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlDelModelo, data)) {
-            swal(<h1>Modelo Eliminado Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-
+//Boton de atras 
   const handleBack = () => {
     navegate('/config');
   };
 
+  //ESTRUCTURA 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -225,7 +181,7 @@ export const ListaModelos = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroModelo');
+                navegate('/config/RegistroModelo');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -244,9 +200,7 @@ export const ListaModelos = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          
         />
-       
       </div>
     </div>
   );
