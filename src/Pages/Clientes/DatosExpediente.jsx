@@ -379,8 +379,7 @@ export const DatosExpediente = ( props) => {
    }
 
    await axios.post(urlNuevoExpediente,data).then(response=>{
-        let data={ IdExpediente:response.data.id
-        }
+        let data={ IdExpediente:response.data.id}
         props.dataa(data)
        //console.log(response.data.id)
     swal('Expediente creado con exito', '', 'success').then(result => {

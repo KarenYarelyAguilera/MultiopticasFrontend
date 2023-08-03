@@ -93,6 +93,7 @@ export const ListaExpedientes = (props) => {
     { field: 'Cliente', headerName: 'Cliente', width: 300 },
     { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
     { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
+    {field: 'TotalRegistros', headerName: 'Total de expedientes', width: 300 },
     {
 
       field: 'borrar',
