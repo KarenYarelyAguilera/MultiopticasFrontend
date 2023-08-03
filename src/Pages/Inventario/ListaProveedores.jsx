@@ -27,9 +27,6 @@ export const ListaProveedores = (props) => {
   const urlProveedores = 'http://localhost:3000/api/proveedor';
   const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
 
-  const urlPaises = 'http://localhost:3000/api/paises';
-  const urlCiudades = 'http://localhost:3000/api/ciudades';
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -80,12 +77,6 @@ export const ListaProveedores = (props) => {
     fetch(urlProveedores)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlPaises)
-      .then(response => response.json())
-      .then(data => setPais(data));
-    fetch(urlCiudades)
-      .then(response => response.json())
-      .then(data => setCiudad(data));
   }, [cambio]);
 
   const navegate = useNavigate();

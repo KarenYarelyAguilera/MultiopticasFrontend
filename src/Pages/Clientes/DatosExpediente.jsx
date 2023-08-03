@@ -46,6 +46,8 @@ export const DatosExpediente = ( props) => {
 
   
   useEffect(() => {
+    console.log(props.id.idCliente);
+    console.log(props.datosclientes.idCliente);
     setTableData([]);
     axios.get(urlEmployees).then(response => {
       setIdEmpleado(response.data)
@@ -54,7 +56,7 @@ export const DatosExpediente = ( props) => {
 
 //DIAGNOSTICO
   useEffect(() => {
-    axios.get(urlDiagnosticos).then(response =>{
+    axios.post(urlDiagnosticos,props.id).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
@@ -70,6 +72,8 @@ export const DatosExpediente = ( props) => {
 
 
   const handleBack = () => {
+    props.dataa({})
+    props.datosclientess({})
     navegate('/menuClientes/ListaExpedientes');
   };
 
@@ -89,7 +93,7 @@ export const DatosExpediente = ( props) => {
         <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.idCliente)}
+            onClick={() => handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -112,19 +116,21 @@ export const DatosExpediente = ( props) => {
       <div>
         <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
-        <div className="contInput">
+
+        
+         <div className="contInput">
               <TextCustom text="Fecha de Consulta" className="titleInput" />
               <input
-                type="date"
+                type="text"
                 name=""
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Fecha de Consulta"
                 id="fechaconsulta"
-                //value={fechaActual}
+                value={id.fechaConsulta}
                 disabled
               />
-            </div>
+            </div> 
             
             <div className="contInput">
               <TextCustom text="Optometrista" className="titleInput" />
@@ -135,6 +141,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Optometrista"
                 id="Optometrista"
+                value={id.Optometrista}
                 disabled
               />
             </div>
@@ -147,19 +154,20 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Asesor de Venta"
                 id="Asesor"
+                value={id.AsesorVenta}
                 disabled
               />
             </div>
             <div className="contInput">
               <TextCustom text="Fecha de Expiracion" className="titleInput" />
               <input
-                type="date"
+                type="text"
                 name=""
                 maxLength={8}
                 className="inputCustom"
                 placeholder="Fecha de Expiracion"
                 id="fechaexpiracion"
-                //value={fechaActual}
+                value={id.fechaExpiracion}
                 disabled
               />
             </div>
@@ -172,6 +180,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Antecedentes Clinicos"
                 id="antecendentes"
+                value={id.Antecedentes}
                 disabled
               />
             </div> 
@@ -187,6 +196,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Esfera OD"
                 id="ODEsfera"
+                value={id.ODEsfera}
                 disabled
               />
             </div>
@@ -200,6 +210,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Esfera OI"
                 id="OIEsfera"
+                value={id.OIEsfera}
                 disabled
               />
             </div>
@@ -214,6 +225,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Cilindro OD"
                 id="ODCilindro"
+                value={id.ODCilindro}
                 disabled
               />
             </div>
@@ -228,6 +240,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Eje OD"
                 id="ODEje"
+                value={id.ODEje}
                 disabled
               />
             </div>
@@ -241,6 +254,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Adicion OD"
                 id="AdicionOD"
+                value={id.ODAdicion}
                 disabled
               />
             
@@ -257,6 +271,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Adicion OI"
                 id="AdicionOI"
+                value={id.OIAdicion}
                 disabled
               />
             </div>
@@ -271,6 +286,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Altura OD"
                 id="AlturaOD"
+                value={id.ODAltura}
                 disabled
               />
             </div>
@@ -285,6 +301,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Altura OI"
                 id="AlturaOI"
+                value={id.OIAltura}
                 disabled
               />
         
@@ -300,6 +317,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="DP OD"
                 id="DistanciapupilarOD"
+                value={id.ODDistanciaPupilar}
                 disabled
               />
             </div>
@@ -313,6 +331,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="DP OI"
                 id="DistanciapupilarOI"
+                value={id.OIDistanciaPupilar}
                 disabled
               />
             </div>
@@ -326,6 +345,7 @@ export const DatosExpediente = ( props) => {
                 className="inputCustom"
                 placeholder="Enfermedad presentada"
                 id="enfermedadpresentada"
+                value={id.diagnostico}
                 disabled
               />
             </div>
@@ -392,7 +412,7 @@ export const DatosExpediente = ( props) => {
                  variant="standard"
                  id="cliente"
                  label="Usuario"
-                 value={props.datosclientes.idCliente}
+                 value={props.id.idCliente || props.datosclientes.idCliente}
                  disabled
               />
             </div>

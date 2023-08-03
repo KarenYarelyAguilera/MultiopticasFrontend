@@ -1,8 +1,9 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
@@ -20,7 +21,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaExpedientes = () => {
+export const ListaExpedientes = (props) => {
 
   const [cambio, setCambio] = useState(0);
 
@@ -29,15 +30,44 @@ export const ListaExpedientes = () => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [pdfData, setPdfData] = useState([]);
+
   useEffect(() => {
     axios.get(urlExpedientes).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
 
-  
 
-     
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        return {
+          'Número de expediente': row.IdExpediente,
+          'Cliente': row.Cliente,
+          'Fecha de creación': row.fechaCreacion,
+          'Creado por': row.CreadoPor,
+        };
+      });
+      return formattedData;
+    };
+
+    const dataForPDF = formatDataForPDF();
+    const documento = new jsPDF();
+    const columns = Object.keys(dataForPDF[0]);
+    const rows = dataForPDF.map((row) => Object.values(row));
+
+    documento.autoTable({
+      head: [columns],
+      body: rows,
+    });
+
+    documento.save('reporte_expedientes.pdf');
+  };
+  
+  ///////// 
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -70,29 +100,47 @@ export const ListaExpedientes = () => {
       width: 400,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+
+          <Button
+            className="btnAddExpe"
+            onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
     },
   ];
 
-  function handleButtonClick(id) {
- 
+
+  const handleNewExpediente = (expediente)=>{
+    let data={
+      id:expediente.IdExpediente,
+      idCliente:expediente.Cliente
+    }
+    console.log(expediente);
+     props.data(data)
+     navegate('/menuClientes/DatosExpediente');
   }
+
   const handleBack = () => {
     navegate('/menuClientes');
+  };
+
+  const handleCloseDialog = () => {
+    setShowPdfDialog(false);
   };
 
   return (
@@ -131,9 +179,11 @@ export const ListaExpedientes = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Expediente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
