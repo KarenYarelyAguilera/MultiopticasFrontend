@@ -11,48 +11,62 @@ export const PreguntasPerfil = props => {
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
 
+    //parametros
+  const [Parametro, setParametro] = useState([]);
+/*   const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+  useEffect(() => {
+    axios.get(urlParametro).then(response => {
+      setParametro(response.data)
+      console.log(response.data);
+    })
+      .catch(error => console.log(error));
+  }, []);
+ */
+
+
+
   const dataId = {
-    Id_Usuario:props.idUsuario,
-    user:props.user,
-  }; 
-//  console.log(dataId);
+    Id_Usuario: props.idUsuario,
+    user: props.user,
+  };
+  //  console.log(dataId);
 
-const navegate = useNavigate();
+  const navegate = useNavigate();
 
- //para las preguntas
- useEffect(() => {
-  //console.log(data);
-  axios.get(urlPreguntas).then(response =>{
-    setPreguntas(response.data);
-   }).catch(error => console.log(error))
- },[]);
-
-
-
- const handleClick = async () => {
+  //para las preguntas
+  useEffect(() => {
+    //console.log(data);
+    axios.get(urlPreguntas).then(response => {
+      setPreguntas(response.data);
+    }).catch(error => console.log(error))
+  }, []);
 
 
 
-    const Id_Pregunta =parseInt(document.getElementById('Id_preguntas').value);
+  const handleClick = async () => {
+
+
+
+    const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
     const respuestap = document.getElementById('respuestap').value;
-    
+
 
 
     let data = {
-      idPregunta:Id_Pregunta,
+      idPregunta: Id_Pregunta,
       respuesta: respuestap,
-      idUser:props.idUsuario,
-      creadoPor:props.infoPerfil.nombre,
+      idUser: props.idUsuario,
+      creadoPor: props.infoPerfil.nombre,
     };
 
 
     console.log(data);
 
-     await axios.post(urlRespuestas, data).then(response=>{
-      swal("Pregunta registrada correctamente","","success").then(()=>navegate('/Preguntas/lista'))
-      });
-     
-  
+    await axios.post(urlRespuestas, data).then(response => {
+      swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/Preguntas/lista'))
+    });
+
+
   };
 
   return (
@@ -64,7 +78,7 @@ const navegate = useNavigate();
         </div>
 
         <form className="measure">
-        <div className="contPrincipalRecu">
+          <div className="contPrincipalRecu">
             <div className='divInfoQuestionResp'>
               <TextCustom text="Preguntas:" className="titleInput" />
               <div className="contInput">
@@ -100,17 +114,17 @@ const navegate = useNavigate();
                 />
               </div>
             </div>
-        </div>
-        <div className='divSubmitQuestion'>
-          <input
-            className="btnSubmitPreguntas"
-            type="button"
-            value="Guardar"
-             onClick={handleClick}
-          />
-        </div>
-      </form>
-        
+          </div>
+          <div className='divSubmitQuestion'>
+            <input
+              className="btnSubmitPreguntas"
+              type="button"
+              value="Guardar"
+              onClick={handleClick}
+            />
+          </div>
+        </form>
+
       </div>
 
       <div className="divImgSection">

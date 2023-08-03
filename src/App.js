@@ -94,6 +94,7 @@ import { MetodosDePago } from './Pages/Configuracion/MetodosDePago.jsx';
 import { ListaMetodosDePago } from './Pages/Configuracion/ListaMetodosDePago.jsx';
 import { ListaPreguntas } from './Pages/Usuarios/ListaPreguntas.jsx';
 import { RecordatorioCitas } from './Pages/RecordatorioCitas.jsx';
+import { RecordatorioCitasEditar } from './Pages/RecordatorioCitasEditar.jsx';
 import { MenuCompras } from './Pages/Compras/MenuCompras.jsx';
 import { PreguntasPerfil } from './Pages/PreguntasPerfil.jsx';
 import { RegistroDepartamento } from './Pages/Configuracion/RegistroDepartamento.jsx';
@@ -765,7 +766,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
-                  <BarraLateral
+                  {/* <BarraLateral
                     user={user}
                     rol={rol}
                     mail={mail}
@@ -774,7 +775,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                     idUsuario={id}
                   />
-                  <BarraHorizontal user={usuario} />
+                  <BarraHorizontal user={usuario} /> */}
                   <ListaPreguntas update={update} data={Data} idUsuario={idUsuario} />
                 </div>
               </ProtectedRoute>
@@ -1741,31 +1742,59 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <Recordatorio></Recordatorio>
+                  <Recordatorio
+                    update={update}
+                    data={Data} 
+                    idUsuario={idUsuario} 
+                  // infoPerfil={infoPerfil}
+                    user={usuario}
+                  ></Recordatorio>
                 </div>
               </ProtectedRoute>
             }
           ></Route>
 
-<Route
+          <Route
             path="/recordatorioCitas"
             element={
               <ProtectedRoute activo={activo}>
                 <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <RecordatorioCitas ></RecordatorioCitas>
+                
+                  <RecordatorioCitas 
+                    update={update}
+                    data={Data} 
+                    idUsuario={idUsuario} 
+                   // infoPerfil={infoPerfil}
+                    user={usuario}
+                    ></RecordatorioCitas>
                 </div>
               </ProtectedRoute>
             }
           ></Route>
+
+
+          <Route
+            path="/recordatorioCitasEditar"
+            element={
+              <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <RecordatorioCitasEditar
+                    update={update}
+
+                    data={data}
+
+                    idUsuario={idUsuario}
+                    //infoPerfil={infoPerfil}
+                    user={usuario}
+                  ></RecordatorioCitasEditar>
+                </div>
+              </ProtectedRoute>
+            }
+          ></Route>
+
+
+
+
         </Routes>
       </BrowserRouter>
     </div>

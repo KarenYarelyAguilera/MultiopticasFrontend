@@ -14,8 +14,11 @@ export const PageTwo = ({ correo, id, autor }) => {
 
   const urlUserExist = "http://localhost:3000/api/login"
 
-
+  const [contra1, setContra1] = useState("");
+  const [msj, setMsjs] = useState("");
+  const [errorContra1, setErrorContra1] = useState(false);
   const [contra2, setContra2] = useState("");
+  //const [contra2, setContra2] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
   const [advertencia, setadvertencia] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -85,7 +88,7 @@ export const PageTwo = ({ correo, id, autor }) => {
               />
             </div>
           </div>
-          
+
         </div>
         <div className='divSubmitRecuperacion'>
           <input
