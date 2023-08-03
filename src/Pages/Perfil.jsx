@@ -8,6 +8,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 //Styles
 import '../Styles/Usuarios.css';
+import '../Styles/login.css';
+
+import ImgLogin from '../IMG/InforUsers.jpg';
+// import ImgBackround from '../IMG/backgroundQuestion.png';
+// import ImgBackround2 from '../IMG/backgroundRegistration.png';
+
 
 
 //Components
@@ -40,8 +46,13 @@ export const Perfil = (props) => {
   };
 
   const handlePreguntas = () => {
-    navegate("/preguntasPerfil");
+    navegate("/Preguntas/lista");
   };
+
+
+  /*  const handlePreguntas = () => {
+     navegate("/preguntasPerfil");
+   }; */
 
 
 
@@ -50,163 +61,167 @@ export const Perfil = (props) => {
   };
 
   return (
- 
 
-     
+    <div className="ContProfile" >
 
-      <div className="ContProfile">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
+
       <div className="titleAddUser">
         <h2>Perfil</h2>
       </div>
-        <div className="infoAddUser">
-          <div className="PanelInfo">
-            <div className="InputContPrincipal2">
 
-              <div className="contInput">
-                <TextCustom text="Nombre de usuario:" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Nombre usuario"
-                  id="nameUser"
-                  value={props.infoPerfil.Nombre_Usuario}
-                />
-              </div>
+      <div className="infoAddUser"  >
 
-              <div className="contInput">
-                <TextCustom text="Nombre" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Nombre"
-                  id="nombre"
-                  value={props.infoPerfil.nombre}
-                />
-              </div>
-
-              <div className="contInput">
-                <TextCustom text="Apellido" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Apellido"
-                  id="apellido"
-                  value={props.infoPerfil.apellido}
-                />
-              </div>
-
-              <div className="contInput">
-                <TextCustom text="Identidad" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Identidad"
-                  id="identidad"
-                  value={props.infoPerfil.numeroIdentidad}
-                />
-              </div>
-
-              <div className="contInput">
-                <TextCustom text="Correo Electronico" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Correo"
-                  id="correo"
-                  value={props.infoPerfil.Correo_Electronico}
-                />
-              </div>
-
-              <div className="contInput">
-                <TextCustom text="Cargo" className="titleInput" />
-                <input
-                  type="text"
-                  name=""
-                  maxLength={13}
-                  className="inputCustom"
-                  placeholder="Rol"
-                  id="rol"
-                  value={props.infoPerfil.Rol}
-                />
-              </div>
-
-              <div className="contUpdatePassword">
-                <TextCustom text="Preguntas:" className="titleInput" />
-                <FilledInput
-                 
-                  id="filled-adornment-password"
-                  placeholder='******************'
-                  className="inputCustomUpdatePassword"
-
-                  // value={'******************'}
-                  disabled
-                  type={showPassword ? 'text' : 'password'}
-                  inputProps={{ maxLength: 20, minLenght: 8 }}
-                  inputRef={refContrasenia}
-
-                ></FilledInput>
-
-                <button
-                  className="btnUpdatePassword"
-                  type='submit'
-                  onClick={handlePreguntas}
-                >Modificar Preguntas</button>
-
-              </div>
-
-              <div className="contUpdatePassword">
-
-                <TextCustom text="Contraseña:" className="titleInput" />
-                <FilledInput
-                  
-
-                  id="filled-adornment-password"
-                  // placeholder='******************'
-                  value={props.infoPerfil.Contrasenia}
-
-                  className="inputCustomUpdatePassword"
-                  type={showPassword ? 'text' : 'password'}
-                  inputProps={{ maxLength: 20, minLenght: 8 }}
-                  inputRef={refContrasenia}
-                  disabled
-
-                ></FilledInput>
-
-                <button
-                  className="btnUpdatePassword"
-                  type='submit'
-                  onClick={handlePerfilStepper}
-                >Cambiar contraseña</button>
-
-              </div>
-              
-            </div>
+        <section className='section2'>
+          <div className="contInput">
+            <TextCustom text="Usuario: " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Nombre usuario"
+              id="nameUser"
+              value={props.infoPerfil.Nombre_Usuario}
+              disabled
+            />
           </div>
+          <br />
+          <div className="contInput">
+            <TextCustom text="Nombre: " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Nombre"
+              id="nombre"
+              value={props.infoPerfil.nombre}
+              disabled
+            />
+          </div>
+          <br />
+          <div className="contInput">
+            <TextCustom text="Apellido: " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Apellido"
+              id="apellido"
+              value={props.infoPerfil.apellido}
+              disabled
+            />
+          </div>
+        </section>
 
-         {/*  <section className='section2'>
-            <div className="titlesPreguntasProfile">
+
+        <section className='section2' >
+          <div className="contInput">
+            <TextCustom text="Identidad: " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Identidad"
+              id="identidad"
+              value={props.infoPerfil.numeroIdentidad}
+              disabled
+            />
+          </div>
+          <br />
+          <div className="contInput">
+            <TextCustom text="Correo:   " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Correo"
+              id="correo"
+              value={props.infoPerfil.Correo_Electronico}
+              disabled
+            />
+          </div>
+          <br />
+          <div className="contInput">
+            <TextCustom text="Puesto:  " className="titleInput" />
+            <input
+              type="text"
+              name=""
+              maxLength={13}
+              className="inputCustom"
+              placeholder="Rol"
+              id="rol"
+              value={props.infoPerfil.Rol}
+              disabled
+            />
+          </div>
+        </section>
+
+
+        <section className='section2'>
+          <div className="contUpdatePassword">
+            <TextCustom text="Preguntas:" className="titleInput" />
+            <FilledInput
+
+              id="filled-adornment-password"
+              placeholder='******************'
+              className="inputCustomUpdatePassword"
+              // value={'******************'}
+              disabled
+              type={showPassword ? 'text' : 'password'}
+              inputProps={{ maxLength: 20, minLenght: 8 }}
+              inputRef={refContrasenia}
+            ></FilledInput>
+
+            <button
+              className="btnUpdatePassword"
+              type='submit'
+              onClick={handlePreguntas}
+            >Modificar Preguntas</button>
+          </div>
+          <br />
+          <div className="contUpdatePassword">
+            <TextCustom text="Contraseña:" className="titleInput" />
+            <FilledInput
+              id="filled-adornment-password"
+              // placeholder='******************'
+              value={props.infoPerfil.Contrasenia}
+              className="inputCustomUpdatePassword"
+              type={showPassword ? 'text' : 'password'}
+              inputProps={{ maxLength: 20, minLenght: 8 }}
+              inputRef={refContrasenia}
+              disabled
+            ></FilledInput>
+
+            <button
+              className="btnUpdatePassword"
+              type='submit'
+              onClick={handlePerfilStepper}
+            >Cambiar contraseña</button>
+          </div>
+        </section>
+
+
+        {/*   <div className="PanelInfo">
+            <div className="InputContPrincipal2">
             </div>
-          </section> */}
+          </div> */}
 
+        <section>
+          <div>
+            <img src={ImgLogin} className="imgLogin" alt="No existe la imagen" />
+          </div>
+        </section>
 
-        </div>
-
-
-        
       </div>
+
+    </div>
 
 
 

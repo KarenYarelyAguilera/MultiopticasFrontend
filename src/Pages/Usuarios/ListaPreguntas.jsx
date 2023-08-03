@@ -1,6 +1,6 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
-import { useNavigate } from 'react-router';
+import { Await, useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 
 //Mui-Material-Icons
@@ -16,15 +16,16 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
+
 //import { PageThree } from '../../Components/LoginPorPrimeraVez/PageThree/PageThree';
 
 export const ListaPreguntas = (props) => {
   const [cambio, setCambio] = useState(0);
-  const [generos, setGeneros] = useState([]);
-  const [sucursales, setSucursales] = useState([]);
+/*   const [generos, setGeneros] = useState([]);
+  const [sucursales, setSucursales] = useState([]); */
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
-  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+
+
  
 //--------------------URL DE BITACORA--------------------
 const urlDelBitacora = 
@@ -36,36 +37,41 @@ const urlBitacoraBotonSalirLE=
 
 
 const urlPyR= 'http://localhost:3000/api/pregYresp'
+const urlDelRespuesta= 'http://localhost:3000/api/eliminarRespuesta'
+const urlPregunta = 'http://localhost:3000/api/pregunta';
 
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [Nombre, setNombre] = useState('');
-  const [errorNombre, setErrorNombre] = useState(false);
-  const [Msj, setMsj] = useState(false);
+  const [Preguntas, setPreguntas] = useState([]);
+  
+  //parametros
+  const [Parametro, setParametro] = useState('');
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+ /*  useEffect(() => {
+    axios.get(urlParametro).then(response => {
+      setParametro(response.data)
+      console.log(response.data);
+    })
+      .catch(error => console.log(error));
+  }, []);
+ */
 
-  const [Apellido, setApellido] = useState('');
-  const [errorApellido, setErrorApellido] = useState(false);
-  const [aviso, setAviso] = useState(false);
 
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
+
+  const navegate = useNavigate();
+
 
   const dataId = {
     Id_Usuario:props.idUsuario,
   }; 
   //axios para que me traiga las preguntas y respuestas
   useEffect(() => {
-    axios
-      .post(urlPyR,dataId)
-      .then(response => {
-        setTableData(response.data);
-      })
+    axios.post(urlPyR,dataId).then(response => {
+      setTableData(response.data);})
       .catch(error => console.log(error));
   }, [cambio]);
-
-  const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -77,8 +83,9 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
 
   const columns = [
     //son los de la base no los de node
-    { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
-    { field: 'Respuesta', headerName: 'Respuestas', width: 550,
+    { field: 'Id_Pregunta', headerName: 'Id_Pregunta', width: 100, headerAlign: 'center' },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 350, headerAlign: 'center' },
+    { field: 'Respuesta', headerName: 'Respuestas', width: 250,  headerAlign: 'center',
       valueGetter: (params) => {
         // Obtener la respuesta original
         const originalRespuesta = params.row.Respuesta;
@@ -92,17 +99,16 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260,
+      width: 100,  headerAlign: 'center',
 
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row.Id_Usuario)}>
+          {/* <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
-          </Button>
+          </Button> */}
           <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.Id_Usuario)}
+            className="btnDelete" onClick={() => handleDel(params.row.Id_Pregunta)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -116,12 +122,8 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
     swal({
       content: (
         <div>
-
-          <div className="logoModal">¿Desea Eliminar esta Pregunta?</div>
-          <div className="contEditModal">
-
-          </div>
-
+          <div className="logoModal">¿Desea Eliminar esta Pregunta? </div>
+          <div className="contEditModal"></div>
         </div>
       ),
       buttons: ['Eliminar', 'Cancelar'],
@@ -130,20 +132,11 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
         case null:
           
           let data = {
-            IdEmpleado: id,
+            Id_Pregunta:id,
           };
-
-          //Funcion de Bitacora 
-          let dataB = {
-            Id:props.idUsuario
-          }
-
           console.log(data);
 
-          await axios
-            .delete(urlDelEmployees, { data })
-            .then(response => {
-              axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+          await axios.delete(urlDelRespuesta, { data }).then(response => {
               swal('Pregunta eliminada correctamente', '', 'success');
               setCambio(cambio + 1);
             })
@@ -161,10 +154,19 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
   }
 
   //funcion de actualizar
+ function handleUpdt(id) {
+    console.log(id);
 
+    /* let data = {
+      Id_Pregunta:id,
+    }; */
+    
+   props.data({
+      Id_Pregunta: id.Id_Pregunta,
+      Pregunta:id.Pregunta,
+   })
+   
 
-  function handleUpdt(id) {
-    // onRowClick={empleado => {
     swal({
       buttons: {
         update: 'ACTUALIZAR',
@@ -172,33 +174,52 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
       },
       content: (
         <div className="logoModal">
-          ¿Desea modificar esta pregunta: ?
+          ¿Desea modificar esta pregunta: ? {id.Id_Pregunta}
         </div>
       ),
     }).then(op => {
       switch (op) {
         case 'update':
+
+          let data = {
+            Id_Pregunta: id,
+          };
+          console.log(data)
+
           props.data(id)
           props.update(true)
-          //navegate('../Components/LoginPorPrimeraVez/PageThree/PageThree')
+
+          navegate("/editarPreguntas");
       }
     });
+  } 
 
-    //}//}//
-  }
 
- //Funcion de Bitacora 
- let dataB = {
-  Id:props.idUsuario
-}
+
 
   const handleBack = () => {
-    //axios.post (urlBitacoraBotonSalirLE,dataB)
     navegate('/config/perfil');
   };
 
+
+  const handleClick = async () => {
+
+     axios.post(urlParametro).then(response => {
+         setParametro(response.data)
+        console.log(response.data); 
+        if (setParametro===setTableData){
+          swal("Ya no puede agregar mas pregunatas", "", "error")
+        }else{
+          navegate('/preguntasPerfil')
+        }
+
+      });
+      
+  };
+
+
   return (
-    <div className="ContUsuarios">
+    <div className="ContProfile">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
@@ -207,9 +228,9 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
       <div
         style={{
           height: 400,
-          width: '85%',
+          width: '80%',
           position: 'relative',
-          left: '130px',
+          left: '190px',
         }}
       >
         <div className="contFilter">
@@ -226,19 +247,13 @@ const urlPyR= 'http://localhost:3000/api/pregYresp'
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            <Button
+            <Button 
               className="btnCreate"
-              onClick={() => {
-                navegate('');
-              }}
+              onClick={handleClick}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            {/* <Button className="btnReport">
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
-            </Button> */}
           </div>
         </div>
         <DataGrid

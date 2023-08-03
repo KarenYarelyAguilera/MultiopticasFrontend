@@ -1,5 +1,4 @@
-
-import React, { useCallback, useState } from 'react';
+// React, { useCallback} from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -11,8 +10,25 @@ import 'react-datepicker/dist/react-datepicker.css';
 import es from "date-fns/locale/es";
 import { TextCustom } from '../Components/TextCustom';
 
+//Mui-Material-Icons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button } from '@mui/material';
+
+
+
+
+import { DataGrid, esES } from '@mui/x-data-grid';
+import axios from 'axios';
+import { useState, useEffect, useCallback } from 'react';
+
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router';
+import swal from '@sweetalert/with-react';
 
 
 const locales = {
@@ -46,16 +62,38 @@ const events = [
   },
 ];
 
-export const Recordatorio = () => {
+export const Recordatorio = (props) => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
 
+  const [cambio, setCambio] = useState(0);
+  const [tableData, setTableData] = useState([]);
+  const [citas, setCitas] = useState([]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Estado para almacenar la fecha seleccionada
+  const [selectedDate, setSelectedDate] = useState('')
+
   const navegate = useNavigate();
+
+  const urlGetCitas = 'http://localhost:3000/api/recordatorios';
+  const urlGetCita = 'http://localhost:3000/api/recordatorio';
+  const urlDelCita = 'http://localhost:3000/api/eliminarCita'
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
 
   };
+
+  const handleBack = () => {
+    //axios.post (urlBitacoraBotonSalirLE,dataB)
+    navegate('/dashboard');
+  };
+
+
+
+
 
   const objectDate = new Date();
   const day = objectDate.getDate();
@@ -63,130 +101,235 @@ export const Recordatorio = () => {
   const year = objectDate.getFullYear();
   let format1 = month + "/" + day + "/" + year;
 
-  const citas = [
+
+  /* 
+    useEffect(() => {
+      axios.get(urlGetCita).then(response => {
+        setCitas(response.data)
+      }).catch(error => console.log(error))
+    }, []);
+   */
+
+
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(() => {
+    axios.get(urlGetCita).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, [cambio]);
+
+  const filteredData = tableData.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+
+  // Función para manejar el cambio en el input de fecha
+  /*    const handleDateChange = (event) => {
+      setSelectedDate(event.target.value); // Actualizar el estado con la fecha seleccionada
+    };
+  
+  
+    const filteredData = tableData.filter(row => {
+      // Asegurarse de que la columna "fecha" esté en formato ISO 8601 ("YYYY-MM-DD")
+      const rowDate = row.fecha ? row.fecha.slice(0, 10) : '';
+      return (
+        rowDate &&
+        rowDate === selectedDate // Comparar si la fecha de la fila coincide con la fecha seleccionada
+      );
+    }); */
+
+
+
+
+  const columns = [
+    //son los de la base no los de node
+    { field: 'IdRecordatorio', headerName: 'No.', width: 50, headerAlign: 'center' },
+    { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
+    { field: 'Nota', headerName: 'Nota', width: 290, headerAlign: 'center' },
+    { field: 'fecha', headerName: 'Fecha', width: 90, headerAlign: 'center' },
+
+
     {
-      paciente: "Kevin Lopez",
-      fecha: format1,
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190, headerAlign: 'center',
+
+
+      renderCell: params => (
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+            <EditIcon></EditIcon>
+          </Button>
+          <Button
+            className="btnDelete"
+            onClick={() => handleDel(params.row.IdRecordatorio)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+        </div>
+      ),
     },
-    {
-      paciente: "Michael Sosa",
-      fecha: format1,
-    },
-    {
-      paciente: "Juan Perez",
-      fecha: format1,
-    }
   ];
 
-  const proximasCitas = [
-    // {
-    //   paciente: "Manuel Gonzales",
-    //   fecha: format1,
-    // },
-    // {
-    //   paciente: "Juan Lopez",
-    //   fecha: format1,
-    // },
-    // {
-    //   paciente: "Ana Salgado",
-    //   fecha: format1,
-    // }
-  ];
+  //funcion de eliminar
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea Eliminar esta cita? </div>
+          <div className="contEditModal"></div>
+        </div>
+      ),
+      buttons: ['Eliminar', 'Cancelar'],
+    }).then(async op => {
+      switch (op) {
+        case null:
 
-  // const onSelectSlot = useCallback(slotInfo => {
-  //   swal(
-  //   <div>
-  //     <input
-  //       type="text"
-  //       placeholder="Add Title"
-  //       style={{ width: '20%', marginRight: '10px' }}
-  //       value={newEvent.title}
-  //       onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
-  //     />
-  //     <DatePicker
-  //       placeholderText="Start Date"
-  //       style={{ marginRight: '10px' }}
-  //       selected={newEvent.start}
-  //       onChange={start => setNewEvent({ ...newEvent, start })}
-  //     />
-  //     <DatePicker
-  //       placeholderText="End Date"
-  //       style={{ marginRight: '10px' }}
-  //       selected={newEvent.end}
-  //       onChange={end => setNewEvent({ ...newEvent, end })}
-  //     />
-  //   </div>
-  //   ).then(() => {z
-  //     <button onClick={handleAddEvent}>
-  //     </button>
-  //   }
-  //   );
-  // }, []);
+          let data = {
+            IdRecordatorio: id,
+          };
+          console.log(data);
+
+          await axios.delete(urlDelCita, { data }).then(response => {
+            swal('Cita eliminada correctamente', '', 'success');
+            setCambio(cambio + 1);
+          })
+            .catch(error => {
+              console.log(error);
+              swal('Error al eliminar cita', '', 'error');
+            });
+
+          break;
+
+        default:
+          break;
+      }
+    });
+  }
+
+  //funcion de actualizar
+  function handleUpdt(id) {
+    console.log(id);
+
+    /* let data = {
+      Id_Pregunta:id,
+    }; */
+
+    props.data({
+      IdRecordatorio: id.IdRecordatorio,
+      nombre: id.nombre,
+      fecha: id.fecha,
+      Nota: id.Nota,
+    })
+
+
+
+
+
+    swal({
+      buttons: {
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea modificar esta cita: {id.nombre} ?
+        </div>
+      ),
+    }).then(op => {
+      switch (op) {
+        case 'update':
+
+          let data = {
+            IdRecordatorio: id.IdRecordatorio,
+            nombre: id.nombre,
+
+
+          };
+          console.log(data)
+
+          props.data(id)
+          props.update(true)
+
+          navegate("/recordatorioCitasEditar");
+      }
+    });
+  }
+
+
+
 
   return (
-    <div className='ContUsuarios'>
-      <div className="contRecordatorios">
-        <div className="contRecordCitas">
-          <div className="cardCitas">
-            <h1>Citas</h1>
-            <h2>Citas programadas para este mes</h2>
-            <hr />
-            <div className="listCitas">
-              {citas.length ? (
-                citas.map((citasM, index) => (
-                  <div key={index}>
-                    <span><KeyboardArrowRightIcon/>{citasM.paciente}</span>
-                    <span className='fechaCita'>{citasM.fecha}</span>
-                  </div>
-                  ))
-                  ) : (
-                    <h1>No tienes citas programadas en este momento.</h1>
-              )}
-            </div>
-          </div>
+    <div className="ContUsuarios">
+      {/* <Button className="btnBack" onClick={handleBack}>
+        <ArrowBackIcon className="iconBack" />
+      </Button> */}
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programadas</h2>
 
-          <div className="cardCitas">
-            <h1>Proximas citas</h1>
-            <hr />
-            <div className="listCitas">
-              {proximasCitas.length ? (
-                proximasCitas.map((proximasCitasM, index) => (
-                  <div key={index}>
-                    <span><KeyboardArrowRightIcon/>{proximasCitasM.paciente}</span>
-                    <span className='fechaCita'>{proximasCitasM.fecha}</span>
-                  </div>
-                  ))
-                  ) : (
-                    <h1 className='advertencia'>No tienes proximas citas programadas en este momento.</h1>
-              )}
-            </div>
+      <div
+        style={{
+          height: 400,
+          width: '80%',
+          position: 'relative',
+          left: '100px',
+        }}>
+
+        <div className="contFilter">
+          {/* <div className="buscador"> */}
+          <SearchIcon
+            style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+          />
+          <input
+            type="text"
+            className="inputSearch"
+            placeholder="Buscar"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+          {/* </div> */}
+          <div className="btnActionsNewReport">
+            <Button
+              className="btnCreate"
+              onClick={() => { navegate('/recordatorioCitas'); }}
+            >
+              <AddIcon style={{ marginRight: '5px' }} />
+              Nuevo
+            </Button>
+            <Button className="btnReport">
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              Generar reporte
+            </Button>
           </div>
-          </div>
-      <section className="contPrimaryRecord">
-        <Calendar
-          messages={{
-            next: "Siguiente",
-                    previous: "Atras",
-                    today: "Hoy",
-                    month: "Mes",
-                    week: "Semana",
-                    day: "Día"
-          }}
-          selectable
-          popup={true}
-          onSelectSlot={(e)=>console.log(e)}
-          culture='es'
-          localizer={localizer}
-          events={allEvents}
-          className='calendar'
-          startAccessor="start"
-          endAccessor="end"
-          style={{ width: '103%', height: '80vh' }}
-          // onSelectSlot={onSelectSlot}
-        ></Calendar>
-          <button onClick={handleAddEvent} className='btnGuardarRecor'>Agregar Cita</button>
-      </section>
+        </div>
+
+        <DataGrid
+          getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
+          //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
+          rows={filteredData}
+          columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
       </div>
+
     </div>
   );
 };
+

@@ -116,7 +116,9 @@ export const DatosExpediente = ( props) => {
       <div>
         <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
-        <div className="contInput">
+
+        
+         <div className="contInput">
               <TextCustom text="Fecha de Consulta" className="titleInput" />
               <input
                 type="text"
@@ -128,7 +130,7 @@ export const DatosExpediente = ( props) => {
                 value={id.fechaConsulta}
                 disabled
               />
-            </div>
+            </div> 
             
             <div className="contInput">
               <TextCustom text="Optometrista" className="titleInput" />
@@ -186,7 +188,8 @@ export const DatosExpediente = ( props) => {
             ----------------DIAGNOSTICO-----------------
             </h3>
             <div className="contInput">
-              <TextCustom text="Esfera OD" className="titleInput" />
+              <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
+             {/*  <TextCustom text="Esfera OD" className="titleInput" />
               <input
                 type="text"
                 name=""
@@ -196,7 +199,7 @@ export const DatosExpediente = ( props) => {
                 id="ODEsfera"
                 value={id.ODEsfera}
                 disabled
-              />
+              /> */}
             </div>
             <div className="contInput">
               <TextCustom text="Esfera OI" className="titleInput" />
@@ -376,8 +379,12 @@ export const DatosExpediente = ( props) => {
    }
 
    await axios.post(urlNuevoExpediente,data).then(response=>{
-     swal('Expediente creado con exito', '', 'success').then(result => {
-       navegate('/menuClientes/ListaExpedientes');
+        let data={ IdExpediente:response.data.id
+        }
+        props.dataa(data)
+       //console.log(response.data.id)
+    swal('Expediente creado con exito', '', 'success').then(result => {
+       navegate('/menuClientes/DetalleExpediente');
      });
 
    }).catch(error=>{
