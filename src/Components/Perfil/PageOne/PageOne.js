@@ -75,7 +75,7 @@ export const PageOne = ({ correo, onButtonClick }) => {
                   }
                 }
                 id="contra1"
-                placeholder='******************'
+               //placeholder='******************'
                 //value={props.infoPerfil.Contrasenia} 
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
