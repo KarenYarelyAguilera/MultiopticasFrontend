@@ -104,7 +104,7 @@ const navegate = useNavigate();
             <div className="contInput">
               <TextCustom text="Esfera OD" className="titleInput" />
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -117,7 +117,7 @@ const navegate = useNavigate();
               <TextCustom text="Esfera OI" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -130,7 +130,7 @@ const navegate = useNavigate();
               <TextCustom text="Cilindro OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -143,7 +143,7 @@ const navegate = useNavigate();
             <div className="contInput">
               <TextCustom text="Cilindro OI" className="titleInput" />
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -156,7 +156,7 @@ const navegate = useNavigate();
               <TextCustom text="Eje OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -169,7 +169,7 @@ const navegate = useNavigate();
               <TextCustom text="Eje OI" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -182,7 +182,7 @@ const navegate = useNavigate();
               <TextCustom text="Adicion OD" className="titleInput" />
               <input
                
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -197,7 +197,7 @@ const navegate = useNavigate();
 
               <input
              
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -210,7 +210,7 @@ const navegate = useNavigate();
               <TextCustom text="Altura OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -223,7 +223,7 @@ const navegate = useNavigate();
               <TextCustom text="Altura OI" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -237,7 +237,7 @@ const navegate = useNavigate();
               <TextCustom text="DP OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -251,7 +251,7 @@ const navegate = useNavigate();
 
               <input
            
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"

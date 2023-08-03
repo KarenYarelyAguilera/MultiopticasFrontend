@@ -1,8 +1,9 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
@@ -29,6 +30,9 @@ export const ListaExpedientes = (props) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [pdfData, setPdfData] = useState([]);
+
   useEffect(() => {
     axios.get(urlExpedientes).then(response =>{
       setTableData(response.data)
@@ -36,8 +40,34 @@ export const ListaExpedientes = (props) => {
   }, [cambio]);
 
 
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        return {
+          'Número de expediente': row.IdExpediente,
+          'Cliente': row.Cliente,
+          'Fecha de creación': row.fechaCreacion,
+          'Creado por': row.CreadoPor,
+        };
+      });
+      return formattedData;
+    };
 
+    const dataForPDF = formatDataForPDF();
+    const documento = new jsPDF();
+    const columns = Object.keys(dataForPDF[0]);
+    const rows = dataForPDF.map((row) => Object.values(row));
 
+    documento.autoTable({
+      head: [columns],
+      body: rows,
+    });
+
+    documento.save('reporte_expedientes.pdf');
+  };
+  
+  ///////// 
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -109,6 +139,10 @@ export const ListaExpedientes = (props) => {
     navegate('/menuClientes');
   };
 
+  const handleCloseDialog = () => {
+    setShowPdfDialog(false);
+  };
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -145,9 +179,11 @@ export const ListaExpedientes = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Expediente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
