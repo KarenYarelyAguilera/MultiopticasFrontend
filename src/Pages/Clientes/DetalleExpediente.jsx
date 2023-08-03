@@ -72,6 +72,7 @@ let day = fechadespues.getDate().toString().padStart(2, "0");
 let fechaModificada = year + "/" + month + "/" + day;
     
     let data = {
+      IdExpediente:props.Data.IdExpediente || props.Data.id,
       fechaConsulta:fechaFormateada,
       Optometrista:Optometrista,
       fechaExpiracion:fechaModificada,
