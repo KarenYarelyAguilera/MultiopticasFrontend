@@ -116,7 +116,9 @@ export const DatosExpediente = ( props) => {
       <div>
         <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
-        <div className="contInput">
+
+        
+         <div className="contInput">
               <TextCustom text="Fecha de Consulta" className="titleInput" />
               <input
                 type="text"
@@ -128,7 +130,7 @@ export const DatosExpediente = ( props) => {
                 value={id.fechaConsulta}
                 disabled
               />
-            </div>
+            </div> 
             
             <div className="contInput">
               <TextCustom text="Optometrista" className="titleInput" />
