@@ -1,9 +1,10 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,9 +18,9 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaCompra = () => {
+export const ListaCompra = (props) => {
 
-  const urlCompras ='http://localhost/APIS-Multioptica/compra/controller/compra.php?op=Compras';
+  const urlCompras ='http://localhost:3000/api/compra';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,10 +43,9 @@ export const ListaCompra = () => {
 
   const columns = [
     { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
-    { field: 'nombreProveedor', headerName: 'Proveedor', width: 380 },
     { field: 'fechaCompra', headerName: 'Fecha de la compra', width: 380 },
     { field: 'totalCompra', headerName: 'Total de la compra', width: 380 },
-    { field: 'encargado', headerName: 'Encargado', width: 380 },
+   
     
     {
       field: 'borrar',
@@ -72,7 +72,7 @@ export const ListaCompra = () => {
   ];
 
   function handleButtonClick(id) {
-    swal("No puede realizar esta accion","","error")
+    swal("No es posible realizar esta accion","","error")
   }
   const handleBack = () => {
     navegate('/inventario');
