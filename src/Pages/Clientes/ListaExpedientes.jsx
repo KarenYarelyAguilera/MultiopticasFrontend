@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,54 +23,51 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaExpedientes = (props) => {
 
   const [cambio, setCambio] = useState(0);
-
   const urlExpedientes = 'http://localhost:3000/api/Expediente';
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
   const [showPdfDialog, setShowPdfDialog] = useState(false);
   const [pdfData, setPdfData] = useState([]);
+  
+  let [formatDataForPDF, setFormatDataForPDF] = useState();
+  let [urlPDF, seturlPDF] = useState('');
 
   useEffect(() => {
     axios.get(urlExpedientes).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
-
-
+  
+  
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
+    formatDataForPDF = () => {
       const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaCreacion);
+        const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
         return {
-          'Número de expediente': row.IdExpediente,
+          'N°': row.IdExpediente,
           'Cliente': row.Cliente,
-          'Fecha de creación': row.fechaCreacion,
-          'Creado por': row.CreadoPor,
+          'Fecha de creación': fechaCreacion,
+          'Empleado': row.CreadoPor,
         };
       });
       return formattedData;
     };
 
-    const dataForPDF = formatDataForPDF();
-    const documento = new jsPDF();
-    const columns = Object.keys(dataForPDF[0]);
-    const rows = dataForPDF.map((row) => Object.values(row));
+    urlPDF = 'Report_Expediente.pdf';
+    const subTitulo = "LISTA DE EXPEDIENTES"
 
-    documento.autoTable({
-      head: [columns],
-      body: rows,
-    });
-
-    documento.save('reporte_expedientes.pdf');
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
   };
   
-  ///////// 
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>

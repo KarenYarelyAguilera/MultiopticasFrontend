@@ -21,6 +21,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 import { WorkWeek } from 'react-big-calendar';
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -43,37 +44,33 @@ export const ListaClientes = (props) => {
     }).catch(error => console.log(error))
   }, [cambio]);
 
-
-    //IMPRIMIR PDF
-    const handleGenerarReporte = () => {
-      const formatDataForPDF = () => {
-        const formattedData = tableData.map((row) => {
-          return {
-            'IDCliente':row.idCliente,
-            'Nombre':row.nombre, 
-            'apellido':row.apellido,
-            'Genero':row.genero,
-            'Fecha Nacimiento':row.fechaNacimiento,
-            'Direccion':row.direccion,
-            'Telefono':row.Telefono,
-            'Email':row.Email,
-          };
-        });
-        return formattedData;
-      };
-  
-      const dataForPDF = formatDataForPDF();
-      const documento = new jsPDF();
-      const columns = Object.keys(dataForPDF[0]);
-      const rows = dataForPDF.map((row) => Object.values(row));
-  
-      documento.autoTable({
-        head: [columns],
-        body: rows,
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'Identidad':row.idCliente,
+                                'Nombre':row.nombre, 
+                                'Apellido':row.apellido,
+                                'Genero':row.genero,
+                                'Fecha Nacimiento': fechaNacimiento,
+                                'Direccion':row.direccion,
+                                'Telefono':row.Telefono,
+                                'Email':row.Email,
+                              };
       });
-  
-      documento.save('reporte_clientes.pdf');
+      return formattedData;
     };
+
+    const urlPDF = 'Report_Clientes.pdf';
+    const subTitulo = "LISTA DE CLIENTES"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
     
     /////////
 
