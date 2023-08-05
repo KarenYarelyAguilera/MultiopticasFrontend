@@ -53,8 +53,8 @@ export const ListaModelos = ({props,data,update}) => {
 
   const columns = [
     { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
-    { field: 'IdMarca', headerName: 'Marca', width: 200 },
-    { field: 'detalle', headerName: 'Modelo', width: 190},
+    { field: 'Marca', headerName: 'Marca', width: 200 },
+    { field: 'Modelo', headerName: 'Modelo', width: 190},
     { field: 'anio', headerName: 'Año', width: 190 },
 
     {
