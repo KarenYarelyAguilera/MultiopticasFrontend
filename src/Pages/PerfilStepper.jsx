@@ -1,6 +1,5 @@
 import { PageOne } from '../Components/Perfil/PageOne/PageOne';
 import { PageTwo } from '../Components/Perfil/PageTwo/PageTwo';
-
 // import "./App.css";
 import React, { useState } from 'react';
 import { MultiProgressPerfil } from '../Components/MultiStepProgressBar/MultiProgressPerfil';

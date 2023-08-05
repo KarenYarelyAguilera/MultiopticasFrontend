@@ -43,13 +43,8 @@ const navegate = useNavigate();
       let DistanciaPupilarOjoIzquierdo= document.getElementById('DistanciapupilarOI').value;
       let EnfermedadPresentada = document.getElementById('Enfermedadpresentada').value;
 
-    let data = {
-       //IdExpedienteDetalle 
-      //IdExpediente 
+    let data = { 
       diagnostico:EnfermedadPresentada,
-      //Optometrista
-      //AsesorVenta
-      //Antecedentes
       ODEsfera:EsferaOjoDerecho,
       OIEsfera:EsferaOjoIzquierdo,
       ODCilindro:CilindroOjoDerecho,
@@ -62,8 +57,6 @@ const navegate = useNavigate();
       OIAltura:AlturaOjoIzquierdo,
       ODDistanciaPupilar:DistanciaPupilarOjoDerecho,
       OIDistanciaPupilar:DistanciaPupilarOjoIzquierdo,
-      //fechaConsulta
-     // fechaExpiracion
     }
     data = {...props.data,...data}
     console.log(data);

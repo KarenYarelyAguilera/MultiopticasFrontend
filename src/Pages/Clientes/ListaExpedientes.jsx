@@ -93,6 +93,7 @@ export const ListaExpedientes = (props) => {
     { field: 'Cliente', headerName: 'Cliente', width: 300 },
     { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
     { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
+    {field: 'TotalRegistros', headerName: 'Total Historial Clinico', width: 300 },
     {
 
       field: 'borrar',
@@ -130,6 +131,7 @@ export const ListaExpedientes = (props) => {
       id:expediente.IdExpediente,
       idCliente:expediente.Cliente
     }
+  
     console.log(expediente);
      props.data(data)
      navegate('/menuClientes/DatosExpediente');
