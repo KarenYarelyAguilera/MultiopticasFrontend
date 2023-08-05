@@ -18,12 +18,13 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaPais = () => {
+export const ListaPais = ({props,data,update}) => {
 
-  const [cambio, setcambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlPais = 'http://localhost:3000/api/Paises';
+  const urlPais = 'http://localhost:3000/api/paises';
+  const urlDelPais = 'http://localhost:3000/api/pais/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,111 +46,89 @@ export const ListaPais = () => {
     { field: 'IdPais', headerName: 'ID País', width: 600 },
     { field: 'Pais', headerName: 'País', width: 600 },
 
-    // {
-    //   field: 'borrar',
-    //   headerName: 'Acciones',
-    //   width: 200,
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190,
 
-    //   renderCell: params => (
-    //     <div className="contActions">
-    //       <Button
-    //         className="btnEdit"
-    //         onClick={() => handleUpdt(params.row.IdMarca)}
-    //       >
-    //         <EditIcon></EditIcon>
-    //       </Button>
-    //       <Button
-    //         className="btnDelete"
-    //        onClick={() => handleDel(params.row.IdMarca)}
-    //       >
-    //         <DeleteForeverIcon></DeleteForeverIcon>
-    //       </Button>
-    //     </div>
-    //   ),
-    // },
+      renderCell: params => (
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+            <EditIcon></EditIcon>
+          </Button>
+          <Button
+            className="btnDelete"
+            onClick={() => handleDel(params.row.IdPais)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+        </div>
+      ),
+    },
   ];
 
-  // function handleUpdt(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Datos a actualizar</div>
-  //         <div className="contEditModal">
-  //           <div className="contInput">
-  //             <TextCustom text="Marca" className="titleInput" />
-  //             <input
-  //               type="text"
-  //               id="marca"
-  //               className="inputCustom"
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Cancelar","Actualizar"]
-  //   }).then((op) => {
+  //FUNCION DE ACTUALIZAR 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: ( 
+        <div  
+         className="logoModal">  ¿Desea actualizar este País: {id.Pais}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+          update(true)
+      navegate('/config/RegistroPais')
+      break;
+      default:
+      break;
+      }
+    });
+  };
 
-  //     switch (op) {
-  //       case true:
-  //         let data = {
-  //           IdMarca: id,
-  //           descripcion: document.getElementById("marca").value,
-  //         };
+//FUNCION DE ELIMINAR 
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea elimiar este país?</div>
+          <div className="contEditModal">
+          </div>
+        </div>
+      ),
+        buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+      },
+    }).then(async(op) => {
+
+      switch (op) {
+        case null:
+          
+          let data = {
+            IdPais: id
+          };
+          console.log(data);
     
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlUpdateMarca, data)) {
-  //           swal(<h1>Marca Actualizada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
-
-  // }
-
-  // function handleDel(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
-  //         <div className="contEditModal">
-            
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Eliminar","Cancelar"]
-  //   }).then((op) => {
-
-  //     switch (op) {
-  //       case null:
-  //         let data = {
-  //           IdMarca: id
-  //         };
-    
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlDelMarca, data)) {
-  //           swal(<h1>Marca Eliminada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
-
-  // }
-
-
+          await axios .delete(urlDelPais,{data}) .then(response => {
+            swal('País eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal("Error al eliminar el país , asegúrese que no tenga relación con otros datos.", '', 'error');
+          });
+          break;
+          default:
+          break;
+      }
+    });
+  };
 
   const handleBack = () => {
     navegate('/config');
@@ -184,7 +163,7 @@ export const ListaPais = () => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            {/* <Button
+            <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/RegistroPais');
@@ -192,7 +171,7 @@ export const ListaPais = () => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
-            </Button> */}
+            </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte

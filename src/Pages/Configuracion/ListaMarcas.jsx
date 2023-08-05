@@ -103,7 +103,7 @@ export const ListaMarcas = ({props,data,update}) => {
             setCambio(cambio+1)
           }).catch(error=>{
             console.log(error);
-            swal("Error al eliminar la marca","","error")
+            swal("Error al eliminar la marca, asegúrese que no tenga relación con otros datos.","","error")
           })
          
         break;

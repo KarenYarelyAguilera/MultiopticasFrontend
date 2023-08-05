@@ -36,7 +36,6 @@ export const ListaModelos = ({props,data,update}) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
- //Pa' cargar los proveedores
  useEffect(() => {
   axios.get(urlModelos).then(response=>setTableData(response.data))
 }, [cambio]);
@@ -53,8 +52,8 @@ export const ListaModelos = ({props,data,update}) => {
 
   const columns = [
     { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
-    { field: 'IdMarca', headerName: 'Marca', width: 200 },
-    { field: 'detalle', headerName: 'Modelo', width: 190},
+    { field: 'Marca', headerName: 'Marca', width: 200 },
+    { field: 'Modelo', headerName: 'Modelo', width: 190},
     { field: 'anio', headerName: 'Año', width: 190 },
 
     {
@@ -84,7 +83,7 @@ function handleDel(id) {
   swal({
     content: (
       <div>
-        <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
+        <div className="logoModal">¿Desea eliminar este modelo?</div>
         <div className="contEditModal"> 
         </div>
       </div>
@@ -108,7 +107,7 @@ function handleDel(id) {
             setCambio(cambio + 1);
           }).catch(error => {
             console.log(error);
-            swal('Error al eliminar el modelo', '', 'error');
+            swal('Error al eliminar el modelo, asegúrese que no tenga relación con otros datos', '', 'error');
           });
 
         break;
@@ -127,7 +126,7 @@ function handleDel(id) {
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el modelo?: {id.IdMarca} ?
+          ¿Desea actualizar este modelo: {id.Marca}?
         </div>
       ),
     }).then((op)  => {

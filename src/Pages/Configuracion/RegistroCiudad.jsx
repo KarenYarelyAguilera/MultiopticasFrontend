@@ -16,49 +16,60 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+const urlInsertCiudad = 'http://localhost:3000/api/ciudad/crear';
+const urlUpdateCiudad= 'http://localhost:3000/api/ciudad/actualizar';
 
-export const RegistroCiudad = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
+export const RegistroCiudad = (props) => {
   
-
-
-
   const navegate = useNavigate();
 
-  const [marca, setmarca] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
-
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
-
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+  const [ciudad, setCiudad] = React.useState('');
+  const [errorCiudad, setErrorCiudad] = React.useState(false);
+  const [aviso, setAviso] = React.useState(false);
+   
+ 
+  const handleNext = async () => {
+    let ciudad = document.getElementById("ciudad").value;
+   
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
+      ciudad:ciudad,
     }
+
+    //Consumo de API y lanzamiento se alerta
+  axios.post(urlInsertCiudad, data).then(response => {
+    swal('Ciudad agregada con exito', '', 'success').then(result => {
+      navegate('/config/ListaCiudad');
+    });
+  }).catch(error => {
+    console.log(error);
+    swal('Error al crear la ciudad, por favor revise los campos.', '', 'error')
+ 
+  })
+  };
+//ACTUALIZAR 
+
+  const actualizarCiudad = async () => {
+    let ciudad = document.getElementById("ciudad").value;
+   
+    const data = {
+      ciudad:ciudad,
+      IdCiudad:props.data.IdCiudad, 
+    };
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
-      });
-    }
+    //Consumo de API y lanzamiento se alerta
+  axios.put(urlUpdateCiudad, data).then(response => {
+    swal('Ciudad actualizada con exito', '', 'success').then(result => {
+      navegate('/config/ListaCiudad');
+    })
+  }).catch(error => {
+    console.log(error);
+    swal('Error al crear la ciudad, porfavor revise los campos.', '', 'error')
+ 
+  })
   };
 
   const handleBack = () => {
@@ -71,7 +82,7 @@ export const RegistroCiudad = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro De Ciudad</h2>
+      {props.actualizar ? <h2>Actualizar Ciudad</h2> : <h2>Registro de Ciudad</h2>}
         <h3>
           Complete todos los puntos para poder registrar las ciudades.
         </h3>
@@ -80,30 +91,68 @@ export const RegistroCiudad = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             
-
             <div className="contInput">
-
               <TextCustom text="Ciudad" className="titleInput" />
-
               <input
-               
+
+               onKeyDown={e => 
+                {
+                setCiudad(e.target.value);
+                if (e.target.value === '') 
+                {
+                  setErrorCiudad(true);
+                  setAviso('Los campos no deben estar vacíos');
+                } else 
+                {
+                  setErrorCiudad(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value))
+                   {
+                    setErrorCiudad(true);
+                    setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  {
+                    setErrorCiudad(true);
+                    setAviso('No se permiten letras consecutivas repetidas');
+                  } else 
+                  {
+                    setErrorCiudad(false);
+                    setAviso('');
+                  }
+                }
+              }}
+
+                error={errorCiudad}
                 type="text"
+                helperText={aviso}
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Ciudad"
-                id="Ciudad"
+                id="ciudad"
               />
-               {/* <p class="error">{aviso}</p> */}
+              <p className="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={()=>
+                  {
+                    var ciudad = document.getElementById("ciudad").value;
+
+                    if (ciudad ==="")
+                    {
+                      swal ("No deje campos vacíos.", "", "error");
+                    }
+
+                    props.actualizar ? actualizarCiudad() : handleNext();
+
+                  }
+                }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

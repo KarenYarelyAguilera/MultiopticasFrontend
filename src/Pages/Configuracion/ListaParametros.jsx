@@ -14,23 +14,23 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
 
-export const ListaParametros = () => {
+export const ListaParametros = ({props,data,update}) => {
 
+  const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
   
-  const urlParametros ='http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=parametros';
+  const urlParametros ='http://localhost:3000/api/parametros';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
 
   useEffect(() => {
-
-    fetch(urlParametros)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, []);
+    axios.get(urlParametros).then(response=>setTableData(response.data))
+  }, [cambio]);
 
   const navegate = useNavigate();
 

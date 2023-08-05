@@ -40,19 +40,22 @@ export const RegistroSucursal = (props) => {
   const [aviso, setaviso] = React.useState(false);
 
   const [ciudad, setciudad] = React.useState('');
-  const [mensaje, setmensaje] = React.useState('');
+ // const [mensaje, setmensaje] = React.useState('');
   const [errorciudad, setErrorciudad] = React.useState(false);
 
   const [direccion, setdireccion] = React.useState('');
-  const [advertencia, setadvertencia] = React.useState('');
+  const [mensaje, setmensaje] = React.useState('');
   const [errordireccion, setErrordireccion] = React.useState(false);
 
   const [descrpcion, setdescripcion] = useState('');
   const [msj, setmsj] = useState('');
   const [errordescripcion, setErrordescripcion] = useState(false);
 
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
+  const [errorTelefono, setErrorTelefono] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
+
+  const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
+
 
   useEffect(() => {
     fetch(urlDepartamentos)
@@ -185,33 +188,80 @@ export const RegistroSucursal = (props) => {
 
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
-
               <input
+                onKeyDown={e=>
+                  {
+                    setdireccion(e.target.value);
+                    if(e.target.value==="")
+                    {
+                      setErrordireccion(true);
+                      setmensaje("Los campos no deben de quedar vacíos");
+                    } else{
+                      setErrordireccion(false);
+                      var regex =  /^[A-Z]+(?: [A-Z]+)*$/;
+                      if(!regex.test(e.target.value))
+                      {
+                        setErrordireccion(true);
+                        setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
+                      } else if (/(.)\1{2,}/.test(e.target.value))
+                      {
+                        setErrordireccion(true);
+                        setmensaje("No se permiten letras consecutivas repetidas");
+                      } else{
+                        setErrordireccion(false);
+                        setmensaje("");
+                      }
+                    }
+                  }
+                }
 
+                error= {errorTelefono}
                 type="text"
                 name=""
+                helperText={mensaje}
                 maxLength={50}
                 className="inputCustom"
-
                 placeholder="direccion"
                 id="direccion"
               />
-
+              {<p className="error">{mensaje}</p>}
             </div>
 
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
-
               <input
+                onChange={e=> setTelefono (e.target.value)}
+                onKeyDown={(e)=>
+                {
+                  setTelefono(e.target.value);
+                  if (e.target.value === '')
+                  {
+                    setTexto('Los campos no deben estar vacíos');
+                    setErrorTelefono(true);
+                  }else{
+                    setErrorTelefono(false);
+                    var preg_match = /^[0-9]+$/;
+                    if(!preg_match.test(e.target.value))
+                    {
+                      setErrorTelefono(true);
+                      setTexto('Solo deben ingresar números');
+                    }else{
+                      setErrorTelefono(false);
+                      setTexto('');
+                    }
+                  }
+                }}
 
-                type="text"
+                error= {errorTelefono}
+                type="phone"
                 name=""
+                helperText={texto}
                 maxLength={13}
                 className="inputCustom"
-
                 placeholder="telefono"
                 id="telefono"
               />
+               {<p className="error">{texto}</p>}
             </div>
 
 
