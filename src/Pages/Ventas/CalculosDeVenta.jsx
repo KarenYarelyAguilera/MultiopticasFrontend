@@ -15,7 +15,7 @@ import swal from '@sweetalert/with-react';
 
 const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
 
-export const NuevaVenta = ({
+export const CalculosDeVenta = ({
   msgError = '',
   success = false,
   warning = false,
@@ -36,12 +36,12 @@ export const NuevaVenta = ({
       
     }
 
-    navegate('/menuVentas/DetalleVenta');
+    navegate('/menuVentas/CalculosDeVenta');
 
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/DetallesDeVenta');
   };
 
   return (
@@ -50,83 +50,93 @@ export const NuevaVenta = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Nueva Venta</h2>
+        <h2>Calculos de Venta</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Nueva Venta.
+          Complete todos los puntos para poder registrar los datos de Calculos de Venta.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-          <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
-            
             <div className="contInput">
-              <TextCustom text="Fecha Actual" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Actual"
-                id="FechaActual"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-              <select name="" className="selectCustom" id="Empleado">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
-
-
-            <div className="contInput">
-              <TextCustom text="Fecha de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Entrega"
-                id="fechaEntrega"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Fecha Limite de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Limite de Entrega"
-                id="fechaLimite"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="RTN" className="titleInput" />
+              <TextCustom text="Precio de Aro" className="titleInput" />
 
               <input
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                placeholder="RTN"
-                id="RTN"
+                placeholder="Precio de Aro"
+                id="Precio de Aro"
               />
             </div>
 
-            
+            <div className="contInput">
+              <TextCustom text="Subtotal" className="titleInput" />
 
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Subtotal"
+                id="Subtotal"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Precio de Lente" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Precio de Lente"
+                id="Precio de Lente"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Descuentos" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Descuentos"
+                id="Descuentos"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Cantidad" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Cantidad"
+                id="Cantidad"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Total" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Total"
+                id="Total"
+              />
+            </div>
+            
             <div className="contBtnStepper">
               <Button
                 variant="contained"
