@@ -24,6 +24,8 @@ export const ListaPreguntas = (props) => {
 /*   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]); */
 
+
+
  
 //--------------------URL DE BITACORA--------------------
 const urlDelBitacora = 
@@ -43,20 +45,23 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
   const [searchTerm, setSearchTerm] = useState('');
 
   const [Preguntas, setPreguntas] = useState([]);
+  
+  //parametros
+  const [Parametro, setParametro] = useState('');
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+ /*  useEffect(() => {
+    axios.get(urlParametro).then(response => {
+      setParametro(response.data)
+      console.log(response.data);
+    })
+      .catch(error => console.log(error));
+  }, []);
+ */
+
 
 
   const navegate = useNavigate();
 
- /*  const [Nombre, setNombre] = useState('');
-  const [errorNombre, setErrorNombre] = useState(false);
-  const [Msj, setMsj] = useState(false);
-
-  const [Apellido, setApellido] = useState('');
-  const [errorApellido, setErrorApellido] = useState(false);
-  const [aviso, setAviso] = useState(false);
-
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false); */
 
   const dataId = {
     Id_Usuario:props.idUsuario,
@@ -78,9 +83,9 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
 
   const columns = [
     //son los de la base no los de node
-    { field: 'Id_Pregunta', headerName: 'Id_Pregunta', width: 150 },
-    { field: 'Pregunta', headerName: 'Preguntas', width: 350 },
-    { field: 'Respuesta', headerName: 'Respuestas', width: 250,
+    { field: 'Id_Pregunta', headerName: 'Id_Pregunta', width: 100, headerAlign: 'center' },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 350, headerAlign: 'center' },
+    { field: 'Respuesta', headerName: 'Respuestas', width: 250,  headerAlign: 'center',
       valueGetter: (params) => {
         // Obtener la respuesta original
         const originalRespuesta = params.row.Respuesta;
@@ -94,14 +99,14 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260,
+      width: 100,  headerAlign: 'center',
 
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          {/* <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
-          </Button>
+          </Button> */}
           <Button
             className="btnDelete" onClick={() => handleDel(params.row.Id_Pregunta)}
           >
@@ -117,7 +122,7 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea Eliminar esta Respuesta? </div>
+          <div className="logoModal">¿Desea Eliminar esta Pregunta? </div>
           <div className="contEditModal"></div>
         </div>
       ),
@@ -132,12 +137,12 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
           console.log(data);
 
           await axios.delete(urlDelRespuesta, { data }).then(response => {
-              swal('Respuesta eliminada correctamente', '', 'success');
+              swal('Pregunta eliminada correctamente', '', 'success');
               setCambio(cambio + 1);
             })
             .catch(error => {
               console.log(error);
-              swal('Error al eliminar respuesta', '', 'error');
+              swal('Error al eliminar pregunta', '', 'error');
             });
 
           break;
@@ -192,84 +197,29 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
 
 
 
-/*   function handleUpdt(id) {
-
-    console.log(id);
-    
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <TextCustom text="Pregunta:" className="titleInput" />
-            <input
-              type="text"
-              id="Preguntas"
-              className='inputCustom'
-              placeholder="Pregunta"
-              value={id.Pregunta}
-            />
-          </div>
-  
-          <div className='contInput'>
-            <TextCustom text="Respuesta:" className="titleInput" />
-            <input
-              maxLength="20"
-              type="text"
-              name=""
-              className="inputCustom"
-              placeholder="Respuesta"
-              id='respuestap'
-              value={columns.Respuesta}
-            />
-          </div>
-        
-          
-        </div>
-      </div>
-    ).then( async() => {
-  
-      let Pregunta = document.getElementById('Preguntas').value
-      let Respuesta = document.getElementById('respuestap').value
-      
-  
-  
-      let data = {
-        Pregunta:Pregunta,
-        Respuesta: Respuesta,
-        Id_Pregunta: id,
-      };
-
-
-      let dataId = {
-        Id_Pregunta: id,
-      };
-  
-   
-       await axios.get(urlPregunta,dataId).then(response => {
-          setPreguntas(response.data);
-          console.log(response.data);
-        }).catch(error => console.log(error))
-     
-  
-
-
-  
-  
-    });
-  
-  }
- */
-
-
-
-
   const handleBack = () => {
     navegate('/config/perfil');
   };
 
+
+  const handleClick = async () => {
+
+     axios.post(urlParametro).then(response => {
+         setParametro(response.data)
+        console.log(response.data); 
+        if (setParametro===setTableData){
+          swal("Ya no puede agregar mas pregunatas", "", "error")
+        }else{
+          navegate('/preguntasPerfil')
+        }
+
+      });
+      
+  };
+
+
   return (
-    <div className="ContUsuarios">
+    <div className="ContProfile">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
@@ -278,9 +228,9 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
       <div
         style={{
           height: 400,
-          width: '85%',
+          width: '80%',
           position: 'relative',
-          left: '130px',
+          left: '190px',
         }}
       >
         <div className="contFilter">
@@ -299,17 +249,11 @@ const urlPregunta = 'http://localhost:3000/api/pregunta';
           <div className="btnActionsNewReport">
             <Button 
               className="btnCreate"
-              onClick={() => {
-                navegate('/preguntasPerfil');
-              }}
+              onClick={handleClick}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            {/* <Button className="btnReport">
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
-            </Button> */}
           </div>
         </div>
         <DataGrid

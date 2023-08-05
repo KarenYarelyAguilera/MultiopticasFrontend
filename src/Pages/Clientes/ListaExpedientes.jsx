@@ -1,10 +1,14 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -19,25 +23,51 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaExpedientes = (props) => {
 
   const [cambio, setCambio] = useState(0);
-
   const urlExpedientes = 'http://localhost:3000/api/Expediente';
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [pdfData, setPdfData] = useState([]);
+  
+  let [formatDataForPDF, setFormatDataForPDF] = useState();
+  let [urlPDF, seturlPDF] = useState('');
 
   useEffect(() => {
     axios.get(urlExpedientes).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+  
+  
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaCreacion);
+        const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+        return {
+          'N°': row.IdExpediente,
+          'Cliente': row.Cliente,
+          'Fecha de creación': fechaCreacion,
+          'Empleado': row.CreadoPor,
+        };
+      });
+      return formattedData;
+    };
 
+    urlPDF = 'Report_Expediente.pdf';
+    const subTitulo = "LISTA DE EXPEDIENTES"
 
-
-
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
+  
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -63,6 +93,7 @@ export const ListaExpedientes = (props) => {
     { field: 'Cliente', headerName: 'Cliente', width: 300 },
     { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
     { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
+    {field: 'TotalRegistros', headerName: 'Total Historial Clinico', width: 300 },
     {
 
       field: 'borrar',
@@ -100,6 +131,7 @@ export const ListaExpedientes = (props) => {
       id:expediente.IdExpediente,
       idCliente:expediente.Cliente
     }
+  
     console.log(expediente);
      props.data(data)
      navegate('/menuClientes/DatosExpediente');
@@ -107,6 +139,10 @@ export const ListaExpedientes = (props) => {
 
   const handleBack = () => {
     navegate('/menuClientes');
+  };
+
+  const handleCloseDialog = () => {
+    setShowPdfDialog(false);
   };
 
   return (
@@ -145,9 +181,11 @@ export const ListaExpedientes = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Expediente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

@@ -1,4 +1,5 @@
-
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
 import { useState, useEffect } from 'react';
@@ -19,6 +20,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { WorkWeek } from 'react-big-calendar';
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -40,6 +43,36 @@ export const ListaClientes = (props) => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'Identidad':row.idCliente,
+                                'Nombre':row.nombre, 
+                                'Apellido':row.apellido,
+                                'Genero':row.genero,
+                                'Fecha Nacimiento': fechaNacimiento,
+                                'Direccion':row.direccion,
+                                'Telefono':row.Telefono,
+                                'Email':row.Email,
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Clientes.pdf';
+    const subTitulo = "LISTA DE CLIENTES"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
+    
+    /////////
 
   const navegate = useNavigate();
 
@@ -63,7 +96,7 @@ export const ListaClientes = (props) => {
     { field: 'nombre', headerName: 'Nombre', width: 165 },
     { field: 'apellido', headerName: 'Apellido', width: 165 },
     { field: 'genero', headerName: 'Genero', width: 165 },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 165 },
+    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 },
     { field: 'direccion', headerName: 'Direccion', width: 165 },
     { field: 'Telefono', headerName: 'Telefono', width: 165 },
     { field: 'Email', headerName: 'Correo Electronico', width: 165 },
@@ -276,9 +309,12 @@ export const ListaClientes = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
+              
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

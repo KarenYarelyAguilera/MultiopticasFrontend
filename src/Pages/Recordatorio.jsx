@@ -79,6 +79,7 @@ export const Recordatorio = (props) => {
 
   const urlGetCitas = 'http://localhost:3000/api/recordatorios';
   const urlGetCita = 'http://localhost:3000/api/recordatorio';
+  const urlDelCita = 'http://localhost:3000/api/eliminarCita'
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
@@ -91,7 +92,7 @@ export const Recordatorio = (props) => {
   };
 
 
- 
+
 
 
   const objectDate = new Date();
@@ -128,54 +129,56 @@ export const Recordatorio = (props) => {
   }, [cambio]);
 
   const filteredData = tableData.filter(row =>
-    Object.values(row.fecha).some(
+    Object.values(row).some(
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
- 
-
-   // Función para manejar el cambio en el input de fecha
-/*    const handleDateChange = (event) => {
-    setSelectedDate(event.target.value); // Actualizar el estado con la fecha seleccionada
-  };
 
 
-  const filteredData = tableData.filter(row => {
-    // Asegurarse de que la columna "fecha" esté en formato ISO 8601 ("YYYY-MM-DD")
-    const rowDate = row.fecha ? row.fecha.slice(0, 10) : '';
-    return (
-      rowDate &&
-      rowDate === selectedDate // Comparar si la fecha de la fila coincide con la fecha seleccionada
-    );
-  }); */
+  // Función para manejar el cambio en el input de fecha
+  /*    const handleDateChange = (event) => {
+      setSelectedDate(event.target.value); // Actualizar el estado con la fecha seleccionada
+    };
+  
+  
+    const filteredData = tableData.filter(row => {
+      // Asegurarse de que la columna "fecha" esté en formato ISO 8601 ("YYYY-MM-DD")
+      const rowDate = row.fecha ? row.fecha.slice(0, 10) : '';
+      return (
+        rowDate &&
+        rowDate === selectedDate // Comparar si la fecha de la fila coincide con la fecha seleccionada
+      );
+    }); */
 
 
 
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdCliente', headerName: 'ID', width: 100 },
-    { field: 'nombre', headerName: 'Nombre', width: 100 },
-    { field: 'Nota', headerName: 'Nota', width: 150 },
-    { field: 'fecha', headerName: 'Fecha', width: 200 },
+    { field: 'IdRecordatorio', headerName: 'No.', width: 50, headerAlign: 'center' },
+    { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
+    { field: 'Nota', headerName: 'Nota', width: 290, headerAlign: 'center' },
+    { field: 'fecha', headerName: 'Fecha', width: 90, headerAlign: 'center' },
 
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260,
+      width: 190, headerAlign: 'center',
 
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row.fecha)}>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.fecha)}
+            onClick={() => handleDel(params.row.IdRecordatorio)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -189,7 +192,7 @@ export const Recordatorio = (props) => {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea Eliminar esta Respuesta? </div>
+          <div className="logoModal">¿Desea Eliminar esta cita? </div>
           <div className="contEditModal"></div>
         </div>
       ),
@@ -199,18 +202,18 @@ export const Recordatorio = (props) => {
         case null:
 
           let data = {
-            Id_Pregunta: id,
+            IdRecordatorio: id,
           };
           console.log(data);
 
-          /* await axios.delete(urlDelRespuesta, { data }).then(response => {
-              swal('Respuesta eliminada correctamente', '', 'success');
-              setCambio(cambio + 1);
-            })
+          await axios.delete(urlDelCita, { data }).then(response => {
+            swal('Cita eliminada correctamente', '', 'success');
+            setCambio(cambio + 1);
+          })
             .catch(error => {
               console.log(error);
-              swal('Error al eliminar respuesta', '', 'error');
-            }); */
+              swal('Error al eliminar cita', '', 'error');
+            });
 
           break;
 
@@ -229,8 +232,14 @@ export const Recordatorio = (props) => {
     }; */
 
     props.data({
-      Id_Pregunta: id,
+      IdRecordatorio: id.IdRecordatorio,
+      nombre: id.nombre,
+      fecha: id.fecha,
+      Nota: id.Nota,
     })
+
+
+
 
 
     swal({
@@ -240,7 +249,7 @@ export const Recordatorio = (props) => {
       },
       content: (
         <div className="logoModal">
-          ¿Desea modificar esta pregunta: ? {id.Id_Pregunta}
+          ¿Desea modificar esta cita: {id.nombre} ?
         </div>
       ),
     }).then(op => {
@@ -248,14 +257,17 @@ export const Recordatorio = (props) => {
         case 'update':
 
           let data = {
-            Id_Pregunta: id,
+            IdRecordatorio: id.IdRecordatorio,
+            nombre: id.nombre,
+
+
           };
           console.log(data)
 
           props.data(id)
           props.update(true)
 
-          navegate("/");
+          navegate("/recordatorioCitasEditar");
       }
     });
   }
@@ -263,125 +275,51 @@ export const Recordatorio = (props) => {
 
 
 
-  /*  const citas = [
-     {
-       paciente: "Kevin Lopez",
-       fecha: format1,
-     },
-     {
-       paciente: "Michael Sosa",
-       fecha: format1,
-     },
-     {
-       paciente: "Juan Perez",
-       fecha: format1,
-     }
-   ]; 
- */
-  //const proximasCitas = [
-  // {
-  //   paciente: "Manuel Gonzales",
-  //   fecha: format1,
-  // },
-  // {
-  //   paciente: "Juan Lopez",
-  //   fecha: format1,
-  // },
-  // {
-  //   paciente: "Ana Salgado",
-  //   fecha: format1,
-  // }
-  // ];
-
-  /*  const onSelectSlot = useCallback(slotInfo => {
-     swal(
-     <div>
-       <input
-         type="text"
-         placeholder="Add Title"
-         style={{ width: '20%', marginRight: '10px' }}
-         value={newEvent.title}
-         onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
-       />
-       <DatePicker
-         placeholderText="Start Date"
-         style={{ marginRight: '10px' }}
-         selected={newEvent.start}
-         onChange={start => setNewEvent({ ...newEvent, start })}
-       />
-       <DatePicker
-         placeholderText="End Date"
-         style={{ marginRight: '10px' }}
-         selected={newEvent.end}
-         onChange={end => setNewEvent({ ...newEvent, end })}
-       />
-     </div>
-     ).then(() => {
-       <button onClick={handleAddEvent}></button>
-     });
-   }, []); */
-
-
-
   return (
     <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}>
+      {/* <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
-      </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programasdas</h2>
+      </Button> */}
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programadas</h2>
 
       <div
         style={{
           height: 400,
-          width: '85%',
+          width: '80%',
           position: 'relative',
-          left: '130px',
+          left: '100px',
         }}>
+
         <div className="contFilter">
           {/* <div className="buscador"> */}
-         {/*  <SearchIcon
+          <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
-          /> */}
-
-           {/* Input de tipo "date" para seleccionar la fecha */}
-          {/*   <input type="date" value={selectedDate}  onChange={handleDateChange} /> */}
-          <input type="date" id="dateInput"></input>
-
-
-          {/* <DatePicker
+          />
+          <input
             type="text"
             className="inputSearch"
-            placeholderText="Buscar por fecha"
-            id="fecha"
+            placeholder="Buscar"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
-          /> */}
-        
-          {/* <input
-          type="text"
-          className="inputSearch"
-          placeholder="Buscar"
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          /> */}
-
-
+          />
           {/* </div> */}
           <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
-              onClick={() => {
-                navegate('/recordatorioCitas');
-              }}
+              onClick={() => { navegate('/recordatorioCitas'); }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-
-          </div>  
+            <Button className="btnReport">
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              Generar reporte
+            </Button>
+          </div>
         </div>
+
         <DataGrid
-          getRowId={tableData => tableData.fecha}//este id me permite traer la lista
+          getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
           columns={columns}
@@ -390,7 +328,7 @@ export const Recordatorio = (props) => {
           rowsPerPageOptions={[5]}
         />
       </div>
-     
+
     </div>
   );
 };

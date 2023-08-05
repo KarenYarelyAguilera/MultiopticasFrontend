@@ -51,7 +51,7 @@ const events = [
   },
 ];
 
-export const RecordatorioCitas = () => {
+export const RecordatorioCitas = (props) => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
   const navegate = useNavigate();
@@ -60,7 +60,7 @@ export const RecordatorioCitas = () => {
   const [tableData, setTableData] = useState([]);
 
 
-  const urlCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
+  const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
   const urlClientes = 'http://localhost:3000/api/clientes';
   
 
@@ -88,43 +88,12 @@ export const RecordatorioCitas = () => {
   let format1 = month + "/" + day + "/" + year;
 
 
-  // const onSelectSlot = useCallback(slotInfo => {
-  //   swal(
-  //   <div>
-  //     <input
-  //       type="text"
-  //       placeholder="Add Title"
-  //       style={{ width: '20%', marginRight: '10px' }}
-  //       value={newEvent.title}
-  //       onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
-  //     />
-  //     <DatePicker
-  //       placeholderText="Start Date"
-  //       style={{ marginRight: '10px' }}
-  //       selected={newEvent.start}
-  //       onChange={start => setNewEvent({ ...newEvent, start })}
-  //     />
-  //     <DatePicker
-  //       placeholderText="End Date"
-  //       style={{ marginRight: '10px' }}
-  //       selected={newEvent.end}
-  //       onChange={end => setNewEvent({ ...newEvent, end })}
-  //     />
-  //   </div>
-  //   ).then(() => {z
-  //     <button onClick={handleAddEvent}>
-  //     </button>
-  //   }
-  //   );
-  // }, []);
-
-
 
 
   const handleClick = async () => {
 
 
-    let idCliente = parseInt(document.getElementById('idClientes').value);
+    let idCliente = document.getElementById('idClientes').value;
     let Nota = document.getElementById('nota').value;
     let fecha = document.getElementById('fecha').value
 
@@ -132,24 +101,28 @@ export const RecordatorioCitas = () => {
 
 
     let data = {
-      // IdRecordatorio:IdRecordatorio,
+      //IdRecordatorio:props.data.IdRecordatorio,
       IdCliente: idCliente,
-      Nota: Nota,
+      Nota: Nota.toUpperCase(),
       fecha: fecha,
 
     };
 
+    let dataB = {
+      Id: props.data.IdRecordatorio
+    }
 
-    //console.log(data);
 
-    await axios.post(urlCitas, data).then(response => {
+    console.log(data);
+
+    await axios.post(urlPostCitas, data).then(response => {
       swal('Cita agregado con éxito', '', 'success').then(result => {
         navegate('/recordatorio');
       });
 
     }).catch(error => {
       console.log(error);
-      swal("Error al agendar cita.", "", "error")
+      swal("Error al agregar cita.", "", "error")
 
     });
     return navegate('/recordatorio');
@@ -158,9 +131,9 @@ export const RecordatorioCitas = () => {
 
   return (
     <div className='ContUsuarios'>
-      <Button className="btnBack" style={{ top: "-50px" }} onClick={handleBack}>
+      {/* <Button className="btnBack" style={{ top: "-50px" }} onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
-      </Button>
+      </Button> */}
       <div className="contRecordatorios">
         <div className="contRecordCitas">
           <div className="cardCitas">
@@ -199,7 +172,7 @@ export const RecordatorioCitas = () => {
                   id="fecha"
                 /> */}
 
-                <input type="date"  id="fecha" ></input>
+                <input type="date" className="inputCustom" id="fecha" ></input>
               </div>
 
 
