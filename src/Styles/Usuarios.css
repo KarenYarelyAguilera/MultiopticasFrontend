@@ -941,6 +941,12 @@ button {
   color: white !important;
 }
 
+.btnImprimirExp{
+  background-color:tomato !important;
+  border-radius: 25px !important;
+  color: white !important;
+}
+
 .btnAddExpe {
   background-color:tomato !important;
   border-radius: 25px !important;

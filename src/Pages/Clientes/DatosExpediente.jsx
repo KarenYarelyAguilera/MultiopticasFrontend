@@ -17,8 +17,10 @@ import swal from '@sweetalert/with-react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
+import Visibility from '@mui/icons-material/Visibility';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -98,14 +100,14 @@ export const DatosExpediente = ( props) => {
             className="btnEdit"
             onClick={() => handleUpdt(params.row)}
           >
-            <EditIcon></EditIcon>
+            <Visibility></Visibility>
           </Button>
 
           <Button
             className="btnImprimirExp"
             onClick={handlePrintModal}
           >
-            <AddIcon></AddIcon>
+            <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
           
         </div>

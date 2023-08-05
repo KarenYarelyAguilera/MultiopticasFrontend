@@ -87,7 +87,7 @@ export const NuevaVenta = ({
 
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-              <select name="" id="empleado">
+              <select className="selectCustom" name="" id="empleado">
 
               </select>
             </div>
