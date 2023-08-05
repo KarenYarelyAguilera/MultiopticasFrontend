@@ -86,6 +86,7 @@ import { RegistroPromMarca } from './Pages/Inventario/RegistroPromMarca.jsx';
 import { Progress } from './Pages/Seguridad/Progress.jsx';
 import { Registration } from './Pages/Seguridad/Registration.jsx';
 import { LoginxPrimeraVez } from './Pages/Login/LoginxPrimeraVez.jsx';
+import { PreguntasLoginxPV } from './Pages/Login/PreguntasLoginxPV.jsx';
 
 import { RegistroProducto2 } from './Pages/Inventario/RegistroProducto2.jsx';
 import { Perfil } from './Pages/Perfil.jsx';
@@ -263,12 +264,32 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <LoginxPrimeraVez
                 estado={activo}
                 id={idUsuario}
-              // activo={activo}
-              // user={usuario}
-              // mail={correo}
+                // activo={activo}
+                user={usuario}
+                // mail={correo}
+                infoPerfil={infoPerfil}
+
               />
             }
           ></Route>
+
+          <Route
+            path="/preguntasLoginxPV"
+            element={
+              <PreguntasLoginxPV
+              update={update}
+              data={Data} 
+              idUsuario={idUsuario} 
+              infoPerfil={infoPerfil}
+              user={usuario}
+
+              />
+            }
+          ></Route>
+
+
+
+
 
           <Route
             path="/perfilStepper"
@@ -297,7 +318,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     user={usuario}
                   />
                 </div>
-              </ProtectedRoute>
+             </ProtectedRoute>
             }
           ></Route>
 
@@ -1766,6 +1787,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario} 
                    // infoPerfil={infoPerfil}
                     user={usuario}
+                    //data={data}
+                    
                     ></RecordatorioCitas>
                 </div>
               </ProtectedRoute>
