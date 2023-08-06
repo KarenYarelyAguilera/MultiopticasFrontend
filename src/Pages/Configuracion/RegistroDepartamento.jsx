@@ -16,49 +16,57 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
+const urlInsertDepartamento = 'http://localhost:3000/api/departamento/crear';
+const urlUpdateDepartamento= 'http://localhost:3000/api/departamento/actualizar';
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+export const RegistroDepartamento = (props) => {
 
-export const RegistroDepartamento = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
+ const navegate = useNavigate();
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
+ const [departamento, setDepartamento] = React.useState('');
+ const [errorDepartamento, setErrorDepartamento] = React.useState(false);
+ const [aviso, setAviso] = React.useState(false);
   
-
-
-
-  const navegate = useNavigate();
-
-  const [marca, setmarca] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
-
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
-
   const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+    let departamento = document.getElementById("departamento").value;
+
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
+      departamento:departamento,
     }
-    
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
+
+    axios.post(urlInsertDepartamento, data).then(response => {
+      swal('Departamento agregado con exito', '', 'success').then(result => {
+        navegate('/config/ListaDepartamentos');
       });
-    }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear el departamento, por favor revise los campos.', '', 'error')
+   
+    })
+  };
+
+  //ACTUALIZAR 
+
+  const actualizarDepartamento = async () => {
+    let departamento = document.getElementById("departamento").value;
+   
+    const data = {
+      departamento:departamento,
+      IdDepartamento:props.data.IdDepartamento, 
+    };
+    
+    //Consumo de API y lanzamiento se alerta
+  axios.put(urlUpdateDepartamento, data).then(response => {
+    swal('Departamento actualizado con exito', '', 'success').then(result => {
+      navegate('/config/ListaDepartamentos');
+    })
+  }).catch(error => {
+    console.log(error);
+    swal('Error al crear el departamento, porfavor revise los campos.', '', 'error')
+ 
+  })
   };
 
   const handleBack = () => {
@@ -71,10 +79,8 @@ export const RegistroDepartamento = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro De Departamento</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los departamentos.
-        </h3>
+      {props.actualizar ? <h2>Actualizar Departamento</h2> : <h2>Registro de Departamento</h2>}
+        <h3>Complete todos los puntos para poder registrar los departamentos.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -86,24 +92,62 @@ export const RegistroDepartamento = ({
               <TextCustom text="Departamento" className="titleInput" />
 
               <input
-               
+              onKeyDown={e=>
+              {
+                setDepartamento(e.target.value);
+                if (e.target.value==="")
+                {
+                  setErrorDepartamento(true);
+                  setAviso('Los campos no deben estar vacíos');
+                } else 
+                {
+                  setErrorDepartamento(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if(!regex.test(e.target.value))
+                  {
+                    setErrorDepartamento(true);
+                    setAviso ('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  {
+                    setErrorDepartamento(true);
+                    setAviso ('No se permiten letras consecutivas repetidas');
+                  } else{
+                    setErrorDepartamento(false);
+                    setAviso("");
+                  }
+                }
+              }}
+
+                erro={errorDepartamento}
                 type="text"
+                helperText={aviso}
                 name=""
-                maxLength={40}
                 className="inputCustom"
+                maxLength={40}
                 placeholder="Departamento"
-                id="Departamento"
+                id="departamento"
+
               />
-               {/* <p class="error">{aviso}</p> */}
+                 <p className="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={()=>
+                  {
+                    var departamento = document.getElementById("departamento").value;
+                    if (departamento==="")
+                    {
+                      swal ("No deje campos vacíos.", "", "error");
+                    }
+                    props.actualizar ? actualizarDepartamento() : handleNext();
+
+                  }
+                }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

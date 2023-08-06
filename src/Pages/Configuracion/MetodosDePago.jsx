@@ -76,9 +76,9 @@ const actualizarMetodoPago = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Metodo de Pago</h2> : <h2>Registro de Metodos de Pago</h2>}
+      <h2>Actualizacion de Métodos de Pago</h2>
         <h3>
-          Complete todos los puntos para poder registrar los Metodos de Pago.
+          Complete todos los puntos para poder actualizar los Métodos de Pago.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -91,7 +91,35 @@ const actualizarMetodoPago = async () => {
               <TextCustom text="Tipo de Pago" className="titleInput" />
 
               <input
-               
+               onKeyDown={e => 
+                {
+                setDescripcion(e.target.value);
+                if (e.target.value === '') 
+                {
+                  setErrorDescripcion(true);
+                  setleyenda('Los campos no deben estar vacíos');
+                } else 
+                {
+                  setErrorDescripcion(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value))
+                   {
+                    setErrorDescripcion(true);
+                    setleyenda('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  {
+                    setErrorDescripcion(true);
+                    setleyenda('No se permiten letras consecutivas repetidas');
+                  } else 
+                  {
+                    setErrorDescripcion(false);
+                    setleyenda('');
+                  }
+                }
+              }}
+
+                error={errorDescripcion}
+                helperText={leyenda}
                 type="text"
                 name=""
                 maxLength={40}
@@ -99,7 +127,7 @@ const actualizarMetodoPago = async () => {
                 placeholder="Tipo de Pago"
                 id="descripcion"
               />
-               {/* <p class="error">{aviso}</p> */}
+               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contBtnStepper">

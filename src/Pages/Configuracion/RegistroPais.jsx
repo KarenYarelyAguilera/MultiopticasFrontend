@@ -16,51 +16,62 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios';
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+const urlInsertPais = 'http://localhost:3000/api/pais/crear';
+const urlUpdatePais = 'http://localhost:3000/api/pais/actualizar';
 
-export const RegistroPais = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  
-
-
+export const RegistroPais = (props) => {
 
   const navegate = useNavigate();
 
-  const [marca, setmarca] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
+  const [pais, setPais] = React.useState('');
+  const [errorPais, setErrorPais] = React.useState(false);
+  const [aviso, setAviso] = React.useState(false);
 
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
+  //INSERTAR DATOS
+  const handleNext =  async () => {
+    let pais = document.getElementById("pais").value;
 
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
-    }
-    
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
+      pais:pais 
+    };
+    axios.post(urlInsertPais, data).then(response => {
+      swal('Pais creado exitosamente', '', 'success').then(result => {
+        navegate('/config/ListaPais');
       });
-    }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear el pais, por favor revise los campos.', '', 'error')
+   
+    })
+    
   };
 
+  //ACTUALIZAR
+  const actualizar = async () => {
+
+    let pais = document.getElementById("pais").value;
+  
+    const data = {
+      pais:pais,
+      IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
+    }
+  
+    axios.put(urlUpdatePais, data).then(() => {
+      swal("Datos Actualizado Correctamente", "", "success").then(() => {
+        navegate('/config/ListaPais');
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar! , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
+  
+  };
+  
+  //BOTON DE RETROCESO 
   const handleBack = () => {
     navegate('/config/ListaPais');
   };
@@ -71,50 +82,75 @@ export const RegistroPais = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro De Pais</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los paises.
-        </h3>
+      {props.actualizar ? <h2>Actualizacion de Pais</h2> : <h2>Registro de Pais</h2>}
+        <h3>Complete todos los puntos para poder registrar el pais.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            
-
             <div className="contInput">
-
               <TextCustom text="Pais" className="titleInput" />
-
               <input
-               
+
+                 onKeyDown={e=>
+                   {
+                   setPais(e.target.value);
+                  if (e.target.value==="")
+                  {
+                    setErrorPais(true);
+                    setAviso('Los campos no deben estar vacíos');
+                  } else {
+                    setErrorPais(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrorPais(true);
+                      setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorPais(true);
+                      setAviso('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorPais(false);
+                      setAviso("");
+                    }
+                  }
+                }}
+                
+                error ={errorPais}  
+                helperText={aviso}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Pais"
-                id="Pais"
+                id="pais"
               />
-               {/* <p class="error">{aviso}</p> */}
+               <p className="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var pais = document.getElementById("pais").value;
+
+                  if (pais ==="")
+                  {
+                    swal("No deje campos vacíos.", "", "error");
+                  }
+                  props.actualizar ? actualizar() : handleNext();
+                  }
+                }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
             </div>
           </div>
         </div>
 
         <img
           src={
-            'https://static.vecteezy.com/system/resources/previews/010/351/676/non_2x/rewriting-text-color-icon-illustration-vector.jpg'
+            'https://static.vecteezy.com/system/resources/previews/000/144/399/non_2x/dotted-world-map-vector.jpg'
           }
           className='imgCont'
           alt="No se encuentro la imagen"

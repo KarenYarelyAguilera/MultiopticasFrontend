@@ -129,7 +129,7 @@ export const ListaGarantia = ({props,data,update}) => {
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar la Garantia?: {id.Garantia} ?
+          ¿Desea actualizar la Garantia: {id.descripcion}?
         </div>
       ),
     }).then((op) => {

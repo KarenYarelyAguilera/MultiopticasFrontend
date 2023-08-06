@@ -54,12 +54,12 @@ export const RegistroModelo = (props) => {
 
   //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertModelo, data).then(response => {
-    swal('Modelo agregada con exito', '', 'success').then(result => {
+    swal('Modelo agregado con exito', '', 'success').then(result => {
       navegate('/config/lista');
     });
   }).catch(error => {
     console.log(error);
-    swal('Error al crear el modelo, porfavor revise los campos.', '', 'error')
+    swal('Error al crear el modelo, por favor revise los campos.', '', 'error')
  
   })
 };
@@ -78,12 +78,12 @@ const actualizarModelo = async () => {
   }
 
   axios.put(urlUpdateModelo, data).then(() => {
-    swal("Modelo Actualizado Correctamente", "", "success").then(() => {
+    swal("Modelo actualizado correctamente", "", "success").then(() => {
       navegate('/config/lista');
     })
   }).catch(error => {
     console.log(error);
-    swal('Error al Actualizar Proveedor! , porfavor revise todos los campos.', '', 'error')
+    swal('Error al actualizar este modelo, por favor revise todos los campos.', '', 'error')
     // axios.post(urlErrorInsertBitacora, dataB)
   })
 };
@@ -140,8 +140,34 @@ const actualizarModelo = async () => {
               <TextCustom text="Modelo" className="titleInput" />
 
               <input
-               
-                // error={errorprecio}
+               onKeyDown={e=>
+                {
+                  setmodelo(e.target.value);
+                  if (e.target.value==="")
+                  {
+                    setErrorModelo(true);
+                    setleyenda('Los campos no deben estar vacíos');
+                  } else 
+                  {
+                    setErrorModelo(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if(!regex.test(e.target.value))
+                    {
+                      setErrorModelo(true);
+                      setleyenda ('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value))
+                    {
+                      setErrorModelo(true);
+                      setleyenda ('No se permiten letras consecutivas repetidas');
+                    } else{
+                      setErrorModelo(false);
+                      setleyenda("");
+                    }
+                  }
+                }}
+
+                error={errormodelo}
+                helperText={leyenda}
                 type="text"
                 name=""
                 maxLength={13}
@@ -149,13 +175,27 @@ const actualizarModelo = async () => {
                 placeholder="Modelo"
                 id="detalle"
               />
-              {/* <p class="error">{aviso}</p> */}
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Año" className="titleInput" />
               <input
-                // error={errorprecio}
+
+            //   onKeyDown={e=>
+            //   {
+            //     if (typeof anio !== 'number' || !Number.isInteger(anio)) {
+            //       return false; // No es un número entero
+            //     }
+                
+            //     if (anio < 0 || anio.toString().length !== 4) {
+            //       return false; // No es un año válido (menor a 0 o no tiene 4 dígitos)
+            //     }
+            //     return true;
+            //   }
+            // }
+
+              // error={errorprecio}
                 type="text"
                 name=""
                 maxLength={13}
