@@ -63,7 +63,7 @@ const navegate = useNavigate();
     
     await axios.post(urlNuevoDiagnostico,data).then(response=>{
       swal('Diagnostico creado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/DatosExpediente');
+        navegate('/menuClientes/ListaExpedientes');
       });
  
     }).catch(error=>{

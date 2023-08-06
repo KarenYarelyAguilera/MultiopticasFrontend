@@ -47,7 +47,7 @@ export const ListaClientes = (props) => {
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
         const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -66,7 +66,7 @@ export const ListaClientes = (props) => {
       return formattedData;
     };
 
-    const urlPDF = 'Report_Clientes.pdf';
+    const urlPDF = 'Reporte_Clientes.pdf';
     const subTitulo = "LISTA DE CLIENTES"
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);
