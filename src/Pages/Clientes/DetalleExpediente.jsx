@@ -31,6 +31,19 @@ export const DetalleExpediente = (props) => {
 
   const navegate = useNavigate();
   const [tableData, setTableData] = React.useState([]);
+
+  const [NombreOptometrista, setNombreOptometrista] = React.useState('');
+  const [errorNombreOptometrista, setErrorNombreOptometrista] = React.useState(false);
+  const [Msj, setMsj] = React.useState(false);
+
+  const [NombreAsesor, setNombreAsesor] = React.useState('');
+  const [errorNombreAsesor, setErrorNombreAsesor] = React.useState(false);
+  const [Aviso, setAviso] = React.useState(false);
+
+  const [AntecedentesC, setAntecedentesC] = React.useState('');
+  const [errorAntecendentesC, setErrorAntecedentesC] = React.useState(false);
+  const [Advertencia, setAdvertencia] = React.useState(false);
+
   const [searchTerm, setSearchTerm] = React.useState('');
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [fechaDespues, setFechaDespues] = useState(() => {
@@ -129,7 +142,27 @@ let fechaModificada = year + "/" + month + "/" + day;
               <TextCustom text="Optometrista" className="titleInput" />
               <input
                onKeyDown={e => {
+                setNombreOptometrista(e.target.value);
+                if (e.target.value === '') {
+                  setErrorNombreOptometrista(true);
+                  setMsj('Los campos no deben estar vacíos');
+                } else {
+                  setErrorNombreOptometrista(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value)) {
+                    setErrorNombreOptometrista(true);
+                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    setErrorNombreOptometrista(true);
+                    setMsj('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorNombreOptometrista(false);
+                    setMsj('');
+                  }
+                }
               }}
+              error={errorNombreOptometrista}
+              helperText={Msj}
                 type="text"
                 name=""
                 maxLength={40}
@@ -137,6 +170,7 @@ let fechaModificada = year + "/" + month + "/" + day;
                 placeholder="Optometrista"
                 id="optometrista"
               />
+               <p className="error">{Msj}</p>
             </div>
 
             <div className="contInput">
@@ -144,8 +178,28 @@ let fechaModificada = year + "/" + month + "/" + day;
 
               <input
                onKeyDown={e => {
+                setNombreAsesor(e.target.value);
+                if (e.target.value === '') {
+                  setErrorNombreAsesor(true);
+                  setAviso('Los campos no deben estar vacíos');
+                } else {
+                  setErrorNombreAsesor(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value)) {
+                    setErrorNombreAsesor(true);
+                    setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    setErrorNombreAsesor(true);
+                    setAviso('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorNombreAsesor(false);
+                    setAviso('');
+                  }
+                }
                 
               }}
+              error={errorNombreAsesor}
+              helperText={Aviso}
                 type="text"
                 name=""
                 maxLength={40}
@@ -153,7 +207,7 @@ let fechaModificada = year + "/" + month + "/" + day;
                 placeholder="Asesor de Venta"
                 id="Asesor"
               />
-            
+             <p className="error">{Aviso}</p>
             </div>
 
             <div className="contInput">
@@ -173,6 +227,29 @@ let fechaModificada = year + "/" + month + "/" + day;
             <div className="contInput">
               <TextCustom text="Antecedentes Clinicos" className="titleInput" />
               <input
+               onKeyDown={e => {
+                setAntecedentesC(e.target.value);
+                if (e.target.value === '') {
+                  setErrorAntecedentesC(true);
+                  setAdvertencia('Los campos no deben estar vacíos');
+                } else {
+                  setErrorAntecedentesC(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value)) {
+                    setErrorAntecedentesC(true);
+                    setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    setErrorAntecedentesC(true);
+                    setAdvertencia('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorAntecedentesC(false);
+                    setAdvertencia('');
+                  }
+                }
+                
+              }}
+              error={errorAntecendentesC}
+              helperText={Advertencia}
                 type="text"
                 name=""
                 maxLength={100}
@@ -187,8 +264,33 @@ let fechaModificada = year + "/" + month + "/" + day;
               <Button
                 variant="contained"
                 className="btnStepper"
+                onClick={() => {
+                  var Optometrista = document.getElementById("optometrista").value;
+                  var AsesorDeVentas = document.getElementById("Asesor").value;
+                  var AntecedentesClinicos = document.getElementById("antecendentes").value;
+                  if (Optometrista === "" || AsesorDeVentas === "" || AntecedentesClinicos === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Optometrista)) {
+                    swal("El campo optometrista solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                  } else if (/(.)\1{2,}/.test(Optometrista)) {
+                    setErrorNombreOptometrista(true);
+                    swal("El campo optometrista no acepta letras consecutivas repetidas.", "", "error");
+                  } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AsesorDeVentas)) {
+                    swal("El campo asesor solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                  } else if (/(.)\1{2,}/.test(AsesorDeVentas)) {
+                    setErrorNombreAsesor(true);
+                    swal("El campo asesor no acepta letras consecutivas repetidas.", "", "error");
+                  }  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AntecedentesClinicos)) {
+                    swal("El campo antecedentes solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                  } else if (/(.)\1{2,}/.test(AntecedentesClinicos)) {
+                    setErrorAntecedentesC(true);
+                    swal("El campo antecedentes no acepta letras consecutivas repetidas.", "", "error");
+                  } else {
+                    handleNext();
+                  }
 
-                onClick= {handleNext} //INSERTA 
+                }}
+                //onClick= {handleNext} //INSERTA 
                /*  onClick={() => {
 
                   navegate('/menuClientes/Diagnostico');
