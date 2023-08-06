@@ -16,26 +16,28 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
-import axios from 'axios';
+
+import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 export const ListaMetodosDePago = ({props,data,update}) => {
 
-  const [cambio, setcambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
 
-  //URLS
-  const urlMetodosPago = 'http://localhost:3000/api/tipopago';
-  const urlDelMetodosPago = 'http://localhost:3000/api/tipopago/eliminar';
+  const [Modelo, setModelo] = useState([]);
+  const [roles, setRoles] = useState([]);
+  
+
+  //URL DE LAS APIS DE METODOS DE PAGO
+    const urlMetodosPago = 'http://localhost:3000/api/tipopago';
+    const urlDelMetodosPago = 'http://localhost:3000/api/tipopago/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [descripcion, setDescripcion] = useState('');
-  const [msj, setmsj] = useState('');
-  const [errorDescripcion, setErrorDescripcion] = useState(false);
-
-  useEffect(() => {
-    axios.get(urlMetodosPago).then(response=>setTableData(response.data))
-  }, [cambio]);
+ useEffect(() => {
+  axios.get(urlMetodosPago).then(response=>setTableData(response.data))
+}, [cambio]);
 
   const navegate = useNavigate();
 
@@ -47,118 +49,108 @@ export const ListaMetodosDePago = ({props,data,update}) => {
     ),
   );
 
- const columns = [
-    { field: 'IdProveedor', headerName: 'IdTipoPago', width: 600 },
-    { field: 'CiaProveedora', headerName: 'Metodo', width: 600 },
-  
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 190,
+  const columns = [
+    { field: 'IdTipoPago', headerName: 'ID Método de Pago', width: 400 },
+    { field: 'descripcion', headerName: 'Método', width: 400 },
 
-      renderCell: params => (
-        <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.IdTipoPago)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-        </div>
-      ),
-    },
+    // {
+    //   field: 'borrar',
+    //   headerName: 'Acciones',
+    //   width: 190,
+
+    //   renderCell: params => (
+    //     <div className="contActions">
+    //       <Button
+    //         className="btnEdit" onClick={() => handleUpdt(params.row)}>
+    //         <EditIcon></EditIcon>
+    //       </Button>
+    //       {/* <Button
+    //         className="btnDelete"
+    //        onClick={() => handleDel(params.row.IdTipoPago)}>
+    //         <DeleteForeverIcon></DeleteForeverIcon>
+    //       </Button> */}
+    //     </div>
+    //   ),
+    // },
   ];
-
-//FUNCION DE ACTUALIZAR
-function handleUpdt(id) {
-  swal({
-    buttons: {
-      update: 'ACTUALIZAR',
-      cancel: 'CANCELAR',
-    },
-    content: (
-      <div className="logoModal">
-        ¿Desea actualizar el Metodo de Pago: {id.descripcion} ?
-      </div>
-    ),
-  }).then(
-    op => {
-      switch (op) {
-        case 'update':
-          props.data(id)
-          props.update(true)
-          navegate('/config/MetodosDePago')
-          break;
-        default:
-          break;
-      }
-    });
-};
-
+ 
+  
 //FUNCION DE ELIMINAR 
-function handleDel(IdTipoPago) {
+function handleDel(id) {
   swal({
     content: (
       <div>
-
-        <div className="logoModal">¿Desea Eliminar este Metodo de Pago?</div>
-        <div className="contEditModal">
-
+        <div className="logoModal">¿Desea Eliminar este Método de Pago?</div>
+        <div className="contEditModal"> 
         </div>
-
       </div>
     ),
-    buttons: ['Eliminar', 'Cancelar'],
-  }).then(async op => {
+
+    buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+    },
+  }).then(async (op) => {
+
     switch (op) {
       case null:
-
         let data = {
-          IdTipoPago: IdTipoPago,
-        };
-
-        //Funcion de Bitacora 
-        /*  let dataB = {
-           Id:props.idUsuario
-         } */
-
+          IdTipoPago:id
+        }; 
         console.log(data);
 
-        await axios
-          .delete(urlDelMetodosPago, { data })
-          .then(response => {
-            //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-            swal('Metodo de Pago eliminado correctamente', '', 'success');
-            setcambio(cambio + 1);
-          })
-          .catch(error => {
+        await axios .delete(urlDelMetodosPago,{data}) .then(response => {
+            swal('Método de Pago eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
             console.log(error);
-            swal('Error al eliminar el Metodo de Pago', '', 'error');
+            swal('Error al eliminar', '', 'error');
           });
 
         break;
-
-      default:
+        default:
         break;
     }
   });
-}
+};
+  
+  //FUNCION DE ACTUALIZAR DATOS 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar el método de pago: {id.descripcion}?
+        </div>
+      ),
+    }).then((op)  => {
+        switch (op) {
+          case 'update':
+            data(id)
+            update(true)
+            navegate('/config/MetodosDePago')
+            break;
+            default:
+            break;
+        }
+      });
+  };
 
-
-
+//Boton de atras 
   const handleBack = () => {
     navegate('/config');
   };
 
+  //ESTRUCTURA 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Metodos De Pago</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Método de Pago</h2>
 
       <div
         style={{
@@ -182,7 +174,7 @@ function handleDel(IdTipoPago) {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            <Button
+            {/* <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/MetodosDePago');
@@ -190,7 +182,7 @@ function handleDel(IdTipoPago) {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Metodo
-            </Button>
+            </Button> */}
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -198,7 +190,7 @@ function handleDel(IdTipoPago) {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdMarca}
+          getRowId={tableData => tableData.IdTipoPago}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
