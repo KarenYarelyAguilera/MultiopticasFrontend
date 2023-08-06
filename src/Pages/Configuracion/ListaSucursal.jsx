@@ -1,6 +1,14 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
@@ -16,6 +24,9 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+//GENERADOR DE PDF
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaSucursal = (props) => {
   const [roles, setRoles] = useState([]);
@@ -65,6 +76,31 @@ export const ListaSucursal = (props) => {
       .then(data => setCiudad(data));
   }, [cambio]);
 
+//IMPRIMIR PDF
+const handleGenerarReporte = () => {
+  const formatDataForPDF = () => {
+    const formattedData = tableData.map((row) => {
+      const fechaCre = new Date(row.fechaNacimiento);
+      const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                            String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                            fechaCre.getFullYear();
+                            return {
+                              'N°':row.IdSucursal,
+                              'Departamento':row.departamento, 
+                              'Ciudad':row.ciudad, 
+                              'Dirección':row.direccion, 
+                              'Teléfono':row.telefono,                        
+                            };
+    });
+    return formattedData;
+  };
+
+  const urlPDF = 'Report_Sucursales.pdf';
+  const subTitulo = "LISTA DE SUCURSALES"
+
+  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+};
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -79,8 +115,8 @@ export const ListaSucursal = (props) => {
     { field: 'IdSucursal', headerName: 'ID Sucursal', width: 250 },
     { field: 'departamento', headerName: 'Departamento', width: 250 },
     { field: 'ciudad', headerName: 'Ciudad', width: 250 },
-    { field: 'direccion', headerName: 'Direccion', width: 250 },
-    { field: 'telefono', headerName: 'Telefono', width: 250 },
+    { field: 'direccion', headerName: 'Dirección', width: 250 },
+    { field: 'telefono', headerName: 'Teléfono', width: 250 },
 
     {
       field: 'borrar',
@@ -225,7 +261,8 @@ export const ListaSucursal = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva Sucursal
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport" 
+            onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

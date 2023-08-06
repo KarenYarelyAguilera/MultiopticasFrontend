@@ -1,9 +1,16 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,6 +23,10 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
+
 import axios from 'axios';
 
 export const ListaMarcas = ({props,data,update}) => {
@@ -31,6 +42,28 @@ export const ListaMarcas = ({props,data,update}) => {
   useEffect(() => {
     axios.get(urlMarcas).then(response=>setTableData(response.data))
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdMarca,
+                                'Marca':row.descripcion, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_MARCA.pdf';
+    const subTitulo = "LISTA DE MARCAS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
   
   const navegate = useNavigate();
 
@@ -177,7 +210,9 @@ export const ListaMarcas = ({props,data,update}) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva Marca
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

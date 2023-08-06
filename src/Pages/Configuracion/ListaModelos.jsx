@@ -1,8 +1,15 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import React from 'react';
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -19,6 +26,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaModelos = ({props,data,update}) => {
 
@@ -39,6 +48,30 @@ export const ListaModelos = ({props,data,update}) => {
  useEffect(() => {
   axios.get(urlModelos).then(response=>setTableData(response.data))
 }, [cambio]);
+
+//IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdModelo,
+                                'Marca':row.Marca, 
+                                'Modelo':row.Modelo, 
+                                'Año':row.anio, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Modelos.pdf';
+    const subTitulo = "LISTA DE MODELOS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const navegate = useNavigate();
 
@@ -186,7 +219,8 @@ function handleDel(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Modelo
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

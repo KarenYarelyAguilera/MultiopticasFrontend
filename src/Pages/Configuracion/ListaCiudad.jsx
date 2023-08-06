@@ -1,9 +1,17 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,6 +24,10 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
+
 import axios from 'axios';
 
 export const ListaCiudad = ({props,data,update}) => {
@@ -32,6 +44,28 @@ export const ListaCiudad = ({props,data,update}) => {
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdCiudad,
+                                'Ciudad':row.ciudad, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Ciudades.pdf';
+    const subTitulo = "LISTA DE CIUDADES"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const navegate = useNavigate();
 
@@ -176,7 +210,9 @@ function handleUpdt(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

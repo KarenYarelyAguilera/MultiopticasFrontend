@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -17,11 +20,12 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+
 import axios from 'axios';
-//import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
-//import { TextCustom } from '../../Components/TextCustom';
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaDepartamentos = ({props,data,update}) => {
 
@@ -39,27 +43,27 @@ export const ListaDepartamentos = ({props,data,update}) => {
     fetch(urlDepartamento).then(response => response.json()).then(data => setTableData(data));
   }, [cambio]);
 
-  // //IMPRIMIR PDF
-  // const handleGenerarReporte = () => {
-  //   const formatDataForPDF = () => {
-  //     const formattedData = tableData.map((row) => {
-  //       const fechaCre = new Date(row.fechaNacimiento);
-  //       const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-  //                             String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-  //                             fechaCre.getFullYear();
-  //                             return {
-  //                               'N°':row.IdDepartamento,
-  //                               'Departamento':row.departamento, 
-  //                             };
-  //     });
-  //     return formattedData;
-  //   };
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdDepartamento,
+                                'Departamento':row.departamento, 
+                              };
+      });
+      return formattedData;
+    };
 
-  //   const urlPDF = 'Report_Departamentos.pdf';
-  //   const subTitulo = "LISTA DE DEPARTAMENTOS"
+    const urlPDF = 'Report_Departamentos.pdf';
+    const subTitulo = "LISTA DE DEPARTAMENTOS"
 
-  //   generatePDF(formatDataForPDF, urlPDF, subTitulo);
-  // };
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
 
   const navegate = useNavigate();
@@ -204,7 +208,10 @@ function handleDel(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
             </Button>
-            <Button className="btnReport">
+
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
