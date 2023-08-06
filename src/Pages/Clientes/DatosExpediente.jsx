@@ -57,14 +57,14 @@ export const DatosExpediente = ( props) => {
     }).catch(error => console.log(error))
   }, []);
 
-  const [modalData, setModalData] = useState({});
+ // const [modalData, setModalData] = useState({});
 
 //DIAGNOSTICO
   useEffect(() => {
     axios.post(urlDiagnosticos,props.id).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
-  }, [cambio]);
+  }, []);
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -105,7 +105,7 @@ export const DatosExpediente = ( props) => {
 
           <Button
             className="btnImprimirExp"
-            onClick={handlePrintModal}
+            onClick={()=> handlePrintModal(params.row)}
           >
             <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
@@ -114,15 +114,12 @@ export const DatosExpediente = ( props) => {
       ),
     },
   ];
-  const handlePrintModal = () => {
-    
+
+  const handlePrintModal = (modalData) => {
     const documento = new jsPDF();
-  
-    // Aquí puedes diseñar cómo se verá el contenido del PDF
     documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 20);
     documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 30);
     documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 40);
-    //documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 50);
     documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 60);
     documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 70);
     documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 80);
@@ -138,14 +135,14 @@ export const DatosExpediente = ( props) => {
     documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 180);
     documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 190);
     documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 200);
-    // Añade aquí los demás campos que desees imprimir
   
-    documento.save('historial_data.pdf');
+    documento.save('historial_expediente.pdf');
+    //setModalData({})
   };
 
    //PANTALLA MODAL---------------------------------------------------------------------------
   function handleUpdt(id) {
-    setModalData(id);
+    //setModalData(id);
     console.log(id);
     swal(
       <div>
