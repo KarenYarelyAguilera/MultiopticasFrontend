@@ -61,7 +61,8 @@ export const ListaSucursal = (props) => {
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
-  //COLOCAR APIS DE BITACORA AQUI---
+  //COLOCAR APIS DE BITACORA AQUI---  
+  
   //-------------------------------------------------------------------
 
   useEffect(() => {
