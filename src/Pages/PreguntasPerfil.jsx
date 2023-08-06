@@ -5,24 +5,23 @@ import { TextCustom } from '../Components/TextCustom';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
+//Mui-Material-Icons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button } from '@mui/material';
+
+import '../Styles/Usuarios.css';
+
 export const PreguntasPerfil = props => {
 
+  const navegate = useNavigate();
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
-
-    //parametros
-  const [Parametro, setParametro] = useState([]);
-/*   const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
-  useEffect(() => {
-    axios.get(urlParametro).then(response => {
-      setParametro(response.data)
-      console.log(response.data);
-    })
-      .catch(error => console.log(error));
-  }, []);
- */
-
 
 
   const dataId = {
@@ -31,88 +30,80 @@ export const PreguntasPerfil = props => {
   };
   //  console.log(dataId);
 
-  const navegate = useNavigate();
-
   //para las preguntas
   useEffect(() => {
-    //console.log(data);
     axios.get(urlPreguntas).then(response => {
       setPreguntas(response.data);
     }).catch(error => console.log(error))
   }, []);
 
+  const handleBack = () => {
+    navegate('/Preguntas/lista');
+  };
 
 
   const handleClick = async () => {
 
-
-
     const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
     const respuestap = document.getElementById('respuestap').value;
 
-
-
     let data = {
       idPregunta: Id_Pregunta,
-      respuesta: respuestap,
+      respuesta: respuestap.toUpperCase(),
       idUser: props.idUsuario,
-      creadoPor: props.infoPerfil.nombre,
+      creadoPor: props.infoPerfil.nombre.toUpperCase(),
     };
-
-
     console.log(data);
 
     await axios.post(urlRespuestas, data).then(response => {
       swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/Preguntas/lista'))
     });
 
-
   };
 
   return (
     <div className="divSection">
       <div className="divInfoQuestion">
+
         <div className="titleRecuPassword">
           <h2>Preguntas de seguridad</h2>
-          <h3>Responda cada pregunta para poder modificarla</h3>
+          <h3>Responda una de las preguntas para poder configurar su perfil</h3>
         </div>
 
         <form className="measure">
-          <div className="contPrincipalRecu">
-            <div className='divInfoQuestionResp'>
-              <TextCustom text="Preguntas:" className="titleInput" />
-              <div className="contInput">
-                <select id="Id_preguntas" className="inputCustomPreguntas">
-                  {Preguntas.length ? (
-                    Preguntas.map(pre => (
-                      <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
-                        {pre.Pregunta}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="No existe informacion">
-                      No existe informacion
+          <br />
+          <br />
+          <div className='divInfoQuestionResp'>
+            <TextCustom text="Preguntas de configuración:" className="titleInput" />
+            <div className="contInput">
+              <select id="Id_preguntas" className="inputCustomPreguntas">
+                {Preguntas.length ? (
+                  Preguntas.map(pre => (
+                    <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
+                      {pre.Pregunta}
                     </option>
-                  )}
-
-                </select>
-              </div>
-
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
-
-            <div className='divInfoQuestionResp'>
-
-              <TextCustom text="Respuesta:" className="titleInput" />
-              <div className="contInput">
-                <input
-                  maxLength="20"
-                  type="text"
-                  name=""
-                  className="inputCustom"
-                  placeholder="Respuesta"
-                  id='respuestap'
-                />
-              </div>
+          </div>
+          <br />
+          <br />
+          <div className='divInfoQuestionResp'>
+            <TextCustom text="Ingrese su respuesta:" className="titleInput" />
+            <div className="contInput">
+              <input
+                maxLength="20"
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Respuesta"
+                id='respuestap'
+              />
             </div>
           </div>
           <div className='divSubmitQuestion'>
@@ -122,11 +113,17 @@ export const PreguntasPerfil = props => {
               value="Guardar"
               onClick={handleClick}
             />
+            <br />
+            <input
+              className="btnSubmitPreguntas"
+              type="button"
+              value="Cancelar"
+              onClick={handleBack}
+            />
           </div>
         </form>
 
       </div>
-
       <div className="divImgSection">
         <img src={passwordRecovery} alt="Iamgen no encontrada" />
       </div>
