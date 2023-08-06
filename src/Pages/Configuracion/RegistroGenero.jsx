@@ -68,7 +68,7 @@ const actualizarGenero = async () => {
     swal('Error al Actualizar Género , por favor revise todos los campos.', '', 'error')
     // axios.post(urlErrorInsertBitacora, dataB)
   })
-
+  
 };
 
 //BOTON DE RETROCESO 
