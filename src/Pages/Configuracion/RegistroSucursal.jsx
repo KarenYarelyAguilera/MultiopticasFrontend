@@ -256,7 +256,7 @@ export const RegistroSucursal = (props) => {
                 type="phone"
                 name=""
                 helperText={texto}
-                maxLength={13}
+                maxLength={8}
                 className="inputCustom"
                 placeholder="telefono"
                 id="telefono"
@@ -281,8 +281,15 @@ export const RegistroSucursal = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(telefono))) {
                     swal("El campo telefono solo acepta números.", "", "error");
-                  } else
-                    props.actualizar ? actualizarSucursal() : handleNext();
+                  }
+                    else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(direccion)) {
+                      swal("El campo direccion solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                  } else if (/(.)\1{2,}/.test(direccion)) {
+                    setErrordireccion(true);
+                    swal("El campo direccion no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                  }
+                  else{
+                    props.actualizar ? actualizarSucursal() : handleNext();}
                 }
                 }
               >

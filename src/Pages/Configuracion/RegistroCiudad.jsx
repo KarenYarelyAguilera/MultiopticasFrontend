@@ -145,9 +145,14 @@ export const RegistroCiudad = (props) => {
                     if (ciudad ==="")
                     {
                       swal ("No deje campos vacíos.", "", "error");
-                    }
+                    }else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(ciudad)) {
+                      swal("El campo ciudad solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                  } else if (/(.)\1{2,}/.test(ciudad)) {
+                    setErrorCiudad(true);
+                    swal("El campo ciudad no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                  }else{
 
-                    props.actualizar ? actualizarCiudad() : handleNext();
+                    props.actualizar ? actualizarCiudad() : handleNext();}
 
                   }
                 }

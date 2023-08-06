@@ -29,9 +29,9 @@ export const RegistroModelo = (props) => {
   const [leyenda, setleyenda] = React.useState('');
   const [errormodelo, setErrorModelo] = React.useState(false);
 
-  const [detalle, setDetalle] = React.useState('');
+  const [year, setyear] = React.useState('');
   const [aviso, setaviso] = React.useState('');
-  const [errordescripcion, setErrordescripcion] = React.useState(false);
+  const [erroranio, setErroranio] = React.useState(false);
 
   const navegate = useNavigate();
 
@@ -140,32 +140,26 @@ const actualizarModelo = async () => {
               <TextCustom text="Modelo" className="titleInput" />
 
               <input
-               onKeyDown={e=>
-                {
-                  setmodelo(e.target.value);
-                  if (e.target.value==="")
-                  {
+              onKeyDown={e => {
+                setmodelo(e.target.value);
+                if (e.target.value === "") {
+                  setErrorModelo(true);
+                  setleyenda('Los campos no deben estar vacíos');
+                } else {
+                  var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
+                  if (!regex.test(e.target.value)) {
                     setErrorModelo(true);
-                    setleyenda('Los campos no deben estar vacíos');
-                  } else 
-                  {
+                    setleyenda('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
+                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    setErrorModelo(true);
+                    setleyenda('No se permiten letras consecutivas repetidas');
+                  } else {
                     setErrorModelo(false);
-                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if(!regex.test(e.target.value))
-                    {
-                      setErrorModelo(true);
-                      setleyenda ('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(e.target.value))
-                    {
-                      setErrorModelo(true);
-                      setleyenda ('No se permiten letras consecutivas repetidas');
-                    } else{
-                      setErrorModelo(false);
-                      setleyenda("");
-                    }
+                    setleyenda("");
                   }
-                }}
-
+                }
+              }}
+              
                 error={errormodelo}
                 helperText={leyenda}
                 type="text"
@@ -180,30 +174,28 @@ const actualizarModelo = async () => {
 
             <div className="contInput">
               <TextCustom text="Año" className="titleInput" />
-              <input
-
-            //   onKeyDown={e=>
-            //   {
-            //     if (typeof anio !== 'number' || !Number.isInteger(anio)) {
-            //       return false; // No es un número entero
-            //     }
+                <input
+                type="number"
+                //value={detalle}
+                onChange={(e) => setyear(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.target.value === "") {
+                    setErroranio(true);
+                    setaviso("Los campos no deben estar vacíos");
+                  } else {
+                    setErroranio(false);
+                    setaviso("");
+                  }
+                }}
                 
-            //     if (anio < 0 || anio.toString().length !== 4) {
-            //       return false; // No es un año válido (menor a 0 o no tiene 4 dígitos)
-            //     }
-            //     return true;
-            //   }
-            // }
-
-              // error={errorprecio}
-                type="text"
+              error={erroranio}
                 name=""
-                maxLength={13}
+                maxLength={4}
                 className="inputCustom"
                 placeholder="Año"
                 id="anio"
               />
-              {/* <p class="error">{aviso}</p> */}
+               <p class="error">{aviso}</p> 
             </div>
           
             <div className="contBtnStepper">
@@ -212,16 +204,17 @@ const actualizarModelo = async () => {
                 className="btnStepper"
                 onClick={()=>
                 {
-                  //Validaciones previo a ejecutar el boton
-                  var detalle = document.getElementById("detalle").value;
-                  var anio = document.getElementById("anio").value;
-
-                  if (detalle === "" || anio === "") {
+                  var modelo = document.getElementById("detalle").value;
+                  var año = document.getElementById("anio").value;
+                   if (modelo === "" || año === "") {
                     swal("No deje campos vacíos.", "", "error");
-                 /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                    swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
-                  } 
+                  }  else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(modelo)) {
+                    swal("El campo modelo solo acepta letras mayusculas guiones y numeros.", "", "error");
+                  }else if (isNaN(parseInt(año))) {
+                    swal("El campo año solo acepta números.", "", "error");
+                  }else{
                     props.actualizar ? actualizarModelo() : handleNext();
+                  }
                 }
               }
               >

@@ -145,8 +145,14 @@ const actualizarMarca = async () => {
                   if (Marca ==="")
                   {
                     swal ("No deje campos vacíos.", "", "error");
-                  }
-                  props.actualizar ? actualizarMarca() : handleNext();
+                  }   else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Marca)) {
+                    swal("El campo marca solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                } else if (/(.)\1{2,}/.test(Marca)) {
+                  setErrornombremarca(true);
+                  swal("El campo direccion no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                }else{
+
+                  props.actualizar ? actualizarMarca() : handleNext();}
                 }
               }
               >

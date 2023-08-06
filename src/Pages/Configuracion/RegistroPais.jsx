@@ -138,7 +138,13 @@ export const RegistroPais = (props) => {
                   {
                     swal("No deje campos vacíos.", "", "error");
                   }
-                  props.actualizar ? actualizar() : handleNext();
+                  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(pais)) {
+                    swal("El campo pais solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                } else if (/(.)\1{2,}/.test(pais)) {
+                  setErrorPais(true);
+                  swal("El campo pais no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                }else{
+                  props.actualizar ? actualizar() : handleNext();}
                   }
                 }
               >
