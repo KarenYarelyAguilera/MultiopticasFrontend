@@ -142,7 +142,13 @@ export const RegistroDepartamento = (props) => {
                     {
                       swal ("No deje campos vacíos.", "", "error");
                     }
-                    props.actualizar ? actualizarDepartamento() : handleNext();
+                    else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(departamento)) {
+                      swal("El campo departamento solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                  } else if (/(.)\1{2,}/.test(departamento)) {
+                    setErrorDepartamento(true);
+                    swal("El campo departamento no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                  } else{
+                    props.actualizar ? actualizarDepartamento() : handleNext();}
 
                   }
                 }
