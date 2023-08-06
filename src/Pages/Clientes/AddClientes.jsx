@@ -17,21 +17,16 @@ import axios from 'axios';
 
 
 const urlCliente =
-  'http://localhost:3000/api/clientes/clienteNuevo'; 
-  //insertar usuario
-  const urlClienteActualizar =
-  'http://localhost:3000/api/clientes/actualizar'; 
-  //actualizar usuario
-  const urlClienteEliminar =
-  'http://localhost:3000/api/clientes/eliminar'; 
-  //eliminar usuario
+  'http://localhost:3000/api/clientes/clienteNuevo';
+//insertar usuario
+const urlClienteActualizar =
+  'http://localhost:3000/api/clientes/actualizar';
+//actualizar usuario
+const urlClienteEliminar =
+  'http://localhost:3000/api/clientes/eliminar';
+//eliminar usuario
 
-export const AddClientes = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+export const AddClientes = (props) => {
 
   // const [activeStep, setActiveStep] = React.useState(0);
 
@@ -66,8 +61,59 @@ export const AddClientes = ({
 
 
   const navegate = useNavigate();
-  
 
+  //ACTUALIZAR
+  const actualizarCliente = async () => {
+
+    let nombres = document.getElementById('nombre').value;
+    let apellidos = document.getElementById('apellido').value;
+    let telefono = document.getElementById('phone').value;
+    let genero = parseInt(document.getElementById('genero').value);
+    let direccion = document.getElementById('direccion').value;
+    let correo = document.getElementById('correo').value
+    let fechaN = document.getElementById('fechaN').value
+
+    let fecha = new Date(fechaN)
+
+    let anio = fecha.getFullYear().toString();
+    let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+    let dia = fecha.getDate().toString().padStart(2, "0");
+
+
+    let fechaFormateada = anio + "/" + mes + "/" + dia;
+
+    const data = {
+      nombre: nombres,
+      apellido: apellidos,
+      idGenero: genero,
+      fechaNacimiento: fechaFormateada,
+      direccion: direccion,
+      telefono: telefono,
+      correo: correo,
+      idCliente: props.data.idCliente, //El dato de IdCliente se obtiene de Cliente seleccionado.
+    }
+
+
+    //Funcion de bitacora 
+    /*  let dataB={
+       Id: props.idUsuario
+     } */
+
+    axios.put(urlClienteActualizar, data).then(() => {
+      swal("Cliente Actualizado Correctamente", "", "success").then(() => {
+        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        navegate('/menuClientes/lista');
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Cliente! , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
+
+  }
+
+
+  // CREAR
   const handleNext = async () => {
     let identidad = document.getElementById('Nidentidad').value;
     let nombres = document.getElementById('nombre').value;
@@ -89,22 +135,22 @@ export const AddClientes = ({
 
 
     let data = {
-      idCliente:identidad,
-      nombre:nombres,
-      apellido:apellidos,
-      idGenero:genero,
-      fechaNacimiento:fechaFormateada,
-      direccion:direccion,
-      telefono:telefono,
-      correo:correo
+      idCliente: identidad,
+      nombre: nombres,
+      apellido: apellidos,
+      idGenero: genero,
+      fechaNacimiento: fechaFormateada,
+      direccion: direccion,
+      telefono: telefono,
+      correo: correo
     }
 
-    await axios.post(urlCliente,data).then(response=>{
+    await axios.post(urlCliente, data).then(response => {
       swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuClientes/lista');
       });
 
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error);
       swal("Error al registrar cliente.", "", "error")
     })
@@ -121,7 +167,7 @@ export const AddClientes = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Datos del Cliente</h2>
+      {props.actualizar ? <h2>Actualizar Cliente</h2> : <h2>Registro de Cliente</h2>}
         <h3>
           Complete todos los puntos para poder registrar los datos del cliente
         </h3>
@@ -133,30 +179,30 @@ export const AddClientes = ({
               <TextCustom text="Numero de Identidad" className="titleInput" />
 
               <input
-             onKeyDown={e => {
-              setiIdentidad(e.target.value);
-              if (iIdentidad === '') {
-                setErrorIdentidad(true);
-                setleyenda('Los campos no deben estar vacíos');
-              } else {
-                setErrorIdentidad(false);
-                var regex =/^\d{13}$/;
-                if (!regex.test(iIdentidad)) {
-                  setErrorIdentidad(true);
-                  setleyenda('El número de identidad debe tener el formato correcto');
-                } else {
-                  setErrorIdentidad(false);
-                  var primeroscuatrodigitos = parseInt(iIdentidad.substring(0, 4));
-                  if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                onKeyDown={e => {
+                  setiIdentidad(e.target.value);
+                  if (iIdentidad === '') {
                     setErrorIdentidad(true);
-                    setleyenda('El número de identidad es inválido');
+                    setleyenda('Los campos no deben estar vacíos');
                   } else {
                     setErrorIdentidad(false);
-                    setleyenda('');
+                    var regex = /^\d{13}$/;
+                    if (!regex.test(iIdentidad)) {
+                      setErrorIdentidad(true);
+                      setleyenda('El número de identidad debe tener el formato correcto');
+                    } else {
+                      setErrorIdentidad(false);
+                      var primeroscuatrodigitos = parseInt(iIdentidad.substring(0, 4));
+                      if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                        setErrorIdentidad(true);
+                        setleyenda('El número de identidad es inválido');
+                      } else {
+                        setErrorIdentidad(false);
+                        setleyenda('');
+                      }
+                    }
                   }
-                }
-              }
-            }}
+                }}
                 error={errorIdentidad}
                 type="text"
                 name=""
@@ -208,26 +254,26 @@ export const AddClientes = ({
             <div className="contInput">
               <TextCustom text="Apellido" className="titleInput" />
               <input
-                   onKeyDown={e => {
-                    setApellido(e.target.value);
-                    if (e.target.value === '') {
+                onKeyDown={e => {
+                  setApellido(e.target.value);
+                  if (e.target.value === '') {
+                    setErrorApellido(true);
+                    setAviso('Los campos no deben estar vacíos');
+                  } else {
+                    setErrorApellido(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
                       setErrorApellido(true);
-                      setAviso('Los campos no deben estar vacíos');
+                      setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorApellido(true);
+                      setAviso('No se permiten letras consecutivas repetidas');
                     } else {
                       setErrorApellido(false);
-                      var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                      if (!regex.test(e.target.value)) {
-                        setErrorApellido(true);
-                        setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                      } else if (/(.)\1{2,}/.test(e.target.value)) {
-                        setErrorApellido(true);
-                        setAviso('No se permiten letras consecutivas repetidas');
-                      } else {
-                        setErrorApellido(false);
-                        setAviso('');
-                      }
+                      setAviso('');
                     }
-                  }}
+                  }
+                }}
                 error={errorApellido}
                 type="text"
                 name=""
@@ -243,26 +289,26 @@ export const AddClientes = ({
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setdireccion(e.target.value);
-                if (e.target.value === '') {
-                  setErrordireccion(true);
-                  setmensaje('Los campos no deben estar vacíos');
-                } else {
-                  setErrordireccion(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                onKeyDown={e => {
+                  setdireccion(e.target.value);
+                  if (e.target.value === '') {
                     setErrordireccion(true);
-                    setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
-                    setErrordireccion(true);
-                    setmensaje('No se permiten letras consecutivas repetidas');
+                    setmensaje('Los campos no deben estar vacíos');
                   } else {
                     setErrordireccion(false);
-                    setmensaje('');
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrordireccion(true);
+                      setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrordireccion(true);
+                      setmensaje('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrordireccion(false);
+                      setmensaje('');
+                    }
                   }
-                }
-              }}
+                }}
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -294,7 +340,7 @@ export const AddClientes = ({
                       setTexto('');
                     }
                   }
-                }}                
+                }}
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -310,24 +356,24 @@ export const AddClientes = ({
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setcorreoelec(e.target.value);
-                if (correoelec == '') {
-                  setErrorcorreoelec(true);
-                  setadvertencia('Los campos no deben estar vacios');
-                }
-                 else {
-                  setErrorcorreoelec(false);
-                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                  if (!expresion.test(correoelec)) {
+                onKeyDown={e => {
+                  setcorreoelec(e.target.value);
+                  if (correoelec == '') {
                     setErrorcorreoelec(true);
-                    setadvertencia('Formato invalido');
-                  } else {
-                    setErrorcorreoelec(false);
-                    setadvertencia('');
+                    setadvertencia('Los campos no deben estar vacios');
                   }
-                }
-              }}
+                  else {
+                    setErrorcorreoelec(false);
+                    var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!expresion.test(correoelec)) {
+                      setErrorcorreoelec(true);
+                      setadvertencia('Formato invalido');
+                    } else {
+                      setErrorcorreoelec(false);
+                      setadvertencia('');
+                    }
+                  }
+                }}
                 error={errorcorreoelec}
                 type="phone"
                 name=""
@@ -363,62 +409,64 @@ export const AddClientes = ({
 
             <div className="contBtnStepper">
               <Button
-               type="submit"
-               onClick={() => {
-              var Nidentidad = document.getElementById("Nidentidad").value;
-              var nombre = document.getElementById("nombre").value;
-              var apellido = document.getElementById("apellido").value;
-              var direccion = document.getElementById("direccion").value;
-              var phone = document.getElementById("phone").value;
-              var correo = document.getElementById("correo").value;
-              if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "") {
-                swal("No deje campos vacíos.", "", "error");
-              }else if (isNaN(parseInt(Nidentidad))) {
-                swal("El campo identidad solo acepta números.", "", "error");
-              } else {
-                setErrorIdentidad(false);
-                var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
-                if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
-                  setErrorIdentidad(true);
-                  setleyenda('El número de identidad es inválido');
-                  swal("El número de identidad es inválido", "", "error");
-                } else {
-                  setErrorIdentidad(false);
-                  var regex = /^\d{13}$/;
-                  if (!regex.test(Nidentidad)) {
-                    setErrorIdentidad(true);
-                    setleyenda('El número de identidad debe tener el formato correcto');
-                    swal("El número de identidad debe tener el formato correcto", "", "error");
-                } 
-                if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nombre)) {
-                  swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                } else if (/(.)\1{2,}/.test(nombre)) {
-                  setErrorNombre(true);
-                  swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                }                
-              else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(apellido)) {
-                swal("El campo apellido solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
-              } else if (/(.)\1{2,}/.test(apellido)) {
-                setErrorApellido(true);
-                swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
-              }  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(direccion)) {
-                swal("El campo dirrecion solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
-              } else if (/(.)\1{2,}/.test(direccion)) {
-                setErrordireccion(true);
-                swal("El campo direccion no acepta letras consecutivas repetidas.", "", "error");
-              } else if (isNaN(parseInt(phone))) {
-                swal("El campo teléfono solo acepta números.", "", "error");}
-              else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-               swal("El campo correo debe contener un correo válido.", "", "error");
-              }else {
-                handleNext();
-              }
-}
-              }}}
-              
-              variant="contained"
+                type="submit"
+                onClick={() => {
+                  var Nidentidad = document.getElementById("Nidentidad").value;
+                  var nombre = document.getElementById("nombre").value;
+                  var apellido = document.getElementById("apellido").value;
+                  var direccion = document.getElementById("direccion").value;
+                  var phone = document.getElementById("phone").value;
+                  var correo = document.getElementById("correo").value;
+                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (isNaN(parseInt(Nidentidad))) {
+                    swal("El campo identidad solo acepta números.", "", "error");
+                  } else {
+                    setErrorIdentidad(false);
+                    var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
+                    if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                      setErrorIdentidad(true);
+                      setleyenda('El número de identidad es inválido');
+                      swal("El número de identidad es inválido", "", "error");
+                    } else {
+                      setErrorIdentidad(false);
+                      var regex = /^\d{13}$/;
+                      if (!regex.test(Nidentidad)) {
+                        setErrorIdentidad(true);
+                        setleyenda('El número de identidad debe tener el formato correcto');
+                        swal("El número de identidad debe tener el formato correcto", "", "error");
+                      }
+                      if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nombre)) {
+                        swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                      } else if (/(.)\1{2,}/.test(nombre)) {
+                        setErrorNombre(true);
+                        swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                      }
+                      else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(apellido)) {
+                        swal("El campo apellido solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                      } else if (/(.)\1{2,}/.test(apellido)) {
+                        setErrorApellido(true);
+                        swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
+                      } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(direccion)) {
+                        swal("El campo dirrecion solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                      } else if (/(.)\1{2,}/.test(direccion)) {
+                        setErrordireccion(true);
+                        swal("El campo direccion no acepta letras consecutivas repetidas.", "", "error");
+                      } else if (isNaN(parseInt(phone))) {
+                        swal("El campo teléfono solo acepta números.", "", "error");
+                      }
+                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                        swal("El campo correo debe contener un correo válido.", "", "error");
+                      } else {
+                        props.actualizar ? actualizarCliente() : handleNext();
+                      }
+                    }
+                  }
+                }}
+
+                variant="contained"
                 className="btnStepper">
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

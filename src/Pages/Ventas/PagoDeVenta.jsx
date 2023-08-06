@@ -15,7 +15,7 @@ import swal from '@sweetalert/with-react';
 
 const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
 
-export const NuevaVenta = ({
+export const PagoDeVenta = ({
   msgError = '',
   success = false,
   warning = false,
@@ -41,7 +41,7 @@ export const NuevaVenta = ({
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/CalculosDeVenta');
   };
 
   return (
@@ -50,9 +50,9 @@ export const NuevaVenta = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Nueva Venta</h2>
+        <h2>Pago De La Venta</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Nueva Venta.
+          Complete todos los puntos para poder registrar los datos de Pago de la Venta.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -60,68 +60,44 @@ export const NuevaVenta = ({
           <div className="InputContPrincipal1">
 
           <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
-            
-            <div className="contInput">
-              <TextCustom text="Fecha Actual" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Actual"
-                id="FechaActual"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-              <select name="" className="selectCustom" id="Empleado">
+              <TextCustom text="Metodo de Pago" className="titleInput" />
+              <select name="" className="selectCustom" id="Metodo de Pago">
                 <option value={1}>Sin informacion</option>
                 <option value={2}>Sin informacion</option>
               </select>
             </div>
 
-
             <div className="contInput">
-              <TextCustom text="Fecha de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Entrega"
-                id="fechaEntrega"
-              />
+              <TextCustom text="Estado" className="titleInput" />
+              <select name="" className="selectCustom" id="Estado">
+                <option value={1}>Sin informacion</option>
+                <option value={2}>Sin informacion</option>
+              </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha Limite de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Limite de Entrega"
-                id="fechaLimite"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="RTN" className="titleInput" />
+              <TextCustom text="Saldo Abonado" className="titleInput" />
 
               <input
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                placeholder="RTN"
-                id="RTN"
+                placeholder="Saldo Abonado"
+                id="Sado Abonado"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Saldo Restante" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Saldo Restante"
+                id="Saldo Restante"
               />
             </div>
 
@@ -133,7 +109,7 @@ export const NuevaVenta = ({
                 className="btnStepper"
                 onClick={handleNext}
               >
-                <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
