@@ -75,6 +75,7 @@ export const ConfigRol = props => {
   const [cont, setCont] = useState(0);
   const navegate = useNavigate();
 
+  
   const dataLeer = {
     idrol: gRol,
     usuario: usuarioLeer? 's' : 'n',
