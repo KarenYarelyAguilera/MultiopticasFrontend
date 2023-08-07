@@ -111,7 +111,7 @@ export const ListaClientes = (props) => {
         <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.idCliente)}
+           // onClick={() => handleUpdt(params.row.idCliente)}
             
           >
             <EditIcon></EditIcon>
@@ -169,102 +169,6 @@ export const ListaClientes = (props) => {
         default:
           break;
       }
-
-    });
-
-  }
-
-  function handleUpdt(id) {
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <TextCustom text="Usuario" className="titleInput" />
-            <input
-              type="text"
-              id="nombre"
-              className='inputCustom'
-            />
-          </div>
-
-          <div className="contInput">
-            <TextCustom
-              text="Apellido"
-              className="titleInput"
-            />
-            <input
-              type="text"
-              id="apellido"
-              className='inputCustom'
-            />
-          </div>
-          <div className="contInput">
-            <TextCustom text="Genero" className="titleInput" />
-            <select name="" id="genero">
-              <option value={1}>Masculino</option>
-              <option value={2}>Femenino</option>
-            </select>
-          </div>
-          <div className="contInput">
-            <TextCustom
-              text="fechaNacimiento"
-              className="titleInput"
-            />
-            <input type="date" id="fechaNacimiento" className='inputCustom' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="direccion" className="titleInput" />
-            <input type="text" id='direccion' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="telefono" className="titleInput" />
-            <input type="text" id='telefono' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="Email" className="titleInput" />
-            <input
-              type="text"
-              id="Email"
-              className='inputCustom'
-            />
-          </div>
-        </div>
-      </div>,
-    ).then( async() => {
-
-      let fechaN = document.getElementById('fechaNacimiento').value
-
-      let fecha = new Date(fechaN)
-
-      let anio = fecha.getFullYear().toString();
-      let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-      let dia = fecha.getDate().toString().padStart(2, "0");
-
-
-      let fechaFormateada = anio + "/" + mes + "/" + dia;
-
-
-      let data = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        idGenero: document.getElementById('genero').value,
-        fechaNacimiento: fechaFormateada,
-        direccion: document.getElementById('direccion').value,
-        telefono: document.getElementById('telefono').value,
-        correo: document.getElementById('Email').value,
-        idCliente: id,
-      };
-
-      // if (sendData(urlUpdateCliente, data)) {
-      //   swal(<h1>Cliente Actualizado Correctamente</h1>);
-      //   setCambio(cambio + 1)
-      // }
-      //await axios.put(urlUpdateCliente,data).then(response=>{
-       // swal(<h1>Cliente Actualizado Correctamente</h1>);
-       // setCambio(cambio + 1)
-     // })
 
     });
 
