@@ -1139,7 +1139,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-          
 
           <Route
             path="/menuClientes/lista"
