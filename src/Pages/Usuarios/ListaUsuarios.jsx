@@ -60,7 +60,7 @@ export const ListUsuarios = ({props,data,update,}) => {
                                   'Rol':row.rol,
                                   'Estado': row.Estado_Usuario,
                                   'Correo electronico':row.Correo_Electronico,
-                                  'Contraseña':row.Contrasenia,
+                                
                                 };
         });
         return formattedData;
