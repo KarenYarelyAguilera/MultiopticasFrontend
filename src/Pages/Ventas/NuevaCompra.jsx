@@ -181,7 +181,7 @@ export const NuevaCompra = ({
               <TextCustom text="Cantidad" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={13}
                 className="inputCustom"
@@ -237,7 +237,7 @@ export const NuevaCompra = ({
               <TextCustom text="Costo de la Compra" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={13}
                 className="inputCustom"
@@ -315,7 +315,16 @@ export const NuevaCompra = ({
             <div className="btnActionsNewReport">
               <Button
                 className="btnCreate1"
-                onClick={GuardarCompra}
+                onClick={() => {
+                  var costo = document.getElementById("costo").value;
+                  var cantidad = document.getElementById("cantidad").value;
+                  if (costo === "" || cantidad === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else{
+                GuardarCompra();
+              }
+            }
+          }
               >
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar

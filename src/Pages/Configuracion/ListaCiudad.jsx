@@ -1,9 +1,17 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,14 +24,19 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
+
 import axios from 'axios';
 
-export const ListaCiudad = () => {
+export const ListaCiudad = ({props,data,update}) => {
 
-  const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
+  const [cambio, setCambio] = useState(0)
 
-  const urlCuidad = 'http://localhost:3000/api/Cuidades';
+  const urlCuidad = 'http://localhost:3000/api/ciudades';
+  const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,6 +44,28 @@ export const ListaCiudad = () => {
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdCiudad,
+                                'Ciudad':row.ciudad, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Ciudades.pdf';
+    const subTitulo = "LISTA DE CIUDADES"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const navegate = useNavigate();
 
@@ -43,36 +78,95 @@ export const ListaCiudad = () => {
   );
 
   const columns = [
-    { field: ' IdCiudad', headerName: 'ID Ciudad', width: 600 },
+    { field: 'IdCiudad', headerName: 'ID Ciudad', width: 600 },
     { field: 'ciudad', headerName: 'Ciudad', width: 600 },
 
-    // {
-    //   field: 'borrar',
-    //   headerName: 'Acciones',
-    //   width: 200,
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190,
 
-    //   renderCell: params => (
-    //     <div className="contActions">
-    //       <Button
-    //         className="btnEdit"
-    //         onClick={() => handleUpdt(params.row.IdMarca)}
-    //       >
-    //         <EditIcon></EditIcon>
-    //       </Button>
-    //       <Button
-    //         className="btnDelete"
-    //        onClick={() => handleDel(params.row.IdMarca)}
-    //       >
-    //         <DeleteForeverIcon></DeleteForeverIcon>
-    //       </Button>
-    //     </div>
-    //   ),
-    // },
+      renderCell: params => (
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+            <EditIcon></EditIcon>
+          </Button>
+          <Button
+            className="btnDelete"
+            onClick={() => handleDel(params.row.IdCiudad)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+        </div>
+      ),
+      
+    },
   ];
 
-  // zxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaa
+//FUNCION DE ELIMINAR 
+function handleDel(id) {
+  swal({
+    content: (
+      <div>
+        <div className="logoModal">¿Desea elimiar esta ciudad?</div>
+        <div className="contEditModal">
+        </div>
+      </div>
+    ),
+    buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+    },
+  }).then(async(op) => {
 
+    switch (op) {
+      case null:
 
+        let data = {
+          IdCiudad: id
+        };
+        console.log(data);
+  
+        await axios.delete(urlDeleteCuidad,{data}).then(response=>{
+          swal("Ciudad eliminada correctamente","","success")
+          setCambio(cambio+1)
+        }).catch(error=>{
+          console.log(error);
+          swal("Error al eliminar la ciudad, asegúrese que no tenga relación con otros datos.","","error")
+        })
+       
+      break;
+    
+      default:
+      break;
+    }
+  });
+};
+
+//FUNCION DE ACTUALIZAR 
+function handleUpdt(id) {
+  swal({
+    buttons: {
+      update: 'Actualizar',
+      cancel: 'Cancelar',
+    },
+    content: (
+      <div className="logoModal">
+        ¿Desea actualizar la ciudad: {id.ciudad}?
+      </div>
+    ),
+  }).then((op) => {
+    switch (op) {
+        case 'update':
+        data(id)
+        update(true)
+    navegate('/config/RegistroCiudad')
+    break;
+    default:
+    break;
+    }
+  });
+};
 
   const handleBack = () => {
     navegate('/config');
@@ -107,7 +201,7 @@ export const ListaCiudad = () => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            {/* <Button
+            <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/RegistroCiudad');
@@ -115,15 +209,17 @@ export const ListaCiudad = () => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
-            </Button> */}
-            <Button className="btnReport">
+            </Button>
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData. IdCiudad}
+          getRowId={tableData => tableData.IdCiudad}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

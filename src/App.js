@@ -86,6 +86,7 @@ import { RegistroPromMarca } from './Pages/Inventario/RegistroPromMarca.jsx';
 import { Progress } from './Pages/Seguridad/Progress.jsx';
 import { Registration } from './Pages/Seguridad/Registration.jsx';
 import { LoginxPrimeraVez } from './Pages/Login/LoginxPrimeraVez.jsx';
+import { PreguntasLoginxPV } from './Pages/Login/PreguntasLoginxPV.jsx';
 
 import { RegistroProducto2 } from './Pages/Inventario/RegistroProducto2.jsx';
 import { Perfil } from './Pages/Perfil.jsx';
@@ -267,12 +268,32 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <LoginxPrimeraVez
                 estado={activo}
                 id={idUsuario}
-              // activo={activo}
-              // user={usuario}
-              // mail={correo}
+                // activo={activo}
+                user={usuario}
+                // mail={correo}
+                infoPerfil={infoPerfil}
+
               />
             }
           ></Route>
+
+          <Route
+            path="/preguntasLoginxPV"
+            element={
+              <PreguntasLoginxPV
+              update={update}
+              data={Data} 
+              idUsuario={idUsuario} 
+              infoPerfil={infoPerfil}
+              user={usuario}
+
+              />
+            }
+          ></Route>
+
+
+
+
 
           <Route
             path="/perfilStepper"
@@ -301,7 +322,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     user={usuario}
                   />
                 </div>
-              </ProtectedRoute>
+             </ProtectedRoute>
             }
           ></Route>
 
@@ -476,7 +497,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <AddClientes actualizar={actualizar} update={update} data={data} Data={Data} />
+                <AddClientes 
+                actualizar={actualizar}
+                update={update}
+                data={data}
+                Data={Data}
+                />
               </div>
               //</ProtectedRoute>
             }
@@ -634,12 +660,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 />
                 <BarraHorizontal user={usuario} />
                 <RegistroMarcas
-                  limpiarData={Data}
-                  limpiarUpdate={update}
                   actualizar={actualizar}
                   update={update}
                   data={data}
-                  Data={Data} />
+                  Data={Data} 
+                  />
               </div>
               </ProtectedRoute>
             }
@@ -659,7 +684,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <MetodosDePago />
+                <MetodosDePago
+                 actualizar={actualizar}
+                 update={update}
+                 data={data}garanr
+                 Data={Data}
+                 />
               </div>
               //  </ProtectedRoute>
             }
@@ -679,7 +709,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroDepartamento />
+                <RegistroDepartamento
+                actualizar={actualizar}
+                update={update}
+                data={data}
+                Data={Data}
+                />
               </div>
               //  </ProtectedRoute>
             }
@@ -699,7 +734,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroCiudad />
+                <RegistroCiudad 
+                actualizar={actualizar}
+                update={update}
+                data={data}
+                Data={Data}
+                />
               </div>
               //  </ProtectedRoute>
             }
@@ -719,7 +759,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroPais />
+                <RegistroPais
+                 actualizar={actualizar}
+                 update={update}
+                 data={data}
+                 Data={Data}
+                />
               </div>
               //  </ProtectedRoute>
             }
@@ -739,7 +784,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroGenero />
+                <RegistroGenero 
+                 actualizar={actualizar}
+                 update={update}
+                 data={data}
+                 Data={Data} 
+                />
               </div>
               //  </ProtectedRoute>
             }
@@ -856,7 +906,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 <Route
             path="/config/ListaMetodosDePago"
             element={
-             // <ProtectedRoute activo={activo}>
+             <ProtectedRoute activo={activo}>
                 <div className="flex">
                   <BarraLateral
                     user={user}
@@ -867,9 +917,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaMetodosDePago />
+                  <ListaMetodosDePago
+                   update={update} 
+                   data={Data} 
+                  />
                 </div>
-             // </ProtectedRoute>
+             </ProtectedRoute>
             }
           ></Route>
 
@@ -887,7 +940,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal usxer={usuario} />
-                  <ListaDepartamentos />
+                  <ListaDepartamentos
+                  update={update} 
+                  data={Data}
+                  />
                 </div>
               </ProtectedRoute>
             }
@@ -907,7 +963,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaCiudad />
+                  <ListaCiudad 
+                  update={update} 
+                  data={Data} 
+                  />
                 </div>
               </ProtectedRoute>
             }
@@ -927,7 +986,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaPais />
+                  <ListaPais 
+                  update={update} 
+                  data={Data} 
+                  />
                 </div>
             </ProtectedRoute>
             }
@@ -947,7 +1009,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaGenero />
+                  <ListaGenero 
+                   update={update} 
+                   data={Data} 
+                  />
                 </div>
              </ProtectedRoute>
             }
@@ -1090,7 +1155,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaClientes datosclientes={registroclientes} update={update} data={Data} />
+                <ListaClientes 
+                datosclientes={registroclientes} 
+                // update={update} data={Data} 
+                update={update} 
+                data={Data}  />
               </div>
               // </ProtectedRoute>
             }
@@ -1851,6 +1920,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario} 
                    // infoPerfil={infoPerfil}
                     user={usuario}
+                    //data={data}
+                    
                     ></RecordatorioCitas>
                 </div>
               </ProtectedRoute>

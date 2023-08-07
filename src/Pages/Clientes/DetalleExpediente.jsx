@@ -107,7 +107,18 @@ let fechaModificada = year + "/" + month + "/" + day;
   };
 
   const handleBack = () => {
-    navegate('/menuClientes/DatosExpediente');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de un nuevo Historial ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/menuClientes/DatosExpediente');
+      } else {
+      }
+    });
   };
 
   return (

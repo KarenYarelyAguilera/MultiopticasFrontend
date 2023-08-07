@@ -1,70 +1,157 @@
-import { PageOne } from '../../Components/LoginPorPrimeraVez/PageOne/PageOne';
-import { PageTwo } from '../../Components/LoginPorPrimeraVez/PageTwo/PageTwo';
-import { PageThree } from '../../Components/LoginPorPrimeraVez/PageThree/PageThree';
-import { PageFour } from '../../Components/LoginPorPrimeraVez/PageFour/PageFour';
-// import "./App.css";
-import React, { useState } from 'react';
-import { MultiProgressPreguntas } from '../../Components/MultiStepProgressBar/MultiProgressPreguntas';
-import passwordRecovery from '../../IMG/passwordrecovery.png';
+import { DataGrid, esES } from '@mui/x-data-grid';
+import { useState, useEffect, React } from 'react';
+import { Await, useNavigate } from 'react-router';
+import swal from '@sweetalert/with-react';
+
+//Mui-Material-Icons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button } from '@mui/material';
+
+import '../../Styles/Usuarios.css';
+import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
 export const LoginxPrimeraVez = props => {
 
-  const [correo1, setCorreo1] = useState('');
-  const [Id,setId] = useState(0);
-  
-  const [autor,setAutor]=useState("");
-
-  const crr1 = correo=>setCorreo1(correo);
-  const id = idd=>setId(idd);
-  const autr= aut=>setAutor(aut);
 
 
-  const [page, setPage] = useState('pageone');
 
-  const nextPage = page => {
-    setPage(page);
+  const navigate = useNavigate();
+  const [cambio, setCambio] = useState(0);
+  const [tableData, setTableData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [Preguntas, setPreguntas] = useState([]);
+
+  const urlPyR = 'http://localhost:3000/api/pregYresp'
+  const urlDelRespuesta = 'http://localhost:3000/api/eliminarRespuesta'
+  const urlPregunta = 'http://localhost:3000/api/pregunta';
+  //parametros
+  const [Parametro, setParametro] = useState('');
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+
+  const dataUser = {
+    Id_Usuario: props.idUsuario,
+    user: props.user,
+  };
+  //console.log(dataUser);
+
+
+  const dataId = {
+    Id_Usuario: props.id,
+  };
+  console.log(dataId);
+
+  //axios para que me traiga las preguntas y respuestas
+  useEffect(() => {
+    axios.post(urlPyR, dataId).then(response => {
+      setTableData(response.data);
+    })
+      .catch(error => console.log(error));
+  }, [cambio]);
+
+  useEffect(() => {
+    const filteredData = tableData.filter(row =>
+      Object.values(row).some(
+        value =>
+          value &&
+          value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+      ),
+    );
+    setFilteredData(filteredData);
+  }, [tableData, searchTerm]);
+
+  const columns = [
+    //son los de la base no los de node
+    //{ field: 'Id_Pregunta', headerName: 'Id_Pregunta', width: 100, headerAlign: 'center' },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 450, headerAlign: 'center' },
+    {
+      field: 'Respuesta', headerName: 'Respuestas', width: 440, headerAlign: 'center',
+      valueGetter: (params) => {
+        // Obtener la respuesta original
+        const originalRespuesta = params.row.Respuesta;
+        // Crear un string de asteriscos con la misma longitud que la respuesta original
+        const asterisks = '*'.repeat(originalRespuesta.length);
+        return asterisks;
+      },
+    },
+  ];
+
+
+
+  const handleBack = () => {
+    navigate('/');
   };
 
-  const nextPageNumber = pageNumber => {
-    switch (pageNumber) {
-      case '1':
-        setPage('pageone');
-        break;
-      case '2':
-        setPage('pagetwo');
-        break;
-      case '3':
-        setPage('pagethree');
-        break;
-      case '4':
-        alert('Ooops! Seems like you did not fill the form.');
-        break;
-      default:
-        setPage('1');
+
+
+
+  const handleClick = async () => {
+    try {
+      const response = await axios.get(urlParametro);
+      setParametro(response.data);
+      console.log(response.data);
+
+      const cantidadRegistros = filteredData.length;
+      console.log(cantidadRegistros);
+
+      if (cantidadRegistros > parseInt(response.data)) {
+        swal("Ya no puede agregar más preguntas", "", "error");
+      } else if (cantidadRegistros === parseInt(response.data)) {
+        swal("Preguntas configuradas", "", "success");
+        navigate('/');
+      } else if (cantidadRegistros === 0) {
+        swal("Comenzando configuracion", "", "success");
+        navigate('/preguntasLoginxPV');
+      } else {
+        navigate('/preguntasLoginxPV');
+      }
+    } catch (error) {
+      console.error("Error al procesar la solicitud:", error);
     }
   };
 
+
   return (
-    <div className="divSection">
-      <div className="divInfoQuestion">
-        <div className="titleRecuPassword">
-          <h2>Login por primera vez</h2>
-          <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
+    <div className="ContProfile">
+
+
+      <div
+        style={{
+          height: 300,
+          width: '80%',
+          position: 'relative',
+          left: '190px',
+        }}
+      >
+        <br />
+        <h2  >Configurar preguntas de seguridad</h2>
+        <br />
+        
+        <div className="contFilter">
+          <div className="btnActionsNewReport">
+            <Button
+              className="btnCreate"
+              onClick={handleClick}
+            >
+              <AddIcon style={{ marginRight: '10px' }} />
+              Agregar
+            </Button>
+          </div>
         </div>
-        <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
-        {
-          {
-            pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
-            pagetwo: <PageTwo correo1={correo1} id={id} autor={autr}  onButtonClick={nextPage} />,
-            pagethree:<PageThree correo={correo1} id={Id} autor={autor}   onButtonClick={nextPage} />,
-            pagefour: <PageFour correo={correo1} id={Id} autor={autor}  />,
-
-          }[page]
-        }
-      </div>
-
-      <div className="divImgSection">
-        <img src={passwordRecovery} alt="Iamgen no encontrada" />
+        <DataGrid
+          getRowId={tableData => tableData.Id_Pregunta}//este id me permite traer la lista
+          rows={filteredData}
+          columns={columns}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
       </div>
     </div>
   );
