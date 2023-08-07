@@ -24,11 +24,11 @@ export const RegistroGarantia = (props) => {
 
   const [Productos, setProductos] = useState([])
   
-  const [mesesGarantia, setGarantia] = React.useState('');
+  const [mesesGarantia, setGarantia] = React.useState(props.data.Meses ||'');
   const [mensaje, setmensaje] = React.useState('');
   const [errormesesGarantia, seterrormesesGarantia] = React.useState(false);
 
-  const [descripcion, setDescripcion] = React.useState('');
+  const [descripcion, setDescripcion] = React.useState(props.data.descripcion ||'');
   const [leyenda, setleyenda] = React.useState('');
   const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
@@ -110,7 +110,7 @@ const actualizarGarantia = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Garantia</h2> : <h2>Registro de Garantia</h2>}
+      {props.actualizar ? <h2>Actualizacion de Garantia</h2> : <h2>Registro de Garantia</h2>}
         <h3>
           Complete todos los puntos para poder registrar la garantia.
         </h3>
@@ -140,13 +140,38 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="Meses" className="titleInput" />
               <input
-           
-                type="text"
+
+                onKeyDown={e => {
+                  setGarantia(e.target.value);
+                  if (mesesGarantia === "") {
+                    seterrormesesGarantia(true);
+                    setmensaje("Los campos no deben de quedar vacíos");
+                  } else {
+                    seterrormesesGarantia(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(mesesGarantia)) {
+                      seterrormesesGarantia(true);
+                      setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
+                    } else if (/(.)\1{2,}/.test(mesesGarantia)) {
+                      seterrormesesGarantia(true);
+                      setmensaje("No se permiten letras consecutivas repetidas");
+                    } else {
+                      seterrormesesGarantia(false);
+                      setmensaje("");
+                    }
+                  }
+                }
+                }
+                onChange={e => setGarantia(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+
+                error= {errormesesGarantia}
+                type="number"
                 name=""
                 maxLength={2}
                 className="inputCustom"
                 placeholder="Meses"
                 id="mesesGarantia"
+                value={mesesGarantia}
               />
               <p class="error">{mensaje}</p>
             </div>
@@ -163,31 +188,29 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
-
-                // onKeyDown={(e) => {
-                //   setDescripcion(e.target.value);
-
-                //   if (descripcion.length > 100) {
-                //     setErrorDescripcion(true);
-                //     setleyenda('A excedido al numero de caracteres');
-                //   }
-                //   if (descripcion === '') {
-                //     setErrorDescripcion(true);
-                //     setleyenda('Los campos no deben estar vacios');
-                //   }
-                //   else {
-                //     setErrorDescripcion(false);
-                //     var expresion = /^[a-zA-Z0-9]+$/;
-                //     if (!expresion.test(descripcion)) {
-                //       setErrorDescripcion(true);
-                //       setleyenda('Formato invalido');
-                //     }
-                //     else {
-                //       setErrorDescripcion(false);
-                //       setleyenda('');
-                //     }
-                //   }
-                // }}
+                onKeyDown={e => {
+                  setDescripcion(e.target.value);
+                  if (descripcion === "") {
+                    setErrorDescripcion(true);
+                    setleyenda("Los campos no deben de quedar vacíos");
+                  } else {
+                    setErrorDescripcion(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
+                    } else if (/(.)\1{2,}/.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda("No se permiten letras consecutivas repetidas");
+                    } else {
+                      setErrorDescripcion(false);
+                      setleyenda("");
+                    }
+                  }
+                }
+                }
+                onChange={e => setDescripcion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error= {errorDescripcion}
 
                 type="text"
                 name=""
@@ -195,6 +218,7 @@ const actualizarGarantia = async () => {
                 className="inputCustomText"
                 placeholder="Descripcion"
                 id="descripcion"
+                value={descripcion}
               />
               <p class="error">{leyenda}</p>
             </div>
@@ -213,14 +237,21 @@ const actualizarGarantia = async () => {
                 if ( descripcion ==="" || mesesGarantia ==="" )
                 {
                   swal ("No deje campos vacios.","","error");
-                }
+                } else if (/^[A-Z]+(?: [A-Z]+)*$/.test(descripcion))
+                {
+                  swal("El campo de descripcion solo acepta letras mayusculas.","","error");
+                }else if (isNaN(parseInt(mesesGarantia)))
+                {
+                  swal("El campo meses solo acepta numeros.","","error");
+                }else{
 
-                props.actualizar ? actualizarGarantia() : handleNext();
+                }
+                  props.actualizar ? actualizarGarantia() : handleNext();
                 
-                    }
+                }
                 }
               >
-                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>

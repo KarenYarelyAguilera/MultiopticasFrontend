@@ -23,11 +23,11 @@ const urlUpdDescuento = //ACTUALIZAR
 
 export const RegistroDescuento = (props) => {
 
-  const [descPorcent, setdescPorcent] = React.useState('');
+  const [descPorcent, setdescPorcent] = React.useState(props.data.descPorcent ||'');
   const [mensaje, setmensaje] = React.useState('');
   const [errordescPorcent, setErrordescPorcent] = React.useState(false);
 
-  const [descPorcentEmpleado, setdescPorcentEmpleado] = React.useState('');
+  const [descPorcentEmpleado, setdescPorcentEmpleado] = React.useState(props.data.descPorcentEmpleado ||'');
   const [advertencia, setadvertencia] = React.useState('');
   const [errordescPorcentEmpleado, setErrordescPorcentEmpleado] = React.useState(false);
 
@@ -119,13 +119,36 @@ export const RegistroDescuento = (props) => {
               <TextCustom text="Descuento del Cliente" className="titleInput" />
 
               <input
-                type="text"
+
+                onKeyDown={e => {
+                  setdescPorcent(e.target.value);
+                  if (descPorcent === '') {
+                    setErrordescPorcent(true);
+                    setmensaje('Los campos no deben estar vacíos');
+                  } else {
+                    var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
+                    if (!regex.test(descPorcent)) {
+                      setErrordescPorcent(true);
+                      setmensaje('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
+                    } else if (/(.)\1{2,}/.test(descPorcent)) {
+                      setErrordescPorcent(true);
+                      setmensaje('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrordescPorcent(false);
+                      setmensaje("");
+                    }
+                  }
+                }}
+                onChange={e => setdescPorcent(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errordescPorcent}
+                helperText={mensaje}
+                type="number"
                 name=""
                 maxLength={10}
                 className="inputCustom"
-
                 placeholder="Descuento del Cliente"
                 id="descPorcent"
+                value={descPorcent}
               />
               <p class="error">{mensaje}</p>
 
@@ -134,13 +157,37 @@ export const RegistroDescuento = (props) => {
             <div className="contInput">
               <TextCustom text="Descuento de Empleado" className="titleInput" />
               <input
+                  onKeyDown={e => {
+
+                    setdescPorcentEmpleado(e.target.value);
+                    if (descPorcent === '') {
+                      setErrordescPorcentEmpleado(true);
+                      setadvertencia('Los campos no deben estar vacíos');
+                    } else {
+                      var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
+                      if (!regex.test(descPorcent)) {
+                        setErrordescPorcentEmpleado(true);
+                        setadvertencia('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
+                      } else if (/(.)\1{2,}/.test(descPorcent)) {
+                        setErrordescPorcentEmpleado(true);
+                        setadvertencia('No se permiten letras consecutivas repetidas');
+                      } else {
+                        setErrordescPorcentEmpleado(false);
+                        setadvertencia("");
+                      }
+                    }
+                  }}
+                  onChange={e => setdescPorcentEmpleado(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                  error={errordescPorcentEmpleado}
+                  helperText={advertencia}
             
-                type="text"
+                type="number"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Descuento de Empleado"
                 id="descPorcentEmpleado"
+                value={descPorcentEmpleado}
               />
               <p class="error">{advertencia}</p>
 
@@ -169,8 +216,16 @@ export const RegistroDescuento = (props) => {
 
                   if (descPorcent === "" || descPorcentEmpleado === "") {
                     swal("No deje campos vacíos.", "", "error");
-                  } else
+                  } else if  (isNaN(parseInt(descPorcent))) {
+                    swal ("El campo año solo acepta números.", "", "error");
+                  } else if (isNaN(parseInt(descPorcent))) 
+                  {
+                    swal ("El campo año solo acepta números.", "", "error");
+                  } else 
+                  {
                     props.actualizar ? actualizarDescuento() : handleNext();
+
+                  }
                 }
                 }
               >

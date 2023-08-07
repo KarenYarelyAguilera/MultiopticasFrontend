@@ -1,3 +1,6 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -5,6 +8,9 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,6 +24,9 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+
+//GENERADOR DE PDF
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaGarantia = ({props,data,update}) => {
 
@@ -38,6 +47,31 @@ export const ListaGarantia = ({props,data,update}) => {
       .catch(error => console.log(error));
   }, [cambio]);
 
+  //IMPRIMIR PDF
+const handleGenerarReporte = () => {
+  const formatDataForPDF = () => {
+    const formattedData = tableData.map((row) => {
+      const fechaCre = new Date(row.fechaNacimiento);
+      const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                            String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                            fechaCre.getFullYear();
+                            return {
+                              'N°':row.IdGarantia,
+                              'Descripción':row.descripcion, 
+                              'Meses de Garantia':row.Meses, 
+                              'Producto':row.producto, 
+                              'Estado':row.estado,                        
+                            };
+    });
+    return formattedData;
+  };
+
+  const urlPDF = 'Report_Garantias.pdf';
+  const subTitulo = "LISTA DE GARANTIAS"
+
+  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+};
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -50,7 +84,7 @@ export const ListaGarantia = ({props,data,update}) => {
 
   const columns = [
     { field: 'IdGarantia', headerName: 'ID Garantia', width: 210 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 210 },
+    { field: 'descripcion', headerName: 'Descripción', width: 210 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
     { field: 'producto', headerName: 'Producto', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
@@ -183,7 +217,8 @@ export const ListaGarantia = ({props,data,update}) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva Garantia
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

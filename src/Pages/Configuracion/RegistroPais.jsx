@@ -65,7 +65,7 @@ export const RegistroPais = (props) => {
       })
     }).catch(error => {
       console.log(error);
-      swal('Error al Actualizar! , porfavor revise todos los campos.', '', 'error')
+      swal('Error al Actualizar! , por favor revise todos los campos.', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
   
@@ -73,7 +73,20 @@ export const RegistroPais = (props) => {
   
   //BOTON DE RETROCESO 
   const handleBack = () => {
-    navegate('/config/ListaPais');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de países ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/config');
+      } else {
+      }
+    });
   };
 
   return (
