@@ -24,8 +24,10 @@ import axios from 'axios';
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaClientes = (props) => {
-  const [cambio, setCambio] = useState(0);
+export const ListaClientes = ({props,data,update}) => {
+  const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
+
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -33,16 +35,13 @@ export const ListaClientes = (props) => {
     'http://localhost:3000/api/clientes/actualizar';
 
   const urlDelCliente = "http://localhost:3000/api/clientes/eliminar"
-
+  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
   
-
-
   useEffect(() => {
-   axios.get(urlClientes).then(response => {
-      setTableData(response.data)
-    }).catch(error => console.log(error))
+    axios.get(urlClientes).then(response=>setTableData(response.data))
   }, [cambio]);
 
   //IMPRIMIR PDF
@@ -108,32 +107,23 @@ export const ListaClientes = (props) => {
       width: 260,
 
       renderCell: params => (
-        <div className="contActions1">
+        <div className="contActions">
           <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row.idCliente)}
-            
-          >
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.idCliente)}
-          >
+           onClick={() => handleDel(params.row.idCliente)}>
             <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-
-          <Button
-            className="btnAddExpe"
-            onClick={() => handleNewExpediente(params.row)}
-          >
-            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
+      
     },
   ];
 
+  //FUNCION DE ELIMINAR 
   function handleDel(id) {
     swal({
       content: (
@@ -172,103 +162,33 @@ export const ListaClientes = (props) => {
 
     });
 
-  }
+  };
 
+  //FUNCION DE ACTUALIZAR DATOS 
   function handleUpdt(id) {
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">Datos a actualizar</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <TextCustom text="Usuario" className="titleInput" />
-            <input
-              type="text"
-              id="nombre"
-              className='inputCustom'
-            />
-          </div>
-
-          <div className="contInput">
-            <TextCustom
-              text="Apellido"
-              className="titleInput"
-            />
-            <input
-              type="text"
-              id="apellido"
-              className='inputCustom'
-            />
-          </div>
-          <div className="contInput">
-            <TextCustom text="Genero" className="titleInput" />
-            <select name="" id="genero">
-              <option value={1}>Masculino</option>
-              <option value={2}>Femenino</option>
-            </select>
-          </div>
-          <div className="contInput">
-            <TextCustom
-              text="fechaNacimiento"
-              className="titleInput"
-            />
-            <input type="date" id="fechaNacimiento" className='inputCustom' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="direccion" className="titleInput" />
-            <input type="text" id='direccion' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="telefono" className="titleInput" />
-            <input type="text" id='telefono' />
-          </div>
-          <div className="contInput">
-            <TextCustom text="Email" className="titleInput" />
-            <input
-              type="text"
-              id="Email"
-              className='inputCustom'
-            />
-          </div>
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este cliente: {id.nombre}?
         </div>
-      </div>,
-    ).then( async() => {
+      ),
+    }).then((op)  => {
+        switch (op) {
+          case 'update':
+            data(id)
+            update(true)
+            navegate('/menuClientes/nuevoCliente')
+            break;
+            default:
+            break;
+        }
+      });
+  };
 
-      let fechaN = document.getElementById('fechaNacimiento').value
-
-      let fecha = new Date(fechaN)
-
-      let anio = fecha.getFullYear().toString();
-      let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-      let dia = fecha.getDate().toString().padStart(2, "0");
-
-
-      let fechaFormateada = anio + "/" + mes + "/" + dia;
-
-
-      let data = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        idGenero: document.getElementById('genero').value,
-        fechaNacimiento: fechaFormateada,
-        direccion: document.getElementById('direccion').value,
-        telefono: document.getElementById('telefono').value,
-        correo: document.getElementById('Email').value,
-        idCliente: id,
-      };
-
-      // if (sendData(urlUpdateCliente, data)) {
-      //   swal(<h1>Cliente Actualizado Correctamente</h1>);
-      //   setCambio(cambio + 1)
-      // }
-      //await axios.put(urlUpdateCliente,data).then(response=>{
-       // swal(<h1>Cliente Actualizado Correctamente</h1>);
-       // setCambio(cambio + 1)
-     // })
-
-    });
-
-  }
   
   const handleBack = () => {
     navegate('/menuClientes');

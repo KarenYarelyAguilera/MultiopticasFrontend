@@ -1,9 +1,16 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,22 +23,49 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
+
 import axios from 'axios';
 
-export const ListaGenero = (props) => {
+export const ListaGenero = ({props,data,update}) => {
 
-  const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
 
   //API DE GENERO
  const urlGenero = 'http://localhost:3000/api/Genero';
-
+ const urlDeleteGenero = 'http://localhost:3000/api/Genero/borrar';
+ 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     axios.get(urlGenero).then(response=>setTableData(response.data))
   }, [cambio]);
+
+   //IMPRIMIR PDF
+ const handleGenerarReporte = () => {
+  const formatDataForPDF = () => {
+    const formattedData = tableData.map((row) => {
+      const fechaCre = new Date(row.fechaNacimiento);
+      const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                            String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                            fechaCre.getFullYear();
+                            return {
+                              'N°':row.IdGenero,
+                              'País':row.descripcion, 
+                            };
+    });
+    return formattedData;
+  };
+
+  const urlPDF = 'Report_Genero.pdf';
+  const subTitulo = "LISTA DE GÉNEROS"
+
+  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+};
   
   const navegate = useNavigate();
 
@@ -47,111 +81,91 @@ export const ListaGenero = (props) => {
     { field: 'IdGenero', headerName: 'ID Genero', width: 450 },
     { field: 'descripcion', headerName: 'Genero', width: 450 },
 
-    // {
-    //   field: 'borrar',
-    //   headerName: 'Acciones',
-    //   width: 200,
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190,
 
-    //   renderCell: params => (
-    //     // <div className="contActions">
-    //     //   <Button
-    //     //     className="btnEdit"
-    //     //     onClick={() => handleUpdt(params.row.IdGenero)}
-    //     //   >
-    //        // <EditIcon></EditIcon>
-    //       // </Button> */
-    //       // <Button
-    //       //   className="btnDelete"
-    //       //  onClick={() => handleDel(params.row.IdGenero)}
-    //       // >
-    //       //   <DeleteForeverIcon></DeleteForeverIcon>
-    //       // </Button>
-    //     //</div>
-    //   ),
-    // },
+      renderCell: params => (
+        <div className="contActions1">
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+            <EditIcon></EditIcon>
+          </Button>
+          <Button
+            className="btnDelete"
+            onClick={() => handleDel(params.row.IdGenero)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+        </div>
+      ),
+    },
   ];
 
-  // function handleUpdt(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Datos a actualizar</div>
-  //         <div className="contEditModal">
-  //           <div className="contInput">
-  //             <TextCustom text="Genero" className="titleInput" />
-  //             <input
-  //               type="text"
-  //               id="IdGenero"
-  //               className="inputCustom"
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Cancelar","Actualizar"]
-  //   }).then((op) => {
 
-  //     switch (op) {
-  //       case true:
-  //         let data = {
-  //           IdMarca: id,
-  //           descripcion: document.getElementById("marca").value,
-  //         };
+  //FUNCION DE ACTUALIZAR 
+ 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: ( 
+        <div  
+         className="logoModal">  ¿Desea actualizar este Género: {id.descripcion}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+          update(true)
+      navegate('/config/RegistroGenero')
+      break;
+      default:
+      break;
+      }
+    });
+  };
+
+  //FUNCION DE ELIMINAR 
+  function handleDel(id) {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea elimiar este Género?</div>
+          <div className="contEditModal">
+          </div>
+        </div>
+      ),
+        buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+      },
+    }).then(async(op) => {
+
+      switch (op) {
+        case null:
+          
+          let data = {
+            IdGenero: id
+          };
+          console.log(data);
     
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlUpdateMarca, data)) {
-  //           swal(<h1>Marca Actualizada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
-
-  // }
-
-  // function handleDel(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
-  //         <div className="contEditModal">
-            
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Eliminar","Cancelar"]
-  //   }).then((op) => {
-
-  //     switch (op) {
-  //       case null:
-  //         let data = {
-  //           IdMarca: id
-  //         };
-    
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlDelMarca, data)) {
-  //           swal(<h1>Marca Eliminada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
-
-  // }
-
-
+          await axios .delete(urlDeleteGenero,{data}) .then(response => {
+            swal('Género eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal("Error al eliminar el Género , asegúrese que no tenga relación con otros datos.", '', 'error');
+          });
+          break;
+          default:
+          break;
+      }
+    });
+  };
 
   const handleBack = () => {
     navegate('/config');
@@ -162,7 +176,7 @@ export const ListaGenero = (props) => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Genero</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Género</h2>
 
       <div
         style={{
@@ -186,7 +200,7 @@ export const ListaGenero = (props) => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            {/* <Button
+            <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/RegistroGenero');
@@ -194,8 +208,10 @@ export const ListaGenero = (props) => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
-            </Button> */}
-            <Button className="btnReport">
+            </Button>
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
