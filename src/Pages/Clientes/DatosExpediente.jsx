@@ -79,7 +79,18 @@ export const DatosExpediente = ( props) => {
   const handleBack = () => {
     props.dataa({})
     props.datosclientess({})
-    navegate('/menuClientes/ListaExpedientes');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de expediente ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/menuClientes/ListaExpedientes');
+      } else {
+      }
+    });
   };
 
   const navegate = useNavigate();
