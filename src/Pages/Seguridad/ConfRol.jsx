@@ -10,10 +10,11 @@ import SaveIcon from '@mui/icons-material/Save';
 import { sendData } from '../../scripts/sendData';
 import swal from '@sweetalert/with-react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 export const ConfigRol = props => {
   const urlRoles =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles';
+    'http://localhost:3000/api/Rol';
 
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
@@ -28,6 +29,7 @@ export const ConfigRol = props => {
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosupdt';
   const urlupDel =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosdel';
+    const urlPermisos = "http://localhost:3000/api/permisosRol"
 
   const [roles, setRoles] = useState([]);
   const [accion, setAccion] = useState(1);
@@ -37,7 +39,6 @@ export const ConfigRol = props => {
   const [inventarioLeer, setInventarioLeer] = useState(false);
   const [clientesLeer, setClientesLeer] = useState(false);
   const [ventasLeer, setVentasLeer] = useState(false);
-  const [reportesLeer, setReportesLeer] = useState(false);
   const [recordatoriosLeer, setRecordatoriosLeer] = useState(false);
   const [seguridadLeer, setSeguridadLeer] = useState(false);
   const [configuracionLeer, setConfigLeer] = useState(false);
@@ -47,7 +48,6 @@ export const ConfigRol = props => {
   const [inventarioInsertar, setInventarioInsertar] = useState(false);
   const [clientesInsertar, setClientesInsertar] = useState(false);
   const [ventasInsertar, setVentasInsertar] = useState(false);
-  const [reportesInsertar, setReportesInsertar] = useState(false);
   const [recordatoriosInsertar, setRecordatoriosInsertar] = useState(false);
   const [seguridadInsertar, setSeguridadInsertar] = useState(false);
   const [configuracionInsertar, setConfigInsertar] = useState(false);
@@ -57,7 +57,6 @@ export const ConfigRol = props => {
   const [inventarioEditar, setInventarioEditar] = useState(false);
   const [clientesEditar, setClientesEditar] = useState(false);
   const [ventasEditar, setVentasEditar] = useState(false);
-  const [reportesEditar, setReportesEditar] = useState(false);
   const [recordatoriosEditar, setRecordatoriosEditar] = useState(false);
   const [seguridadEditar, setSeguridadEditar] = useState(false);
   const [configuracionEditar, setConfigEditar] = useState(false);
@@ -67,7 +66,6 @@ export const ConfigRol = props => {
   const [inventarioEliminar, setInventarioEliminar] = useState(false);
   const [clientesEliminar, setClientesEliminar] = useState(false);
   const [ventasEliminar, setVentasEliminar] = useState(false);
-  const [reportesEliminar, setReportesEliminar] = useState(false);
   const [recordatoriosEliminar, setRecordatoriosEliminar] = useState(false);
   const [seguridadEliminar, setSeguridadEliminar] = useState(false);
   const [configuracionEliminar, setConfigEliminar] = useState(false);
@@ -77,17 +75,49 @@ export const ConfigRol = props => {
   const [cont, setCont] = useState(0);
   const navegate = useNavigate();
 
-  const data = {
+  const dataLeer = {
     idrol: gRol,
-    usuario: usuarioLeer || usuarioEditar ? 's' : 'n',
+    usuario: usuarioLeer? 's' : 'n',
     ventas: ventasLeer ? 's' : 'n',
     inventario: inventarioLeer ? 's' : 'n',
     clientes: clientesLeer ? 's' : 'n',
-    reportes: reportesLeer ? 's' : 'n',
     recordatorios: recordatoriosLeer ? 's' : 'n',
     seguridad: seguridadLeer ? 's' : 'n',
     config: configuracionLeer ? 's' : 'n',
   };
+  const dataInsertar = {
+    idrol: gRol,
+    usuario: usuarioInsertar ? 's' : 'n',
+    ventas: ventasInsertar ? 's' : 'n',
+    inventario: inventarioInsertar ? 's' : 'n',
+    clientes: clientesInsertar ? 's' : 'n',
+    recordatorios: recordatoriosInsertar ? 's' : 'n',
+    seguridad: seguridadInsertar ? 's' : 'n',
+    config: configuracionInsertar ? 's' : 'n',
+  };
+  const dataEditar = {
+    idrol: gRol,
+    usuario: usuarioEditar ? 's' : 'n',
+    ventas: ventasEditar ? 's' : 'n',
+    inventario: inventarioEditar ? 's' : 'n',
+    clientes: clientesEditar ? 's' : 'n',
+    recordatorios: recordatoriosEditar ? 's' : 'n',
+    seguridad: seguridadEditar ? 's' : 'n',
+    config: configuracionEditar ? 's' : 'n',
+  };
+  const dataEliminar = {
+    idrol: gRol,
+    usuario: usuarioEliminar ? 's' : 'n',
+    ventas: ventasEliminar ? 's' : 'n',
+    inventario: inventarioEliminar ? 's' : 'n',
+    clientes: clientesEliminar ? 's' : 'n',
+    recordatorios: recordatoriosEliminar ? 's' : 'n',
+    seguridad: seguridadEliminar ? 's' : 'n',
+    config: configuracionEliminar ? 's' : 'n',
+  };
+
+  
+
   const handleEditar = () => {
     swal(
     <div className="logoModal">¿Desea editar este rol?</div>,
@@ -204,45 +234,45 @@ export const ConfigRol = props => {
       .then(response => response.json())
       .then(data => setRoles(data));
 
-    //Leer
-    setRecordatoriosLeer(false);
-    setClientesLeer(false);
-    setConfigLeer(false);
-    setUsuarioLeer(false);
-    setInventarioLeer(false);
-    setReportesLeer(false);
-    setVentasLeer(false);
-    setSeguridadLeer(false);
+    axios.post(urlPermisos,{idRol:gRol}).then((response)=>{
+      //Leer
+    setRecordatoriosLeer(response.data[3].PermConsul==="s"?true:false);
+    setClientesLeer(response.data[2].PermConsul==="s"?true:false);
+    setConfigLeer(response.data[6].PermConsul==="s"?true:false);
+    setUsuarioLeer(response.data[0].PermConsul==="s"?true:false);
+    setInventarioLeer(response.data[1].PermConsul==="s"?true:false);
+    setVentasLeer(response.data[7].PermConsul==="s"?true:false);
+    setSeguridadLeer(response.data[5].PermConsul==="s"?true:false);
 
     //Editar
-    setRecordatoriosEditar(false);
-    setClientesEditar(false);
-    setConfigEditar(false);
-    setUsuarioEditar(false);
-    setInventarioEditar(false);
-    setReportesEditar(false);
-    setVentasEditar(false);
-    setSeguridadEditar(false);
+    setRecordatoriosEditar(response.data[3].PermUpd==="s"?true:false);
+    setClientesEditar(response.data[2].PermUpd==="s"?true:false);
+    setConfigEditar(response.data[6].PermUpd==="s"?true:false);
+    setUsuarioEditar(response.data[0].PermUpd==="s"?true:false);
+    setInventarioEditar(response.data[1].PermUpd==="s"?true:false);
+    setVentasEditar(response.data[7].PermUpd==="s"?true:false);
+    setSeguridadEditar(response.data[5].PermUpd==="s"?true:false);
 
     //Insertar
-    setRecordatoriosInsertar(false);
-    setClientesInsertar(false);
-    setConfigInsertar(false);
-    setUsuarioInsertar(false);
-    setInventarioInsertar(false);
-    setReportesInsertar(false);
-    setVentasInsertar(false);
-    setSeguridadInsertar(false);
+    setRecordatoriosInsertar(response.data[3].PermI==="s"?true:false);
+    setClientesInsertar(response.data[2].PermI==="s"?true:false);
+    setConfigInsertar(response.data[6].PermI==="s"?true:false);
+    setUsuarioInsertar(response.data[0].PermI==="s"?true:false);
+    setInventarioInsertar(response.data[1].PermI==="s"?true:false);
+    setVentasInsertar(response.data[7].PermI==="s"?true:false);
+    setSeguridadInsertar(response.data[5].PermI==="s"?true:false);
 
     //Eliminar
-    setRecordatoriosEliminar(false);
-    setClientesEliminar(false);
-    setConfigEliminar(false);
-    setUsuarioEliminar(false);
-    setInventarioEliminar(false);
-    setReportesEliminar(false);
-    setVentasEliminar(false);
-    setSeguridadEliminar(false);
+    setRecordatoriosEliminar(response.data[3].PermDel==="s"?true:false);
+    setClientesEliminar(response.data[2].PermDel==="s"?true:false);
+    setConfigEliminar(response.data[6].PermDel==="s"?true:false);
+    setUsuarioEliminar(response.data[0].PermDel==="s"?true:false);
+    setInventarioEliminar(response.data[1].PermDel==="s"?true:false);
+    setVentasEliminar(response.data[7].PermDel==="s"?true:false);
+    setSeguridadEliminar(response.data[5].PermDel==="s"?true:false);
+    })
+
+    
   }, [accion, cont]);
 
   //Leer
@@ -259,9 +289,6 @@ export const ConfigRol = props => {
     setVentasLeer(!ventasLeer);
   };
 
-  const handleReportesChange = () => {
-    setReportesLeer(!reportesLeer);
-  };
 
   const handleRecordatorioChange = () => {
     setRecordatoriosLeer(!recordatoriosLeer);
@@ -287,10 +314,6 @@ export const ConfigRol = props => {
   };
   const handleVentasInsertarChange = () => {
     setVentasInsertar(!ventasInsertar);
-  };
-
-  const handleReportesInsertarChange = () => {
-    setReportesInsertar(!reportesInsertar);
   };
 
   const handleRecordatorioInsertarChange = () => {
@@ -319,9 +342,6 @@ export const ConfigRol = props => {
     setVentasEditar(!ventasEditar);
   };
 
-  const handleReportesEditarChange = () => {
-    setReportesEditar(!reportesEditar);
-  };
 
   const handleRecordatorioEditarChange = () => {
     setRecordatoriosEditar(!recordatoriosEditar);
@@ -349,10 +369,6 @@ export const ConfigRol = props => {
     setVentasEliminar(!ventasEliminar);
   };
 
-  const handleReportesEliminarChange = () => {
-    setReportesEliminar(!reportesEliminar);
-  };
-
   const handleRecordatorioEliminarChange = () => {
     setRecordatoriosEliminar(!recordatoriosEliminar);
   };
@@ -369,23 +385,31 @@ export const ConfigRol = props => {
     if (gRol === 1) {
       alert('este rol no se puede editar');
     } else {
-      switch (accion) {
-        case 1:
-          sendData(urlupConsulta, data).finally(alert('actualizado'));
-          break;
-        case 2:
-          sendData(urlupInsert, data).finally(alert('actualizado'));
-          break;
-        case 3:
-          sendData(urlupUpdt, data).finally(alert('actualizado'));
-          break;
-        case 4:
-          sendData(urlupDel, data).finally(alert('actualizado'));
-          break;
+      // switch (accion) {
+      //   case 1:
+      //     sendData(urlupConsulta, data).finally(alert('actualizado'));
+      //     break;
+      //   case 2:
+      //     sendData(urlupInsert, data).finally(alert('actualizado'));
+      //     break;
+      //   case 3:
+      //     sendData(urlupUpdt, data).finally(alert('actualizado'));
+      //     break;
+      //   case 4:
+      //     sendData(urlupDel, data).finally(alert('actualizado'));
+      //     break;
 
-        default:
-          break;
-      }
+      //   default:
+      //     break;
+      // }
+      console.log("Leer");
+      console.log(dataLeer);
+      console.log("Insert");
+      console.log(dataInsertar);
+      console.log("Upd");
+      console.log(dataEditar);
+      console.log("Del");
+      console.log(dataEliminar);
     }
   };
 
@@ -467,6 +491,7 @@ export const ConfigRol = props => {
                 className="selectCustom"
                 onChange={e => {
                   setGRol(parseInt(document.getElementById('rol').value));
+                  setCont(cont+1)
                 }}
               >
                 {roles.length ? (
@@ -512,9 +537,7 @@ export const ConfigRol = props => {
               <input
                 type="checkbox"
                 id="accion"
-                onClick={() =>
-                  setAccion(parseInt(document.getElementById('accion').value))
-                }
+                onClick={(e) =>console.log(e)}
                 // disabled={usuarioLeer || !usuarioLeer}
               />
               <TextCustom text="Leer" />
@@ -563,7 +586,6 @@ export const ConfigRol = props => {
               <TextCustom text="Inventario" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />
               <TextCustom text="Recordatorios" className="titleInput" />
-              <TextCustom text="Reportes" className="titleInput" />
               <TextCustom text="Seguridad" className="titleInput" />
               <TextCustom text="Configuracion" className="titleInput" />
             </div>
@@ -581,10 +603,8 @@ export const ConfigRol = props => {
                   checked={ventasLeer}
                   onChange={handleVentasChange}
                   id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={1}
+                  onClick={(e) => console.log(e.target.value)}
+                  value={"n"}
                 ></IOSSwitch>
 
                 <IOSSwitch
@@ -610,16 +630,6 @@ export const ConfigRol = props => {
                 <IOSSwitch
                   checked={recordatoriosLeer}
                   onChange={handleRecordatorioChange}
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={1}
-                ></IOSSwitch>
-
-                <IOSSwitch
-                  checked={reportesLeer}
-                  onChange={handleReportesChange}
                   id="accion"
                   onClick={() =>
                     setAccion(parseInt(document.getElementById('accion').value))
@@ -698,15 +708,6 @@ export const ConfigRol = props => {
                   onChange={handleRecordatorioInsertarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={2}
-                  checked={reportesInsertar}
-                  onChange={handleReportesInsertarChange}
-                ></IOSSwitch>
 
                 <IOSSwitch
                   id="accion"
@@ -779,15 +780,6 @@ export const ConfigRol = props => {
                   onChange={handleRecordatorioEditarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={3}
-                  checked={reportesEditar}
-                  onChange={handleReportesEditarChange}
-                ></IOSSwitch>
 
                 <IOSSwitch
                   id="accion"
@@ -860,15 +852,6 @@ export const ConfigRol = props => {
                   onChange={handleRecordatorioEliminarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={4}
-                  checked={reportesEliminar}
-                  onChange={handleReportesEliminarChange}
-                ></IOSSwitch>
 
                 <IOSSwitch
                   id="accion"

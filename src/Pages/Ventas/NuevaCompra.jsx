@@ -283,9 +283,9 @@ export const NuevaCompra = ({
                       if (costo === "" || cantidad === "") {
                         swal("No deje campos vacíos.", "", "error");
                       } else{
+                        AggDataGrid();
                         document.getElementById("cantidad").value="";
                         document.getElementById("costo").value=""
-                    AggDataGrid();
                   }
                 }
               }
