@@ -21,7 +21,6 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 import { generatePDF } from '../../Components/generatePDF';
 
-
 export const ListUsuarios = ({props,data,update,}) => {
   const [roles, setRoles] = useState([]);
   
@@ -46,7 +45,7 @@ export const ListUsuarios = ({props,data,update,}) => {
   }, [cambio]);
 
 
-    //IMPRIMIR PDF
+  //IMPRIMIR PDF
     const handleGenerarReporte = () => {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
@@ -72,8 +71,6 @@ export const ListUsuarios = ({props,data,update,}) => {
   
       generatePDF(formatDataForPDF, urlPDF, subTitulo);
     };
-      
-      /////////
 
   const navegate = useNavigate();
 
@@ -194,8 +191,8 @@ export const ListUsuarios = ({props,data,update,}) => {
       op => {
       switch (op) {
         case 'update':
-        props.data(id)
-        props.update(true)
+        data(id)
+        update(true)
         navegate('/usuarios/crearusuario')
           break;
         default:
@@ -241,8 +238,9 @@ export const ListUsuarios = ({props,data,update,}) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              Nuevo Usuario
             </Button>
+
             <Button className="btnReport"
              onClick={handleGenerarReporte}
             >

@@ -89,7 +89,18 @@ export const RecordatorioCitas = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/recordatorio');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de un nueva cita ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/recordatorio');
+      } else {
+      }
+    });
   };
 
   const objectDate = new Date();
