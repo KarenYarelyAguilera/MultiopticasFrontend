@@ -1007,7 +1007,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <InventarioDisponible />
+                  <InventarioDisponible data={Data}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1192,7 +1192,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                   />
-                  <ListaInventario/>
+                  <ListaInventario data={data} Data={Data}/>
                 </div>
              // </ProtectedRoute>
             }
