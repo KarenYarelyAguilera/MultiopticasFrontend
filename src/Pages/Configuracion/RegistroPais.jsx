@@ -26,7 +26,7 @@ export const RegistroPais = (props) => {
 
   const navegate = useNavigate();
 
-  const [pais, setPais] = React.useState('');
+  const [pais, setPais] = React.useState(props.data.pais ||'');
   const [errorPais, setErrorPais] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
@@ -95,17 +95,17 @@ export const RegistroPais = (props) => {
                  onKeyDown={e=>
                    {
                    setPais(e.target.value);
-                  if (e.target.value==="")
+                  if (pais==="")
                   {
                     setErrorPais(true);
                     setAviso('Los campos no deben estar vacíos');
                   } else {
                     setErrorPais(false);
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(e.target.value)) {
+                    if (!regex.test(pais)) {
                       setErrorPais(true);
                       setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    } else if (/(.)\1{2,}/.test(pais)) {
                       setErrorPais(true);
                       setAviso('No se permiten letras consecutivas repetidas');
                     } else {
@@ -114,7 +114,7 @@ export const RegistroPais = (props) => {
                     }
                   }
                 }}
-                
+                onChange={e => setPais(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error ={errorPais}  
                 helperText={aviso}
                 type="text"
@@ -123,6 +123,7 @@ export const RegistroPais = (props) => {
                 className="inputCustom"
                 placeholder="Pais"
                 id="pais"
+                value={pais}
               />
                <p className="error">{aviso}</p>
             </div>

@@ -36,11 +36,11 @@ export const ListaClientes = (props) => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
 
 
   useEffect(() => {
-   axios.get(urlClientes).then(response => {
+    axios.get(urlClientes).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
@@ -50,19 +50,19 @@ export const ListaClientes = (props) => {
     const formatDataForPDF = () => {
       const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'Identidad':row.idCliente,
-                                'Nombre':row.nombre, 
-                                'Apellido':row.apellido,
-                                'Genero':row.genero,
-                                'Fecha Nacimiento': fechaNacimiento,
-                                'Direccion':row.direccion,
-                                'Telefono':row.Telefono,
-                                'Email':row.Email,
-                              };
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'Identidad': row.idCliente,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
+          'Genero': row.genero,
+          'Fecha Nacimiento': fechaNacimiento,
+          'Direccion': row.direccion,
+          'Telefono': row.Telefono,
+          'Email': row.Email,
+        };
       });
       return formattedData;
     };
@@ -72,12 +72,12 @@ export const ListaClientes = (props) => {
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);
   };
-    
-    /////////
+
+  /////////
 
   const navegate = useNavigate();
 
-  
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -87,10 +87,34 @@ export const ListaClientes = (props) => {
   );
 
   const handleNewExpediente = (id) => {
-    props.datosclientes({idCliente:id.idCliente})
+    props.datosclientes({ idCliente: id.idCliente })
     navegate('/menuClientes/DatosExpediente');
   }
-  
+
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este cliente: {id.nombre}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+        case 'update':
+          props.data(id)
+          props.update(true)
+          navegate('/menuClientes/nuevoCliente')
+          break;
+        default:
+          break;
+      }
+    });
+  };
+
 
   const columns = [
     { field: 'idCliente', headerName: 'ID', width: 165 },
@@ -109,13 +133,10 @@ export const ListaClientes = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-          <Button
-            className="btnEdit"
-           // onClick={() => handleUpdt(params.row.idCliente)}
-            
-          >
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
+
           <Button
             className="btnDelete"
             onClick={() => handleDel(params.row.idCliente)}
@@ -145,7 +166,7 @@ export const ListaClientes = (props) => {
         </div>
       ),
       buttons: ["Eliminar", "Cancelar"]
-    }).then(async (op)=> {
+    }).then(async (op) => {
 
       switch (op) {
         case null:
@@ -156,12 +177,12 @@ export const ListaClientes = (props) => {
 
           console.log(data);
 
-         await axios.delete(urlDelCliente,{data}).then(response=>{
-            swal("Cliente Eliminado correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
+          await axios.delete(urlDelCliente, { data }).then(response => {
+            swal("Cliente Eliminado correctamente", "", "success")
+            setCambio(cambio + 1)
+          }).catch(error => {
             console.log(error);
-            swal("Error al eliminar el cliente","","error")
+            swal("Error al eliminar el cliente", "", "error")
           })
 
           break;
@@ -173,7 +194,7 @@ export const ListaClientes = (props) => {
     });
 
   }
-  
+
   const handleBack = () => {
     navegate('/menuClientes');
   };
@@ -217,7 +238,7 @@ export const ListaClientes = (props) => {
               NUEVO
             </Button>
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte

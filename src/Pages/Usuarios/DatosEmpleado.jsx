@@ -78,7 +78,6 @@ export const DatosEmpleado = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
-
   const navegate = useNavigate();
 
   const actualizarEmpleado = async () => {
