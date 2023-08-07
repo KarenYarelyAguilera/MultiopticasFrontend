@@ -216,7 +216,6 @@ export const Recordatorio = (props) => {
             });
 
           break;
-
         default:
           break;
       }
