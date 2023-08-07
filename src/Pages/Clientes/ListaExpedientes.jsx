@@ -47,7 +47,7 @@ export const ListaExpedientes = (props) => {
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaCreacion);
         const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -62,7 +62,7 @@ export const ListaExpedientes = (props) => {
       return formattedData;
     };
 
-    urlPDF = 'Report_Expediente.pdf';
+    urlPDF = 'Reporte_Expediente.pdf';
     const subTitulo = "LISTA DE EXPEDIENTES"
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);

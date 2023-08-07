@@ -16,6 +16,7 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 
+
 const urlCliente =
   'http://localhost:3000/api/clientes/clienteNuevo';
 //insertar usuario
@@ -27,7 +28,7 @@ const urlClienteEliminar =
 //eliminar usuario
 
 export const AddClientes = (props) => {
-
+  const [procesoEnCurso, setProcesoEnCurso] = useState(true)
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
@@ -59,8 +60,10 @@ export const AddClientes = (props) => {
   const [advertencia, setadvertencia] = React.useState('');
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
 
-
   const navegate = useNavigate();
+
+  const [Empleado, setEmpleado] = useState([])
+
 
   //ACTUALIZAR
   const actualizarCliente = async () => {
@@ -79,7 +82,7 @@ export const AddClientes = (props) => {
     let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
     let dia = fecha.getDate().toString().padStart(2, "0");
 
-
+    
     let fechaFormateada = anio + "/" + mes + "/" + dia;
 
     const data = {
@@ -133,7 +136,6 @@ export const AddClientes = (props) => {
 
     let fechaFormateada = anio + "/" + mes + "/" + dia;
 
-
     let data = {
       idCliente: identidad,
       nombre: nombres,
@@ -157,10 +159,26 @@ export const AddClientes = (props) => {
 
   };
 
-  const handleBack = () => {
+ /*  const handleBack = () => {
     navegate('/menuClientes');
   };
+ */
 
+
+  const handleBack = () => {
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de cliente ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/menuClientes');
+      } else {
+      }
+    });
+  };
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>

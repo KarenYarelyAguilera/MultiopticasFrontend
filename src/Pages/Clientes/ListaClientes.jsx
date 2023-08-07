@@ -1,10 +1,13 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,10 +21,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
-
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
-
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -44,11 +45,10 @@ export const ListaClientes = (props) => {
     }).catch(error => console.log(error))
   }, [cambio]);
 
-
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
         const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -67,14 +67,13 @@ export const ListaClientes = (props) => {
       return formattedData;
     };
 
-    const urlPDF = 'Report_Clientes.pdf';
+    const urlPDF = 'Reporte_Clientes.pdf';
     const subTitulo = "LISTA DE CLIENTES"
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);
   };
     
     /////////
-
 
   const navegate = useNavigate();
 
@@ -98,7 +97,7 @@ export const ListaClientes = (props) => {
     { field: 'nombre', headerName: 'Nombre', width: 165 },
     { field: 'apellido', headerName: 'Apellido', width: 165 },
     { field: 'genero', headerName: 'Genero', width: 165 },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 165 },
+    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 },
     { field: 'direccion', headerName: 'Direccion', width: 165 },
     { field: 'Telefono', headerName: 'Telefono', width: 165 },
     { field: 'Email', headerName: 'Correo Electronico', width: 165 },
@@ -110,7 +109,11 @@ export const ListaClientes = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-           <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button
+            className="btnEdit"
+           // onClick={() => handleUpdt(params.row.idCliente)}
+            
+          >
             <EditIcon></EditIcon>
           </Button>
           <Button
@@ -131,7 +134,6 @@ export const ListaClientes = (props) => {
     },
   ];
 
-  //ELIMINAR
   function handleDel(id) {
     swal({
       content: (
@@ -171,32 +173,6 @@ export const ListaClientes = (props) => {
     });
 
   }
-
-  //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el Cliente: {id.nombre} ?
-        </div>
-      ),
-    }).then(
-      op => {
-        switch (op) {
-          case 'update':
-            props.data(id)
-            props.update(true)
-            navegate('/menuClientes/nuevoCliente')
-            break;
-          default:
-            break;
-        }
-      });
-  };
   
   const handleBack = () => {
     navegate('/menuClientes');
@@ -238,9 +214,11 @@ export const ListaClientes = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
