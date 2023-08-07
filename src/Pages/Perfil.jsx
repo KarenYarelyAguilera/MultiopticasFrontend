@@ -11,10 +11,6 @@ import '../Styles/Usuarios.css';
 import '../Styles/login.css';
 
 import ImgLogin from '../IMG/InforUsers.jpg';
-// import ImgBackround from '../IMG/backgroundQuestion.png';
-// import ImgBackround2 from '../IMG/backgroundRegistration.png';
-
-
 
 //Components
 //import VerticalStepper from '../../Components/VerticalStepper.jsx';
@@ -23,6 +19,7 @@ import { ContentPasteGoOutlined, Visibility, VisibilityOff } from '@mui/icons-ma
 import { TextCustom } from '../Components/TextCustom.jsx';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
+//enter para ver si hay cambios xd
 
 
 export const Perfil = (props) => {
@@ -49,19 +46,11 @@ export const Perfil = (props) => {
     navegate("/Preguntas/lista");
   };
 
-
-  /*  const handlePreguntas = () => {
-     navegate("/preguntasPerfil");
-   }; */
-
-
-
   const handleBack = () => {
     navegate('/dashboard');
   };
 
   return (
-
     <div className="ContProfile" >
 
       <Button className="btnBack" onClick={handleBack}>
@@ -73,7 +62,6 @@ export const Perfil = (props) => {
       </div>
 
       <div className="infoAddUser"  >
-
         <section className='section2'>
           <div className="contInput">
             <TextCustom text="Usuario: " className="titleInput" />
@@ -84,7 +72,7 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Nombre usuario"
               id="nameUser"
-              value={props.infoPerfil.Nombre_Usuario}
+              value={props.infoPerfil.Nombre_Usuario.toUpperCase()}
               disabled
             />
           </div>
@@ -98,7 +86,7 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Nombre"
               id="nombre"
-              value={props.infoPerfil.nombre}
+              value={props.infoPerfil.nombre.toUpperCase()}
               disabled
             />
           </div>
@@ -112,12 +100,11 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Apellido"
               id="apellido"
-              value={props.infoPerfil.apellido}
+              value={props.infoPerfil.apellido.toUpperCase()}
               disabled
             />
           </div>
         </section>
-
 
         <section className='section2' >
           <div className="contInput">
@@ -157,18 +144,16 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Rol"
               id="rol"
-              value={props.infoPerfil.Rol}
+              value={props.infoPerfil.Rol.toUpperCase()}
               disabled
             />
           </div>
         </section>
 
-
         <section className='section2'>
           <div className="contUpdatePassword">
             <TextCustom text="Preguntas:" className="titleInput" />
             <FilledInput
-
               id="filled-adornment-password"
               placeholder='******************'
               className="inputCustomUpdatePassword"
@@ -178,7 +163,6 @@ export const Perfil = (props) => {
               inputProps={{ maxLength: 20, minLenght: 8 }}
               inputRef={refContrasenia}
             ></FilledInput>
-
             <button
               className="btnUpdatePassword"
               type='submit'
@@ -198,7 +182,6 @@ export const Perfil = (props) => {
               inputRef={refContrasenia}
               disabled
             ></FilledInput>
-
             <button
               className="btnUpdatePassword"
               type='submit'
@@ -206,12 +189,6 @@ export const Perfil = (props) => {
             >Cambiar contraseña</button>
           </div>
         </section>
-
-
-        {/*   <div className="PanelInfo">
-            <div className="InputContPrincipal2">
-            </div>
-          </div> */}
 
         <section>
           <div>
@@ -222,9 +199,5 @@ export const Perfil = (props) => {
       </div>
 
     </div>
-
-
-
-
   );
 };
