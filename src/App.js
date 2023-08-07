@@ -1156,7 +1156,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 />
                 <BarraHorizontal user={usuario} />
                 <ListaClientes 
-                // datosclientes={registroclientes} 
+                datosclientes={registroclientes} 
                 // update={update} data={Data} 
                 update={update} 
                 data={Data}  />

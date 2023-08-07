@@ -49,7 +49,7 @@ export const AddClientes = (props) => {
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
-  const [Telefono, setTelefono] = useState(props.data.telefono ||'');
+  const [Telefono, setTelefono] = useState(props.data.Telefono ||'');
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
 
@@ -57,16 +57,17 @@ export const AddClientes = (props) => {
   const [mensaje, setmensaje] = React.useState(false);
   const [errordireccion, setErrordireccion] = React.useState(false);
 
-  const [correoelec, setcorreoelec] = React.useState(props.data.correo ||'');
+  const [correoelec, setcorreoelec] = React.useState(props.data.Email ||'');
   const [advertencia, setadvertencia] = React.useState(false);
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
+  const [Genero, setGenero] = useState([])
+
 
   const navegate = useNavigate();
 
   useEffect(() => {
     axios.get (urlGenero).then (response=>setGenero(response.data))
   }, []);
-  const [Genero, setGenero] = useState([])
 
   //ACTUALIZAR
   const actualizarCliente = async () => {
@@ -107,6 +108,8 @@ export const AddClientes = (props) => {
     axios.put(urlClienteActualizar, data).then(() => {
       swal("Cliente Actualizado Correctamente", "", "success").then(() => {
         //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        props.update(false)
+        props.Data({})
         navegate('/menuClientes/lista');
       })
     }).catch(error => {
@@ -176,6 +179,8 @@ export const AddClientes = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.update(false)
+        props.Data({})
         navegate('/menuClientes');
       } else {
       }
@@ -436,9 +441,18 @@ export const AddClientes = (props) => {
 
             <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
-                <option value={1}>Masculino</option>
-                <option value={2}>Femenino</option>
+              <select name="" id="genero" className="inputCustomPreguntas">
+              {Genero.length ? (
+                  Genero.map(pre => (
+                    <option key={pre.IdGenero} value={pre.IdGenero}>
+                      {pre.descripcion}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
               </select>
             </div>
 
