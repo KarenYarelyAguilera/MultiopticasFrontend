@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
@@ -58,18 +58,29 @@ export const RecordatorioCitas = (props) => {
 
   const [Nombre, setNombre] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [Fech, setFecha] = useState('');
+
+  const [fecha, setFechas] = React.useState(props.data.fecha || '');
+
 
 
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
   const urlClientes = 'http://localhost:3000/api/clientes';
-  
 
-  //para las preguntas
+  const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
+
+
+  //para el el cliente
   useEffect(() => {
     axios.get(urlClientes).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, []);
+
+
+
+
+
 
 
 
@@ -95,36 +106,57 @@ export const RecordatorioCitas = (props) => {
 
     let idCliente = document.getElementById('idClientes').value;
     let Nota = document.getElementById('nota').value;
-    let fecha = document.getElementById('fecha').value
+   // let fecha = document.getElementById('fecha').value
 
-
-
-
-    let data = {
-      //IdRecordatorio:props.data.IdRecordatorio,
+    let dataIdCliente = {
       IdCliente: idCliente,
-      Nota: Nota.toUpperCase(),
-      fecha: fecha,
-
-    };
-
-    let dataB = {
-      Id: props.data.IdRecordatorio
     }
 
 
-    console.log(data);
+    await axios.post(urlFechaCita,dataIdCliente).then(response => {
 
-    await axios.post(urlPostCitas, data).then(response => {
-      swal('Cita agregado con éxito', '', 'success').then(result => {
-        navegate('/recordatorio');
+     // console.log(response.data)
+      const fechaFormateada = new Date(response.data.fechaExpiracion).toISOString().slice(0, 10);
+      console.log(fechaFormateada);
+
+      let dataC = {
+        //IdRecordatorio:props.data.IdRecordatorio,
+        IdCliente: idCliente,
+        Nota: Nota.toUpperCase(),
+         //fecha: fecha,
+        fecha: fechaFormateada
+
+      };
+      console.log(dataC);
+
+      let dataB = {
+        Id: props.data.IdRecordatorio
+      }
+
+
+      //console.log(data);
+      axios.post(urlPostCitas, dataC).then(response => {
+        swal('Cita agregado con éxito', '', 'success').then(result => {
+          navegate('/recordatorio');
+        });
+
+      }).catch(error => {
+        console.log(error);
+        swal("Error al agregar cita.", "", "error")
+
       });
 
-    }).catch(error => {
-      console.log(error);
-      swal("Error al agregar cita.", "", "error")
 
-    });
+    }) .catch(error => {
+      console.log(error);
+      swal("Error al obtener la fecha.", "", "error")
+  });
+    
+    /* setFecha(response.data)
+    console.log(response.data) */
+
+
+
     return navegate('/recordatorio');
   };
 
@@ -160,10 +192,10 @@ export const RecordatorioCitas = (props) => {
               </div>
 
 
-
+{/* 
               <div className="contNewCita">
-                <TextCustom text="Fecha" className="titleInput" />
-                {/* <DatePicker
+                <TextCustom text="Fecha" className="titleInput" />   */}
+              {/* <DatePicker
                   type="text"
                   name=""
                   maxLength={40}
@@ -172,8 +204,18 @@ export const RecordatorioCitas = (props) => {
                   id="fecha"
                 /> */}
 
-                <input type="date" className="inputCustom" id="fecha" ></input>
-              </div>
+           {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
+
+         {/*   <input
+                  //onChange={e => setFecha(e.target.value)}
+                  type="text"
+                  id="fecha"
+                  className="inputCustom"
+                  placeholderText="Fecha"
+                  value={fecha}
+                  disabled
+                ></input>  */}
+            {/*     </div>  */}
 
 
               <div className="contNewCita">
@@ -197,7 +239,7 @@ export const RecordatorioCitas = (props) => {
           </div>
         </div>
 
- 
+
       </div>
     </div>
   );
