@@ -27,7 +27,7 @@ export const RegistroCiudad = (props) => {
   
   const navegate = useNavigate();
 
-  const [ciudad, setCiudad] = React.useState('');
+  const [ciudad, setCiudad] = React.useState(props.data.ciudad ||'');
   const [errorCiudad, setErrorCiudad] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
    
@@ -98,7 +98,7 @@ export const RegistroCiudad = (props) => {
                onKeyDown={e => 
                 {
                 setCiudad(e.target.value);
-                if (e.target.value === '') 
+                if (ciudad === '') 
                 {
                   setErrorCiudad(true);
                   setAviso('Los campos no deben estar vacíos');
@@ -106,11 +106,11 @@ export const RegistroCiudad = (props) => {
                 {
                   setErrorCiudad(false);
                   var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value))
+                  if (!regex.test(ciudad))
                    {
                     setErrorCiudad(true);
                     setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  } else if (/(.)\1{2,}/.test(ciudad))
                   {
                     setErrorCiudad(true);
                     setAviso('No se permiten letras consecutivas repetidas');
@@ -122,7 +122,9 @@ export const RegistroCiudad = (props) => {
                 }
               }}
 
+              onChange={e => setCiudad(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorCiudad}
+
                 type="text"
                 helperText={aviso}
                 name=""
@@ -130,6 +132,7 @@ export const RegistroCiudad = (props) => {
                 className="inputCustom"
                 placeholder="Ciudad"
                 id="ciudad"
+                value={ciudad}
               />
               <p className="error">{aviso}</p>
             </div>

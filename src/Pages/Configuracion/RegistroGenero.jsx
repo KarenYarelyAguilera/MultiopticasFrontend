@@ -29,7 +29,7 @@ export const RegistroGenero = (props) => {
   const navegate = useNavigate();
 
   // /props.data.descripcion ||'' ) <= para jalar datos cuando se actualiza
-  const [genero, setgenero] = React.useState( props.data.descripcion ||'');
+  const [genero, setgenero] = React.useState(props.data.descripcion ||'');
   const [leyenda, setleyenda] = React.useState('');
   const [errorgenero, seterrorgenero] = React.useState(false);
 
