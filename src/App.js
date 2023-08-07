@@ -227,7 +227,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                   />
 
-                  <BarraHorizontal user={usuario} correo={mail}/>
+                  <BarraHorizontal user={usuario} correo={mail} idUsuario={idUsuario}/>
                   <Home></Home>
                 </div>
               </ProtectedRoute>
@@ -303,7 +303,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 // user={usuario}
                 // mail={correo}
                 infoPerfil={infoPerfil}
-              //idUsuario={idUsuario}
+                idUsuario={idUsuario}
 
               />
             }
@@ -339,6 +339,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                     infoPerfil={infoPerfil}
                     user={usuario}
+                    
 
 
                   />
@@ -1812,6 +1813,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <div className="">
                 <Perfil 
                   infoPerfil={infoPerfil}
+                  idUsuario={idUsuario} 
                  
                  
                 
@@ -1899,6 +1901,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={Data} 
                     idUsuario={idUsuario} 
+                   
                   // infoPerfil={infoPerfil}
                     user={usuario}
                   ></Recordatorio>

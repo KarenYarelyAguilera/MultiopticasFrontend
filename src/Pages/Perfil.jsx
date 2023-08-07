@@ -20,9 +20,10 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
 //enter para ver si hay cambios xd
-
+import axios from 'axios';
 
 export const Perfil = (props) => {
+  const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/salirperfil';
   const [sucursales, setSucursales] = useState([]);
 
   const navegate = useNavigate();
@@ -47,7 +48,13 @@ export const Perfil = (props) => {
   };
 
   const handleBack = () => {
+    const dataId = {
+      Id: props.idUsuario,
+    };
+
     navegate('/dashboard');
+    axios.post(urlBitacoraPerfil, dataId)
+
   };
 
   return (

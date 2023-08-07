@@ -86,6 +86,7 @@ export const Recordatorio = (props) => {
   const urlGetCitas = 'http://localhost:3000/api/recordatorios';
   const urlGetCita = 'http://localhost:3000/api/recordatorio';
   const urlDelCita = 'http://localhost:3000/api/eliminarCita'
+  const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
@@ -124,12 +125,12 @@ export const Recordatorio = (props) => {
           String(fechaCre.getMonth()).padStart(2, '0') + "/" +
           fechaCre.getFullYear();
         return {
-          'ID':row.IdRecordatorio,
-          'Cliente':row.IdCliente, 
-          'Nombre':row.nombre,
-          'Apellido':row.apellido,
+          'ID': row.IdRecordatorio,
+          'Cliente': row.IdCliente,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
           'Nota': row.Nota,
-          'Fecha':fecha,
+          'Fecha': fecha,
         };
       });
       return formattedData;
@@ -227,8 +228,15 @@ export const Recordatorio = (props) => {
           };
           console.log(data);
 
+
+          let dataUsuario = {
+            Id: props.idUsuario
+          }
+       
+
           await axios.delete(urlDelCita, { data }).then(response => {
             swal('Cita eliminada correctamente', '', 'success');
+            axios.post(urlBitacoraDelCita, dataUsuario)
             setCambio(cambio + 1);
           })
             .catch(error => {
@@ -332,7 +340,7 @@ export const Recordatorio = (props) => {
               Nuevo
             </Button>
             <Button className="btnReport"
-             onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
 
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
