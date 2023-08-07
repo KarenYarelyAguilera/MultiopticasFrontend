@@ -22,10 +22,8 @@ export const ListaInventario = (props) => {
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
 
-  const urlProducto = 'http://localhost:3000/api/productos'; //MUESTA LOS PRODUCTOS EN LA TABLA
-  const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
-
-  const urlModelos = 'http://localhost:3000/api/modelos'; //MUESTRA LOA MODELOS
+  const urlProducto = 'http://localhost:3000/api/ProductoKardex'; //MUESTA LOS PRODUCTOS EN LA TABLA
+  
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,17 +48,17 @@ export const ListaInventario = (props) => {
   const [errordescripcion, setErrordescripcion] = useState(false);
 
   useEffect(() => {
-    fetch(urlProducto)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-    fetch(urlModelos)
-      .then(response => response.json())
-      .then(data => setModelo(data));
+    axios.post(urlProducto,props.data).then((response)=>setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
 
-  const filteredData = tableData.filter(row =>
+  const rowsWithIds = tableData.map((row, index) => ({
+    ...row,
+    id: `${row.name}-${index}`
+  }));
+
+  const filteredData = rowsWithIds.filter(row =>
     Object.values(row).some(
       value =>
         value &&
@@ -70,8 +68,9 @@ export const ListaInventario = (props) => {
 
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
-    { field: 'Movimiento Del Producto', headerName: 'Movimiento del Producto', width: 1300 },
-    
+    { field: 'Producto', headerName: 'Producto', width: 300 },
+    { field: 'Cantidad', headerName: 'Cantidad', width: 300 },
+    { field: 'Movimiento', headerName: 'Movimiento Realizado', width: 300 },
 
     {
       field: 'borrar',
@@ -112,37 +111,7 @@ export const ListaInventario = (props) => {
       ),
       buttons: ['Eliminar', 'Cancelar'],
     }).then(async op => {
-      switch (op) {
-        case null:
-
-          let data = {
-            IdProducto: IdProducto,
-          };
-
-          //Funcion de Bitacora 
-          /*  let dataB = {
-             Id:props.idUsuario
-           } */
-
-          console.log(data);
-
-          await axios
-            .delete(urlDelProducto, { data })
-            .then(response => {
-              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Producto eliminado correctamente', '', 'success');
-              setCambio(cambio + 1);
-            })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar el Producto', '', 'error');
-            });
-
-          break;
-
-        default:
-          break;
-      }
+              swal('No puede eliminar este registro', '', 'error');
     });
   }
 
@@ -155,7 +124,7 @@ export const ListaInventario = (props) => {
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el producto: {id.descripcion} ?
+          ¿Desea actualizar el producto: {id.Producto} ?
         </div>
       ),
     }).then(
@@ -181,12 +150,13 @@ export const ListaInventario = (props) => {
     navegate('/inventario');
   };
 
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Inventario</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Movimientos del producto: {props.data.detalle}</h2>
 
       <div
         style={{
@@ -226,7 +196,11 @@ export const ListaInventario = (props) => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdProducto}
+        getRowId={(tableData) => {
+          // Generar un ID único utilizando Math.random()
+          const uniqueId = Math.random().toString(36).substr(2, 9);
+          return `${tableData.idProducto}-${uniqueId}`;
+        }}
           rows={filteredData}
           columns={columns}
           pageSize={5}

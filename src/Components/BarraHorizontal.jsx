@@ -38,11 +38,16 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
     {
       username: props.user,
       imagen:
-      'https://cdn-icons-png.flaticon.com/512/720/720236.png?w=740&t=st=1689459960~exp=1689460560~hmac=8c9bf5afa3c6ccd991cb7e78acd18787ecc6f7ced31c7511f54195373ccfcd14',
+        'https://cdn-icons-png.flaticon.com/512/720/720236.png?w=740&t=st=1689459960~exp=1689460560~hmac=8c9bf5afa3c6ccd991cb7e78acd18787ecc6f7ced31c7511f54195373ccfcd14',
       iniciales: 'MS',
     },
   ];
-  
+
+  const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/perfil';
+
+
+
+
 
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -53,14 +58,22 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
     setAnchorEl(null);
   };
 
-  //
+
+
+
   const handleProfile = () => {
     let data = {
       username: props.user,
     };
-
     console.log(data);
+
+    //Funcion de bitacora
+    const dataB = {
+      Id: props.idUsuario,
+    };
+    console.log(dataB)
     navigate('/config/perfil');
+    axios.post(urlBitacoraPerfil, dataB)
     onChange();
   };
 
@@ -214,7 +227,7 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
 
 
 
-        <div className="list-web"  onClick={handleProfile}>
+        <div className="list-web" onClick={handleProfile}>
           <MenuItem
             className="MenuItem"
             style={{ borderTop: '1px solid #EFEFEF', height: '62px' }}>
@@ -230,15 +243,15 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
         <div className="list-web" >
           <MenuItem
             className="MenuItem"
-            style={{ borderTop: '1px solid #EFEFEF', height: '62px',  backgroundColor: '', }}   >
-            <Link className="linkDropDown" to="/"  onClick={(logout) => { }}>
+            style={{ borderTop: '1px solid #EFEFEF', height: '62px', backgroundColor: '', }}   >
+            <Link className="linkDropDown" to="/" onClick={(logout) => { }}>
               <FontAwesomeIcon className="iconLi" icon={faRightFromBracket} />
               Salir
             </Link>
           </MenuItem>
         </div>
-      
-        
+
+
       </Menu>
     </div>
   );
