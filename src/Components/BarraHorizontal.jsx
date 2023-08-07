@@ -44,7 +44,9 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
   ];
 
   const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/perfil';
+
 //comentario para karen
+
 
 
 

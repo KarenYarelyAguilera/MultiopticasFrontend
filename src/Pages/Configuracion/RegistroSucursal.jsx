@@ -35,26 +35,21 @@ export const RegistroSucursal = (props) => {
   const [Departamento, setDepartamento] = useState([]);
   const [Ciudad, setCiudad] = useState([]);
 
-  const [departamento, setdepartamento] = React.useState('');
+  const [departamento, setdepartamento] = React.useState(props.data.departamento ||'');
   const [errordepartamento, setErrordepartamento] = React.useState(false);
   const [aviso, setaviso] = React.useState(false);
 
-  const [ciudad, setciudad] = React.useState('');
+  const [ciudad, setciudad] = React.useState(props.data.ciudad ||'');
  // const [mensaje, setmensaje] = React.useState('');
   const [errorciudad, setErrorciudad] = React.useState(false);
 
-  const [direccion, setdireccion] = React.useState('');
+  const [direccion, setdireccion] = React.useState(props.data.direccion ||'');
   const [mensaje, setmensaje] = React.useState('');
   const [errordireccion, setErrordireccion] = React.useState(false);
 
-  const [descrpcion, setdescripcion] = useState('');
-  const [msj, setmsj] = useState('');
-  const [errordescripcion, setErrordescripcion] = useState(false);
-
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
-
-  const [Telefono, setTelefono] = useState(props.data.telefonoEmpleado || '');
+  const [Telefono, setTelefono] = useState(props.data.telefono || '');
 
 
   useEffect(() => {
@@ -132,8 +127,22 @@ export const RegistroSucursal = (props) => {
 
   };
 
+  //BOTON DE RETROCESO
   const handleBack = () => {
-    navegate('/config/listaSucursal');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de sucursales ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/config');
+      } else {
+      }
+    });
   };
 
   return (
@@ -151,6 +160,7 @@ export const RegistroSucursal = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
+
               <TextCustom text="Departamento" className="titleInput" />
               <select name="" className="selectCustom" id="departamento">
                 {Departamento.length ? (
@@ -192,18 +202,18 @@ export const RegistroSucursal = (props) => {
                 onKeyDown={e=>
                   {
                     setdireccion(e.target.value);
-                    if(e.target.value==="")
+                    if(direccion ==="")
                     {
                       setErrordireccion(true);
                       setmensaje("Los campos no deben de quedar vacíos");
                     } else{
                       setErrordireccion(false);
                       var regex =  /^[A-Z]+(?: [A-Z]+)*$/;
-                      if(!regex.test(e.target.value))
+                      if(!regex.test(direccion))
                       {
                         setErrordireccion(true);
                         setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
-                      } else if (/(.)\1{2,}/.test(e.target.value))
+                      } else if (/(.)\1{2,}/.test(direccion))
                       {
                         setErrordireccion(true);
                         setmensaje("No se permiten letras consecutivas repetidas");
@@ -214,8 +224,9 @@ export const RegistroSucursal = (props) => {
                     }
                   }
                 }
+                onChange={e => setdireccion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
 
-                error= {errorTelefono}
+                error= {errordireccion}
                 type="text"
                 name=""
                 helperText={mensaje}
@@ -223,6 +234,7 @@ export const RegistroSucursal = (props) => {
                 className="inputCustom"
                 placeholder="direccion"
                 id="direccion"
+                value={direccion}
               />
               {<p className="error">{mensaje}</p>}
             </div>
@@ -234,14 +246,14 @@ export const RegistroSucursal = (props) => {
                 onKeyDown={(e)=>
                 {
                   setTelefono(e.target.value);
-                  if (e.target.value === '')
+                  if (Telefono === '')
                   {
                     setTexto('Los campos no deben estar vacíos');
                     setErrorTelefono(true);
                   }else{
                     setErrorTelefono(false);
                     var preg_match = /^[0-9]+$/;
-                    if(!preg_match.test(e.target.value))
+                    if(!preg_match.test(Telefono))
                     {
                       setErrorTelefono(true);
                       setTexto('Solo deben ingresar números');
@@ -251,7 +263,7 @@ export const RegistroSucursal = (props) => {
                     }
                   }
                 }}
-
+            
                 error= {errorTelefono}
                 type="phone"
                 name=""
@@ -260,6 +272,7 @@ export const RegistroSucursal = (props) => {
                 className="inputCustom"
                 placeholder="telefono"
                 id="telefono"
+                value={Telefono}
               />
                {<p className="error">{texto}</p>}
             </div>
