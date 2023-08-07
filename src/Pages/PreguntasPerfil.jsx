@@ -38,7 +38,18 @@ export const PreguntasPerfil = props => {
   }, []);
 
   const handleBack = () => {
-    navegate('/Preguntas/lista');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de una nueva pregunta de seguridad ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/Preguntas/lista');
+      } else {
+      }
+    });
   };
 
 
