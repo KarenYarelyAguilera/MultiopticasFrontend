@@ -183,10 +183,22 @@ export const AddUsers = (props) => {
   }
 
   const handleBack = () => {
-    props.limpiarData({})
-    props.limpiarUpdate(false)
-    axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
-    navegate('/usuarios');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de empleado ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.limpiarData({})
+        props.limpiarUpdate(false)
+        axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
+        navegate('/usuarios');
+      } else {
+      }
+    });
+    
   }
 
   return (
