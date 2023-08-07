@@ -90,7 +90,15 @@ export const ListUsuarios = ({props,data,update,}) => {
     { field: 'rol', headerName: 'Rol', width: 130 },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    { field: 'Contrasenia', headerName: 'Contraseña', width: 130,
+    valueGetter: (params) => {
+      // Obtener la respuesta original
+      const originalRespuesta = params.row.Contrasenia;
+      // Crear un string de asteriscos con la misma longitud que la respuesta original
+      const asterisks = '*'.repeat(originalRespuesta.length);
+      return asterisks;
+    },
+  },
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
