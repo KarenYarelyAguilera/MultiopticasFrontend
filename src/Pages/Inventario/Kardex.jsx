@@ -1,9 +1,12 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
-
+import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,6 +16,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+
+
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -39,6 +44,29 @@ export const Kardex = () => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaYHora);
+        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.IdKardex,
+          'Tipo Movimiento':row.TipoMovimiento, 
+          'Producto':row.Producto,
+          'Cantidad': row.cantidad,
+          'Fecha':fechaYHora,
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_Kardex.pdf';
+    const subTitulo = "LISTA DE KARDEX"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const columns = [
     { field: 'IdKardex', headerName: 'ID Kardex', width: 240 },
@@ -88,7 +116,9 @@ export const Kardex = () => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
