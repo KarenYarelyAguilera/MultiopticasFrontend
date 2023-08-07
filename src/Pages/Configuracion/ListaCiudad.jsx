@@ -16,26 +16,20 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
 export const ListaCiudad = () => {
 
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlMarcas =
-    'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=Marcas';
-
-  const urlUpdateMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=updMarca'
-  
-  const urlDelMarca = 'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=delMarca'
+  const urlCuidad = 'http://localhost:3000/api/Cuidades';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlMarcas)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get(urlCuidad).then(response=>setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -49,112 +43,34 @@ export const ListaCiudad = () => {
   );
 
   const columns = [
-    { field: 'ID Ciudad', headerName: 'ID Ciudad', width: 600 },
-    { field: 'Ciudad', headerName: 'Ciudad', width: 600 },
+    { field: ' IdCiudad', headerName: 'ID Ciudad', width: 600 },
+    { field: 'ciudad', headerName: 'Ciudad', width: 600 },
 
-    {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 200,
+    // {
+    //   field: 'borrar',
+    //   headerName: 'Acciones',
+    //   width: 200,
 
-      renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdMarca)}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-           onClick={() => handleDel(params.row.IdMarca)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-        </div>
-      ),
-    },
+    //   renderCell: params => (
+    //     <div className="contActions">
+    //       <Button
+    //         className="btnEdit"
+    //         onClick={() => handleUpdt(params.row.IdMarca)}
+    //       >
+    //         <EditIcon></EditIcon>
+    //       </Button>
+    //       <Button
+    //         className="btnDelete"
+    //        onClick={() => handleDel(params.row.IdMarca)}
+    //       >
+    //         <DeleteForeverIcon></DeleteForeverIcon>
+    //       </Button>
+    //     </div>
+    //   ),
+    // },
   ];
 
-  function handleUpdt(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Datos a actualizar</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <TextCustom text="Marca" className="titleInput" />
-              <input
-                type="text"
-                id="marca"
-                className="inputCustom"
-              />
-            </div>
-          </div>
-        </div>
-      ),
-      buttons: ["Cancelar","Actualizar"]
-    }).then((op) => {
-
-      switch (op) {
-        case true:
-          let data = {
-            IdMarca: id,
-            descripcion: document.getElementById("marca").value,
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlUpdateMarca, data)) {
-            swal(<h1>Marca Actualizada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
-
-  function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
-          <div className="contEditModal">
-            
-          </div>
-        </div>
-      ),
-      buttons: ["Eliminar","Cancelar"]
-    }).then((op) => {
-
-      switch (op) {
-        case null:
-          let data = {
-            IdMarca: id
-          };
-    
-          console.log(data);
-    
-    
-          if (sendData(urlDelMarca, data)) {
-            swal(<h1>Marca Eliminada Correctamente</h1>);
-            setcambio(cambio+1)
-          }
-          break;
-      
-        default:
-          break;
-      }
-      
-    });
-
-  }
+  // zxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxaa
 
 
 
@@ -191,7 +107,7 @@ export const ListaCiudad = () => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            <Button
+            {/* <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/RegistroCiudad');
@@ -199,7 +115,7 @@ export const ListaCiudad = () => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
-            </Button>
+            </Button> */}
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -207,7 +123,7 @@ export const ListaCiudad = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdMarca}
+          getRowId={tableData => tableData. IdCiudad}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

@@ -6,6 +6,8 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
+
 
 
 //Styles
@@ -19,41 +21,57 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
 
-export const Diagnostico = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
+export const Diagnostico = (props) => {
 
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  
-
-
-
-  const navegate = useNavigate();
-
+const navegate = useNavigate();
  
 
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
-    let data = {
-      IdMarca: id ,
-      descripcion:marca 
+  const handleNext = async() => {
+    let EsferaOjoDerecho = document.getElementById('ODEsfera').value;
+    let EsferaOjoIzquierdo = document.getElementById('OIEsfera').value;
+    let CilindroOjoDerecho= document.getElementById('ODCilindro').value;
+    let CilindroOjoIzquierdo = document.getElementById('OICilindro').value;
+      let EjeOjoDerecho = document.getElementById('ODEje').value;
+      let EjeOjoIzquierdo= document.getElementById('OIEje').value;
+      let AdicionOjoDerecho = document.getElementById('AdicionOD').value;
+      let AdicionOjoIzquierdo = document.getElementById('AdicionOI').value;
+      let AlturaOjoDerecho= document.getElementById('AlturaOD').value;
+      let AlturaOjoIzquierdo = document.getElementById('AlturaOI').value;
+      let DistanciaPupilarOjoDerecho = document.getElementById('DistanciapupilarOD').value;
+      let DistanciaPupilarOjoIzquierdo= document.getElementById('DistanciapupilarOI').value;
+      let EnfermedadPresentada = document.getElementById('Enfermedadpresentada').value;
+
+    let data = { 
+      diagnostico:EnfermedadPresentada,
+      ODEsfera:EsferaOjoDerecho,
+      OIEsfera:EsferaOjoIzquierdo,
+      ODCilindro:CilindroOjoDerecho,
+      OICilindro:CilindroOjoIzquierdo,
+      ODEje:EjeOjoDerecho,
+      OIEje:EjeOjoIzquierdo,
+      ODAdicion:AdicionOjoDerecho,
+      OIAdicion:AdicionOjoIzquierdo,
+      ODAltura:AlturaOjoDerecho,
+      OIAltura:AlturaOjoIzquierdo,
+      ODDistanciaPupilar:DistanciaPupilarOjoDerecho,
+      OIDistanciaPupilar:DistanciaPupilarOjoIzquierdo,
     }
+    data = {...props.data,...data}
+    console.log(data);
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
+    await axios.post(urlNuevoDiagnostico,data).then(response=>{
+      swal('Diagnostico creado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/DatosExpediente');
       });
-    }
+ 
+    }).catch(error=>{
+      console.log(error);
+      swal("Error al registrar el diagnostico.", "", "error")
+    })
+
+
   };
 
   const handleBack = () => {
@@ -78,11 +96,8 @@ export const Diagnostico = ({
             
             <div className="contInput">
               <TextCustom text="Esfera OD" className="titleInput" />
-
               <input
-               onKeyDown={e => {
-              }}
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -95,7 +110,7 @@ export const Diagnostico = ({
               <TextCustom text="Esfera OI" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -108,7 +123,7 @@ export const Diagnostico = ({
               <TextCustom text="Cilindro OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -117,12 +132,24 @@ export const Diagnostico = ({
               />
             </div>
 
+            
+            <div className="contInput">
+              <TextCustom text="Cilindro OI" className="titleInput" />
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Cilindro OI"
+                id="OICilindro"
+              />
+            </div>
+
             <div className="contInput">
               <TextCustom text="Eje OD" className="titleInput" />
 
               <input
-            
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -132,10 +159,23 @@ export const Diagnostico = ({
             </div>
 
             <div className="contInput">
+              <TextCustom text="Eje OI" className="titleInput" />
+
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Eje OI"
+                id="OIEje"
+              />
+            </div>
+
+            <div className="contInput">
               <TextCustom text="Adicion OD" className="titleInput" />
               <input
                
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -150,7 +190,7 @@ export const Diagnostico = ({
 
               <input
              
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -163,7 +203,7 @@ export const Diagnostico = ({
               <TextCustom text="Altura OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -176,7 +216,7 @@ export const Diagnostico = ({
               <TextCustom text="Altura OI" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
@@ -190,12 +230,12 @@ export const Diagnostico = ({
               <TextCustom text="DP OD" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="DP OD"
-                id="Marca"
+                id="DistanciapupilarOD"
               />
             </div>
 
@@ -204,12 +244,12 @@ export const Diagnostico = ({
 
               <input
            
-                type="text"
+                type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="DP OI"
-                id="Marca"
+                id="DistanciapupilarOI"
               />
                
             </div>
@@ -223,7 +263,7 @@ export const Diagnostico = ({
                 maxLength={100}
                 className="inputCustomText"
                 placeholder="Enfermedad Presentada"
-                id="direccion"
+                id="Enfermedadpresentada"
               />
                
             </div> 
@@ -233,7 +273,7 @@ export const Diagnostico = ({
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick= {handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
