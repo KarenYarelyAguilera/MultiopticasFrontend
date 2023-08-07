@@ -95,7 +95,6 @@ const actualizarGenero = async () => {
             
             <div className="contInput">
               <TextCustom text="Género"/>
-
               <input
 
                 onKeyDown={e => {
