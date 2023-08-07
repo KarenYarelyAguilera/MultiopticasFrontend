@@ -1,3 +1,5 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
@@ -11,6 +13,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -55,6 +58,34 @@ const urlBitacoraBotonSalirLE=
       .catch(error => console.log(error));
   }, [cambio]);
 
+      //IMPRIMIR PDF
+      const handleGenerarReporte = () => {
+        const formatDataForPDF = () => {
+          const formattedData = filteredData.map((row) => {
+            const fechaCre = new Date(row.fechaNacimiento);
+            const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                  String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                  fechaCre.getFullYear();
+                                  return {
+                                    'ID':row.IdEmpleado,
+                                    'Nombre':row.nombre, 
+                                    'Apellido':row.apellido,
+                                    'Telefono':row.telefonoEmpleado,
+                                    'Sucursal': row.departamento,
+                                    'Descripcion':row.descripcion,
+                                    'Numero de identidad':row.numeroIdentidad,
+                                  };
+          });
+          return formattedData;
+        };
+    
+        const urlPDF = 'Reporte_Empleados.pdf';
+        const subTitulo = "LISTA DE EMPLEADOS"
+    
+        generatePDF(formatDataForPDF, urlPDF, subTitulo);
+      };
+        
+        /////////
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -219,7 +250,10 @@ const urlBitacoraBotonSalirLE=
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

@@ -15,7 +15,7 @@ import swal from '@sweetalert/with-react';
 
 const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
 
-export const NuevaVenta = ({
+export const DetallesDeVenta = ({
   msgError = '',
   success = false,
   warning = false,
@@ -36,12 +36,12 @@ export const NuevaVenta = ({
       
     }
 
-    navegate('/menuVentas/DetalleVenta');
+    navegate('/menuVentas/DetallesDeVenta');
 
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/NuevaVenta');
   };
 
   return (
@@ -50,9 +50,9 @@ export const NuevaVenta = ({
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Nueva Venta</h2>
+        <h2>Detalles de Venta</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Nueva Venta.
+          Complete todos los puntos para poder registrar los Detalles de Venta.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -66,66 +66,46 @@ export const NuevaVenta = ({
                 <option value={2}>Sin informacion</option>
               </select>
             </div>
-            
-            <div className="contInput">
-              <TextCustom text="Fecha Actual" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Actual"
-                id="FechaActual"
-              />
-            </div>
 
             <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-              <select name="" className="selectCustom" id="Empleado">
+              <TextCustom text="Cliente" className="titleInput" />
+              <select name="" className="selectCustom" id="Cliente">
                 <option value={1}>Sin informacion</option>
                 <option value={2}>Sin informacion</option>
               </select>
             </div>
 
-
             <div className="contInput">
-              <TextCustom text="Fecha de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Entrega"
-                id="fechaEntrega"
-              />
+              <TextCustom text="Cliente" className="titleInput" />
+              <select name="" className="selectCustom" id="Cliente">
+                <option value={1}>Sin informacion</option>
+                <option value={2}>Sin informacion</option>
+              </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha Limite de Entrega" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha Limite de Entrega"
-                id="fechaLimite"
-              />
+              <TextCustom text="Cliente" className="titleInput" />
+              <select name="" className="selectCustom" id="Cliente">
+                <option value={1}>Sin informacion</option>
+                <option value={2}>Sin informacion</option>
+              </select>
             </div>
-
-            <div className="contInput">
-              <TextCustom text="RTN" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="RTN"
-                id="RTN"
-              />
-            </div>
-
             
+            <div className="contInput">
+              <TextCustom text="Cliente" className="titleInput" />
+              <select name="" className="selectCustom" id="Cliente">
+                <option value={1}>Sin informacion</option>
+                <option value={2}>Sin informacion</option>
+              </select>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Cliente" className="titleInput" />
+              <select name="" className="selectCustom" id="Cliente">
+                <option value={1}>Sin informacion</option>
+                <option value={2}>Sin informacion</option>
+              </select>
+            </div>
 
             <div className="contBtnStepper">
               <Button

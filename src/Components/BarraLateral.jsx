@@ -17,7 +17,7 @@ import {
   faGear,
   faRightFromBracket,
   faChevronRight,
-  faCartShopping
+  faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';
@@ -273,7 +273,7 @@ export const BarraLateral = props => {
 
             <li>
               <Link className="link" to="/config/roles">
-                <FontAwesomeIcon className="iconLi" icon={faFileLines} />
+                <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
                 <h1>SEGURIDAD</h1>
               </Link>
             </li>

@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
+import ReactModal from 'react-modal';
+import jsPDF from 'jspdf';
+
 
 
 import swal from '@sweetalert/with-react';
@@ -14,8 +17,10 @@ import swal from '@sweetalert/with-react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EditIcon from '@mui/icons-material/Edit';
+import Visibility from '@mui/icons-material/Visibility';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -42,8 +47,6 @@ export const DatosExpediente = ( props) => {
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [Empleado, setIdEmpleado] = useState([]);
   const [cambio, setCambio] = useState(0);
-
-
   
   useEffect(() => {
     console.log(props.id.idCliente);
@@ -54,12 +57,14 @@ export const DatosExpediente = ( props) => {
     }).catch(error => console.log(error))
   }, []);
 
+ // const [modalData, setModalData] = useState({});
+
 //DIAGNOSTICO
   useEffect(() => {
     axios.post(urlDiagnosticos,props.id).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
-  }, [cambio]);
+  }, []);
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -74,7 +79,18 @@ export const DatosExpediente = ( props) => {
   const handleBack = () => {
     props.dataa({})
     props.datosclientess({})
-    navegate('/menuClientes/ListaExpedientes');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de expediente ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/menuClientes/ListaExpedientes');
+      } else {
+      }
+    });
   };
 
   const navegate = useNavigate();
@@ -95,264 +111,128 @@ export const DatosExpediente = ( props) => {
             className="btnEdit"
             onClick={() => handleUpdt(params.row)}
           >
-            <EditIcon></EditIcon>
+            <Visibility></Visibility>
           </Button>
 
           <Button
             className="btnImprimirExp"
-//onClick={() => handleNewExpediente(params.row)}
+            onClick={()=> handlePrintModal(params.row)}
           >
-            <AddIcon></AddIcon>
+            <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
           
         </div>
       ),
     },
   ];
+
+  const handlePrintModal = (modalData) => {
+    const documento = new jsPDF();
+    documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 20);
+    documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 30);
+    documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 40);
+    documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 60);
+    documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 70);
+    documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 80);
+    documento.text(`Esfera Ojo Izquierdo: ${modalData.OIEsfera}`, 20, 90);
+    documento.text(`Cilindro Ojo Derecho: ${modalData.ODCilindro}`, 20, 100);
+    documento.text(`Cilindro Ojo Izquierdo: ${modalData.OICilindro}`, 20, 110);
+    documento.text(`Eje Ojo Derecho: ${modalData.ODEje}`, 20, 120);
+    documento.text(`Eje Ojo Izquierdo: ${modalData.OIEje}`, 20, 130);
+    documento.text(`Adicion Ojo Derecho: ${modalData.ODAdicion}`, 20, 140);
+    documento.text(`Adicion Ojo Izquierdo: ${modalData.OIAdicion}`, 20, 150);
+    documento.text(`Altura Ojo Derecho: ${modalData.ODAltura}`, 20, 160);
+    documento.text(`Altura Ojo Izquierdo: ${modalData.OIAltura}`, 20, 170);
+    documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 180);
+    documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 190);
+    documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 200);
+  
+    documento.save('historial_expediente.pdf');
+    //setModalData({})
+  };
+
    //PANTALLA MODAL---------------------------------------------------------------------------
   function handleUpdt(id) {
+    //setModalData(id);
     console.log(id);
     swal(
       <div>
         <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
         <div className="contInput">
-              <TextCustom text="Fecha de Consulta" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Consulta"
-                id="fechaconsulta"
-                value={id.fechaConsulta}
-                disabled
-              />
-            </div>
-            
+        <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
+       </div>
+        
+         <div className="contInput">
+         <label><b>Optometrista:{id.Optometrista}</b></label>
+            </div> 
             <div className="contInput">
-              <TextCustom text="Optometrista" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Optometrista"
-                id="Optometrista"
-                value={id.Optometrista}
-                disabled
-              />
+            <label><b>Asesor de venta:{id.AsesorVenta}</b></label>
             </div>
             <div className="contInput">
-              <TextCustom text="Asesor de Venta" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Asesor de Venta"
-                id="Asesor"
-                value={id.AsesorVenta}
-                disabled
-              />
+            <label><b>Fecha de expiracion:{id.fechaExpiracion}</b></label>
             </div>
             <div className="contInput">
-              <TextCustom text="Fecha de Expiracion" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Expiracion"
-                id="fechaexpiracion"
-                value={id.fechaExpiracion}
-                disabled
-              />
-            </div>
-            <div className="contInput">
-              <TextCustom text="Antecedentes Clinicos" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={100}
-                className="inputCustom"
-                placeholder="Antecedentes Clinicos"
-                id="antecendentes"
-                value={id.Antecedentes}
-                disabled
-              />
+            <label><b>Antecedentes clinicos:{id.Antecedentes}</b></label>
             </div> 
             <h3>
             ----------------DIAGNOSTICO-----------------
             </h3>
             <div className="contInput">
-              <TextCustom text="Esfera OD" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera OD"
-                id="ODEsfera"
-                value={id.ODEsfera}
-                disabled
-              />
+              <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
             </div>
             <div className="contInput">
-              <TextCustom text="Esfera OI" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Esfera OI"
-                id="OIEsfera"
-                value={id.OIEsfera}
-                disabled
-              />
+            <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cilindro OD" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Cilindro OD"
-                id="ODCilindro"
-                value={id.ODCilindro}
-                disabled
-              />
+              <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
+            </div>
+            <div className="contInput">
+              <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
+            </div>
+            <div className="contInput">
+            <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
+            </div>
+            <div className="contInput">
+            <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
+            </div>
+            <div className="contInput">
+            <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Eje OD" className="titleInput" />
-              <input
+            <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
+            </div>
+
+            <div className="contInput">
+            <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
+            </div>
+
+            <div className="contInput">
+            <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
+            </div>
+
+            <div className="contInput">
+            <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
+            </div>
+
+            <div className="contInput">
+            <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
+            </div>
+
+            <div className="contInput">
+            <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
+            </div>
             
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Eje OD"
-                id="ODEje"
-                value={id.ODEje}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Adicion OD" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Adicion OD"
-                id="AdicionOD"
-                value={id.ODAdicion}
-                disabled
-              />
-            
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Adicion OI" className="titleInput" />
-
-              <input
-             
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Adicion OI"
-                id="AdicionOI"
-                value={id.OIAdicion}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Altura OD" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Altura OD"
-                id="AlturaOD"
-                value={id.ODAltura}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Altura OI" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Altura OI"
-                id="AlturaOI"
-                value={id.OIAltura}
-                disabled
-              />
-        
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="DP OD" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="DP OD"
-                id="DistanciapupilarOD"
-                value={id.ODDistanciaPupilar}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="DP OI" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="DP OI"
-                id="DistanciapupilarOI"
-                value={id.OIDistanciaPupilar}
-                disabled
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Enfermedad presentada" className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Enfermedad presentada"
-                id="enfermedadpresentada"
-                value={id.diagnostico}
-                disabled
-              />
-            </div>
         </div>
       </div>,
     ).then( async() => {
     });
 
   }
+
+ 
 
   //Insertar un nuevo expediente
   
@@ -376,8 +256,11 @@ export const DatosExpediente = ( props) => {
    }
 
    await axios.post(urlNuevoExpediente,data).then(response=>{
-     swal('Expediente creado con exito', '', 'success').then(result => {
-       navegate('/menuClientes/ListaExpedientes');
+        let data={ IdExpediente:response.data.id}
+        props.dataa(data)
+       //console.log(response.data.id)
+    swal('Expediente creado con exito', '', 'success').then(result => {
+       navegate('/menuClientes/DetalleExpediente');
      });
 
    }).catch(error=>{

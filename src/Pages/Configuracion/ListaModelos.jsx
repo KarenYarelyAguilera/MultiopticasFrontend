@@ -1,8 +1,15 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import React from 'react';
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -19,6 +26,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaModelos = ({props,data,update}) => {
 
@@ -36,10 +45,33 @@ export const ListaModelos = ({props,data,update}) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
- //Pa' cargar los proveedores
  useEffect(() => {
   axios.get(urlModelos).then(response=>setTableData(response.data))
 }, [cambio]);
+
+//IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdModelo,
+                                'Marca':row.Marca, 
+                                'Modelo':row.Modelo, 
+                                'Año':row.anio, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Modelos.pdf';
+    const subTitulo = "LISTA DE MODELOS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const navegate = useNavigate();
 
@@ -53,8 +85,8 @@ export const ListaModelos = ({props,data,update}) => {
 
   const columns = [
     { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
-    { field: 'IdMarca', headerName: 'Marca', width: 200 },
-    { field: 'detalle', headerName: 'Modelo', width: 190},
+    { field: 'Marca', headerName: 'Marca', width: 200 },
+    { field: 'Modelo', headerName: 'Modelo', width: 190},
     { field: 'anio', headerName: 'Año', width: 190 },
 
     {
@@ -84,7 +116,7 @@ function handleDel(id) {
   swal({
     content: (
       <div>
-        <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
+        <div className="logoModal">¿Desea eliminar este modelo?</div>
         <div className="contEditModal"> 
         </div>
       </div>
@@ -108,7 +140,7 @@ function handleDel(id) {
             setCambio(cambio + 1);
           }).catch(error => {
             console.log(error);
-            swal('Error al eliminar el modelo', '', 'error');
+            swal('Error al eliminar el modelo, asegúrese que no tenga relación con otros datos', '', 'error');
           });
 
         break;
@@ -127,7 +159,7 @@ function handleDel(id) {
       },
       content: (
         <div className="logoModal">
-          ¿Desea actualizar el modelo?: {id.IdMarca} ?
+          ¿Desea actualizar este modelo: {id.Marca}?
         </div>
       ),
     }).then((op)  => {
@@ -187,7 +219,8 @@ function handleDel(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Modelo
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

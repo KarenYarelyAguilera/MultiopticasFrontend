@@ -26,8 +26,8 @@ export const MetodosDePago  = (props) => {
 
   const navegate = useNavigate();
 
-  const [descripcion, setDescripcion] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
+  const [descripcion, setDescripcion] = React.useState(props.data.descripcion ||'');
+  const [leyenda, setleyenda] = React.useState(false);
   const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
 //CREAR
@@ -76,9 +76,8 @@ const actualizarMetodoPago = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.update ? <h2>Actualizacion de Metodo de Pago</h2> : <h2>Registro de Metodos de Pago</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los Metodos de Pago.
+      {props.actualizar ? <h2>Actualizacion de Método de Pago</h2> : <h2>Registro de Método de Pago</h2>}        <h3>
+          Complete todos los puntos para poder actualizar los Métodos de Pago.
         </h3>
       </div>
       <div className="infoAddUser">
@@ -91,33 +90,65 @@ const actualizarMetodoPago = async () => {
               <TextCustom text="Tipo de Pago" className="titleInput" />
 
               <input
-               
+            
+                onKeyDown={e => {
+                  setDescripcion(e.target.value);
+                  if (descripcion === '') {
+                    setErrorDescripcion(true);
+                    setleyenda('Los campos no deben estar vacíos');
+                  } else {
+                    setErrorDescripcion(false);
+                    var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                    if (!regex.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda('Solo debe ingresar letras y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorDescripcion(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
+                onChange={e => setDescripcion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorDescripcion}
+
+                helperText={leyenda}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Tipo de Pago"
                 id="descripcion"
+                value={descripcion}
               />
-               {/* <p class="error">{aviso}</p> */}
+               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  var descripcion = document.getElementById("descripcion").value;
+                onClick={()=> 
+                  {
+                    var descripcion = document.getElementById("descripcion").value;
 
-                  props.actualizar ? actualizarMetodoPago() : handleNext();
-                }
+                    if (descripcion ==="")
+                    {
+                      swal ("No deje campos vacíos.", "", "error");
+                    } else 
+                    {
+                      props.actualizar ? actualizarMetodoPago() : handleNext();
+
+                    }
+                  }
+                
                 }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
-              </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                  </Button>
+             
             </div>
           </div>
         </div>

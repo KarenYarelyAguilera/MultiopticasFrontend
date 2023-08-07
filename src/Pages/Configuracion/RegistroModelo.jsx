@@ -25,13 +25,13 @@ export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
 
-  const [modelo, setmodelo] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
+  const [modelo, setmodelo] = React.useState(props.data.detalle ||'');
+  const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
 
-  const [detalle, setDetalle] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errordescripcion, setErrordescripcion] = React.useState(false);
+  const [year, setyear] = React.useState(props.data.anio ||'');
+  const [aviso, setaviso] = React.useState(false);
+  const [erroranio, setErroranio] = React.useState(false);
 
   const navegate = useNavigate();
 
@@ -54,12 +54,12 @@ export const RegistroModelo = (props) => {
 
   //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertModelo, data).then(response => {
-    swal('Modelo agregada con exito', '', 'success').then(result => {
+    swal('Modelo agregado con exito', '', 'success').then(result => {
       navegate('/config/lista');
     });
   }).catch(error => {
     console.log(error);
-    swal('Error al crear el modelo, porfavor revise los campos.', '', 'error')
+    swal('Error al crear el modelo, por favor revise los campos.', '', 'error')
  
   })
 };
@@ -78,12 +78,12 @@ const actualizarModelo = async () => {
   }
 
   axios.put(urlUpdateModelo, data).then(() => {
-    swal("Modelo Actualizado Correctamente", "", "success").then(() => {
+    swal("Modelo actualizado correctamente", "", "success").then(() => {
       navegate('/config/lista');
     })
   }).catch(error => {
     console.log(error);
-    swal('Error al Actualizar Proveedor! , porfavor revise todos los campos.', '', 'error')
+    swal('Error al actualizar este modelo, por favor revise todos los campos.', '', 'error')
     // axios.post(urlErrorInsertBitacora, dataB)
   })
 };
@@ -140,30 +140,65 @@ const actualizarModelo = async () => {
               <TextCustom text="Modelo" className="titleInput" />
 
               <input
-               
-                // error={errorprecio}
+              onKeyDown={e => {
+                setmodelo(e.target.value);
+                if (modelo === '') {
+                  setErrorModelo(true);
+                  setleyenda('Los campos no deben estar vacíos');
+                } else {
+                  var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
+                  if (!regex.test(modelo)) {
+                    setErrorModelo(true);
+                    setleyenda('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
+                  } else if (/(.)\1{2,}/.test(modelo)) {
+                    setErrorModelo(true);
+                    setleyenda('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorModelo(false);
+                    setleyenda("");
+                  }
+                }
+              }}
+                onChange={e => setmodelo(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errormodelo}
+
+                helperText={leyenda}
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Modelo"
                 id="detalle"
+                value={modelo}
               />
-              {/* <p class="error">{aviso}</p> */}
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Año" className="titleInput" />
-              <input
-                // error={errorprecio}
-                type="text"
+                <input
+                type="number"
+                //value={detalle}
+                onChange={(e) => setyear(e.target.value)}
+                onKeyDown={(e) => {
+                  if (year=== "") {
+                    setErroranio(true);
+                    setaviso("Los campos no deben estar vacíos");
+                  } else {
+                    setErroranio(false);
+                    setaviso("");
+                  }
+                }}
+             
+                error={erroranio}
                 name=""
-                maxLength={13}
+                maxLength={4}
                 className="inputCustom"
                 placeholder="Año"
                 id="anio"
+                value={year}
               />
-              {/* <p class="error">{aviso}</p> */}
+               <p class="error">{aviso}</p> 
             </div>
           
             <div className="contBtnStepper">
@@ -172,16 +207,17 @@ const actualizarModelo = async () => {
                 className="btnStepper"
                 onClick={()=>
                 {
-                  //Validaciones previo a ejecutar el boton
-                  var detalle = document.getElementById("detalle").value;
-                  var anio = document.getElementById("anio").value;
-
-                  if (detalle === "" || anio === "") {
+                  var modelo = document.getElementById("detalle").value;
+                  var año = document.getElementById("anio").value;
+                   if (modelo === "" || año === "") {
                     swal("No deje campos vacíos.", "", "error");
-                 /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                    swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
-                  } 
+                  }  else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(modelo)) {
+                    swal("El campo modelo solo acepta letras mayusculas guiones y numeros.", "", "error");
+                  }else if (isNaN(parseInt(año))) {
+                    swal("El campo año solo acepta números.", "", "error");
+                  }else{
                     props.actualizar ? actualizarModelo() : handleNext();
+                  }
                 }
               }
               >

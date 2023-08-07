@@ -16,8 +16,8 @@ import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar 
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlProductos = 'http://localhost:3000/api/productos'; //API DE PRODUCTO
-const urlUpdateGarantia = 'http://localhost:3000/garantias/actualizar';//API DE ACTUALIZAR
-const urlInsertGarantia = 'http://localhost:3000/garantias/crear';//CREAR 
+const urlUpdateGarantia = 'http://localhost:3000/api/garantias/actualizar';//API DE ACTUALIZAR
+const urlInsertGarantia = 'http://localhost:3000/api/garantias/crear';//CREAR 
 
 
 export const RegistroGarantia = (props) => {
@@ -42,16 +42,16 @@ export const RegistroGarantia = (props) => {
  //INSERTAR GARANTIA
   const handleNext = async () => {
     
-    let descripcion = document.getElementById ("descripcion").value;
-    let mesesGarantia = document.getElementById ("mesesGarantia").value;
     let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+    let mesesGarantia = document.getElementById ("mesesGarantia").value;
     let estado = parseInt(document.getElementById ("estado").value);
+    let descripcion = document.getElementById ("descripcion").value;
 
     let data = {
-      descripcion: descripcion,
-      mesesGarantia: mesesGarantia,
       IdProducto: IdProducto,
+      mesesGarantia: mesesGarantia,
       estado: estado,
+      descripcion: descripcion,
     };
 
      //Consumo de API y lanzamiento se alerta
@@ -70,10 +70,10 @@ export const RegistroGarantia = (props) => {
   //ACTUALIZAR
 const actualizarGarantia = async () => {
 
-  let descripcion = document.getElementById ("descripcion").value;
-  let mesesGarantia = document.getElementById ("mesesGarantia").value;
   let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+  let mesesGarantia = document.getElementById ("mesesGarantia").value;
   let estado = parseInt(document.getElementById ("estado").value);
+  let descripcion = document.getElementById ("descripcion").value;
 
   // let IdProducto = parseInt(document.getElementById("IdProducto").value)
   // let mesesGarantia = document.getElementById("mesesGarantia").value
@@ -81,13 +81,13 @@ const actualizarGarantia = async () => {
   // let descripcion = document.getElementById("descripcion").value
 
   //El dato de IdProducto se obtiene de Producto seleccionado.
- const data = { 
-      descripcion: descripcion,
-      mesesGarantia: mesesGarantia,
-      IdProducto: IdProducto,
-      estado: estado,
-     IdGarantia:props.data.IdGarantia,
-  }
+ const data = {
+    IdProducto: IdProducto,
+    mesesGarantia: mesesGarantia,
+    estado: estado,
+    descripcion: descripcion,
+    IdGarantia:props.data.IdGarantia,
+  };
 
   axios.put(urlUpdateGarantia,data).then(() => {
     swal("Garantia Actualizada Correctamente", "", "success").then(() => {
@@ -140,31 +140,13 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="Meses" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setGarantia(e.target.value);
-
-                  if (mesesGarantia === '') {
-                    seterrormesesGarantia(true);
-                    setmensaje('Los campos no deben estar vacios');
-                  }
-                  else {
-                   /*  seterrormesesGarantia(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(mesesGarantia)) {
-                      seterrormesesGarantia(true);
-                       //setTexto('Solo deben de ingresar numeros');
-                    } else {
-                      seterrormesesGarantia(false);
-                       //setTexto('');
-                    } */
-                  }
-                }}
+           
                 type="text"
                 name=""
                 maxLength={2}
                 className="inputCustom"
                 placeholder="Meses"
-                id="meses"
+                id="mesesGarantia"
               />
               <p class="error">{mensaje}</p>
             </div>
@@ -182,39 +164,37 @@ const actualizarGarantia = async () => {
               <TextCustom text="Descripcion" className="titleInput" />
               <input
 
-                onKeyDown={(e) => {
-                  setDescripcion(e.target.value);
+                // onKeyDown={(e) => {
+                //   setDescripcion(e.target.value);
 
-                  if (descripcion.length > 100) {
-                    setErrorDescripcion(true);
-                    setleyenda('A excedido al numero de caracteres');
-                  }
-                  if (descripcion === '') {
-                    setErrorDescripcion(true);
-                    setleyenda('Los campos no deben estar vacios');
-                  }
-                  else {
-                    setErrorDescripcion(false);
-                    var expresion = /^[a-zA-Z0-9]+$/;
-                    if (!expresion.test(descripcion)) {
-                      setErrorDescripcion(true);
-                      setleyenda('Formato invalido');
-                    }
-                    else {
-                      setErrorDescripcion(false);
-                      setleyenda('');
-                    }
-                  }
-                }}
-
-                   
+                //   if (descripcion.length > 100) {
+                //     setErrorDescripcion(true);
+                //     setleyenda('A excedido al numero de caracteres');
+                //   }
+                //   if (descripcion === '') {
+                //     setErrorDescripcion(true);
+                //     setleyenda('Los campos no deben estar vacios');
+                //   }
+                //   else {
+                //     setErrorDescripcion(false);
+                //     var expresion = /^[a-zA-Z0-9]+$/;
+                //     if (!expresion.test(descripcion)) {
+                //       setErrorDescripcion(true);
+                //       setleyenda('Formato invalido');
+                //     }
+                //     else {
+                //       setErrorDescripcion(false);
+                //       setleyenda('');
+                //     }
+                //   }
+                // }}
 
                 type="text"
                 name=""
                 maxLength={100}
                 className="inputCustomText"
                 placeholder="Descripcion"
-                id="mesesGarantia"
+                id="descripcion"
               />
               <p class="error">{leyenda}</p>
             </div>

@@ -1,5 +1,5 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
@@ -19,7 +19,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const Kardex = () => {
 
-  const urlKardex ="http://localhost/APIS-Multioptica/Kardex/Controller/kardex.php?op=kardex"
+  const urlKardex ='http://localhost:3000/api/kardex';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,12 +42,10 @@ export const Kardex = () => {
 
   const columns = [
     { field: 'IdKardex', headerName: 'ID Kardex', width: 240 },
-    { field: 'Usuario', headerName: 'Usuario', width: 260 },
-    { field: 'tipoMovimiento', headerName: 'Tipo de Movimiento', width: 260 },
-    { field: 'producto', headerName: 'Producto', width: 260 },
+    { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 260 },
+    { field: 'Producto', headerName: 'Producto', width: 260 },
     { field: 'cantidad', headerName: 'Cantidad', width: 260 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 260 },
-
   ];
 
   function handleUpdt(param) {
