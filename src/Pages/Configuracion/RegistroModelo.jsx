@@ -25,7 +25,7 @@ export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
 
-  const [modelo, setmodelo] = React.useState(props.data.detalle ||'');
+  const [modelo, setmodelo] = React.useState(props.data.Modelo ||'');
   const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
 

@@ -26,7 +26,7 @@ export const RegistroPais = (props) => {
 
   const navegate = useNavigate();
 
-  const [pais, setPais] = React.useState(props.data.pais ||'');
+  const [pais, setPais] = React.useState(props.data.Pais ||'');
   const [errorPais, setErrorPais] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
