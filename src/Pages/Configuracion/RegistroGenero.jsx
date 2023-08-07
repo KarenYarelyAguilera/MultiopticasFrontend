@@ -51,7 +51,7 @@ export const RegistroGenero = (props) => {
   //ACTUALIZAR
 const actualizarGenero = async () => {
 
-  let genero = document.getElementById("Gnero").value;
+  let genero = document.getElementById("Genero").value;
 
   const data = {
 
