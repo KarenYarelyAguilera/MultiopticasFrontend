@@ -17,6 +17,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
@@ -30,9 +31,9 @@ export const RegistroMarcas = (props) => {
   // const [errorMarca, setErrorMarca] = React.useState(false);
 
   //Validacion 
-  const [nombremarca, setnombremarca] = React.useState('');
+  const [marca, setmarca] = React.useState(props.data.descripcion||'');
   const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
+  const [errormarca, setErrormarca] = React.useState(false);
   
   //INSERTAR MARCA 
 
@@ -99,39 +100,41 @@ const actualizarMarca = async () => {
 
               onKeyDown={e => 
                 {
-                setnombremarca(e.target.value);
-                if (e.target.value === '') 
+                setmarca(e.target.value);
+                if (marca === '') 
                 {
-                  setErrornombremarca(true);
+                  setErrormarca(true);
                   setaviso('Los campos no deben estar vacíos');
                 } else 
                 {
-                  setErrornombremarca(false);
+                  setErrormarca(false);
                   var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value))
+                  if (!regex.test(marca))
                    {
-                    setErrornombremarca(true);
+                    setErrormarca(true);
                     setaviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  } else if (/(.)\1{2,}/.test(marca))
                   {
-                    setErrornombremarca(true);
+                    setErrormarca(true);
                     setaviso('No se permiten letras consecutivas repetidas');
                   } else 
                   {
-                    setErrornombremarca(false);
+                    setErrormarca(false);
                     setaviso('');
                   }
                 }
               }}
-                error={errornombremarca}
+              onChange={e => setmarca(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errormarca}
+
                 helperText={aviso}
                 type="text"
                 name=""
                 maxLength={40}
-                // onChange={e => setmarca(e.target.value)}
                 className="inputCustom"
                 placeholder="Nombre de la Marca"
                 id="Marca"
+                value ={marca}
               />
             </div>
             <p className="error">{aviso}</p>
@@ -148,7 +151,7 @@ const actualizarMarca = async () => {
                   }   else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Marca)) {
                     swal("El campo marca solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
                 } else if (/(.)\1{2,}/.test(Marca)) {
-                  setErrornombremarca(true);
+                  setmarca(true);
                   swal("El campo direccion no acepta letras mayúsculas consecutivas repetidas.", "", "error");
                 }else{
 

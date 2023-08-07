@@ -25,12 +25,12 @@ export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
 
-  const [modelo, setmodelo] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
+  const [modelo, setmodelo] = React.useState(props.data.detalle ||'');
+  const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
 
-  const [year, setyear] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
+  const [year, setyear] = React.useState(props.data.anio ||'');
+  const [aviso, setaviso] = React.useState(false);
   const [erroranio, setErroranio] = React.useState(false);
 
   const navegate = useNavigate();
@@ -142,15 +142,15 @@ const actualizarModelo = async () => {
               <input
               onKeyDown={e => {
                 setmodelo(e.target.value);
-                if (e.target.value === "") {
+                if (modelo === '') {
                   setErrorModelo(true);
                   setleyenda('Los campos no deben estar vacíos');
                 } else {
                   var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                  if (!regex.test(modelo)) {
                     setErrorModelo(true);
                     setleyenda('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                  } else if (/(.)\1{2,}/.test(modelo)) {
                     setErrorModelo(true);
                     setleyenda('No se permiten letras consecutivas repetidas');
                   } else {
@@ -159,8 +159,9 @@ const actualizarModelo = async () => {
                   }
                 }
               }}
-              
+                onChange={e => setmodelo(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errormodelo}
+
                 helperText={leyenda}
                 type="text"
                 name=""
@@ -168,6 +169,7 @@ const actualizarModelo = async () => {
                 className="inputCustom"
                 placeholder="Modelo"
                 id="detalle"
+                value={modelo}
               />
               <p class="error">{leyenda}</p>
             </div>
@@ -179,7 +181,7 @@ const actualizarModelo = async () => {
                 //value={detalle}
                 onChange={(e) => setyear(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.target.value === "") {
+                  if (year=== "") {
                     setErroranio(true);
                     setaviso("Los campos no deben estar vacíos");
                   } else {
@@ -187,13 +189,14 @@ const actualizarModelo = async () => {
                     setaviso("");
                   }
                 }}
-                
-              error={erroranio}
+             
+                error={erroranio}
                 name=""
                 maxLength={4}
                 className="inputCustom"
                 placeholder="Año"
                 id="anio"
+                value={year}
               />
                <p class="error">{aviso}</p> 
             </div>

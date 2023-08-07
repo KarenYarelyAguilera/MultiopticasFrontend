@@ -679,7 +679,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <MetodosDePago />
+                <MetodosDePago
+                 actualizar={actualizar}
+                 update={update}
+                 data={data}garanr
+                 Data={Data}
+                 />
               </div>
               //  </ProtectedRoute>
             }
@@ -774,7 +779,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <RegistroGenero />
+                <RegistroGenero 
+                 actualizar={actualizar}
+                 update={update}
+                 data={data}
+                 Data={Data} 
+                />
               </div>
               //  </ProtectedRoute>
             }
@@ -994,7 +1004,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaGenero />
+                  <ListaGenero 
+                   update={update} 
+                   data={Data} 
+                  />
                 </div>
              </ProtectedRoute>
             }

@@ -25,7 +25,7 @@ export const RegistroDepartamento = (props) => {
 
  const navegate = useNavigate();
 
- const [departamento, setDepartamento] = React.useState('');
+ const [departamento, setDepartamento] = React.useState(props.data.departamento ||'');
  const [errorDepartamento, setErrorDepartamento] = React.useState(false);
  const [aviso, setAviso] = React.useState(false);
   
@@ -95,7 +95,7 @@ export const RegistroDepartamento = (props) => {
               onKeyDown={e=>
               {
                 setDepartamento(e.target.value);
-                if (e.target.value==="")
+                if (departamento ==="")
                 {
                   setErrorDepartamento(true);
                   setAviso('Los campos no deben estar vacíos');
@@ -103,11 +103,11 @@ export const RegistroDepartamento = (props) => {
                 {
                   setErrorDepartamento(false);
                   var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if(!regex.test(e.target.value))
+                  if(!regex.test(departamento))
                   {
                     setErrorDepartamento(true);
                     setAviso ('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value))
+                  } else if (/(.)\1{2,}/.test(departamento))
                   {
                     setErrorDepartamento(true);
                     setAviso ('No se permiten letras consecutivas repetidas');
@@ -118,6 +118,9 @@ export const RegistroDepartamento = (props) => {
                 }
               }}
 
+
+              onChange={e => setDepartamento(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+
                 erro={errorDepartamento}
                 type="text"
                 helperText={aviso}
@@ -126,6 +129,7 @@ export const RegistroDepartamento = (props) => {
                 maxLength={40}
                 placeholder="Departamento"
                 id="departamento"
+                value={departamento} 
 
               />
                  <p className="error">{aviso}</p>
