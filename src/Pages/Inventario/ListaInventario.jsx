@@ -1,7 +1,9 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
-
+import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
@@ -65,7 +67,27 @@ export const ListaInventario = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaYHora);
+        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.Producto,
+          'Cantidad':row.Cantidad, 
+          'Movimiento':row.Movimiento,
+        };
+      });
+      return formattedData;
+    };
 
+    const urlPDF = 'Reporte_Kardex.pdf';
+    const subTitulo = "LISTA DE KARDEX"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
     { field: 'Producto', headerName: 'Producto', width: 300 },
@@ -189,7 +211,9 @@ export const ListaInventario = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo 
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

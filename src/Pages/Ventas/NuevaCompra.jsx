@@ -124,6 +124,7 @@ export const NuevaCompra = ({
     console.log(data);
     await axios.post(urlCompra,data).then(()=>{
       swal("Compra registrada con exito","","success")
+      navegate('/menuInventario/ListaCompra');
     })
    
   }
@@ -328,7 +329,7 @@ export const NuevaCompra = ({
             <div className="btnActionsNewReport">
               <Button
                 className="btnCreate1"
-                onClick={GuardarCompra()}
+                onClick={GuardarCompra}
               
           
           
