@@ -1039,7 +1039,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/config/Bitacora"
+            path="/Administracion/Bitacora"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -1673,7 +1673,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/NuevaCompra"
+            path="/menuCompras/NuevaCompra"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex" style={{ width: '99%' }}>
