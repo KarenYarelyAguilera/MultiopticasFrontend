@@ -16,16 +16,16 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 
+const urlGenero = 
+    'http://localhost:3000/api/Genero';
 
-const urlCliente =
+const urlInsertCliente =
   'http://localhost:3000/api/clientes/clienteNuevo';
 //insertar usuario
 const urlClienteActualizar =
   'http://localhost:3000/api/clientes/actualizar';
 //actualizar usuario
-const urlClienteEliminar =
-  'http://localhost:3000/api/clientes/eliminar';
-//eliminar usuario
+
 
 export const AddClientes = (props) => {
   const [procesoEnCurso, setProcesoEnCurso] = useState(true)
@@ -36,34 +36,37 @@ export const AddClientes = (props) => {
   // };
 
   const [sucursales, setSucursales] = useState([]);
-  const [iIdentidad, setiIdentidad] = React.useState('');
+
+  const [iIdentidad, setiIdentidad] = React.useState(props.data.idCliente ||'');
   const [leyenda, setleyenda] = React.useState('');
   const [errorIdentidad, setErrorIdentidad] = React.useState(false);
 
-  const [Nombre, setNombre] = React.useState('');
-  const [errorNombre, setErrorNombre] = React.useState(false);
+  const [Nombre, setNombre] = React.useState(props.data.nombre ||'');
+  const [errorNombre, setErrorNombre] = React.useState();
   const [Msj, setMsj] = React.useState(false);
 
-  const [Apellido, setApellido] = React.useState('');
+  const [Apellido, setApellido] = React.useState(props.data.apellido ||'');
   const [errorApellido, setErrorApellido] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
+  const [Telefono, setTelefono] = useState(props.data.telefono ||'');
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
-  const [Telefono, setTelefono] = useState('');
 
-  const [direccion, setdireccion] = React.useState('');
-  const [mensaje, setmensaje] = React.useState('');
+  const [direccion, setdireccion] = React.useState(props.data.direccion ||'');
+  const [mensaje, setmensaje] = React.useState(false);
   const [errordireccion, setErrordireccion] = React.useState(false);
 
-  const [correoelec, setcorreoelec] = React.useState('');
-  const [advertencia, setadvertencia] = React.useState('');
+  const [correoelec, setcorreoelec] = React.useState(props.data.correo ||'');
+  const [advertencia, setadvertencia] = React.useState(false);
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
 
   const navegate = useNavigate();
 
-  const [Empleado, setEmpleado] = useState([])
-
+  useEffect(() => {
+    axios.get (urlGenero).then (response=>setGenero(response.data))
+  }, []);
+  const [Genero, setGenero] = useState([])
 
   //ACTUALIZAR
   const actualizarCliente = async () => {
@@ -96,7 +99,6 @@ export const AddClientes = (props) => {
       idCliente: props.data.idCliente, //El dato de IdCliente se obtiene de Cliente seleccionado.
     }
 
-
     //Funcion de bitacora 
     /*  let dataB={
        Id: props.idUsuario
@@ -109,7 +111,7 @@ export const AddClientes = (props) => {
       })
     }).catch(error => {
       console.log(error);
-      swal('Error al Actualizar Cliente! , porfavor revise todos los campos.', '', 'error')
+      swal('Error al Actualizar Cliente! , por favor revise todos los campos.', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
@@ -145,16 +147,16 @@ export const AddClientes = (props) => {
       direccion: direccion,
       telefono: telefono,
       correo: correo
-    }
+    };
 
-    await axios.post(urlCliente, data).then(response => {
+    axios.post(urlInsertCliente, data).then(response => {
       swal('Cliente agregado con exito', '', 'success').then(result => {
         navegate('/menuClientes/lista');
       });
-
     }).catch(error => {
       console.log(error);
-      swal("Error al registrar cliente.", "", "error")
+      swal('Error al crear el cliente, por favor revise los campos.', '', 'error')
+   
     })
 
   };
@@ -179,6 +181,7 @@ export const AddClientes = (props) => {
       }
     });
   };
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -221,13 +224,17 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
+                onChange={e => setiIdentidad(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorIdentidad}
+                helperText={leyenda}
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Identidad"
                 id="Nidentidad"
+                value={iIdentidad}
+
               />
               <p class="error">{leyenda}</p>
             </div>
@@ -237,16 +244,16 @@ export const AddClientes = (props) => {
               <input
                 onKeyDown={e => {
                   setNombre(e.target.value);
-                  if (e.target.value === '') {
+                  if (Nombre === '') {
                     setErrorNombre(true);
                     setMsj('Los campos no deben estar vacíos');
                   } else {
                     setErrorNombre(false);
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(e.target.value)) {
+                    if (!regex.test(Nombre)) {
                       setErrorNombre(true);
                       setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    } else if (/(.)\1{2,}/.test(Nombre)) {
                       setErrorNombre(true);
                       setMsj('No se permiten letras consecutivas repetidas');
                     } else {
@@ -255,6 +262,7 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
+                onChange={e => setNombre(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorNombre}
                 type="text"
                 helperText={Msj}
@@ -262,9 +270,8 @@ export const AddClientes = (props) => {
                 className="inputCustom"
                 maxLength={50}
                 placeholder="Nombre"
-                variant="standard"
                 id="nombre"
-                label="Usuario"
+                value={Nombre}
               />
               <p className="error">{Msj}</p>
             </div>
@@ -274,16 +281,16 @@ export const AddClientes = (props) => {
               <input
                 onKeyDown={e => {
                   setApellido(e.target.value);
-                  if (e.target.value === '') {
+                  if (Apellido === '') {
                     setErrorApellido(true);
                     setAviso('Los campos no deben estar vacíos');
                   } else {
                     setErrorApellido(false);
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(e.target.value)) {
+                    if (!regex.test(Apellido)) {
                       setErrorApellido(true);
                       setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    } else if (/(.)\1{2,}/.test(Apellido)) {
                       setErrorApellido(true);
                       setAviso('No se permiten letras consecutivas repetidas');
                     } else {
@@ -292,6 +299,7 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
+                onChange={e => setApellido(e.target.value)} 
                 error={errorApellido}
                 type="text"
                 name=""
@@ -300,6 +308,7 @@ export const AddClientes = (props) => {
                 className="inputCustom"
                 placeholder="Apellido"
                 id="apellido"
+                value={Apellido}
               />
               <p className="error">{aviso}</p>
             </div>
@@ -309,16 +318,16 @@ export const AddClientes = (props) => {
               <input
                 onKeyDown={e => {
                   setdireccion(e.target.value);
-                  if (e.target.value === '') {
+                  if (direccion === '') {
                     setErrordireccion(true);
                     setmensaje('Los campos no deben estar vacíos');
                   } else {
                     setErrordireccion(false);
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(e.target.value)) {
+                    if (!regex.test(direccion)) {
                       setErrordireccion(true);
                       setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    } else if (/(.)\1{2,}/.test(direccion)) {
                       setErrordireccion(true);
                       setmensaje('No se permiten letras consecutivas repetidas');
                     } else {
@@ -327,14 +336,16 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
-                error={errorTelefono}
-                type="phone"
+                onChange={e => setdireccion(e.target.value)} 
+                error={errordireccion}
+                type="text"
                 name=""
                 helperText={mensaje}
                 maxLength={100}
                 className="inputCustom"
                 placeholder="Direccion"
                 id="direccion"
+                value={direccion}
               />
               {<p className="error">{mensaje}</p>}
             </div>
@@ -342,15 +353,17 @@ export const AddClientes = (props) => {
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
               <input
+               onChange={e => setTelefono(e.target.value)}
+
                 onKeyDown={e => {
                   setTelefono(e.target.value);
-                  if (e.target.value === '') {
+                  if (Telefono === '') {
                     setTexto('Los campos no deben estar vacíos');
                     setErrorTelefono(true);
                   } else {
                     setErrorTelefono(false);
                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
-                    if (!regex.test(e.target.value)) {
+                    if (!regex.test(Telefono)) {
                       setErrorTelefono(true);
                       setTexto('Debe ingresar un número de teléfono válido de 8 dígitos');
                     } else {
@@ -359,6 +372,7 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
+                
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -367,6 +381,7 @@ export const AddClientes = (props) => {
                 className="inputCustom"
                 placeholder="Telefono"
                 id="phone"
+                value={Telefono}
               />
               {<p className="error">{texto}</p>}
             </div>
@@ -392,6 +407,7 @@ export const AddClientes = (props) => {
                     }
                   }
                 }}
+                onChange={e => setcorreoelec(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorcorreoelec}
                 type="phone"
                 name=""
@@ -400,6 +416,7 @@ export const AddClientes = (props) => {
                 className="inputCustom"
                 placeholder="Correo Electronico"
                 id="correo"
+                value={correoelec}
               />
               {<p className="error">{advertencia}</p>}
             </div>

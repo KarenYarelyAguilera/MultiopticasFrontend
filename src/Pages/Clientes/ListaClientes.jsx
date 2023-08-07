@@ -24,8 +24,10 @@ import axios from 'axios';
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaClientes = (props) => {
-  const [cambio, setCambio] = useState(0);
+export const ListaClientes = ({props,data,update}) => {
+  const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
+
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -33,16 +35,13 @@ export const ListaClientes = (props) => {
     'http://localhost:3000/api/clientes/actualizar';
 
   const urlDelCliente = "http://localhost:3000/api/clientes/eliminar"
-
+  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
   
-
-
   useEffect(() => {
-   axios.get(urlClientes).then(response => {
-      setTableData(response.data)
-    }).catch(error => console.log(error))
+    axios.get(urlClientes).then(response=>setTableData(response.data))
   }, [cambio]);
 
   //IMPRIMIR PDF
@@ -108,32 +107,23 @@ export const ListaClientes = (props) => {
       width: 260,
 
       renderCell: params => (
-        <div className="contActions1">
+        <div className="contActions">
           <Button
-            className="btnEdit"
-           // onClick={() => handleUpdt(params.row.idCliente)}
-            
-          >
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.idCliente)}
-          >
+           onClick={() => handleDel(params.row.idCliente)}>
             <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
-
-          <Button
-            className="btnAddExpe"
-            onClick={() => handleNewExpediente(params.row)}
-          >
-            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
+      
     },
   ];
 
+  //FUNCION DE ELIMINAR 
   function handleDel(id) {
     swal({
       content: (
@@ -172,7 +162,33 @@ export const ListaClientes = (props) => {
 
     });
 
-  }
+  };
+
+  //FUNCION DE ACTUALIZAR DATOS 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este cliente: {id.nombre}?
+        </div>
+      ),
+    }).then((op)  => {
+        switch (op) {
+          case 'update':
+            data(id)
+            update(true)
+            navegate('/menuClientes/nuevoCliente')
+            break;
+            default:
+            break;
+        }
+      });
+  };
+
   
   const handleBack = () => {
     navegate('/menuClientes');
