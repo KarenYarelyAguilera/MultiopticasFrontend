@@ -24,10 +24,8 @@ import axios from 'axios';
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaClientes = ({props,data,update}) => {
-  const [cambio, setCambio] = useState(0)
-  const [marcah, setMarcah] = useState()
-
+export const ListaClientes = (props) => {
+  const [cambio, setCambio] = useState(0);
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -35,13 +33,16 @@ export const ListaClientes = ({props,data,update}) => {
     'http://localhost:3000/api/clientes/actualizar';
 
   const urlDelCliente = "http://localhost:3000/api/clientes/eliminar"
-  
+
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  
+
+
   useEffect(() => {
-    axios.get(urlClientes).then(response=>setTableData(response.data))
+    axios.get(urlClientes).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
   }, [cambio]);
 
   //IMPRIMIR PDF
@@ -49,19 +50,19 @@ export const ListaClientes = ({props,data,update}) => {
     const formatDataForPDF = () => {
       const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'Identidad':row.idCliente,
-                                'Nombre':row.nombre, 
-                                'Apellido':row.apellido,
-                                'Genero':row.genero,
-                                'Fecha Nacimiento': fechaNacimiento,
-                                'Direccion':row.direccion,
-                                'Telefono':row.Telefono,
-                                'Email':row.Email,
-                              };
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'Identidad': row.idCliente,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
+          'Genero': row.genero,
+          'Fecha Nacimiento': fechaNacimiento,
+          'Direccion': row.direccion,
+          'Telefono': row.Telefono,
+          'Email': row.Email,
+        };
       });
       return formattedData;
     };
@@ -71,12 +72,12 @@ export const ListaClientes = ({props,data,update}) => {
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);
   };
-    
-    /////////
+
+  /////////
 
   const navegate = useNavigate();
 
-  
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -86,10 +87,34 @@ export const ListaClientes = ({props,data,update}) => {
   );
 
   const handleNewExpediente = (id) => {
-    props.datosclientes({idCliente:id.idCliente})
+    props.datosclientes({ idCliente: id.idCliente })
     navegate('/menuClientes/DatosExpediente');
   }
-  
+
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este cliente: {id.nombre}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+        case 'update':
+          props.data(id)
+          props.update(true)
+          navegate('/menuClientes/nuevoCliente')
+          break;
+        default:
+          break;
+      }
+    });
+  };
+
 
   const columns = [
     { field: 'idCliente', headerName: 'ID', width: 165 },
@@ -108,9 +133,10 @@ export const ListaClientes = ({props,data,update}) => {
 
       renderCell: params => (
         <div className="contActions1">
-           <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
+
           <Button
             className="btnDelete"
             onClick={() => handleDel(params.row.idCliente)}
@@ -126,11 +152,9 @@ export const ListaClientes = ({props,data,update}) => {
           </Button>
         </div>
       ),
-      
     },
   ];
 
-  //FUNCION DE ELIMINAR 
   function handleDel(id) {
     swal({
       content: (
@@ -142,7 +166,7 @@ export const ListaClientes = ({props,data,update}) => {
         </div>
       ),
       buttons: ["Eliminar", "Cancelar"]
-    }).then(async (op)=> {
+    }).then(async (op) => {
 
       switch (op) {
         case null:
@@ -153,12 +177,12 @@ export const ListaClientes = ({props,data,update}) => {
 
           console.log(data);
 
-         await axios.delete(urlDelCliente,{data}).then(response=>{
-            swal("Cliente Eliminado correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
+          await axios.delete(urlDelCliente, { data }).then(response => {
+            swal("Cliente Eliminado correctamente", "", "success")
+            setCambio(cambio + 1)
+          }).catch(error => {
             console.log(error);
-            swal("Error al eliminar el cliente","","error")
+            swal("Error al eliminar el cliente", "", "error")
           })
 
           break;
@@ -169,34 +193,8 @@ export const ListaClientes = ({props,data,update}) => {
 
     });
 
-  };
+  }
 
-  //FUNCION DE ACTUALIZAR DATOS 
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar este cliente: {id.nombre}?
-        </div>
-      ),
-    }).then((op)  => {
-        switch (op) {
-          case 'update':
-            data(id)
-            update(true)
-            navegate('/menuClientes/nuevoCliente')
-            break;
-            default:
-            break;
-        }
-      });
-  };
-
-  
   const handleBack = () => {
     navegate('/menuClientes');
   };
@@ -240,7 +238,7 @@ export const ListaClientes = ({props,data,update}) => {
               NUEVO
             </Button>
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
