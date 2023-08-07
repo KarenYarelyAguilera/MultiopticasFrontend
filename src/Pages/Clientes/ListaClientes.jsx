@@ -107,15 +107,22 @@ export const ListaClientes = ({props,data,update}) => {
       width: 260,
 
       renderCell: params => (
-        <div className="contActions">
-          <Button
-            className="btnEdit" onClick={() => handleUpdt(params.row)}>
+        <div className="contActions1">
+           <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.idCliente)}>
+            onClick={() => handleDel(params.row.idCliente)}
+          >
             <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+
+          <Button
+            className="btnAddExpe"
+            onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
           </Button>
         </div>
       ),
