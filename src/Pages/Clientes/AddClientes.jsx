@@ -62,6 +62,9 @@ export const AddClientes = (props) => {
 
   const navegate = useNavigate();
 
+  const [Empleado, setEmpleado] = useState([])
+
+
   //ACTUALIZAR
   const actualizarCliente = async () => {
 
