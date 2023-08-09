@@ -10,10 +10,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import { sendData } from '../../scripts/sendData';
 import swal from '@sweetalert/with-react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 export const ConfigRol = props => {
   const urlRoles =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=roles';
+
+  const urlPermisos = "http://localhost:3000/api/permisos/Rol";
 
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
@@ -30,6 +33,7 @@ export const ConfigRol = props => {
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosdel';
 
   const [roles, setRoles] = useState([]);
+  const [permisos, setPermisos] = useState([]);
   const [accion, setAccion] = useState(1);
 
   //Leer
@@ -203,7 +207,7 @@ export const ConfigRol = props => {
     fetch(urlRoles)
       .then(response => response.json())
       .then(data => setRoles(data));
-
+      
     //Leer
     setRecordatoriosLeer(false);
     setClientesLeer(false);
@@ -509,30 +513,23 @@ export const ConfigRol = props => {
             <TextCustom text="Modulos" />
 
             <div className="inputCheck">
-              <input
-                type="checkbox"
-                id="accion"
-                onClick={() =>
-                  setAccion(parseInt(document.getElementById('accion').value))
-                }
-                // disabled={usuarioLeer || !usuarioLeer}
-              />
               <TextCustom text="Leer" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Insertar" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Editar" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Eliminar" />
+            </div>
+
+            <div className="inputCheck">
+              <TextCustom text="Acción" />
             </div>
           </div>
           <div className="InputConfig">
@@ -889,6 +886,35 @@ export const ConfigRol = props => {
                   checked={configuracionEliminar}
                   onChange={handleConfigEliminarChange}
                 ></IOSSwitch>
+              </div>
+              <div className="contSwitchControl">
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
               </div>
             </div>
           </div>

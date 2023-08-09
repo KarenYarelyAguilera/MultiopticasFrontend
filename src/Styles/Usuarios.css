@@ -1064,9 +1064,6 @@ button {
 
 .inputCheck {
   width: 100%;
-  display: grid;
-  grid-template-columns: 15% 30%;
-  grid-gap: 5px;
 }
 
 .sectionRol {
@@ -1082,9 +1079,8 @@ button {
   width: 96%;
   height: auto;
   padding-left: 65px;
-
   display: grid;
-  grid-template-columns: 24% 8% 10% 10% 8%;
+  grid-template-columns: 25% 5% 6% 6% 6% 8%;
   text-transform: uppercase;
   font-weight: bold;
   padding-bottom: 15px;
@@ -1095,22 +1091,30 @@ button {
   width: 96%;
   height: auto;
   display: grid;
-  grid-template-columns: 25% 50%;
+  grid-template-columns: 25% 32%;
   padding-left: 65px;
 }
 
 .contSelect {
-  width: 75%;
+  width: 90%;
   height: auto;
 
   display: grid;
-  grid-template-columns: repeat(4, 4fr);
+  grid-template-columns: repeat(5, 5fr);
 }
 
 .contSwitchControl {
-  width: 100%;
+  width: 0;
   height: auto;
   display: grid;
+}
+
+.openModal{
+  width: 20px !important;
+  height: 30px !important;
+  border-radius: 25px !important;
+  background-color:tomato !important;
+  font-size: 20px !important;
 }
 
 .conTitleRoles {
