@@ -1593,3 +1593,144 @@ button {
   font-size: 15px;
 }
 /*RECORDATORIO*/
+
+/* BACKUP */
+.ContBackup {
+  position: relative;
+  top: 50px;
+  left: 355px;
+  width: calc(92% - 250px);
+  height: auto;
+
+  display: grid;
+  grid-gap: 80px;
+
+  transition: 0.5s ease;
+}
+
+.ContBackup .btnBack {
+  position: absolute;
+  background-color: #316ee6;
+  border-radius: 50px;
+}
+
+.ContBackup .btnBack:hover{
+  background-color: #316ee6;
+}
+
+.ContBackup .btnBack .iconBack {
+  font-size: 50px;
+  color: white;
+}
+
+.BarraLateral.close ~ .ContBackup {
+  left: 145px;
+  width: calc(90% - 20px);
+}
+
+.ContBackup .titleBackup {
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  justify-items: center;
+}
+
+.ContBackup .titleBackup h2 {
+  font-size: 45px;
+  color: black;
+}
+
+.infoConfigBackup {
+  width: 98%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 30px;
+  align-items: center;
+}
+
+.infoConfigBackup .panelConfigBackup {
+  width: 80%;
+  margin-left: 20px;
+  height: auto;
+  padding: 40px;
+  display: grid;
+  grid-gap: 30px;
+  align-items: center;
+  border-radius: 25px;
+  box-shadow: 1px 1px 10px 1px rgba(132, 132, 132, 0.75);
+}
+
+.infoConfigBackup .panelConfigRestore {
+  width: 85%;
+  margin-left: 20px;
+  height: auto;
+  padding: 40px;
+  display: grid;
+  grid-gap: 30px;
+  align-items: center;
+  border-radius: 25px;
+  box-shadow: 1px 1px 10px 1px rgba(132, 132, 132, 0.75);
+}
+
+.sectFilesUpl{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 75% 25%;
+}
+
+.infoConfigBackup .panelConfigRestore .fileCustom{
+  width: 80%;
+  display: flex;
+  cursor: pointer;
+  height: auto;
+  padding: 13px;
+  align-items: center;
+  border: 3px;
+  border-radius: 15px;
+  border-style: dashed;
+  border-color: #316ee6;
+  font-size: 20px;
+  font-weight: bold;
+  color: #316ee6;
+}
+
+.infoConfigBackup .panelConfigRestore .fileCustom + [type='file']{
+  display:none;
+}
+
+.customFileUpload{
+  font-size: 35px !important;
+  color: #316ee6;
+}
+
+.infoConfigBackup .btnCreateBackUp {
+  width: 40%;
+  height: auto;
+  background-color: #069124;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 15px;
+  cursor: pointer;
+
+  border: none;
+  border-radius: 20px;
+}
+
+.infoConfigBackup .btnRestore {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  background-color: #316ee6;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 15px;
+
+  border: none;
+  border-radius: 20px;
+}
+/* BACKUP */
