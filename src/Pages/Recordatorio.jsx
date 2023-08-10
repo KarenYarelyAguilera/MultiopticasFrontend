@@ -1,4 +1,6 @@
 // React, { useCallback} from 'react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -9,6 +11,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from "date-fns/locale/es";
 import { TextCustom } from '../Components/TextCustom';
+import { generatePDF } from '../Components/generatePDF';
+
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -77,9 +82,11 @@ export const Recordatorio = (props) => {
 
   const navegate = useNavigate();
 
+
   const urlGetCitas = 'http://localhost:3000/api/recordatorios';
   const urlGetCita = 'http://localhost:3000/api/recordatorio';
   const urlDelCita = 'http://localhost:3000/api/eliminarCita'
+  const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
@@ -110,15 +117,30 @@ export const Recordatorio = (props) => {
     }, []);
    */
 
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fecha);
+        const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID': row.IdRecordatorio,
+          'Cliente': row.IdCliente,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
+          'Nota': row.Nota,
+          'Fecha': fecha,
+        };
+      });
+      return formattedData;
+    };
 
+    const urlPDF = 'Reporte_Recordatorio.pdf';
+    const subTitulo = "LISTA DE RECORDATORIO"
 
-
-
-
-
-
-
-
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
 
 
@@ -206,8 +228,15 @@ export const Recordatorio = (props) => {
           };
           console.log(data);
 
+
+          let dataUsuario = {
+            Id: props.idUsuario
+          }
+       
+
           await axios.delete(urlDelCita, { data }).then(response => {
             swal('Cita eliminada correctamente', '', 'success');
+            axios.post(urlBitacoraDelCita, dataUsuario)
             setCambio(cambio + 1);
           })
             .catch(error => {
@@ -310,7 +339,10 @@ export const Recordatorio = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
+
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

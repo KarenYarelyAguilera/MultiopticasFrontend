@@ -1,11 +1,13 @@
 import { DataGrid,esES } from '@mui/x-data-grid';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
-
+import { generatePDF } from '../../Components/generatePDF';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
@@ -40,6 +42,28 @@ export const ListaCompra = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaCompra);
+        const fechaCompra = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.IdCompra,
+          'Fecha':fechaCompra,
+          'Total compra': row.totalCompra,
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_Compras.pdf';
+    const subTitulo = "LISTA DE COMPRAS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
+
 
   const columns = [
     { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
@@ -116,7 +140,9 @@ export const ListaCompra = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva Compra
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

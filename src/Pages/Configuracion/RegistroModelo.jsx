@@ -25,7 +25,7 @@ export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
 
-  const [modelo, setmodelo] = React.useState(props.data.detalle ||'');
+  const [modelo, setmodelo] = React.useState(props.data.Modelo ||'');
   const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
 
@@ -102,7 +102,20 @@ const actualizarModelo = async () => {
 
   //BOTON DE RETROCESO
   const handleBack = () => {
-    navegate('/config/lista');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de modelo ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/config');
+      } else {
+      }
+    });
   };
 
   return (

@@ -1,7 +1,9 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
-
+import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
@@ -14,9 +16,11 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import axios from 'axios';
 
 export const InventarioDisponible = (props) => {
 
@@ -27,9 +31,8 @@ export const InventarioDisponible = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlInventario)
-      .then(response => response.json())
-      .then(data => setTableData(data));
+    axios.get(urlInventario).then((response)=>setTableData(response.data))
+    console.log(tableData);
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -47,23 +50,48 @@ export const InventarioDisponible = (props) => {
     ),
   );
 
-  
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaYHora);
+        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.IdInventario,
+          'ID Producto':row.idProducto, 
+          'Marca':row.descripcion,
+          'Producto':row.detalle,
+          'Cantidad':row.cantidad,
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_InventarioDisponible.pdf';
+    const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
   const columns = [
-    { field: 'IdInventario', headerName: 'IdInventario', width: 400 },
+    { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
+    { field: 'IdProducto', headerName: 'IdProducto', width: 100 },
     { field: 'descripcion', headerName: 'Marca', width: 400 },
     { field: 'detalle', headerName: 'Producto', width: 400 },
     { field: 'cantidad', headerName: 'Cantidad', width: 400 },
+    
   
     
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 200,
+      width: 300,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
+            title='Editar inventario'
             onClick={() => swal("No es posible realizar esta accion","","error")}
           >
             <EditIcon></EditIcon>
@@ -74,10 +102,21 @@ export const InventarioDisponible = (props) => {
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
+          <Button
+            className="btnImprimirExp"
+            onClick={() => ListaMovimiento(params.row) }
+          >
+            <Visibility></Visibility>
+          </Button>
         </div>
       ),
     },
   ];
+
+  const ListaMovimiento = (param)=>{
+    props.data(param)
+    navegate('/menuInventario/listaInventario')
+  }
 
   const handleBack = () => {
     navegate('/inventario');
@@ -115,13 +154,16 @@ export const InventarioDisponible = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('');
+                navegate('/menuInventario/RegistroProducto2');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Inventario
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}
+
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
