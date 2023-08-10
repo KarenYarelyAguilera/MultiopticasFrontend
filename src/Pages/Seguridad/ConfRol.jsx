@@ -16,6 +16,8 @@ export const ConfigRol = props => {
   const urlRoles =
     'http://localhost:3000/api/Rol';
 
+  const urlPermisos = "http://localhost:3000/api/permisos/Rol";
+
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
   const urlNRol =
@@ -32,6 +34,7 @@ export const ConfigRol = props => {
     const urlPermisos = "http://localhost:3000/api/permisosRol"
 
   const [roles, setRoles] = useState([]);
+  const [permisos, setPermisos] = useState([]);
   const [accion, setAccion] = useState(1);
 
   //Leer
@@ -244,6 +247,7 @@ export const ConfigRol = props => {
     setInventarioLeer(response.data[1].PermConsul==="s"?true:false);
     setVentasLeer(response.data[7].PermConsul==="s"?true:false);
     setSeguridadLeer(response.data[5].PermConsul==="s"?true:false);
+
 
     //Editar
     setRecordatoriosEditar(response.data[3].PermUpd==="s"?true:false);
@@ -541,22 +545,24 @@ export const ConfigRol = props => {
                 onClick={(e) =>console.log(e)}
                 // disabled={usuarioLeer || !usuarioLeer}
               />
+
               <TextCustom text="Leer" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Insertar" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Editar" />
             </div>
 
             <div className="inputCheck">
-              <input type="checkbox" name="" id="" />
               <TextCustom text="Eliminar" />
+            </div>
+
+            <div className="inputCheck">
+              <TextCustom text="Acción" />
             </div>
           </div>
           <div className="InputConfig">
@@ -873,6 +879,35 @@ export const ConfigRol = props => {
                   checked={configuracionEliminar}
                   onChange={handleConfigEliminarChange}
                 ></IOSSwitch>
+              </div>
+              <div className="contSwitchControl">
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
+
+              <Button className="openModal" onClick={handleNuevoRol}>
+                <AddIcon style={{color:"white"}}/>
+              </Button>
               </div>
             </div>
           </div>
