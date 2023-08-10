@@ -17,93 +17,143 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
+import axios from 'axios';
 
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
+ //API DE GENERO
+ const urlInsetGenero = 'http://localhost:3000/api/Genero/insertar';
+ const urlUpdateGenero = 'http://localhost:3000/api/Genero/actualizar';
+ 
 
-export const RegistroGenero = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
-  // const [activeStep, setActiveStep] = React.useState(0);
-
-  // const handleNext = () => {
-  //   setActiveStep(prevActiveStep => prevActiveStep + 1);
-  // };
-  
-
-
+export const RegistroGenero = (props) => {
 
   const navegate = useNavigate();
 
-  const [marca, setmarca] = React.useState('');
+  // /props.data.descripcion ||'' ) <= para jalar datos cuando se actualiza
+  const [genero, setgenero] = React.useState(props.data.descripcion ||'');
   const [leyenda, setleyenda] = React.useState('');
-  const [errorMarca, setErrorMarca] = React.useState(false);
+  const [errorgenero, seterrorgenero] = React.useState(false);
 
-  const [nombremarca, setnombremarca] = React.useState('');
-  const [aviso, setaviso] = React.useState('');
-  const [errornombremarca, setErrornombremarca] = React.useState(false);
 
-  const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+  //INSERTAR DATOS 
+  const handleNext = async () => {
+    let genero = document.getElementById("Genero").value;
+
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
+      descripcion:genero 
     }
     
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
-      });
+    if (await axios.post(urlInsetGenero, data)) {
+      swal('Género creado exitosamente.','', 'success');
+      navegate('/config/ListaGenero');
     }
   };
 
+  //ACTUALIZAR
+const actualizarGenero = async () => {
+
+  let genero = document.getElementById("Genero").value;
+
+  const data = {
+
+    descripcion:genero,
+    IdGenero: props.data.IdGenero, //El dato de IdProducto se obtiene de Producto seleccionado.
+  }
+
+  axios.put(urlUpdateGenero, data).then(() => {
+    swal("Género Actualizado Correctamente", "", "success").then(() => {
+      navegate('/config/ListaGenero');
+    })
+  }).catch(error => {
+    console.log(error);
+    swal('Error al Actualizar Género , por favor revise todos los campos.', '', 'error')
+    // axios.post(urlErrorInsertBitacora, dataB)
+  })
+  
+};
+
+//BOTON DE RETROCESO 
   const handleBack = () => {
     navegate('/config/ListaGenero');
   };
 
   return (
     <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}>
-        <ArrowBackIcon className="iconBack" />
+      <Button className="btnBack" 
+      onClick={handleBack}>
+        <ArrowBackIcon 
+        className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Registro De Genero</h2>
+      {props.actualizar ? <h2>Actualizacion de Género</h2> : <h2>Registro de Género</h2>}
         <h3>
-          Complete todos los puntos para poder registrar el genero.
+          Complete todos los puntos para poder registrar el Género.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             
-
             <div className="contInput">
-
-              <TextCustom text="Genero" className="titleInput" />
-
+              <TextCustom text="Género"/>
               <input
+
+                onKeyDown={e => {
+                  setgenero(e.target.value);
+                  if (genero === '') {
+                    seterrorgenero(true);
+                    setleyenda('Los campos no deben estar vacíos');
+                  } else {
+                    seterrorgenero(false);
+                    var regex = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/;
+                    if (!regex.test(genero)) {
+                      seterrorgenero(true);
+                      setleyenda('Solo debe ingresar letras y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(genero)) {
+                      seterrorgenero(true);
+                      setleyenda('No se permiten letras consecutivas repetidas');
+                    } else {
+                      seterrorgenero(false);
+                      setleyenda('');
+                    }
+                  }
+                }}
                
+                onChange={e => setgenero(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorgenero}
+
                 type="text"
+                helperText={leyenda}
                 name=""
-                maxLength={40}
                 className="inputCustom"
-                placeholder="Genero"
+                maxLength={40}
+                placeholder="Género"
                 id="Genero"
+                value={genero} 
               />
-               {/* <p class="error">{aviso}</p> */}
+               <p class="error">{leyenda}</p>
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={()=> 
+                  {
+                    var genero = document.getElementById("Genero").value;
+
+                    if (genero ==="")
+                    {
+                      swal ("No deje campos vacíos.", "", "error");
+                    } else 
+                    {
+                      props.actualizar ? actualizarGenero() : handleNext();
+
+                    }
+                  }
+                
+                }
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

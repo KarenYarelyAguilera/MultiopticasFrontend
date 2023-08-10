@@ -1,3 +1,5 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect, useContext } from 'react';
 
@@ -17,6 +19,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { generatePDF } from '../../Components/generatePDF';
 
 
 export const ListUsuarios = ({props,data,update,}) => {
@@ -41,6 +44,36 @@ export const ListUsuarios = ({props,data,update,}) => {
   useEffect(() => {
     axios.get(urlUsers).then(response=>setTableData(response.data))
   }, [cambio]);
+
+
+    //IMPRIMIR PDF
+    const handleGenerarReporte = () => {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+                                return {
+                                  'ID':row.id_Usuario,
+                                  'Usuario':row.Usuario, 
+                                  'Nombre Usuario':row.Nombre_Usuario,
+                                  'Rol':row.rol,
+                                  'Estado': row.Estado_Usuario,
+                                  'Correo electronico':row.Correo_Electronico,
+                                  'Contraseña':row.Contrasenia,
+                                };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Reporte_Usuarios.pdf';
+      const subTitulo = "LISTA DE USUARIOS"
+  
+      generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    };
+      
+      /////////
 
   const navegate = useNavigate();
 
@@ -210,7 +243,10 @@ export const ListUsuarios = ({props,data,update,}) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}
+            >
+           
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

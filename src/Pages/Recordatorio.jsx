@@ -162,7 +162,7 @@ export const Recordatorio = (props) => {
     { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
     { field: 'Nota', headerName: 'Nota', width: 290, headerAlign: 'center' },
-    { field: 'fecha', headerName: 'Fecha', width: 90, headerAlign: 'center' },
+    { field: 'fecha', headerName: 'Fecha', width: 200, headerAlign: 'center' },
 
 
     {
@@ -216,7 +216,6 @@ export const Recordatorio = (props) => {
             });
 
           break;
-
         default:
           break;
       }

@@ -1,9 +1,16 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,18 +20,21 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+
 import axios from 'axios';
 
 import '../../Styles/Usuarios.css';
-import { TextCustom } from '../../Components/TextCustom';
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaDepartamentos = () => {
+export const ListaDepartamentos = ({props,data,update}) => {
 
-  const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
+  const [marcah, setMarcah] = useState()
 
 
-  const urlDepartamento = 'http://localhost:3000/api/Departamentos';
+  const urlDepartamento = 'http://localhost:3000/api/departamentos';
+  const urlDeleteDepartamento = 'http://localhost:3000/api/departamento/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +42,29 @@ export const ListaDepartamentos = () => {
   useEffect(() => {
     fetch(urlDepartamento).then(response => response.json()).then(data => setTableData(data));
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdDepartamento,
+                                'Departamento':row.departamento, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Departamentos.pdf';
+    const subTitulo = "LISTA DE DEPARTAMENTOS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
+
 
   const navegate = useNavigate();
 
@@ -47,110 +80,90 @@ export const ListaDepartamentos = () => {
     { field: 'IdDepartamento', headerName: 'ID Departamento', width: 600 },
     { field: 'departamento', headerName: 'Departamento', width: 600 },
 
-    // {
-    //   field: 'borrar',
-    //   headerName: 'Acciones',
-    //   width: 200,
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190,
 
-    //   renderCell: params => (
-    //     <div className="contActions">
-    //       <Button
-    //         className="btnEdit"
-    //         onClick={() => handleUpdt(params.row.IdDepartamento)}
-    //       >
-    //         <EditIcon></EditIcon>
-    //       </Button>
-    //       <Button
-    //         className="btnDelete"
-    //        onClick={() => handleDel(params.row.IdDepartamento)}
-    //       >
-    //         <DeleteForeverIcon></DeleteForeverIcon>
-    //       </Button>
-    //     </div>
-    //   ),
-    // },
+      renderCell: params => (
+        <div className="contActions">
+          <Button
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
+            <EditIcon></EditIcon>
+          </Button>
+          <Button
+            className="btnDelete"
+           onClick={() => handleDel(params.row.IdDepartamento)}>
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+        </div>
+      ),
+    },
   ];
 
-  // function handleUpdt(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Datos a actualizar</div>
-  //         <div className="contEditModal">
-  //           <div className="contInput">
-  //             <TextCustom text="Marca" className="titleInput" />
-  //             <input
-  //               type="text"
-  //               id="IdDepartamento"
-  //               className="inputCustom"
-  //             />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Cancelar","Actualizar"]
-  //   }).then((op) => {
-
-  //     switch (op) {
-  //       case true:
-  //         let data = {
-  //           IdMarca: id,
-  //           descripcion: document.getElementById("marca").value,
-  //         };
+  //FUNCION DE ELIMINAR 
+function handleDel(id) {
+  swal({
+    content: (
+      <div>
+        <div className="logoModal">¿Desea Eliminar este Departamento?</div>
+        <div className="contEditModal"> 
+        </div>
+      </div>
+    ),
     
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlUpdateMarca, data)) {
-  //           swal(<h1>Marca Actualizada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
+    buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+    },
+  }).then(async (op) => {
 
-  // }
+    switch (op) {
+      case null:
+        let data = {
+          IdDepartamento:id
+        }; 
+        console.log(data);
 
-  // function handleDel(id) {
-  //   swal({
-  //     content: (
-  //       <div>
-  //         <div className="logoModal">Desea Elimiar este Metodo de Pago?</div>
-  //         <div className="contEditModal">
-            
-  //         </div>
-  //       </div>
-  //     ),
-  //     buttons: ["Eliminar","Cancelar"]
-  //   }).then((op) => {
+        await axios .delete(urlDeleteDepartamento,{data}) .then(response => {
+            swal('Departamento eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal('Error al eliminar el departamneto', '', 'error');
+          });
 
-  //     switch (op) {
-  //       case null:
-  //         let data = {
-  //           IdMarca: id
-  //         };
-    
-  //         console.log(data);
-    
-    
-  //         if (sendData(urlDelMarca, data)) {
-  //           swal(<h1>Marca Eliminada Correctamente</h1>);
-  //           setcambio(cambio+1)
-  //         }
-  //         break;
-      
-  //       default:
-  //         break;
-  //     }
-      
-  //   });
-
-  // }
-
+        break;
+        default:
+        break;
+    }
+  });
+};
+  
+  //FUNCION DE ACTUALIZAR DATOS 
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este departamento: {id.departamento}?
+        </div>
+      ),
+    }).then((op)  => {
+        switch (op) {
+          case 'update':
+            data(id)
+            update(true)
+            navegate('/config/RegistroDepartamento')
+            break;
+            default:
+            break;
+        }
+      });
+  };
 
 
   const handleBack = () => {
@@ -186,7 +199,7 @@ export const ListaDepartamentos = () => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
-            {/* <Button
+            <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/RegistroDepartamento');
@@ -194,8 +207,11 @@ export const ListaDepartamentos = () => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Registro
-            </Button> */}
-            <Button className="btnReport">
+            </Button>
+
+            <Button className="btnReport"
+            onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

@@ -63,7 +63,7 @@ const navegate = useNavigate();
     
     await axios.post(urlNuevoDiagnostico,data).then(response=>{
       swal('Diagnostico creado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/DatosExpediente');
+        navegate('/menuClientes/ListaExpedientes');
       });
  
     }).catch(error=>{
@@ -75,7 +75,19 @@ const navegate = useNavigate();
   };
 
   const handleBack = () => {
-    navegate('/menuClientes/DatosExpediente');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de un nuevo Historial ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        navegate('/menuClientes/DatosExpediente');
+      } else {
+      }
+    });
+   
   };
 
 

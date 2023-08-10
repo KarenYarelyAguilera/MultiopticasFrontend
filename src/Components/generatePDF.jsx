@@ -60,7 +60,7 @@ export const generatePDF = (formatDataForPDF, urlPDF, subTitulo) => {
     
     documento.setFont('helvetica', "bold");
     documento.setFontSize(20);
-    documento.text("Multi Opticas", 125, 20);
+    documento.text("MultiOpticas", 125, 20);
     documento.setFontSize(10);
     documento.setFont('helvetica', "bold");
     documento.text(`${subTitulo}`, 125, 30);

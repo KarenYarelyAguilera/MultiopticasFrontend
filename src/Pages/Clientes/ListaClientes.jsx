@@ -1,10 +1,13 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,10 +21,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
-
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
-
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -35,50 +36,48 @@ export const ListaClientes = (props) => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
 
 
   useEffect(() => {
-   axios.get(urlClientes).then(response => {
+    axios.get(urlClientes).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
 
-
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'Identidad':row.idCliente,
-                                'Nombre':row.nombre, 
-                                'Apellido':row.apellido,
-                                'Genero':row.genero,
-                                'Fecha Nacimiento': fechaNacimiento,
-                                'Direccion':row.direccion,
-                                'Telefono':row.Telefono,
-                                'Email':row.Email,
-                              };
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'Identidad': row.idCliente,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
+          'Genero': row.genero,
+          'Fecha Nacimiento': fechaNacimiento,
+          'Direccion': row.direccion,
+          'Telefono': row.Telefono,
+          'Email': row.Email,
+        };
       });
       return formattedData;
     };
 
-    const urlPDF = 'Report_Clientes.pdf';
+    const urlPDF = 'Reporte_Clientes.pdf';
     const subTitulo = "LISTA DE CLIENTES"
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo);
   };
-    
-    /////////
 
+  /////////
 
   const navegate = useNavigate();
 
-  
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -88,17 +87,41 @@ export const ListaClientes = (props) => {
   );
 
   const handleNewExpediente = (id) => {
-    props.datosclientes({idCliente:id.idCliente})
+    props.datosclientes({ idCliente: id.idCliente })
     navegate('/menuClientes/DatosExpediente');
   }
-  
+
+  function handleUpdt(id) {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar este cliente: {id.nombre}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+        case 'update':
+          props.data(id)
+          props.update(true)
+          navegate('/menuClientes/nuevoCliente')
+          break;
+        default:
+          break;
+      }
+    });
+  };
+
 
   const columns = [
     { field: 'idCliente', headerName: 'ID', width: 165 },
     { field: 'nombre', headerName: 'Nombre', width: 165 },
     { field: 'apellido', headerName: 'Apellido', width: 165 },
     { field: 'genero', headerName: 'Genero', width: 165 },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 165 },
+    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 },
     { field: 'direccion', headerName: 'Direccion', width: 165 },
     { field: 'Telefono', headerName: 'Telefono', width: 165 },
     { field: 'Email', headerName: 'Correo Electronico', width: 165 },
@@ -110,9 +133,10 @@ export const ListaClientes = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-           <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
+
           <Button
             className="btnDelete"
             onClick={() => handleDel(params.row.idCliente)}
@@ -131,7 +155,6 @@ export const ListaClientes = (props) => {
     },
   ];
 
-  //ELIMINAR
   function handleDel(id) {
     swal({
       content: (
@@ -143,7 +166,7 @@ export const ListaClientes = (props) => {
         </div>
       ),
       buttons: ["Eliminar", "Cancelar"]
-    }).then(async (op)=> {
+    }).then(async (op) => {
 
       switch (op) {
         case null:
@@ -154,12 +177,12 @@ export const ListaClientes = (props) => {
 
           console.log(data);
 
-         await axios.delete(urlDelCliente,{data}).then(response=>{
-            swal("Cliente Eliminado correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
+          await axios.delete(urlDelCliente, { data }).then(response => {
+            swal("Cliente Eliminado correctamente", "", "success")
+            setCambio(cambio + 1)
+          }).catch(error => {
             console.log(error);
-            swal("Error al eliminar el cliente","","error")
+            swal("Error al eliminar el cliente", "", "error")
           })
 
           break;
@@ -172,32 +195,6 @@ export const ListaClientes = (props) => {
 
   }
 
-  //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el Cliente: {id.nombre} ?
-        </div>
-      ),
-    }).then(
-      op => {
-        switch (op) {
-          case 'update':
-            props.data(id)
-            props.update(true)
-            navegate('/menuClientes/nuevoCliente')
-            break;
-          default:
-            break;
-        }
-      });
-  };
-  
   const handleBack = () => {
     navegate('/menuClientes');
   };
@@ -238,9 +235,11 @@ export const ListaClientes = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Cliente
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

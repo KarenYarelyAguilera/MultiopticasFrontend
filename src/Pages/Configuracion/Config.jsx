@@ -11,7 +11,7 @@ export const Configuracion = ()=>{
         //   vinculo: '/config/roles',
         // },
         {
-          titulo:'Lista de Permisos',
+          titulo:'Permisos',
           imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
           vinculo:'/config/verpermisos',
         },
@@ -21,7 +21,7 @@ export const Configuracion = ()=>{
         //   vinculo: "/config/RegistroSucursal", 
         // },
         {
-          titulo: "Lista de Sucursal",
+          titulo: "Sucursales",
           imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
           vinculo: "/config/listaSucursal", 
         },
@@ -42,7 +42,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
-          titulo: 'Lista de Modelo',
+          titulo: 'Modelos',
           vinculo: '/config/lista',
         },
         // {
@@ -52,7 +52,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
-          titulo: 'Lista de Marcas',
+          titulo: 'Marcas',
           vinculo: '/config/ListaMarcas',
         },
         // {
@@ -62,7 +62,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/025/143/512/non_2x/invoice-icon-design-free-vector.jpg',
-          titulo: 'Lista Metodos De Pago',
+          titulo: 'Metodos De Pago',
           vinculo: '/config/ListaMetodosDePago',
         },
         // {
@@ -72,7 +72,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/014/889/899/non_2x/map-of-an-imaginary-city-with-point-on-the-map-with-skyscrapers-and-park-illustration-vector.jpg',
-          titulo: 'Lista De Departamentos',
+          titulo: 'Departamentos',
           vinculo: '/config/ListaDepartamentos',
         },
         // {
@@ -82,7 +82,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/000/144/534/non_2x/free-flat-line-marketing-vector-icons.jpg',
-          titulo: 'Lista De Ciudad',
+          titulo: 'Ciudades',
           vinculo: '/config/ListaCiudad',
         },
         // {
@@ -92,7 +92,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/000/144/399/non_2x/dotted-world-map-vector.jpg',
-          titulo: 'Lista De Paises',
+          titulo: 'Paises',
           vinculo: '/config/ListaPais',
         },
         // {
@@ -102,7 +102,7 @@ export const Configuracion = ()=>{
         // },
         {
           imagen: 'https://static.vecteezy.com/system/resources/previews/007/737/986/non_2x/male-and-female-gender-icon-symbol-free-vector.jpg',
-          titulo: 'Lista De Genero',
+          titulo: 'Genero',
           vinculo: '/config/ListaGenero',
         },
       ];
