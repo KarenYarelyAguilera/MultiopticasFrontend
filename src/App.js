@@ -121,6 +121,7 @@ function App() {
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
   const [data, setData] = useState({});
+  const [dataVenta,setDataVenta]=useState({})
   const [actualizar, setActualizar] = useState(false);
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -135,6 +136,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
   const registroclientes  = reg => setregistros(reg);
+  const dVenta = venta=>setDataVenta(venta)
 
 
 //hook para manipular el perfil y sus variables
@@ -1499,7 +1501,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaVenta />
+                  <NuevaVenta venta={dVenta} />
                 </div>
              // </ProtectedRoute>
             }
@@ -1559,7 +1561,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <DetallesDeVenta />
+                  <DetallesDeVenta venta={dataVenta} idUsuario={idUsuario}/>
                 </div>
              // </ProtectedRoute>
             }

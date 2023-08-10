@@ -16,13 +16,14 @@ import swal from '@sweetalert/with-react';
 
 
 //URLS
-const urlVentaDetalle = 'http://localhost:3000/api/Ventas/NuevaVentaDetalle';
 const urlProducto = 'http://localhost:3000/api/productos';
 const urlLente = 'http://localhost:3000/api/lentes';
 const urlDescuento = 'http://localhost:3000/api/Descuento';
 const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
+const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
+
 
 export const DetallesDeVenta = (props) => {
 
@@ -36,9 +37,7 @@ export const DetallesDeVenta = (props) => {
 
   useEffect(() => {
     fetch(urlProducto).then(response => response.json()).then(data => setProducto(data))
-    fetch(urlLente).then(response => response.json()).then(data => setLente(data))
     fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
-    fetch(urlDescuentoLente).then(response => response.json()).then(data => setDescuentoLente(data))
     fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
     fetch(urlGarantia).then(response => response.json()).then(data => setGarantia(data))
   }, [])
@@ -47,34 +46,44 @@ export const DetallesDeVenta = (props) => {
 
   const handleNext = async () => {
 
-    let Producto = parseInt(document.getElementById('producto').value);
-    let Lente = parseInt(document.getElementById('lente').value);
+    let producto = parseInt(document.getElementById("producto").value)
     let Descuento = parseInt(document.getElementById('descuentoAro').value);
-    let DescuentoLente = parseInt(document.getElementById('descuentoLente').value);
     let Promocion = parseInt(document.getElementById('promocion').value);
     let Garantia = parseInt(document.getElementById('garantia').value);
-
+    let cantidad = parseInt(document.getElementById("Cantidad").value)
+    let lente = parseFloat(document.getElementById("lente").value)
 
     let data = {
       IdGarantia: Garantia,
       IdDescuento: Descuento,
-      IdDescuentoLente: DescuentoLente,
       IdPromocion: Promocion,
-      IdProducto: Producto,
-      IdLente: Lente,
+      IdProducto:producto,
+      cantidad:cantidad,
+      precioLente:lente,
+      idUsuario:props.idUsuario
     }
 
-    /* await axios.post(urlVentaDetalle, data).then(response => {
-      swal('Detalles registrados exitosamente, continue con el proceso', '', 'success').then(result => {
-        navegate('/menuVentas/CalculosDeVenta');
-      });
+    data = {...props.venta,...data}
 
-    }).catch(error => {
-      console.log(error);
-      swal("Error al registrar venta.", "", "error")
-    })
- */
-console.log(data);
+   
+
+    swal({
+      title: "Confirmar venta",
+      icon: "warning",
+      buttons: {
+        cancel: "Cancelar",
+        confirm: "Confirmar",
+      },
+    }).then((result) => {
+      if (result) {//axios
+        axios.post(urlVenta,data).then(()=>{
+          swal("Venta registrada con exito","","success")
+        }).catch(()=>{swal("Error al registrar la venta","","error")})
+      } else {//se cancela todo alv
+        
+      }
+    });
+  
 
   };
 
@@ -114,24 +123,7 @@ console.log(data);
                 )}
               </select>
             </div>
-{/* 
-            <div className="contInput">
-              <TextCustom text="Tipo de Lente:" className="titleInput" />
-              <select name="" className="selectCustom" id="lente">
-              {Lente.length ? (
-                  Lente.map(pre => (
-                    <option key={pre.IdLente} value={pre.IdLente}>
-                      {pre.lente}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
 
-                )}
-              </select>
-            </div> */}
 
             <div className="contInput">
               <TextCustom text="Descuento Aro:" className="titleInput" />
@@ -151,23 +143,6 @@ console.log(data);
               </select>
             </div>
 
-           {/*  <div className="contInput">
-              <TextCustom text="Descuento Lente:" className="titleInput" />
-              <select name="" className="selectCustom" id="descuentoAro">
-              {DescuentoLente.length ? (
-                  DescuentoLente.map(pre => (
-                    <option key={pre.IdDescuentoLente} value={pre.IdDescuentoLente}>
-                      {pre.descuentoLente}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
-            </div> */}
 
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
@@ -215,6 +190,19 @@ console.log(data);
                 className="inputCustom"
                 placeholder="Cantidad"
                 id="Cantidad"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Precio del lente" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Precio del lente"
+                id="lente"
               />
             </div>
 
