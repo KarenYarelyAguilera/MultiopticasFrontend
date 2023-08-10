@@ -257,7 +257,12 @@ export const RegistroSucursal = (props) => {
                     {
                       setErrorTelefono(true);
                       setTexto('Solo deben ingresar números');
-                    }else{
+                    }else if (/(.)\1{2,}/.test(Telefono))
+                    {
+                      setErrorTelefono(true);
+                      setTexto("No se permiten numeros repetodos de manera consecutivas");
+                    } else 
+                    {
                       setErrorTelefono(false);
                       setTexto('');
                     }
@@ -294,6 +299,9 @@ export const RegistroSucursal = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(telefono))) {
                     swal("El campo telefono solo acepta números.", "", "error");
+                  } else if (/(.)\1{2,}/.test(Telefono)) {
+                    setErrorTelefono(true);
+                    swal("El campo numero no acepta numeros consecutivos repetidos.", "", "error");
                   }
                     else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(direccion)) {
                       swal("El campo direccion solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
