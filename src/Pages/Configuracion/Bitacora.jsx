@@ -18,6 +18,7 @@ import axios from 'axios';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
+
 export const Bitacora = (props) => {
   const [cambio,setCambio] = useState(0)
 

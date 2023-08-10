@@ -20,9 +20,13 @@ import { TextCustom } from '../Components/TextCustom.jsx';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
 //enter para ver si hay cambios xd
-
+import axios from 'axios';
 
 export const Perfil = (props) => {
+  const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/salirperfil';
+  const urlUpUsuario = 'http://localhost:3000/api/actualizarPerfil';
+
+
   const [sucursales, setSucursales] = useState([]);
 
   const navegate = useNavigate();
@@ -31,6 +35,12 @@ export const Perfil = (props) => {
   const [errorContra2, setErrorContra2] = useState(false);
   const [advertencia, setadvertencia] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [nombre, setName] = React.useState(props.infoPerfil.nombre || '');
+  const [apellido, setApellido] = React.useState(props.infoPerfil.apellido || '');
+  const [numeroIdentidad, setnumeroIdentidad] = React.useState(props.infoPerfil.numeroIdentidad || '');
+  const [Correo_Electronico, setCorreo_Electronico] = React.useState(props.infoPerfil.Correo_Electronico || '');
+
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
   const refContrasenia = useRef(null);
@@ -47,8 +57,50 @@ export const Perfil = (props) => {
   };
 
   const handleBack = () => {
+    const dataId = {
+      Id: props.idUsuario,
+    };
+
     navegate('/dashboard');
+    axios.post(urlBitacoraPerfil, dataId)
+
   };
+
+  const handleActualizarDatos = async () => {
+
+    let nombre = document.getElementById('nombre').value;
+    let apellido = document.getElementById('apellido').value;
+    let numeroIdentidad = document.getElementById('identidad').value;
+    let Correo_Electronico = document.getElementById('correo').value;
+
+    let data = {
+      nombre: nombre,
+      apellido: apellido,
+      numeroIdentidad: numeroIdentidad,
+      Correo_Electronico: Correo_Electronico,
+      id: props.idUsuario
+    }
+    console.log(data);
+
+    await axios.put(urlUpUsuario, data).then(() => {
+      swal("¡Datos Actualizados Correctamente! Vuelva a iniciar sesión", "", "success").then(() => {
+        navegate('/')
+
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar datos! ', '', 'error')
+    })
+
+
+
+
+
+
+
+  };
+
+
 
   return (
     <div className="ContProfile" >
@@ -72,7 +124,7 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Nombre usuario"
               id="nameUser"
-              value={props.infoPerfil.Nombre_Usuario.toUpperCase()}
+              value={props.infoPerfil.Nombre_Usuario}
               disabled
             />
           </div>
@@ -80,28 +132,30 @@ export const Perfil = (props) => {
           <div className="contInput">
             <TextCustom text="Nombre: " className="titleInput" />
             <input
+              onChange={e => setName(e.target.value)}
               type="text"
               name=""
               maxLength={13}
               className="inputCustom"
               placeholder="Nombre"
               id="nombre"
-              value={props.infoPerfil.nombre.toUpperCase()}
-              disabled
+              value={nombre}
+
             />
           </div>
           <br />
           <div className="contInput">
             <TextCustom text="Apellido: " className="titleInput" />
             <input
+              onChange={e => setApellido(e.target.value)}
               type="text"
               name=""
               maxLength={13}
               className="inputCustom"
               placeholder="Apellido"
               id="apellido"
-              value={props.infoPerfil.apellido.toUpperCase()}
-              disabled
+              value={apellido}
+
             />
           </div>
         </section>
@@ -110,33 +164,35 @@ export const Perfil = (props) => {
           <div className="contInput">
             <TextCustom text="Identidad: " className="titleInput" />
             <input
+              onChange={e => setnumeroIdentidad(e.target.value)}
               type="text"
               name=""
               maxLength={13}
               className="inputCustom"
               placeholder="Identidad"
               id="identidad"
-              value={props.infoPerfil.numeroIdentidad}
-              disabled
+              value={numeroIdentidad}
+
             />
           </div>
           <br />
           <div className="contInput">
             <TextCustom text="Correo:   " className="titleInput" />
             <input
+              onChange={e => setCorreo_Electronico(e.target.value)}
               type="text"
               name=""
-              maxLength={13}
+              maxLength={40}
               className="inputCustom"
               placeholder="Correo"
               id="correo"
-              value={props.infoPerfil.Correo_Electronico}
-              disabled
+              value={Correo_Electronico}
+            // disabled
             />
           </div>
           <br />
           <div className="contInput">
-            <TextCustom text="Puesto:  " className="titleInput" />
+            <TextCustom text="Cargo:  " className="titleInput" />
             <input
               type="text"
               name=""
@@ -144,9 +200,19 @@ export const Perfil = (props) => {
               className="inputCustom"
               placeholder="Rol"
               id="rol"
-              value={props.infoPerfil.Rol.toUpperCase()}
+              value={props.infoPerfil.Rol}
               disabled
             />
+          </div>
+        </section>
+
+        <section className='section2'>
+          <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <button
+              className="btnUpdatePassword"
+              type='submit'
+              onClick={handleActualizarDatos}
+            >Actualizar Datos</button>
           </div>
         </section>
 
@@ -196,8 +262,9 @@ export const Perfil = (props) => {
           </div>
         </section>
 
+
       </div>
 
-    </div>
+    </div >
   );
 };

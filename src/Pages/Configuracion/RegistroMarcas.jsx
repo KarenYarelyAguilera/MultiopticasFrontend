@@ -75,10 +75,22 @@ const actualizarMarca = async () => {
 };
 
 //BOTON DE RETROCESO 
-  const handleBack = () => {
-    navegate('/config/ListaMarcas');
-  };
-
+const handleBack = () => {
+  swal({
+    title: 'Advertencia',
+    text: 'Hay un proceso de creación de marcas ¿Estás seguro que deseas salir?',
+    icon: 'warning',
+    buttons: ['Cancelar', 'Salir'],
+    dangerMode: true,
+  }).then((confirmExit) => {
+    if (confirmExit) {
+      props.update(false)
+      props.Data({})
+      navegate('/config');
+    } else {
+    }
+  });
+};
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>

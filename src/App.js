@@ -227,7 +227,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                   />
 
-                  <BarraHorizontal user={usuario} correo={mail}/>
+                  <BarraHorizontal user={usuario} correo={mail} idUsuario={idUsuario}/>
                   <Home></Home>
                 </div>
               </ProtectedRoute>
@@ -303,7 +303,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 // user={usuario}
                 // mail={correo}
                 infoPerfil={infoPerfil}
-              //idUsuario={idUsuario}
+                idUsuario={idUsuario}
 
               />
             }
@@ -339,6 +339,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                     infoPerfil={infoPerfil}
                     user={usuario}
+                    
 
 
                   />
@@ -572,7 +573,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-          <Route
+          {/* <Route
             path="/menuInventario/RegistroProducto"
             element={
               // <ProtectedRoute activo={activo}>
@@ -591,7 +592,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               //</ProtectedRoute>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path="/menuInventario/RegistroProducto2"
             element={
@@ -614,7 +615,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   Data={Data}
                 ></RegistroProducto2>
 
-                <RegistroProducto2 />
               </div>
               //</ProtectedRoute>
             }
@@ -1039,7 +1039,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/config/Bitacora"
+            path="/Administracion/Bitacora"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -1072,7 +1072,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <InventarioDisponible />
+                  <InventarioDisponible data={Data}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1139,7 +1139,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-          
 
           <Route
             path="/menuClientes/lista"
@@ -1261,7 +1260,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                   />
-                  <ListaInventario/>
+                  <ListaInventario data={data} Data={Data}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1673,7 +1672,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/NuevaCompra"
+            path="/menuCompras/NuevaCompra"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex" style={{ width: '99%' }}>
@@ -1774,7 +1773,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <Diagnostico data={data}/>
+                <Diagnostico data={data} id={data}  datosclientes={registros}   idUsuario={idUsuario} />
               </div>
 
               // {/* </ProtectedRoute> */}
@@ -1813,6 +1812,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <div className="">
                 <Perfil 
                   infoPerfil={infoPerfil}
+                  idUsuario={idUsuario} 
+                  update={update}
+                  data={data}
                  
                  
                 
@@ -1900,6 +1902,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={Data} 
                     idUsuario={idUsuario} 
+                   
                   // infoPerfil={infoPerfil}
                     user={usuario}
                   ></Recordatorio>

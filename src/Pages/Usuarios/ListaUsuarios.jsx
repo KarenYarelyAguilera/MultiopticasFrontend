@@ -21,7 +21,6 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 import { generatePDF } from '../../Components/generatePDF';
 
-
 export const ListUsuarios = ({props,data,update,}) => {
   const [roles, setRoles] = useState([]);
   
@@ -46,7 +45,7 @@ export const ListUsuarios = ({props,data,update,}) => {
   }, [cambio]);
 
 
-    //IMPRIMIR PDF
+  //IMPRIMIR PDF
     const handleGenerarReporte = () => {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
@@ -61,7 +60,7 @@ export const ListUsuarios = ({props,data,update,}) => {
                                   'Rol':row.rol,
                                   'Estado': row.Estado_Usuario,
                                   'Correo electronico':row.Correo_Electronico,
-                                  'Contraseña':row.Contrasenia,
+                                
                                 };
         });
         return formattedData;
@@ -72,8 +71,6 @@ export const ListUsuarios = ({props,data,update,}) => {
   
       generatePDF(formatDataForPDF, urlPDF, subTitulo);
     };
-      
-      /////////
 
   const navegate = useNavigate();
 
@@ -93,7 +90,15 @@ export const ListUsuarios = ({props,data,update,}) => {
     { field: 'rol', headerName: 'Rol', width: 130 },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130 },
+    { field: 'Contrasenia', headerName: 'Contraseña', width: 130,
+    valueGetter: (params) => {
+      // Obtener la respuesta original
+      const originalRespuesta = params.row.Contrasenia;
+      // Crear un string de asteriscos con la misma longitud que la respuesta original
+      const asterisks = '*'.repeat(originalRespuesta.length);
+      return asterisks;
+    },
+  },
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
@@ -194,8 +199,8 @@ export const ListUsuarios = ({props,data,update,}) => {
       op => {
       switch (op) {
         case 'update':
-        props.data(id)
-        props.update(true)
+        data(id)
+        update(true)
         navegate('/usuarios/crearusuario')
           break;
         default:
@@ -241,8 +246,9 @@ export const ListUsuarios = ({props,data,update,}) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              Nuevo Usuario
             </Button>
+
             <Button className="btnReport"
              onClick={handleGenerarReporte}
             >

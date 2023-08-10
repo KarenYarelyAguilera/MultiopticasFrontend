@@ -1,6 +1,13 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -18,6 +25,9 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
+
 export const ListaDescuento = ({props,data,update}) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
@@ -32,6 +42,30 @@ const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
     axios.get (urlListaDescuentos).then(response=> setTableData(response.data))
   }, [cambio]);
+
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdDescuento,
+                                'Estado':row.estado, 
+                                'Descuento del Cliente':row.descPorcent, 
+                                'Descuento del Empleado':row.descPorcentEmpleado, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Descuento.pdf';
+    const subTitulo = "LISTA DE DESCUENTO"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
 
   const navegate = useNavigate();
 
@@ -199,7 +233,9 @@ const [searchTerm, setSearchTerm] = useState('');
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Descuento
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}>
+
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

@@ -69,8 +69,22 @@ export const RegistroDepartamento = (props) => {
   })
   };
 
-  const handleBack = () => {
-    navegate('/config/ListaDepartamentos');
+   //BOTON DE RETROCESO
+   const handleBack = () => {
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de departamentos ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/config');
+      } else {
+      }
+    });
   };
 
   return (

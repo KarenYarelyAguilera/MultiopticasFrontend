@@ -72,9 +72,22 @@ const actualizarGenero = async () => {
 };
 
 //BOTON DE RETROCESO 
-  const handleBack = () => {
-    navegate('/config/ListaGenero');
-  };
+const handleBack = () => {
+  swal({
+    title: 'Advertencia',
+    text: 'Hay un proceso de creación de generos ¿Estás seguro que deseas salir?',
+    icon: 'warning',
+    buttons: ['Cancelar', 'Salir'],
+    dangerMode: true,
+  }).then((confirmExit) => {
+    if (confirmExit) {
+      props.update(false)
+      props.Data({})
+      navegate('/config');
+    } else {
+    }
+  });
+};
 
   return (
     <div className="ContUsuarios">

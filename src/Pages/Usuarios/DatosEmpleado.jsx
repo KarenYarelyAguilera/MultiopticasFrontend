@@ -193,25 +193,6 @@ export const DatosEmpleado = (props) => {
       axios.post(urlErrorInsertBitacora, dataB)
     })
 
-
-    await axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        axios.post(urlInsertBitacora, dataB) //Insert de Bitacora de un empleado nuevo  
-        navegate('/empleados/lista');
-      });
-
-      //Funcion de bitacora 
-      let dataB = {
-        Id: props.idUsuario
-      }
-
-    }).catch(error => {
-      console.log(error);
-      swal('Error al registrar el Empleado', '', 'success')
-      axios.post(urlErrorInsertBitacora, dataB)//Error al insertar un nuevo empleado (BITACORA)
-    })
-
-
   };
 
   //Funcion de bitacora 
