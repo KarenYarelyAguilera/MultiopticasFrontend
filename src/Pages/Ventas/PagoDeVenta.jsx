@@ -4,6 +4,9 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
+import ReactModal from 'react-modal';
+import jsPDF from 'jspdf';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -13,7 +16,9 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 
 
-const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
+const urlPago = 'http://localhost:3000/api/pagos/crear';
+const urlMetodoPago = 'http://localhost:3000/api/tipopago';
+const urlEstadoVenta = 'http://localhost:3000/api/VentasEstados';
 
 export const PagoDeVenta = ({
   msgError = '',
@@ -22,17 +27,32 @@ export const PagoDeVenta = ({
   props,
 }) => {
 
+  const [MetodoPago, setMetodo] = useState([]);
+  const [EstadoVenta, setEstado] = useState([]);
+  const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
+  const [Abono, setAbono] = React.useState('');
+  const [Restante, setRestante] = React.useState('');
+
+  useEffect(() => {
+    fetch(urlMetodoPago).then(response => response.json()).then(data => setMetodo(data))
+    fetch(urlEstadoVenta).then(response => response.json()).then(data => setEstado(data))
+  }, [])
+
 
   const navegate = useNavigate();
 
   const handleNext = () => {
 
+    let MetodoPago= parseInt(document.getElementById('metodopago').value);
+    let saldoAbono= document.getElementById('saldoabono').value;
+    let saldoRestante= document.getElementById('saldorestante').value;
+
+
     let data={
-      fecha:new Date(),
-      fechaLimiteEntrega:document.getElementById("fechaLimite").value,
-      fechaEntrega:document.getElementById("fechaEntrega").value,
-      estado:parseInt(document.getElementById("estado").value),
-      observacion:document.getElementById("observacion").value,
+      IdPago: MetodoPago,
+      fecha: fechaActual,
+      saldoAbono: saldoAbono,
+      saldoRestante: saldoRestante
       
     }
 
@@ -61,19 +81,35 @@ export const PagoDeVenta = ({
 
           <div className="contInput">
               <TextCustom text="Metodo de Pago" className="titleInput" />
-              <select name="" className="selectCustom" id="Metodo de Pago">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
+              <select name="" className="selectCustom" id="metodopago">
+              {MetodoPago.length ? (
+                  MetodoPago.map(pre => (
+                    <option key={pre.IdTipoPago} value={pre.IdTipoPago}>
+                      {pre.descripcion}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+
+                )}
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="Estado">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
+          {/*   <div className="contInput">
+              <TextCustom text="Fecha" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha"
+                id="fecha"
+                value={fechaActual}
+                disabled
+              /> 
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Saldo Abonado" className="titleInput" />
@@ -84,7 +120,7 @@ export const PagoDeVenta = ({
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Saldo Abonado"
-                id="Sado Abonado"
+                id="saldoAbono"
               />
             </div>
 
@@ -97,7 +133,7 @@ export const PagoDeVenta = ({
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Saldo Restante"
-                id="Saldo Restante"
+                id="saldoRestante"
               />
             </div>
 

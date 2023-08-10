@@ -13,6 +13,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -20,23 +21,16 @@ import { TextCustom } from '../../Components/TextCustom';
 export const ListaVenta = () => {
   const [roles, setRoles] = useState([]);
 
-  const urlUsers =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users';
-  const urlUpdateUser =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=UpdateUsuario';
-  const urlRoles =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=roles';
-
+  const urlVentas = 'http://localhost:3000/api/Ventas';
+ 
+ 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch(urlUsers)
+    fetch(urlVentas)
       .then(response => response.json())
       .then(data => setTableData(data));
-    fetch(urlRoles)
-      .then(response => response.json())
-      .then(data => setRoles(data));
   }, []);
 
   const navegate = useNavigate();
@@ -50,36 +44,114 @@ export const ListaVenta = () => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID Venta', width: 210 },
-    { field: 'Usuario', headerName: 'Cliente', width: 210 },
-    { field: 'Nombre_Usuario', headerName: 'Fecha', width: 210 },
-    { field: 'rol', headerName: 'Producto', width: 210 },
-    { field: 'Estado_Usuario', headerName: 'Total', width: 210 },
-    { field: 'Correo_Electronico', headerName: 'Fecha de Entrega', width: 210 },
+    { field: 'IdVenta', headerName: 'IdVenta', width: 210 },
+    { field: 'fecha', headerName: 'Fecha', width: 310 },
+    { field: 'Cliente', headerName: 'Cliente', width: 310 },
+    { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
+   
     
-    {
+     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 260,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handleUpdt(params.row)}
           >
-            <EditIcon></EditIcon>
+            <Visibility></Visibility>
           </Button>
+
           <Button
-            className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            className="btnImprimirExp"
+           // onClick={()=> handlePrintModal(params.row)}
           >
-            <DeleteForeverIcon></DeleteForeverIcon>
+            
+            <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
+          
         </div>
       ),
     },
   ];
+
+     //PANTALLA MODAL---------------------------------------------------------------------------
+     function handleUpdt(id) {
+      //setModalData(id);
+      console.log(id);
+      swal(
+        <div>
+          <div className="logoModal">DATOS DE LA VENTA</div>
+          <div className="contEditModal">
+          <div className="contInput">
+          <label><b>Fecha:{id.fecha}</b></label>
+         </div>
+          
+           <div className="contInput">
+           <label><b>Asesor de Venta:{id.IdEmpleado}</b></label>
+              </div> 
+              <div className="contInput">
+              <label><b>Cliente:{id.IdCliente}</b></label>
+              </div>
+             
+              <h3>
+              ----------------DIAGNOSTICO-----------------
+              </h3>
+              <div className="contInput">
+                <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
+              </div>
+              <div className="contInput">
+              <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
+              </div>
+  
+              <div className="contInput">
+                <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
+              </div>
+              <div className="contInput">
+                <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
+              </div>
+              <div className="contInput">
+              <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
+              </div>
+              <div className="contInput">
+              <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
+              </div>
+              <div className="contInput">
+              <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
+              </div>
+  
+              <div className="contInput">
+              <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
+              </div>
+              
+          </div>
+        </div>,
+      ).then( async() => {
+      });
+  
+    }
 
   function handleButtonClick(id) {
     fetch(`/api/update/${id}`, {
@@ -109,7 +181,7 @@ export const ListaVenta = () => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Venta</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Ventas</h2>
 
       <div
         style={{
@@ -149,121 +221,12 @@ export const ListaVenta = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.id_Usuario}
+          getRowId={tableData => tableData.IdVenta}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          
-          onRowClick={usuario => {
-            swal({
-              buttons: {
-                update: 'Actualizar',
-                cancel: 'Cancelar',
-              },
-              content: (
-                <div className="logoModal">
-                  Que accion desea realizar con el cliente:{' '}
-                  {usuario.row.Usuario}
-                </div>
-              ),
-            }).then(op => {
-              switch (op) {
-                case 'update':
-                  swal(
-                    <div>
-                      <div className="logoModal">Datos a actualizar</div>
-                      <div className="contEditModal">
-                        <div className="contInput">
-                          <TextCustom text="Usuario" className="titleInput" />
-                          <input
-                            type="text"
-                            id="nombre"
-                            className='inputCustom'
-                            value={usuario.row.Usuario}
-                          />
-                        </div>
-
-                        <div className="contInput">
-                          <TextCustom
-                            text="Nombre de Usuario"
-                            className="titleInput"
-                          />
-                          <input
-                            type="text"
-                            id="nombreUsuario"
-                            className='inputCustom'
-                            value={usuario.row.Nombre_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Estado" className="titleInput" />
-                          <input
-                            type="text"
-                            className='inputCustom'
-                            id="EstadoUsuario"
-                            value={usuario.row.Estado_Usuario}
-                          />
-                        </div>
-                        <div className="contInput">
-                          <TextCustom
-                            text="Contraseña"
-                            className="titleInput"
-                          />
-                          <input type="text" id="contrasenia" className='inputCustom'/>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Rol" className="titleInput" />
-                          <select id="rol" className="selectCustom">
-                            {roles.length ? (
-                              roles.map(pre => (
-                                <option key={pre.Id_Rol} value={pre.Id_Rol}>
-                                  {pre.Rol}
-                                </option>
-                              ))
-                            ) : (
-                              <option value="No existe informacion">
-                                No existe informacion
-                              </option>
-                            )}
-                          </select>
-                        </div>
-                        <div className="contInput">
-                          <TextCustom text="Email" className="titleInput" />
-                          <input
-                            type="text"
-                            id="Email"
-                            className='inputCustom'
-                            value={usuario.row.Correo_Electronico}
-                          />
-                        </div>
-                      </div>
-                    </div>,
-                  ).then(() => {
-                    let data = {
-                      Usuario: document.getElementById('nombre').value,
-                      Nombre_Usuario:
-                        document.getElementById('nombreUsuario').value,
-                      Estado_Usuario:
-                        document.getElementById('EstadoUsuario').value,
-                      Contrasenia: document.getElementById('contrasenia').value,
-                      Id_Rol: document.getElementById('rol').value,
-                      Correo_Electronico:
-                        document.getElementById('Email').value,
-                      Id_usuario: usuario.row.id_Usuario,
-                    };
-
-                    if (sendData(urlUpdateUser, data)) {
-                      swal(<h1>Usuario Actualizado Correctamente</h1>);
-                    }
-                  });
-                  break;
-                default:
-                  break;
-              }
-            });
-          }}
         />
       </div>
     </div>
