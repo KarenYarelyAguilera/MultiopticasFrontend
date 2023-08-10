@@ -177,7 +177,7 @@ export const ListaExpedientes = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuClientes/DatosExpediente');
+                navegate('/menuClientes/lista');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

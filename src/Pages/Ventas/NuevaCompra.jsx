@@ -124,6 +124,7 @@ export const NuevaCompra = ({
     console.log(data);
     await axios.post(urlCompra,data).then(()=>{
       swal("Compra registrada con exito","","success")
+      navegate('/menuInventario/ListaCompra');
     })
    
   }
@@ -328,16 +329,10 @@ export const NuevaCompra = ({
             <div className="btnActionsNewReport">
               <Button
                 className="btnCreate1"
-                onClick={() => {
-                  var costo = document.getElementById("costo").value;
-                  var cantidad = document.getElementById("cantidad").value;
-                  if (costo === "" || cantidad === "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else{
-                GuardarCompra();
-              }
-            }
-          }
+                onClick={GuardarCompra}
+              
+          
+          
               >
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar

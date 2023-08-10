@@ -65,6 +65,7 @@ export const RecordatorioCitasEditar = props => {
 
 
     const urlUpdateCitas = 'http://localhost:3000/api/actualizarCita'
+    const urlBitacoraUpdCita='http://localhost:3000/api/bitacora/actualizarcita';
 
     const data = {
         IdRecordatorio: props.data.IdRecordatorio,
@@ -127,8 +128,14 @@ export const RecordatorioCitasEditar = props => {
 
         console.log(data);
 
+        let dataUsuario={
+            Id:props.idUsuario
+          }
+    
+
         await axios.put(urlUpdateCitas, data).then(() => {
             swal("Cita Actualizado Correctamente", "", "success").then(() => {
+                axios.post(urlBitacoraUpdCita,dataUsuario)
                 navegate('/recordatorio')
             })
         }).catch(error => {

@@ -69,6 +69,9 @@ export const RecordatorioCitas = (props) => {
 
   const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
 
+  const urlBitacoraAggCita='http://localhost:3000/api/bitacora/agregarcita';
+
+
 
   //para el el cliente
   useEffect(() => {
@@ -144,10 +147,14 @@ export const RecordatorioCitas = (props) => {
         Id: props.data.IdRecordatorio
       }
 
+      let dataUsuario={
+        Id:props.idUsuario
+      }
 
       //console.log(data);
       axios.post(urlPostCitas, dataC).then(response => {
         swal('Cita agregado con éxito', '', 'success').then(result => {
+          axios.post(urlBitacoraAggCita,dataUsuario)
           navegate('/recordatorio');
         });
 

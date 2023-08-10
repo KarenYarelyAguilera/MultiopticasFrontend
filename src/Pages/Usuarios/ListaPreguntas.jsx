@@ -35,6 +35,8 @@ export const ListaPreguntas = (props) => {
   const [Parametro, setParametro] = useState('');
   const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
 
+  const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/cambiopreguntas';
+
 
   const dataId = {
     Id_Usuario: props.idUsuario,
@@ -173,7 +175,12 @@ export const ListaPreguntas = (props) => {
 
 
   const handleBack = () => {
+    const dataId = {
+      Id: props.idUsuario,
+    };
     navegate('/config/perfil');
+    axios.post(urlBitacoraPerfil, dataId)
+
   };
 
 

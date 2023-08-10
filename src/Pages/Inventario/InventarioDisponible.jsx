@@ -1,7 +1,9 @@
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
-
+import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
@@ -48,10 +50,32 @@ export const InventarioDisponible = (props) => {
     ),
   );
 
-  
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaYHora);
+        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.IdInventario,
+          'ID Producto':row.idProducto, 
+          'Marca':row.descripcion,
+          'Producto':row.detalle,
+          'Cantidad':row.cantidad,
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_InventarioDisponible.pdf';
+    const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
   const columns = [
     { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
-    { field: 'idProducto', headerName: 'IdProducto', width: 100 },
+    { field: 'IdProducto', headerName: 'IdProducto', width: 100 },
     { field: 'descripcion', headerName: 'Marca', width: 400 },
     { field: 'detalle', headerName: 'Producto', width: 400 },
     { field: 'cantidad', headerName: 'Cantidad', width: 400 },
@@ -130,13 +154,16 @@ export const InventarioDisponible = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('');
+                navegate('/menuInventario/RegistroProducto2');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo Inventario
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+             onClick={handleGenerarReporte}
+
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
