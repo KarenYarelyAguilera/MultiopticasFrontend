@@ -50,6 +50,7 @@ export const ListaInventario = (props) => {
   const [errordescripcion, setErrordescripcion] = useState(false);
 
   useEffect(() => {
+    console.log(props.data);
     axios.post(urlProducto,props.data).then((response)=>setTableData(response.data))
   }, [cambio]);
 

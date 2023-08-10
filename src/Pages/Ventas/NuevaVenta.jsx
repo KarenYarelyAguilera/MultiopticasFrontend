@@ -18,7 +18,6 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 //import swal from '@sweetalert/with-react';
 
 //URLS
-const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 const urlCliente = 'http://localhost:3000/api/clientes';
 const urlEmployees = 'http://localhost:3000/api/empleado';
 
@@ -59,29 +58,15 @@ export const NuevaVenta = (props)  => {
     
 
     let data = {
-
-      fecha: fechaActual,
       fechaEntrega: fechaLimiteEntrega,
       fechaLimiteEntrega: fechaEntrega,
       IdCliente: Cliente,
       idEmpleado: Empleado,
-      RTN: RTN,
-     
-     
-
+      RTN: RTN
     }
 
-    await axios.post(urlVenta, data).then(response => {
-      swal('Venta registrada, continue con el proceso', '', 'success').then(result => {
-        navegate('/menuVentas/DetallesDeVenta');
-      });
-
-    }).catch(error => {
-      console.log(error);
-      swal("Error al registrar venta.", "", "error")
-    })
-
-  
+      props.venta(data)
+      navegate('/menuVentas/DetallesDeVenta');
 
   };
 
