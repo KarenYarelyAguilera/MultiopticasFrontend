@@ -64,8 +64,9 @@ export const ListaExpedientes = (props) => {
 
     urlPDF = 'Reporte_Expediente.pdf';
     const subTitulo = "LISTA DE EXPEDIENTES"
+    const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
   
   const navegate = useNavigate();
@@ -73,8 +74,7 @@ export const ListaExpedientes = (props) => {
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+        value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
 

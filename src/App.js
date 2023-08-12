@@ -111,6 +111,8 @@ import { DetallesDeVenta } from './Pages/Ventas/DetallesDeVenta.jsx';
 import { CalculosDeVenta } from './Pages/Ventas/CalculosDeVenta.jsx';
 import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
+import { Backup } from './Pages/Administracion/Backup.jsx';
+import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 
 
 function App() {
@@ -1187,6 +1189,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/menuVentas/ListaPagos"
+            element={
+              
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPagos data={Data} />
+                </div>
+              
+            }
+          ></Route>
+
           <Route
             path="/menuVentas/listaGarantias"
             element={
@@ -1865,6 +1887,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
 
                   <ConfigRol usuario={usuario} />
+                </div>
+             // </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/usuarios/backup"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+
+                  <Backup />
                 </div>
              // </ProtectedRoute>
             }

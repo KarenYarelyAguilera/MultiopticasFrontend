@@ -7,7 +7,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
-
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
 
 
 import swal from '@sweetalert/with-react';
@@ -28,6 +29,7 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
+import { generatePDF } from '../../Components/generatePDF';
 //URL
  const urlNuevoExpediente='http://localhost:3000/api/Expediente/NuevoExpediente'
 const urlEliminarExpediente='http://localhost:3000/api/Expediente/DeleteExpediente'
@@ -128,28 +130,85 @@ export const DatosExpediente = ( props) => {
 
   const handlePrintModal = (modalData) => {
     const documento = new jsPDF();
-    documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 20);
-    documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 30);
-    documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 40);
-    documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 60);
-    documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 70);
-    documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 80);
-    documento.text(`Esfera Ojo Izquierdo: ${modalData.OIEsfera}`, 20, 90);
-    documento.text(`Cilindro Ojo Derecho: ${modalData.ODCilindro}`, 20, 100);
-    documento.text(`Cilindro Ojo Izquierdo: ${modalData.OICilindro}`, 20, 110);
-    documento.text(`Eje Ojo Derecho: ${modalData.ODEje}`, 20, 120);
-    documento.text(`Eje Ojo Izquierdo: ${modalData.OIEje}`, 20, 130);
-    documento.text(`Adicion Ojo Derecho: ${modalData.ODAdicion}`, 20, 140);
-    documento.text(`Adicion Ojo Izquierdo: ${modalData.OIAdicion}`, 20, 150);
-    documento.text(`Altura Ojo Derecho: ${modalData.ODAltura}`, 20, 160);
-    documento.text(`Altura Ojo Izquierdo: ${modalData.OIAltura}`, 20, 170);
-    documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 180);
-    documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 190);
-    documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 200);
+    
+    const fecha = new Date();
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2,'0');
+    const dia = String(fecha.getDate()).padStart(2,'0');
+    
+    const fechaSinSlash = dia + "/" + mes + "/" + año;
+    
+    const pdfWidth = documento.internal.pageSize.getWidth(); // Obtener el ancho del PDF
+    const imgWidth = 40; // Ancho deseado de la imagen
+    const imgHeight = 15; // Alto deseado de la imagen
+    const imgX = pdfWidth - imgWidth - 10; // Calcular la posición x de la imagen para que esté en el lado derecho
+    const imgY = 20; // Posición y deseada de la imagen
+
+    // Agregar la imagen de fondo primero
+    documento.addImage(fondoPDF, 'JPG', 0, 0, documento.internal.pageSize.getWidth(), documento.internal.pageSize.getHeight());
+
+    documento.setFont('helvetica', "bold");
+    documento.setFontSize(20);
+    documento.text("MultiOpticas", 80, 25);
+    documento.setFontSize(10);
+    documento.setFont('helvetica', "bold");
+    documento.text(`HISTORIAL DE EXPEDIENTES`, 80, 30);
+    documento.setFontSize(10);
+    documento.setFont('helvetica', "bold");
+    documento.text(`Fecha: ${fechaSinSlash}`, 10, 30);
+    documento.addImage(logoImg, 'PNG', imgX, imgY, imgWidth, imgHeight); // Ajusta las coordenadas y el tamaño según tus necesidades
+
+    documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 60);
+    documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 70);
+    documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 80);
+    documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 90);
+    documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 100);
+    documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 110);
+    documento.text(`Esfera Ojo Izquierdo: ${modalData.OIEsfera}`, 20, 120);
+    documento.text(`Cilindro Ojo Derecho: ${modalData.ODCilindro}`, 20, 130);
+    documento.text(`Cilindro Ojo Izquierdo: ${modalData.OICilindro}`, 20, 140);
+    documento.text(`Eje Ojo Derecho: ${modalData.ODEje}`, 20, 150);
+    documento.text(`Eje Ojo Izquierdo: ${modalData.OIEje}`, 20, 160);
+    documento.text(`Adicion Ojo Derecho: ${modalData.ODAdicion}`, 20, 170);
+    documento.text(`Adicion Ojo Izquierdo: ${modalData.OIAdicion}`, 20, 180);
+    documento.text(`Altura Ojo Derecho: ${modalData.ODAltura}`, 20, 190);
+    documento.text(`Altura Ojo Izquierdo: ${modalData.OIAltura}`, 20, 200);
+    documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 210);
+    documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 220);
+    documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 230);
   
     documento.save('historial_expediente.pdf');
     //setModalData({})
   };
+
+  // const handleGenerarReporte = (modalData) => {
+  //   const formatDataForPDF = () => {
+  //     const documento = new jsPDF();
+  //   documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 20);
+  //   documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 30);
+  //   documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 40);
+  //   documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 60);
+  //   documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 70);
+  //   documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 80);
+  //   documento.text(`Esfera Ojo Izquierdo: ${modalData.OIEsfera}`, 20, 90);
+  //   documento.text(`Cilindro Ojo Derecho: ${modalData.ODCilindro}`, 20, 100);
+  //   documento.text(`Cilindro Ojo Izquierdo: ${modalData.OICilindro}`, 20, 110);
+  //   documento.text(`Eje Ojo Derecho: ${modalData.ODEje}`, 20, 120);
+  //   documento.text(`Eje Ojo Izquierdo: ${modalData.OIEje}`, 20, 130);
+  //   documento.text(`Adicion Ojo Derecho: ${modalData.ODAdicion}`, 20, 140);
+  //   documento.text(`Adicion Ojo Izquierdo: ${modalData.OIAdicion}`, 20, 150);
+  //   documento.text(`Altura Ojo Derecho: ${modalData.ODAltura}`, 20, 160);
+  //   documento.text(`Altura Ojo Izquierdo: ${modalData.OIAltura}`, 20, 170);
+  //   documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 180);
+  //   documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 190);
+  //   documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 200);
+  //   };
+
+  //   const urlPDF = 'Historial_Expedientes.pdf';
+  //   const subTitulo = "HISTORIAL DE EXPEDIENTES"
+  //   const orientation = "landscape";
+  //   generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  // };
 
    //PANTALLA MODAL---------------------------------------------------------------------------
   function handleUpdt(id) {

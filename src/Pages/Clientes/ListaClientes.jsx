@@ -69,8 +69,9 @@ export const ListaClientes = (props) => {
 
     const urlPDF = 'Reporte_Clientes.pdf';
     const subTitulo = "LISTA DE CLIENTES"
+    const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
   /////////
