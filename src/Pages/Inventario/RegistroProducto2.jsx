@@ -37,19 +37,19 @@ export const RegistroProducto2 = (props) => {
   const [errorproducto, setErrorproducto] = React.useState(false);
   const [producto, setproducto] = React.useState(false);
 
-  const [precio, setprecio] = React.useState('');
+  const [precio, setprecio] = React.useState(props.data.precio ||'');
   const [errorprecio, setErrorprecio] = React.useState(false);
   const [aviso, setaviso] = React.useState(false);
 
-  const [cantidadmax, setcantidadmax] = React.useState('');
+  const [cantidadmax, setcantidadmax] = React.useState(props.data.cantidadMax ||'');
   const [mensaje, setmensaje] = React.useState('');
   const [errorcantidadmax, setErrorcantidadmax] = React.useState(false);
 
-  const [cantidadmin, setcantidadmin] = React.useState('');
+  const [cantidadmin, setcantidadmin] = React.useState(props.data.cantidadMin ||'');
   const [advertencia, setadvertencia] = React.useState('');
   const [errorcantidadmin, setErrorcantidadmin] = React.useState(false);
 
-  const [descrpcion, setdescripcion] = React.useState('');
+  const [descrpcion, setdescripcion] = React.useState(props.data.descripcion ||'');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
 //Se usa para mostrar informacion en un listbox
@@ -132,7 +132,20 @@ export const RegistroProducto2 = (props) => {
 
 
   const handleBack = () => {
-    navegate('/inventario');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de Producto ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/menuInventario/ListaProductos');
+      } else {
+      }
+    });
   };
 
   return (
@@ -186,6 +199,7 @@ export const RegistroProducto2 = (props) => {
                     }
                   }
                 }}
+                onChange={e => setprecio(e.target.value)}
                 error={errorprecio}
                 type="text"
                 name=""
@@ -193,6 +207,7 @@ export const RegistroProducto2 = (props) => {
                 className="inputCustom"
                 placeholder="Precio"
                 id="precio"
+                value={precio}
               />
               <p class="error">{aviso}</p>
             </div>
@@ -218,6 +233,7 @@ export const RegistroProducto2 = (props) => {
                     }
                   }
                 }}
+                onChange={e => setcantidadmax(e.target.value)}
                 error={errorcantidadmax}
                 type="text"
                 name=""
@@ -225,6 +241,7 @@ export const RegistroProducto2 = (props) => {
                 className="inputCustom"
                 placeholder="Cantidad Maxima"
                 id="cantidadMax"
+                value={cantidadmax}
               />
               <p class="error">{mensaje}</p>
             </div>
@@ -250,6 +267,7 @@ export const RegistroProducto2 = (props) => {
                     }
                   }
                 }}
+                onChange={e => setcantidadmin(e.target.value)}
                 error={errorcantidadmin}
                 type="text"
                 name=""
@@ -257,6 +275,7 @@ export const RegistroProducto2 = (props) => {
                 className="inputCustom"
                 placeholder="Cantidad Minima"
                 id="cantidadMin"
+                value={cantidadmin}
               />
               <p class="error">{advertencia}</p>
             </div>
@@ -277,6 +296,7 @@ export const RegistroProducto2 = (props) => {
                     setmsj('');
                   }
                 }}
+                onChange={e => setdescripcion(e.target.value)}
                 error={errordescripcion}
                 type="text"
                 name=""
@@ -284,6 +304,7 @@ export const RegistroProducto2 = (props) => {
                 className="inputCustomText"
                 placeholder="Descripcion del Producto"
                 id="descripcion"
+                value={descrpcion}
               />
               <p class="error">{msj}</p>
             </div>
@@ -301,15 +322,18 @@ export const RegistroProducto2 = (props) => {
 
                   if (precio === "" || cantidadMin === "" || cantidadMax === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
-                 /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                    swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
                   } else if (isNaN(parseInt(cantidadMin))) {
                     swal("El campo cantidadMin solo acepta números.", "", "error");
                   } else if (isNaN(parseInt(cantidadMax))) {
                     swal("El campo cantiadMax solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(precio))) {
-                    swal("El campo precio solo acepta números.", "", "error");
-                  } else
+                    swal("El campo precio solo acepta números.", "", "error");  
+                  } else if (cantidadMin <= 0) {
+                    swal("El campo cantidadMinima no acepta valores negativos.", "", "error");
+                  }else if (cantidadMax <= cantidadMin) {
+                    swal("El campo cantidadMaxima no acepta valores menores.", "", "error");
+                  }
+                  else
                     props.actualizar ? actualizarProducto() : handleNext();
                 }
                 }
