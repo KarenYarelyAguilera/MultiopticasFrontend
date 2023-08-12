@@ -21,52 +21,89 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
+const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
+
 
 export const Diagnostico = (props) => {
 
-const navegate = useNavigate();
- 
+  const navegate = useNavigate();
 
-  const handleNext = async() => {
+
+  const handleNext = async () => {
     let EsferaOjoDerecho = document.getElementById('ODEsfera').value;
     let EsferaOjoIzquierdo = document.getElementById('OIEsfera').value;
-    let CilindroOjoDerecho= document.getElementById('ODCilindro').value;
+    let CilindroOjoDerecho = document.getElementById('ODCilindro').value;
     let CilindroOjoIzquierdo = document.getElementById('OICilindro').value;
-      let EjeOjoDerecho = document.getElementById('ODEje').value;
-      let EjeOjoIzquierdo= document.getElementById('OIEje').value;
-      let AdicionOjoDerecho = document.getElementById('AdicionOD').value;
-      let AdicionOjoIzquierdo = document.getElementById('AdicionOI').value;
-      let AlturaOjoDerecho= document.getElementById('AlturaOD').value;
-      let AlturaOjoIzquierdo = document.getElementById('AlturaOI').value;
-      let DistanciaPupilarOjoDerecho = document.getElementById('DistanciapupilarOD').value;
-      let DistanciaPupilarOjoIzquierdo= document.getElementById('DistanciapupilarOI').value;
-      let EnfermedadPresentada = document.getElementById('Enfermedadpresentada').value;
+    let EjeOjoDerecho = document.getElementById('ODEje').value;
+    let EjeOjoIzquierdo = document.getElementById('OIEje').value;
+    let AdicionOjoDerecho = document.getElementById('AdicionOD').value;
+    let AdicionOjoIzquierdo = document.getElementById('AdicionOI').value;
+    let AlturaOjoDerecho = document.getElementById('AlturaOD').value;
+    let AlturaOjoIzquierdo = document.getElementById('AlturaOI').value;
+    let DistanciaPupilarOjoDerecho = document.getElementById('DistanciapupilarOD').value;
+    let DistanciaPupilarOjoIzquierdo = document.getElementById('DistanciapupilarOI').value;
+    let EnfermedadPresentada = document.getElementById('Enfermedadpresentada').value;
 
-    let data = { 
-      diagnostico:EnfermedadPresentada,
-      ODEsfera:EsferaOjoDerecho,
-      OIEsfera:EsferaOjoIzquierdo,
-      ODCilindro:CilindroOjoDerecho,
-      OICilindro:CilindroOjoIzquierdo,
-      ODEje:EjeOjoDerecho,
-      OIEje:EjeOjoIzquierdo,
-      ODAdicion:AdicionOjoDerecho,
-      OIAdicion:AdicionOjoIzquierdo,
-      ODAltura:AlturaOjoDerecho,
-      OIAltura:AlturaOjoIzquierdo,
-      ODDistanciaPupilar:DistanciaPupilarOjoDerecho,
-      OIDistanciaPupilar:DistanciaPupilarOjoIzquierdo,
+    let data = {
+      diagnostico: EnfermedadPresentada,
+      ODEsfera: EsferaOjoDerecho,
+      OIEsfera: EsferaOjoIzquierdo,
+      ODCilindro: CilindroOjoDerecho,
+      OICilindro: CilindroOjoIzquierdo,
+      ODEje: EjeOjoDerecho,
+      OIEje: EjeOjoIzquierdo,
+      ODAdicion: AdicionOjoDerecho,
+      OIAdicion: AdicionOjoIzquierdo,
+      ODAltura: AlturaOjoDerecho,
+      OIAltura: AlturaOjoIzquierdo,
+      ODDistanciaPupilar: DistanciaPupilarOjoDerecho,
+      OIDistanciaPupilar: DistanciaPupilarOjoIzquierdo,
     }
-    data = {...props.data,...data}
+    data = { ...props.data, ...data }
     console.log(data);
-    
-    await axios.post(urlNuevoDiagnostico,data).then(response=>{
-      swal('Diagnostico creado con exito', '', 'success').then(result => {
+
+
+/*     console.log(props.data.idCliente);
+    console.log(props.id.idCliente); */
+     console.log(props.datosclientes.idCliente);
+
+    let dataIdCliente = {
+      IdCliente: props.datosclientes.idCliente,
+      Nota: "Reservación de cita - " + EnfermedadPresentada,
+      fecha: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())
+    }
+    console.log(dataIdCliente);
+
+    let dataUsuario = {
+      Id: props.idUsuario
+    }
+    console.log(dataUsuario);
+
+
+    await axios.post(urlNuevoDiagnostico, data).then(response => {
+
+      
+
+      swal('Diagnostico creado con éxito', '', 'success').then(result => {
+
+        axios.post(urlPostCitas, dataIdCliente).then(response => {
+          //swal('Se creo una cita', '', 'success').then(result => {
+          axios.post(urlBitacoraAggCita, dataUsuario);
+          //navegate('/recordatorio');
+          // });
+  
+        }).catch(error => {
+          console.log(error);
+          swal("Error al agregar cita.", "", "error")
+  
+        });
+
         navegate('/menuClientes/ListaExpedientes');
       });
- 
-    }).catch(error=>{
+
+    }).catch(error => {
       console.log(error);
       swal("Error al registrar el diagnostico.", "", "error")
     })
@@ -87,7 +124,7 @@ const navegate = useNavigate();
       } else {
       }
     });
-   
+
   };
 
 
@@ -99,13 +136,13 @@ const navegate = useNavigate();
       <div className="titleAddUser">
         <h2>Diagnostico</h2>
         <h3>
-        Complete todos los datos para el historial del paciente.
+          Complete todos los datos para el historial del paciente.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            
+
             <div className="contInput">
               <TextCustom text="Esfera OD" className="titleInput" />
               <input
@@ -144,7 +181,7 @@ const navegate = useNavigate();
               />
             </div>
 
-            
+
             <div className="contInput">
               <TextCustom text="Cilindro OI" className="titleInput" />
               <input
@@ -186,7 +223,7 @@ const navegate = useNavigate();
             <div className="contInput">
               <TextCustom text="Adicion OD" className="titleInput" />
               <input
-               
+
                 type="number"
                 name=""
                 maxLength={40}
@@ -194,14 +231,14 @@ const navegate = useNavigate();
                 placeholder="Adicion OD"
                 id="AdicionOD"
               />
-            
+
             </div>
 
             <div className="contInput">
               <TextCustom text="Adicion OI" className="titleInput" />
 
               <input
-             
+
                 type="number"
                 name=""
                 maxLength={40}
@@ -235,7 +272,7 @@ const navegate = useNavigate();
                 placeholder="Altura OI"
                 id="AlturaOI"
               />
-        
+
             </div>
 
             <div className="contInput">
@@ -255,7 +292,7 @@ const navegate = useNavigate();
               <TextCustom text="DP OI" className="titleInput" />
 
               <input
-           
+
                 type="number"
                 name=""
                 maxLength={40}
@@ -263,13 +300,13 @@ const navegate = useNavigate();
                 placeholder="DP OI"
                 id="DistanciapupilarOI"
               />
-               
+
             </div>
 
             <div className="contInput">
               <TextCustom text="Enfermedad Presentada" className="titleInput" />
               <input
-             
+
                 type="text"
                 name=""
                 maxLength={100}
@@ -277,15 +314,15 @@ const navegate = useNavigate();
                 placeholder="Enfermedad Presentada"
                 id="Enfermedadpresentada"
               />
-               
-            </div> 
 
-            
+            </div>
+
+
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick= {handleNext}
+                onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
@@ -296,7 +333,7 @@ const navegate = useNavigate();
           </div>
         </div>
 
-      { /* <imgn
+        { /* <imgn
           src={
             'https://static.vecteezy.com/system/resources/previews/010/351/676/non_2x/rewriting-text-color-icon-illustration-vector.jpg'
           }
