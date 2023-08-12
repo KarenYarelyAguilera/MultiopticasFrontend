@@ -112,6 +112,7 @@ import { CalculosDeVenta } from './Pages/Ventas/CalculosDeVenta.jsx';
 import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
 import { Backup } from './Pages/Administracion/Backup.jsx';
+import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 
 
 function App() {
@@ -1182,6 +1183,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaExpedientes data={Data} />
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/menuVentas/ListaPagos"
+            element={
+              
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPagos data={Data} />
+                </div>
+              
             }
           ></Route>
 
