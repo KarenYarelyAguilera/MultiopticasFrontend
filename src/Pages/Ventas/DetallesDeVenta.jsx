@@ -65,6 +65,7 @@ export const DetallesDeVenta = (props) => {
 
     data = {...props.venta,...data}
 
+    
    
 
     swal({
@@ -76,9 +77,10 @@ export const DetallesDeVenta = (props) => {
       },
     }).then((result) => {
       if (result) {//axios
-        axios.post(urlVenta,data).then(()=>{
-          swal("Venta registrada con exito","","success")
-        }).catch(()=>{swal("Error al registrar la venta","","error")})
+        axios.post(urlVenta,data).then((response)=>{
+          props.dataVenta(response.data)
+          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta'))
+        })
       } else {//se cancela todo alv
         
       }
