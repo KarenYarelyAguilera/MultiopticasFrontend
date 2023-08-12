@@ -62,7 +62,8 @@ export const ListaPais = ({props,data,update}) => {
   const urlPDF = 'Report_Países.pdf';
   const subTitulo = "LISTA DE PAÍSES"
 
-  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
 };
 
   const navegate = useNavigate();
