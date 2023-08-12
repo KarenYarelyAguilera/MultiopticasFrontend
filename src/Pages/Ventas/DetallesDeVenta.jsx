@@ -212,7 +212,21 @@ export const DetallesDeVenta = (props) => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var cantidad = parseInt(document.getElementById("Cantidad").value)
+                  var lente = parseFloat(document.getElementById("lente").value)
+                  
+                  if (cantidad === "" || lente === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (isNaN(parseInt(cantidad))) {
+                  swal("El campo cantidad solo acepta números.", "", "error");
+                  } else if (isNaN(parseFloat(lente))) {
+                  swal("El campo precio de lente solo acepta números.", "", "error");
+                  }else {
+                    handleNext();
+                  }       
+                  }
+                }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>

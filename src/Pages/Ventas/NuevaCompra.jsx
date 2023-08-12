@@ -45,8 +45,8 @@ export const NuevaCompra = ({
   const [cantidad, setCantidad] = useState(0);
   const [costo, setCosto] = useState(0);
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-  const [compras,setCompras] = useState([])
-  const [cambio,setCambio]=useState(0)
+  const [compras, setCompras] = useState([])
+  const [cambio, setCambio] = useState(0)
 
 
   const [leyenda, setleyenda] = React.useState('');
@@ -71,9 +71,9 @@ export const NuevaCompra = ({
       .then(data => setProveedor(data));
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     setTableData(compras)
-  },[cambio])
+  }, [cambio])
 
   useEffect(() => {
     setTotal(cantidad * costo);
@@ -83,18 +83,18 @@ export const NuevaCompra = ({
 
   const AggDataGrid = () => {
     let dataGrid = {
-      idUsuario:idUsuario,
-      idProducto:parseInt(document.getElementById("producto").value),
-      idProveedor:parseInt(document.getElementById("proveedor").value),
-      cantidad:parseInt(document.getElementById("cantidad").value),
-      fechaYHora:fechaActual,
-      costo:parseFloat(document.getElementById("costo").value),
+      idUsuario: idUsuario,
+      idProducto: parseInt(document.getElementById("producto").value),
+      idProveedor: parseInt(document.getElementById("proveedor").value),
+      cantidad: parseInt(document.getElementById("cantidad").value),
+      fechaYHora: fechaActual,
+      costo: parseFloat(document.getElementById("costo").value),
     }
 
-    setCambio(cambio+1)
-    setCompras([...compras,dataGrid])
+    setCambio(cambio + 1)
+    setCompras([...compras, dataGrid])
 
-    
+
   }
 
   const handleBack = () => {
@@ -102,7 +102,7 @@ export const NuevaCompra = ({
   };
 
   const columns = [
-    { field: 'idProveedor', headerName: 'Proveedor', width: 145},
+    { field: 'idProveedor', headerName: 'Proveedor', width: 145 },
     { field: 'idProducto', headerName: 'Producto', width: 145 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 145 },
@@ -110,23 +110,23 @@ export const NuevaCompra = ({
     { field: 'Total', headerName: 'Total', width: 145 },
   ];
 
-  var idCounter=0
+  var idCounter = 0
 
   const generateRowId = () => {
     idCounter += 1;
     return idCounter;
   };
 
-  const GuardarCompra = async ()=>{
+  const GuardarCompra = async () => {
     let data = {
       "arrCompras": compras
     }
     console.log(data);
-    await axios.post(urlCompra,data).then(()=>{
-      swal("Compra registrada con exito","","success")
+    await axios.post(urlCompra, data).then(() => {
+      swal("Compra registrada con exito", "", "success")
       navegate('/menuInventario/ListaCompra');
     })
-   
+
   }
 
   return (
@@ -190,7 +190,7 @@ export const NuevaCompra = ({
                 id="cantidad"
                 onKeyDown={e => {
                   setcantid(e.target.value);
-                  if (cantid === '' ) {
+                  if (cantid === '') {
                     setErrorcantidad(true);
                     setleyenda('Los campos no deben estar vacios');
                   } else {
@@ -215,9 +215,9 @@ export const NuevaCompra = ({
                     setleyenda('');
                   }
                 }}
-                 
+
               />
-               <p class="error">{leyenda}</p>
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -272,27 +272,31 @@ export const NuevaCompra = ({
                   }
                 }}
               />
-               <p class="error">{aviso}</p>
+              <p class="error">{aviso}</p>
             </div>
 
 
             <div className="contBtnStepper1">
               <Button
-                     onClick={() => {
-                      var costo = document.getElementById("costo").value;
-                      var cantidad = document.getElementById("cantidad").value;
-                      if (costo === "" || cantidad === "") {
-                        swal("No deje campos vacíos.", "", "error");
-                      } else{
-                        AggDataGrid();
-                        document.getElementById("cantidad").value="";
-                        document.getElementById("costo").value=""
+                onClick={() => {
+                  var costo = document.getElementById("costo").value;
+                  var cantidad = document.getElementById("cantidad").value;
+                  if (costo === "" || cantidad === "") {
+                    swal("No deje campos vacíos.", "", "error");                 
+                  }else if (cantidad <= 0) {
+                    swal("El campo cantidad no acepta valores negativos.", "", "error");
+                  }else if (costo <= 0) {
+                    swal("El campo costo no acepta valores negativos.", "", "error");
+                  }else {
+                    AggDataGrid();
+                    document.getElementById("cantidad").value = "";
+                    document.getElementById("costo").value = ""
                   }
                 }
-              }
-              
-              //onClick={AggDataGrid}
-              
+                }
+
+                //onClick={AggDataGrid}
+
                 variant="contained"
                 className="btnStepper"
               >
@@ -330,14 +334,14 @@ export const NuevaCompra = ({
               <Button
                 className="btnCreate1"
                 onClick={GuardarCompra}
-              
-          
-          
+
+
+
               >
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
-              <Button className="btnReport1" onClick={()=>{setCompras([]);setCambio(cambio+1)}}>
+              <Button className="btnReport1" onClick={() => { setCompras([]); setCambio(cambio + 1) }}>
                 Cancelar
               </Button>
             </div>

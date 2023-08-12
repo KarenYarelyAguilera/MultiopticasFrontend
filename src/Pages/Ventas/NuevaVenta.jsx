@@ -71,8 +71,22 @@ export const NuevaVenta = (props)  => {
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de una Venta ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/menuVentas/ListaVenta');
+      } else {
+      }
+    });
   };
+
 
   return (
     <div className="ContUsuarios">
@@ -182,7 +196,17 @@ export const NuevaVenta = (props)  => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var fechaEntrega = document.getElementById("fechaEntrega").value;
+                  var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
+                  
+                  if (fechaEntrega === "" || fechaLimiteEntrega === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else {
+                    handleNext();
+                  }       
+                  }
+                }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
