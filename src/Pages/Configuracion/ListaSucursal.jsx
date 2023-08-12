@@ -99,7 +99,8 @@ const handleGenerarReporte = () => {
   const urlPDF = 'Report_Sucursales.pdf';
   const subTitulo = "LISTA DE SUCURSALES"
 
-  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
 };
 
   const navegate = useNavigate();

@@ -86,7 +86,8 @@ export const ListaInventario = (props) => {
     const urlPDF = 'Reporte_Kardex.pdf';
     const subTitulo = "LISTA DE KARDEX"
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
