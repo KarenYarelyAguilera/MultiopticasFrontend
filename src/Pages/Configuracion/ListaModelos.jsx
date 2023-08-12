@@ -70,7 +70,8 @@ export const ListaModelos = ({props,data,update}) => {
     const urlPDF = 'Report_Modelos.pdf';
     const subTitulo = "LISTA DE MODELOS"
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
   const navegate = useNavigate();

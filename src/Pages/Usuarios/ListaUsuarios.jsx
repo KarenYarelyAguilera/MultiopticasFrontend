@@ -69,7 +69,8 @@ export const ListUsuarios = ({props,data,update,}) => {
       const urlPDF = 'Reporte_Usuarios.pdf';
       const subTitulo = "LISTA DE USUARIOS"
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo);
+      const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
     };
 
   const navegate = useNavigate();

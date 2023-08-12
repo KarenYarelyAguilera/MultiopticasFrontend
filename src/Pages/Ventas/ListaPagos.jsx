@@ -1,16 +1,13 @@
-//GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
-
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
+import axios from 'axios';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 
 //Mui-Material-Icons
@@ -22,155 +19,133 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
+
+
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
-
-//GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
 
-import axios from 'axios';
+export const ListaPagos = (props) => {
 
-export const ListaCiudad = ({props,data,update}) => {
-
-  const [marcah, setMarcah] = useState()
-  const [cambio, setCambio] = useState(0)
-
-  const urlCuidad = 'http://localhost:3000/api/ciudades';
-  const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
-
+  const [cambio, setCambio] = useState(0);
+  const urlExpedientes = 'http://localhost:3000/api/Expediente';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showPdfDialog, setShowPdfDialog] = useState(false);
+  const [pdfData, setPdfData] = useState([]);
+  
+  let [formatDataForPDF, setFormatDataForPDF] = useState();
+  let [urlPDF, seturlPDF] = useState('');
 
   useEffect(() => {
-    axios.get(urlCuidad).then(response=>setTableData(response.data))
+    axios.get(urlExpedientes).then(response =>{
+      setTableData(response.data)
+    }).catch(error => console.log(error))
   }, [cambio]);
-
+  
+  
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+    formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaCreacion);
+        const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
                               fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdCiudad,
-                                'Ciudad':row.ciudad, 
-                              };
+        return {
+          'N°': row.IdExpediente,
+          'Cliente': row.Cliente,
+          'Fecha de creación': fechaCreacion,
+          'Empleado': row.CreadoPor,
+        };
       });
       return formattedData;
     };
 
-    const urlPDF = 'Report_Ciudades.pdf';
-    const subTitulo = "LISTA DE CIUDADES"
+    urlPDF = 'Reporte_Expediente.pdf';
+    const subTitulo = "LISTA DE EXPEDIENTES"
     const orientation = "landscape";
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
-
+  
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+        value && value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
 
+  function traducirEstado(estado) {
+    if (estado === 1) {
+      return "activo";
+    } else if (estado === 2) {
+      return "inactivo";
+    } else {
+      return "";
+    }
+  }
+
   const columns = [
-    { field: 'IdCiudad', headerName: 'ID Ciudad', width: 600 },
-    { field: 'ciudad', headerName: 'Ciudad', width: 600 },
+    { field: 'ID', headerName: 'ID', width: 100 },
+    { field: 'ID Venta', headerName: 'ID Venta', width: 200 },
+    { field: 'Tipo de Pago', headerName: 'Tipo de Pago', width: 200},
+    { field: 'Fecha', headerName: 'Fecha', width: 200 },
+    {field: 'Estado', headerName: 'Estado', width: 200 },
+    { field: 'Saldo Abonado', headerName: 'Saldo Abonado', width: 200 },
+    { field: 'Saldo Restante', headerName: 'Saldo Restante', width: 200 },
 
     {
+
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 400,
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button
+            className="btnEdit"
+
+          >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdCiudad)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
+
+          <Button
+            className="btnAddExpe"
+            onClick={() => handleNewExpediente(params.row)}
+          >
+            <AddIcon></AddIcon>
+          </Button>
         </div>
       ),
-      
     },
   ];
 
-//FUNCION DE ELIMINAR 
-function handleDel(id) {
-  swal({
-    content: (
-      <div>
-        <div className="logoModal">¿Desea elimiar esta ciudad?</div>
-        <div className="contEditModal">
-        </div>
-      </div>
-    ),
-    buttons: {
-      cancel: 'Eliminar',
-      delete: 'Cancelar',
-    },
-  }).then(async(op) => {
 
-    switch (op) {
-      case null:
-
-        let data = {
-          IdCiudad: id
-        };
-        console.log(data);
+  const handleNewExpediente = (expediente)=>{
+    let data={
+      id:expediente.IdExpediente,
+      idCliente:expediente.Cliente
+    }
   
-        await axios.delete(urlDeleteCuidad,{data}).then(response=>{
-          swal("Ciudad eliminada correctamente","","success")
-          setCambio(cambio+1)
-        }).catch(error=>{
-          console.log(error);
-          swal("Error al eliminar la ciudad, asegúrese que no tenga relación con otros datos.","","error")
-        })
-       
-      break;
-    
-      default:
-      break;
-    }
-  });
-};
-
-//FUNCION DE ACTUALIZAR 
-function handleUpdt(id) {
-  swal({
-    buttons: {
-      update: 'Actualizar',
-      cancel: 'Cancelar',
-    },
-    content: (
-      <div className="logoModal">
-        ¿Desea actualizar la ciudad: {id.ciudad}?
-      </div>
-    ),
-  }).then((op) => {
-    switch (op) {
-        case 'update':
-        data(id)
-        update(true)
-    navegate('/config/RegistroCiudad')
-    break;
-    default:
-    break;
-    }
-  });
-};
+    console.log(expediente);
+     props.data(data)
+     navegate('/menuClientes/DatosExpediente');
+  }
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/menuClientes');
+  };
+
+  const handleCloseDialog = () => {
+    setShowPdfDialog(false);
   };
 
   return (
@@ -178,7 +153,7 @@ function handleUpdt(id) {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Ciudades</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Pagos</h2>
 
       <div
         style={{
@@ -205,14 +180,14 @@ function handleUpdt(id) {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroCiudad');
+                navegate('/menuClientes/lista');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Registro
+              NUEVO
             </Button>
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
+            onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -220,12 +195,12 @@ function handleUpdt(id) {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdCiudad}
+          getRowId={tableData => tableData.IdExpediente}
           rows={filteredData}
           columns={columns}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         />
       </div>
     </div>
