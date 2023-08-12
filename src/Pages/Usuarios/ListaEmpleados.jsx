@@ -82,7 +82,8 @@ const urlBitacoraBotonSalirLE=
         const urlPDF = 'Reporte_Empleados.pdf';
         const subTitulo = "LISTA DE EMPLEADOS"
     
-        generatePDF(formatDataForPDF, urlPDF, subTitulo);
+        const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
       };
         
         /////////
