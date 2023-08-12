@@ -31,7 +31,7 @@ export const PageTwo = ({ correo, id, autor }) => {
 
 
   const handleClick = () => {
-
+    const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/cambiocontrasena';
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
@@ -42,6 +42,10 @@ export const PageTwo = ({ correo, id, autor }) => {
       id: id,
       autor: autor
     }
+
+    const dataId = {
+      Id: id,
+    };
     if (contra1 !== contra2) {
       swal("Las contraseñas no coinciden", "", "warning")
     } else {
@@ -52,6 +56,7 @@ export const PageTwo = ({ correo, id, autor }) => {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
           swal("Contraseña actualizada", "", "success").then(() => navegate("/config/perfil"))
+          axios.post(urlBitacoraPerfil, dataId)
         }
       })
     }

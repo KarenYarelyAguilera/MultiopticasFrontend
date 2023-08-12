@@ -111,6 +111,7 @@ import { DetallesDeVenta } from './Pages/Ventas/DetallesDeVenta.jsx';
 import { CalculosDeVenta } from './Pages/Ventas/CalculosDeVenta.jsx';
 import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
+import { Backup } from './Pages/Administracion/Backup.jsx';
 
 
 function App() {
@@ -227,7 +228,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                   />
 
-                  <BarraHorizontal user={usuario} correo={mail}/>
+                  <BarraHorizontal user={usuario} correo={mail} idUsuario={idUsuario}/>
                   <Home></Home>
                 </div>
               </ProtectedRoute>
@@ -303,7 +304,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 // user={usuario}
                 // mail={correo}
                 infoPerfil={infoPerfil}
-              //idUsuario={idUsuario}
+                idUsuario={idUsuario}
 
               />
             }
@@ -339,6 +340,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                     infoPerfil={infoPerfil}
                     user={usuario}
+                    
 
 
                   />
@@ -572,7 +574,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
-          <Route
+          {/* <Route
             path="/menuInventario/RegistroProducto"
             element={
               // <ProtectedRoute activo={activo}>
@@ -591,7 +593,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               //</ProtectedRoute>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path="/menuInventario/RegistroProducto2"
             element={
@@ -614,7 +616,6 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   Data={Data}
                 ></RegistroProducto2>
 
-                <RegistroProducto2 />
               </div>
               //</ProtectedRoute>
             }
@@ -1039,7 +1040,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/config/Bitacora"
+            path="/Administracion/Bitacora"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex">
@@ -1672,7 +1673,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           ></Route>
 
           <Route
-            path="/menuInventario/NuevaCompra"
+            path="/menuCompras/NuevaCompra"
             element={
              // <ProtectedRoute activo={activo}>
                 <div className="flex" style={{ width: '99%' }}>
@@ -1812,6 +1813,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <div className="">
                 <Perfil 
                   infoPerfil={infoPerfil}
+                  idUsuario={idUsuario} 
                  
                  
                 
@@ -1861,6 +1863,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/usuarios/backup"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+
+                  <Backup />
+                </div>
+             // </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/config/verpermisos"
             element={
@@ -1899,6 +1922,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={Data} 
                     idUsuario={idUsuario} 
+                   
                   // infoPerfil={infoPerfil}
                     user={usuario}
                   ></Recordatorio>

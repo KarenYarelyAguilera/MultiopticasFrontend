@@ -75,7 +75,7 @@ export const InventarioDisponible = (props) => {
   };
   const columns = [
     { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
-    { field: 'idProducto', headerName: 'IdProducto', width: 100 },
+    { field: 'IdProducto', headerName: 'IdProducto', width: 100 },
     { field: 'descripcion', headerName: 'Marca', width: 400 },
     { field: 'detalle', headerName: 'Producto', width: 400 },
     { field: 'cantidad', headerName: 'Cantidad', width: 400 },
@@ -154,7 +154,7 @@ export const InventarioDisponible = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('');
+                navegate('/menuInventario/RegistroProducto2');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
