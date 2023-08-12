@@ -20,18 +20,13 @@ const urlPago = 'http://localhost:3000/api/pagos/crear';
 const urlMetodoPago = 'http://localhost:3000/api/tipopago';
 const urlEstadoVenta = 'http://localhost:3000/api/VentasEstados';
 
-export const PagoDeVenta = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+export const PagoDeVenta = (props) => {
 
   const [MetodoPago, setMetodo] = useState([]);
   const [EstadoVenta, setEstado] = useState([]);
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [Abono, setAbono] = React.useState('');
-  const [Restante, setRestante] = React.useState('');
+  const [Restante, setRestante] = React.useState();
 
   useEffect(() => {
     fetch(urlMetodoPago).then(response => response.json()).then(data => setMetodo(data))
@@ -41,27 +36,54 @@ export const PagoDeVenta = ({
 
   const navegate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
     let MetodoPago= parseInt(document.getElementById('metodopago').value);
-    let saldoAbono= document.getElementById('saldoabono').value;
-    let saldoRestante= document.getElementById('saldorestante').value;
+    let saldoAbono= parseFloat(document.getElementById('saldoAbono').value);
+    let saldoRestante= parseFloat(document.getElementById('saldoRestante').value);
 
 
     let data={
-      IdPago: MetodoPago,
+      IdVenta:props.venta.id,
+      IdTipoPago: MetodoPago,
       fecha: fechaActual,
       saldoAbono: saldoAbono,
       saldoRestante: saldoRestante
       
     }
+    console.log(props.venta.id);
+    console.log(data);
 
-    navegate('/menuVentas/DetalleVenta');
+    if (data.saldoAbono===null) {
+      swal("Error al registrar el pago\nEl saldo abonado debe ser númerico","","error")
+    }else if (isNaN(data.saldoAbono)) {
+      swal("Error al registrar el pago","","error")
+    }else if (typeof data.saldoAbono ==="string") {
+      swal("Error al registrar el pago\nEl saldo abonado debe ser númerico","","error")
+    }else if (data.saldoAbono <=0) {
+      swal("Error al registrar el pago\nEl saldo abonado debe ser un numero positivo","","error")
+    }else{
+      await axios.post(urlPago,data).then(()=>{
+       
+        swal(`Pago registrado con exito`,"","success").then(()=>{
+          if (data.saldoAbono>data.saldoRestante) {
+            swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
+              props.dataVenta({})
+              navegate('/menuVentas/Pago/Lista')
+            })
+          }
+          })
+        
+      }).catch(()=>swal("Error al registrar el pago","","error"))
+
+    }
+
+
 
   };
 
   const handleBack = () => {
-    navegate('/menuVentas/CalculosDeVenta');
+    navegate('/menuVentas');
   };
 
   return (
@@ -130,10 +152,12 @@ export const PagoDeVenta = ({
               <input
                 type="text"
                 name=""
+                value={props.venta.total}
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Saldo Restante"
                 id="saldoRestante"
+                disabled
               />
             </div>
 
