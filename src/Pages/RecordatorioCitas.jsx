@@ -18,6 +18,7 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 import axios from 'axios';
+import Select from 'react-select';
 
 
 const locales = {
@@ -66,10 +67,10 @@ export const RecordatorioCitas = (props) => {
 
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
   const urlClientes = 'http://localhost:3000/api/clientes';
-
   const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
-
   const urlBitacoraAggCita='http://localhost:3000/api/bitacora/agregarcita';
+
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
 
 
 
@@ -118,7 +119,9 @@ export const RecordatorioCitas = (props) => {
   const handleClick = async () => {
 
 
-    let idCliente = document.getElementById('idClientes').value;
+   // let idCliente = document.getElementById('idClientes').value;
+
+   let idCliente = selectedOption.value; // Usamos el valor de la opción seleccionada
     let Nota = document.getElementById('nota').value;
    // let fecha = document.getElementById('fecha').value
 
@@ -153,14 +156,14 @@ export const RecordatorioCitas = (props) => {
 
       //console.log(data);
       axios.post(urlPostCitas, dataC).then(response => {
-        swal('Cita agregado con éxito', '', 'success').then(result => {
+        swal('Cita agregada con éxito', '', 'success').then(result => {
           axios.post(urlBitacoraAggCita,dataUsuario)
           navegate('/recordatorio');
         });
 
       }).catch(error => {
         console.log(error);
-        swal("Error al agregar cita.", "", "error")
+        swal("¡Error al agregar cita! es posible que ya exista", "", "error")
 
       });
 
@@ -193,11 +196,11 @@ export const RecordatorioCitas = (props) => {
               <div className="contNewCita">
                 <TextCustom text="Cliente" className="titleInput" />
                 <div className="contInput">
-                  <select id="idClientes" className="inputCustomPreguntas">
+                  {/* <select id="idClientes" className="inputCustomPreguntas">
                     {tableData.length ? (
                       tableData.map(pre => (
                         <option key={pre.idCliente} value={pre.idCliente}>
-                          {pre.nombre}
+                             {`${pre.idCliente} - ${pre.nombre}`}
                         </option>
                       ))
                     ) : (
@@ -205,7 +208,17 @@ export const RecordatorioCitas = (props) => {
                         No existe informacion
                       </option>
                     )}
-                  </select>
+                  </select> */}
+                  <Select 
+                    id="idClientes"
+                   // className="inputCustomPreguntas"
+                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                    value={selectedOption}
+                    onChange={setSelectedOption}
+                    placeholder="Seleccione un cliente"
+                  />
+
+
                 </div>
               </div>
 

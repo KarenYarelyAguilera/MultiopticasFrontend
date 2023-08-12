@@ -111,6 +111,7 @@ import { DetallesDeVenta } from './Pages/Ventas/DetallesDeVenta.jsx';
 import { CalculosDeVenta } from './Pages/Ventas/CalculosDeVenta.jsx';
 import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
+import { Backup } from './Pages/Administracion/Backup.jsx';
 
 
 function App() {
@@ -1781,7 +1782,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <Diagnostico data={data}/>
+                <Diagnostico data={data} id={data}  datosclientes={registros}   idUsuario={idUsuario} />
               </div>
 
               // {/* </ProtectedRoute> */}
@@ -1821,6 +1822,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <Perfil 
                   infoPerfil={infoPerfil}
                   idUsuario={idUsuario} 
+                  update={update}
+                  data={data}
                  
                  
                 
@@ -1865,6 +1868,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <BarraHorizontal user={usuario} />
 
                   <ConfigRol usuario={usuario} />
+                </div>
+             // </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/usuarios/backup"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+
+                  <Backup />
                 </div>
              // </ProtectedRoute>
             }
