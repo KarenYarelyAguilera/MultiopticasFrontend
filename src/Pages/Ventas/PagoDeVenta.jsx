@@ -31,7 +31,6 @@ export const PagoDeVenta = (props) => {
   useEffect(() => {
     fetch(urlMetodoPago).then(response => response.json()).then(data => setMetodo(data))
     fetch(urlEstadoVenta).then(response => response.json()).then(data => setEstado(data))
-    console.log(props);
   }, [])
 
 
@@ -70,7 +69,9 @@ export const PagoDeVenta = (props) => {
           if (data.saldoAbono>data.saldoRestante) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
               props.dataVenta({})
+
               navegate('/menuVentas/ListaPagos')
+
             })
           }
           })
@@ -153,7 +154,9 @@ export const PagoDeVenta = (props) => {
               <input
                 type="text"
                 name=""
+
                 value={props.venta.total || props.venta.saldoRestante}
+
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Saldo Restante"

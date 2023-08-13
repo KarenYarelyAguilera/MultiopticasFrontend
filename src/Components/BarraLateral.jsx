@@ -29,6 +29,7 @@ const urlP =
 const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
 const urlCierre = 'http://localhost:3000/api/bitacora/Cierre';
 const urlBitacoraConfig = 'http://localhost:3000/api/bitacora/Configuracion';
+const urlBIngresoPCita='http://localhost:3000/api/bitacora/citas';
 //-----------------------------------------------------------------------
 
 export const BarraLateral = props => {
@@ -110,13 +111,14 @@ export const BarraLateral = props => {
     }
   };
 
+
   const Recordatorios = () => {
     if (consulta[3] === 's' && pantallas[3] === 5) {
       return (
         <li>
           <Link className="link" to="/recordatorio">
             <FontAwesomeIcon className="iconLi" icon={faCalendar} />
-            <h1>RECORDATORIOS</h1>
+            <h1>CITAS</h1>
           </Link>
         </li>
       );
@@ -265,9 +267,12 @@ export const BarraLateral = props => {
             </li>
 
             <li>
-              <Link className="link" to="/recordatorio">
+              <Link className="link" to="/recordatorio"   onClick={() => {
+                  axios.post(urlBIngresoPCita, dataB); //Bitacora del modulo de usuario/empleado
+                  props.obj(2);
+                }}>
                 <FontAwesomeIcon className="iconLi" icon={faCalendar} />
-                <h1>RECORDATORIOS</h1>
+                <h1>CITAS</h1>
               </Link>
             </li>
 
