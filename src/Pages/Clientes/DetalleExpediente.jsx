@@ -21,8 +21,8 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
-const urlExpediente='http://localhost:3000/api/Expediente'
+const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlExpediente = 'http://localhost:3000/api/Expediente'
 const urlClientes = 'http://localhost:3000/api/clientes'
 
 
@@ -51,18 +51,18 @@ export const DetalleExpediente = (props) => {
     fechaHoy.setFullYear(fechaHoy.getFullYear() + 1);
     return fechaHoy.toISOString().slice(0, 10);
   });
-  
+
   useEffect(() => {
     setTableData([]);
   }, []);
 
 
-  const handleNext = async() => {
+  const handleNext = async () => {
     let fechaConsulta = document.getElementById('fechaconsulta').value;
     let fechaExpiracion = document.getElementById('fechaexpiracion').value;
-    let AsesorVenta= document.getElementById('Asesor').value;
-    let Optometrista= document.getElementById('optometrista').value;
-    let Antecedentes= document.getElementById('antecendentes').value;
+    let AsesorVenta = document.getElementById('Asesor').value;
+    let Optometrista = document.getElementById('optometrista').value;
+    let Antecedentes = document.getElementById('antecendentes').value;
 
 
     let fecha = new Date(fechaConsulta)
@@ -76,33 +76,34 @@ export const DetalleExpediente = (props) => {
     // Agregar un año a la fecha actual
 
     let fechadespues = new Date(fechaExpiracion)
-fechadespues.setFullYear(fechadespues.getFullYear() + 1);
+    fechadespues.setFullYear(fechadespues.getFullYear() + 1);
 
-let year = fechadespues.getFullYear().toString();
-let month = (fechadespues.getMonth() + 1).toString().padStart(2, "0");
-let day = fechadespues.getDate().toString().padStart(2, "0");
+    let year = fechadespues.getFullYear().toString();
+    let month = (fechadespues.getMonth() + 1).toString().padStart(2, "0");
+    let day = fechadespues.getDate().toString().padStart(2, "0");
 
-let fechaModificada = year + "/" + month + "/" + day;
-    
+    let fechaModificada = year + "/" + month + "/" + day;
+
     let data = {
-      IdExpediente:props.Data.IdExpediente || props.Data.id,
-      fechaConsulta:fechaFormateada,
-      Optometrista:Optometrista,
-      fechaExpiracion:fechaModificada,
-      AsesorVenta:AsesorVenta,
-      Antecedentes:Antecedentes,
-   }
-   props.data(data)
+      IdExpediente: props.Data.IdExpediente || props.Data.id,
+      fechaConsulta: fechaFormateada,
+      Optometrista: Optometrista,
+      //fechaExpiracion: fechaModificada,
+      fechaExpiracion: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate()), //la agrego Johana porque se saltaba 2 años
+      AsesorVenta: AsesorVenta,
+      Antecedentes: Antecedentes,
+    }
+    props.data(data)
 
-   //await axios.post(urlNuevoDiagnostico,data).then(response=>{
-   // swal('Registro creado con exito', '', 'success').then(result => {
-      navegate('/menuClientes/Diagnostico');
+    //await axios.post(urlNuevoDiagnostico,data).then(response=>{
+    // swal('Registro creado con exito', '', 'success').then(result => {
+    navegate('/menuClientes/Diagnostico');
     //});
 
- // }).catch(error=>{
-   // console.log(error);
+    // }).catch(error=>{
+    // console.log(error);
     //swal("Error al registrar.", "", "error")
-//})
+    //})
 
   };
 
@@ -152,28 +153,28 @@ let fechaModificada = year + "/" + month + "/" + day;
             <div className="contInput">
               <TextCustom text="Optometrista" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setNombreOptometrista(e.target.value);
-                if (e.target.value === '') {
-                  setErrorNombreOptometrista(true);
-                  setMsj('Los campos no deben estar vacíos');
-                } else {
-                  setErrorNombreOptometrista(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                onKeyDown={e => {
+                  setNombreOptometrista(e.target.value);
+                  if (e.target.value === '') {
                     setErrorNombreOptometrista(true);
-                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
-                    setErrorNombreOptometrista(true);
-                    setMsj('No se permiten letras consecutivas repetidas');
+                    setMsj('Los campos no deben estar vacíos');
                   } else {
                     setErrorNombreOptometrista(false);
-                    setMsj('');
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrorNombreOptometrista(true);
+                      setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorNombreOptometrista(true);
+                      setMsj('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorNombreOptometrista(false);
+                      setMsj('');
+                    }
                   }
-                }
-              }}
-              error={errorNombreOptometrista}
-              helperText={Msj}
+                }}
+                error={errorNombreOptometrista}
+                helperText={Msj}
                 type="text"
                 name=""
                 maxLength={40}
@@ -181,36 +182,36 @@ let fechaModificada = year + "/" + month + "/" + day;
                 placeholder="Optometrista"
                 id="optometrista"
               />
-               <p className="error">{Msj}</p>
+              <p className="error">{Msj}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Asesor de Venta" className="titleInput" />
 
               <input
-               onKeyDown={e => {
-                setNombreAsesor(e.target.value);
-                if (e.target.value === '') {
-                  setErrorNombreAsesor(true);
-                  setAviso('Los campos no deben estar vacíos');
-                } else {
-                  setErrorNombreAsesor(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                onKeyDown={e => {
+                  setNombreAsesor(e.target.value);
+                  if (e.target.value === '') {
                     setErrorNombreAsesor(true);
-                    setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
-                    setErrorNombreAsesor(true);
-                    setAviso('No se permiten letras consecutivas repetidas');
+                    setAviso('Los campos no deben estar vacíos');
                   } else {
                     setErrorNombreAsesor(false);
-                    setAviso('');
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrorNombreAsesor(true);
+                      setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorNombreAsesor(true);
+                      setAviso('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorNombreAsesor(false);
+                      setAviso('');
+                    }
                   }
-                }
-                
-              }}
-              error={errorNombreAsesor}
-              helperText={Aviso}
+
+                }}
+                error={errorNombreAsesor}
+                helperText={Aviso}
                 type="text"
                 name=""
                 maxLength={40}
@@ -218,7 +219,7 @@ let fechaModificada = year + "/" + month + "/" + day;
                 placeholder="Asesor de Venta"
                 id="Asesor"
               />
-             <p className="error">{Aviso}</p>
+              <p className="error">{Aviso}</p>
             </div>
 
             <div className="contInput">
@@ -238,29 +239,29 @@ let fechaModificada = year + "/" + month + "/" + day;
             <div className="contInput">
               <TextCustom text="Antecedentes Clinicos" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setAntecedentesC(e.target.value);
-                if (e.target.value === '') {
-                  setErrorAntecedentesC(true);
-                  setAdvertencia('Los campos no deben estar vacíos');
-                } else {
-                  setErrorAntecedentesC(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                onKeyDown={e => {
+                  setAntecedentesC(e.target.value);
+                  if (e.target.value === '') {
                     setErrorAntecedentesC(true);
-                    setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
-                    setErrorAntecedentesC(true);
-                    setAdvertencia('No se permiten letras consecutivas repetidas');
+                    setAdvertencia('Los campos no deben estar vacíos');
                   } else {
                     setErrorAntecedentesC(false);
-                    setAdvertencia('');
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrorAntecedentesC(true);
+                      setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorAntecedentesC(true);
+                      setAdvertencia('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorAntecedentesC(false);
+                      setAdvertencia('');
+                    }
                   }
-                }
-                
-              }}
-              error={errorAntecendentesC}
-              helperText={Advertencia}
+
+                }}
+                error={errorAntecendentesC}
+                helperText={Advertencia}
                 type="text"
                 name=""
                 maxLength={100}
@@ -269,7 +270,7 @@ let fechaModificada = year + "/" + month + "/" + day;
                 id="antecendentes"
               />
 
-            </div> 
+            </div>
 
             <div className="contBtnStepper">
               <Button
@@ -291,7 +292,7 @@ let fechaModificada = year + "/" + month + "/" + day;
                   } else if (/(.)\1{2,}/.test(AsesorDeVentas)) {
                     setErrorNombreAsesor(true);
                     swal("El campo asesor no acepta letras consecutivas repetidas.", "", "error");
-                  }  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AntecedentesClinicos)) {
+                  } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AntecedentesClinicos)) {
                     swal("El campo antecedentes solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
                   } else if (/(.)\1{2,}/.test(AntecedentesClinicos)) {
                     setErrorAntecedentesC(true);
@@ -301,11 +302,11 @@ let fechaModificada = year + "/" + month + "/" + day;
                   }
 
                 }}
-                //onClick= {handleNext} //INSERTA 
-               /*  onClick={() => {
+              //onClick= {handleNext} //INSERTA 
+              /*  onClick={() => {
 
-                  navegate('/menuClientes/Diagnostico');
-                }} */
+                 navegate('/menuClientes/Diagnostico');
+               }} */
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>

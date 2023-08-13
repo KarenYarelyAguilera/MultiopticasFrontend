@@ -1803,7 +1803,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <Diagnostico data={data}/>
+                <Diagnostico data={data} id={data}  datosclientes={registros}   idUsuario={idUsuario} />
               </div>
 
               // {/* </ProtectedRoute> */}
@@ -1843,6 +1843,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <Perfil 
                   infoPerfil={infoPerfil}
                   idUsuario={idUsuario} 
+                  update={update}
+                  data={data}
                  
                  
                 
