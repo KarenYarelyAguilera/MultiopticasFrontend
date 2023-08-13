@@ -141,7 +141,7 @@ export const ListaPagos = (props) => {
   }
 
   const handleBack = () => {
-    navegate('/menuClientes');
+    navegate('/ventas');
   };
 
   const handleCloseDialog = () => {
