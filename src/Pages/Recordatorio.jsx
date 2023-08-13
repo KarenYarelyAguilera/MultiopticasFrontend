@@ -146,8 +146,8 @@ export const Recordatorio = (props) => {
 
     const urlPDF = 'Reporte_Recordatorio.pdf';
     const subTitulo = "LISTA DE RECORDATORIO"
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
 

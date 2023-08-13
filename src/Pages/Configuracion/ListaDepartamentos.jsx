@@ -61,8 +61,9 @@ export const ListaDepartamentos = ({props,data,update}) => {
 
     const urlPDF = 'Report_Departamentos.pdf';
     const subTitulo = "LISTA DE DEPARTAMENTOS"
+    const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
 

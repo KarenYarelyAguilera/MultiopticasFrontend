@@ -29,7 +29,7 @@ export const ConfigRol = props => {
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosupdt';
   const urlupDel =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosdel';
-    const urlPermisos = "http://localhost:3000/api/permisosRol"
+   
 
   const [roles, setRoles] = useState([]);
   const [permisos, setPermisos] = useState([]);

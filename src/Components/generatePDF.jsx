@@ -6,10 +6,10 @@ import logoImg  from "../IMG/MultiopticaBlanco.png";
 import fondoPDF from "../IMG/fondoPDF.jpg";
 
 
-export const generatePDF = (formatDataForPDF, urlPDF, subTitulo) => {
+export const generatePDF = (formatDataForPDF, urlPDF, subTitulo, orientation) => {
 
     const dataForPDF = formatDataForPDF();
-    const documento = new jsPDF('landscape');
+    const documento = new jsPDF(`${orientation}`);
     const columns = Object.keys(dataForPDF[0]);
     const rows = dataForPDF.map((row) => Object.values(row));
     
