@@ -87,7 +87,7 @@ export const ListaVenta = (props) => {
 
           <Button
             className="btnImprimirExp"
-            onClick={()=> handlePrintModal(params.row)}
+            onClick={()=> handlePrintModal(params.row.IdVenta)}
           >
 
             <PictureAsPdfIcon></PictureAsPdfIcon>
@@ -143,7 +143,10 @@ export const ListaVenta = (props) => {
   async function  handleUpdt (id) {
     //setinformacionventa.data[0](id);
     console.log(id);
-    const informacionventa = await axios.post(urlVentaDetalle,{id:id})
+    var data = {
+      id:id
+    }
+    const informacionventa = await axios.post(urlVentaDetalle,data)
     swal(
       <div>
         <div className="logoModal">DATOS DE LA VENTA</div>

@@ -16,8 +16,6 @@ export const ConfigRol = props => {
   const urlRoles =
     'http://localhost:3000/api/Rol';
 
-  const urlPermisos = "http://localhost:3000/api/permisos/Rol";
-
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
   const urlNRol =

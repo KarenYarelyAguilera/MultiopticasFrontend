@@ -83,7 +83,7 @@ export const PagoDeVenta = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/menuVentas');
+    navegate('/menuVentas/detallesdeVenta');
   };
 
   return (
