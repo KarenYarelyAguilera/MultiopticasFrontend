@@ -119,6 +119,7 @@ function App() {
   const [registros, setregistros] = useState({});
   const [obj, setobj] = useState(0);
   const [Rol, setRol] = useState('');
+  const [idRol,setIdRol]=useState(0)
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
@@ -139,6 +140,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const update = upd => setActualizar(upd);
   const registroclientes  = reg => setregistros(reg);
   const dVenta = venta=>setDataVenta(venta)
+  const idrol = idr=>setIdRol(idr)
 
 
 
@@ -170,6 +172,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 access={access}
                 user={user}
                 rol={rol}
+                idRol={idrol}
                 mail={mail}
                 idUsuario={id}
                 vPerfil={perfil}
@@ -1246,7 +1249,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaVenta datosventa={dVenta} />
+                  <ListaVenta datosventa={dVenta} idRol={idRol} />
                 </div>
              // </ProtectedRoute>
             }
