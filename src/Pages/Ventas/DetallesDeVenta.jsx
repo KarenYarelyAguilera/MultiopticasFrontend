@@ -222,7 +222,13 @@ export const DetallesDeVenta = (props) => {
                   swal("El campo cantidad solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(lente))) {
                   swal("El campo precio de lente solo acepta números.", "", "error");
-                  }else {
+                  }else if (cantidad <= 0) {
+                    swal("El campo cantidad no acepta valores negativos.", "", "error");
+                  }else if (lente <= 0) {
+                    swal("El campo precio de lente no acepta valores negativos.", "", "error");
+                  }
+                  else {
+                    
                     handleNext();
                   }       
                   }

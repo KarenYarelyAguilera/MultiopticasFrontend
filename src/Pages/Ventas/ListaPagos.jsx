@@ -53,17 +53,20 @@ export const ListaPagos = (props) => {
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
                               fechaCre.getFullYear();
         return {
-          'N°': row.IdExpediente,
-          'Cliente': row.Cliente,
-          'Fecha de creación': fechaCreacion,
-          'Empleado': row.CreadoPor,
+          'IdPago': row.IdPago,
+          'IdVenta': row.IdVenta,
+          'Tipo de Pago': row.MetodoDePago,
+          'Fecha': row.fecha,
+          'Estado': row.estado,
+          'Saldo Abonado': row.saldoAbono,
+          'Saldo Restante': row.saldoRestante,
         };
       });
       return formattedData;
     };
 
-    urlPDF = 'Reporte_Expediente.pdf';
-    const subTitulo = "LISTA DE EXPEDIENTES"
+    urlPDF = 'Reporte_Pagos.pdf';
+    const subTitulo = "LISTA DE PAGOS"
     const orientation = "landscape";
 
     generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
@@ -196,7 +199,7 @@ export const ListaPagos = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuClientes/lista');
+                swal("No es posible realizar una accion con este boton","","error")
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
