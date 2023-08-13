@@ -1203,7 +1203,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaPagos data={Data} />
+                  <ListaPagos data={dVenta} />
                 </div>
               
             }
