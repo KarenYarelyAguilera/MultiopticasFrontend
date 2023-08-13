@@ -7,6 +7,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import { generatePDF } from '../../Components/generatePDF';
 
 
 
@@ -62,6 +64,30 @@ export const ListaVenta = (props) => {
     ),
   );
 
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaYHora);
+        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'IdVenta': row.IdVenta,
+          'Fecha': row.fecha,
+          'Cliente': row.Cliente,
+          'ValorVenta': row.ValorVenta,
+         
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_ventas.pdf';
+    const subTitulo = "LISTA DE VENTAS"
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  };
+
   const columns = [
     { field: 'IdVenta', headerName: 'IdVenta', width: 210 },
     { field: 'fecha', headerName: 'Fecha', width: 310 },
@@ -86,7 +112,7 @@ export const ListaVenta = (props) => {
           <Button
             className="btnImprimirExp"
 
-            onClick={()=> handlePrintModal(params.row)}
+            onClick={() => handlePrintModal(params.row)}
 
           >
 
@@ -101,10 +127,10 @@ export const ListaVenta = (props) => {
   ];
 
   const handlePrintModal = async (id) => {
-    const informacionventa = await axios.post(urlVentaDetalle,{id:id})
+    const informacionventa = await axios.post(urlVentaDetalle, { id: id })
     const documento = new jsPDF();
     documento.text(`                       MULTIOPTICAS, S.DE R.L. DE C.V.`, 20, 10);
-   
+
     documento.text(`Fecha: ${informacionventa.data[0].fecha}`, 20, 20);
     documento.text(`RTN:  08011998014780`, 20, 30);
     documento.text(`NumeroCAI: ${informacionventa.data[0].NumeroCAI}`, 20, 40);
@@ -132,19 +158,19 @@ export const ListaVenta = (props) => {
     documento.text(`Precio Lente: ${informacionventa.data[0].precioLente}`, 20, 260);
     documento.text(`Subtotal: ${informacionventa.data[0].subtotal}`, 20, 270);
     documento.text(`Rebajas: ${informacionventa.data[0].rebaja}`, 20, 280);
-    documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 290); 
-   
+    documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 290);
+
 
     documento.save('ventadetalle_factura.pdf');
     //setinformacionventa.data[0]({})
   };
 
   //PANTALLA MODAL---------------------------------------------------------------------------
-  async function  handleUpdt (id) {
+  async function handleUpdt(id) {
     //setinformacionventa.data[0](id);
     console.log(id);
 
-    const informacionventa = await axios.post(urlVentaDetalle,{id:id})
+    const informacionventa = await axios.post(urlVentaDetalle, { id: id })
 
     swal(
       <div>
@@ -184,7 +210,7 @@ export const ListaVenta = (props) => {
             <label><b>Subtotal: {informacionventa.data[0].subtotal}  </b></label>
             <label><b>Rebajas:{informacionventa.data[0].rebaja}</b></label>
             <label><b>Total a pagar:{informacionventa.data[0].totalVenta}</b></label>
-          </div>      
+          </div>
 
         </div>
       </div>,
@@ -236,7 +262,9 @@ export const ListaVenta = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva Venta
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}
+            >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

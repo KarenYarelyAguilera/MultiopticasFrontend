@@ -69,10 +69,9 @@ export const PagoDeVenta = (props) => {
           if (data.saldoAbono>data.saldoRestante) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
               props.dataVenta({})
-
-              navegate('/menuVentas/ListaPagos')
-
+             
             })
+            navegate('/menuVentas/ListaPagos')
           }
           })
         
@@ -82,10 +81,11 @@ export const PagoDeVenta = (props) => {
 
 
 
+
   };
 
   const handleBack = () => {
-    navegate('/menuVentas');
+    navegate('/ventas');
   };
 
   return (
