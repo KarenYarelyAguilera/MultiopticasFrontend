@@ -69,7 +69,9 @@ export const PagoDeVenta = (props) => {
           if (data.saldoAbono>data.saldoRestante) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
               props.dataVenta({})
-              navegate('/menuVentas/Pago/Lista')
+
+              navegate('/menuVentas/ListaPagos')
+
             })
           }
           })
@@ -83,7 +85,7 @@ export const PagoDeVenta = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/menuVentas/detallesdeVenta');
+    navegate('/menuVentas');
   };
 
   return (
@@ -152,7 +154,9 @@ export const PagoDeVenta = (props) => {
               <input
                 type="text"
                 name=""
-                value={props.venta.total}
+
+                value={props.venta.total || props.venta.saldoRestante}
+
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Saldo Restante"

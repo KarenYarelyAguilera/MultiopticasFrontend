@@ -34,8 +34,6 @@ export const ListaVenta = (props) => {
 
   const urlVentas = 'http://localhost:3000/api/Ventas';
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
-
-
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -87,7 +85,9 @@ export const ListaVenta = (props) => {
 
           <Button
             className="btnImprimirExp"
-            onClick={()=> handlePrintModal(params.row.IdVenta)}
+
+            onClick={()=> handlePrintModal(params.row)}
+
           >
 
             <PictureAsPdfIcon></PictureAsPdfIcon>
@@ -143,10 +143,9 @@ export const ListaVenta = (props) => {
   async function  handleUpdt (id) {
     //setinformacionventa.data[0](id);
     console.log(id);
-    var data = {
-      id:id
-    }
-    const informacionventa = await axios.post(urlVentaDetalle,data)
+
+    const informacionventa = await axios.post(urlVentaDetalle,{id:id})
+
     swal(
       <div>
         <div className="logoModal">DATOS DE LA VENTA</div>
