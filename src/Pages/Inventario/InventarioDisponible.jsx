@@ -115,6 +115,7 @@ export const InventarioDisponible = (props) => {
   ];
 
   const ListaMovimiento = (param)=>{
+    console.log(param);
     props.data(param)
     navegate('/menuInventario/listaInventario')
   }
