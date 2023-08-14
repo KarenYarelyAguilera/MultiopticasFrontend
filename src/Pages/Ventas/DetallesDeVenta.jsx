@@ -67,9 +67,9 @@ export const DetallesDeVenta = (props) => {
     data = {...props.venta,...data}
 
      //Funcion de bitacora 
-     let dataUsuario={
-      Id:props.idUsuario
-    }
+    //  let dataUsuario={
+    //   Id:props.idUsuario
+    // }
     
    
 
@@ -85,7 +85,7 @@ export const DetallesDeVenta = (props) => {
         axios.post(urlVenta,data).then((response)=>{
           props.dataVenta(response.data)
           swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta')) 
-          axios.post(urlBitacoraInsertVenta,dataUsuario)
+         // axios.post(urlBitacoraInsertVenta,dataUsuario)
         })
       } else {//se cancela todo alv
         
