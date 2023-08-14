@@ -123,12 +123,13 @@ function App() {
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
   const [data, setData] = useState({});
+  const [dataVenta,setDataVenta]=useState({})
   const [actualizar, setActualizar] = useState(false);
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
 dependiendo del estado un componente puede reaccionar de formas diferentes */
 
-  const access = acceder => setActivo(acceder); //Prop para cambiar el hook "activo desde un componente"
+  const access = acceder => setActivo(acceder); //Prop para cambiar el hregistroclook "activo desde un componente"
   const user = usr => setUsuario(usr);
   const mail = ml => setCorreo(ml);
   const rol = rl => setRol(rl);
@@ -137,6 +138,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
   const registroclientes  = reg => setregistros(reg);
+  const dVenta = venta=>setDataVenta(venta)
+
 
 
 //hook para manipular el perfil y sus variables
@@ -613,8 +616,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <RegistroProducto2
                   actualizar={actualizar}
                   update={update}
-                  data={data}
+                  data={data}garanr
                   Data={Data}
+                  idUsuario={idUsuario} 
                 ></RegistroProducto2>
 
               </div>
@@ -1200,7 +1204,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaPagos data={Data} />
+
+                  <ListaPagos data={dVenta} />
+
                 </div>
               
             }
@@ -1243,7 +1249,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaVenta />
+                  <ListaVenta datosventa={dVenta} />
                 </div>
              // </ProtectedRoute>
             }
@@ -1411,7 +1417,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                   />
-                  <BarraHorizontal user={usuario} />
+                  <BarraHorizontal user={usuario}  />
                   <MenuCompras></MenuCompras>
                 </div>
              // </ProtectedRoute>
@@ -1521,7 +1527,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaVenta />
+                  <NuevaVenta venta={dVenta}  
+                  update={update}
+                  data={data}garanr
+                  Data={Data}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1541,7 +1550,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <PagoDeVenta />
+                  <PagoDeVenta venta={dataVenta} dataVenta={dVenta} idUsuario={idUsuario}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1581,7 +1590,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <DetallesDeVenta />
+
+                  <DetallesDeVenta venta={dataVenta} dataVenta={dVenta} idUsuario={idUsuario}/>
+
                 </div>
              // </ProtectedRoute>
             }
@@ -1707,7 +1718,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaCompra idUsuario={idUsuario} />
+                  <NuevaCompra idUsuario={idUsuario}  />
                 </div>
             //  </ProtectedRoute>
             }
