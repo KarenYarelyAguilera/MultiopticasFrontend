@@ -87,14 +87,22 @@ export const Recordatorio = (props) => {
   const urlGetCita = 'http://localhost:3000/api/recordatorio';
   const urlDelCita = 'http://localhost:3000/api/eliminarCita'
   const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
+  const urlBSalirPantalla='http://localhost:3000/api/bitacora/citasSalir';
+
+
+ 
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
 
   };
 
+  let dataUsuario={
+    Id:props.idUsuario
+  }
   const handleBack = () => {
     //axios.post (urlBitacoraBotonSalirLE,dataB)
+    axios.post(urlBSalirPantalla,dataUsuario)
     navegate('/dashboard');
   };
 
@@ -176,34 +184,27 @@ export const Recordatorio = (props) => {
 
 
 
-
   const columns = [
     //son los de la base no los de node
     { field: 'IdRecordatorio', headerName: 'No.', width: 50, headerAlign: 'center' },
     { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
-    { field: 'Nota', headerName: 'Nota', width: 290, headerAlign: 'center' },
-    { field: 'fecha', headerName: 'Fecha', width: 200, headerAlign: 'center' },
-
-
+    { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
+    { 
+      field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
+      valueGetter: (params) => {
+        const date = new Date(params.row.fecha);
+        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+      },
+    },
     {
-      field: 'borrar',
-      headerName: 'Acciones',
-      width: 190, headerAlign: 'center',
-
+      field: 'borrar', headerName: 'Acciones', width: 190, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.IdRecordatorio)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}><EditIcon></EditIcon></Button>
+          <Button className="btnDelete" onClick={() => handleDel(params.row.IdRecordatorio)}><DeleteForeverIcon></DeleteForeverIcon></Button>
         </div>
       ),
     },
@@ -232,7 +233,7 @@ export const Recordatorio = (props) => {
           let dataUsuario = {
             Id: props.idUsuario
           }
-       
+
 
           await axios.delete(urlDelCita, { data }).then(response => {
             swal('Cita eliminada correctamente', '', 'success');
@@ -302,13 +303,10 @@ export const Recordatorio = (props) => {
 
 
 
-
   return (
     <div className="ContUsuarios">
-      {/* <Button className="btnBack" onClick={handleBack}>
-        <ArrowBackIcon className="iconBack" />
-      </Button> */}
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programadas</h2>
+      <Button className="btnBack" onClick={handleBack}><ArrowBackIcon className="iconBack"/> </Button> 
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programadas Anualmente</h2>
 
       <div
         style={{
