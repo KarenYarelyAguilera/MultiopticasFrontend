@@ -341,6 +341,8 @@ export const RegistroProducto2 = (props) => {
                     swal("El campo cantidadMinima no acepta valores negativos.", "", "error");
                   }else if (cantidadMax <= cantidadMin) {
                     swal("El campo cantidadMaxima no acepta valores menores.", "", "error");
+                  }else if (precio <= 0) {
+                    swal("El campo precio no acepta valores negativos.", "", "error");
                   }
                   else
                     props.actualizar ? actualizarProducto() : handleNext();
