@@ -190,9 +190,9 @@ export const Recordatorio = (props) => {
     { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
-    { field: 'Nota', headerName: 'Nota', width: 200, headerAlign: 'center' },
+    { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
     { 
-      field: 'fecha', headerName: 'Fecha', width: 70, headerAlign: 'center',
+      field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
       valueGetter: (params) => {
         const date = new Date(params.row.fecha);
         return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
