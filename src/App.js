@@ -618,6 +618,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}garanr
                   Data={Data}
+                  idUsuario={idUsuario} 
                 ></RegistroProducto2>
 
               </div>
@@ -1414,7 +1415,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                   />
-                  <BarraHorizontal user={usuario} />
+                  <BarraHorizontal user={usuario}  />
                   <MenuCompras></MenuCompras>
                 </div>
              // </ProtectedRoute>
@@ -1547,7 +1548,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <PagoDeVenta venta={dataVenta} dataVenta={dVenta}/>
+                  <PagoDeVenta venta={dataVenta} dataVenta={dVenta} idUsuario={idUsuario}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1715,7 +1716,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaCompra idUsuario={idUsuario} />
+                  <NuevaCompra idUsuario={idUsuario}  />
                 </div>
             //  </ProtectedRoute>
             }

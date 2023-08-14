@@ -24,11 +24,13 @@ import axios from 'axios';
 const urlCompra = 'http://localhost:3000/api/compra/NuevaCompra';
 const urlProducto = "http://localhost:3000/api/productos";
 const urlProveedor = "http://localhost:3000/api/proveedor";
+const urlInsertCompraB = 'http://localhost:3000/api/bitacora/insertcompra';
 
 export const NuevaCompra = ({
   msgError = '',
   success = false,
   warning = false,
+  props,
   idUsuario,
 }) => {
   // const [activeStep, setActiveStep] = React.useState(0);
@@ -121,9 +123,16 @@ export const NuevaCompra = ({
     let data = {
       "arrCompras": compras
     }
+
+    //Funcion de bitacora 
+    let data2={
+      Id:props.idUsuario
+    }
+
     console.log(data);
     await axios.post(urlCompra, data).then(() => {
       swal("Compra registrada con exito", "", "success")
+      axios.post(urlInsertCompraB,data2)
       navegate('/menuInventario/ListaCompra');
     })
 

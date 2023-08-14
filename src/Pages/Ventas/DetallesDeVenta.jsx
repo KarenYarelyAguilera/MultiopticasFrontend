@@ -23,6 +23,7 @@ const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
+const urlBitacoraInsertVenta='http://localhost:3000/api/bitacora/insertventa';
 
 
 export const DetallesDeVenta = (props) => {
@@ -65,6 +66,10 @@ export const DetallesDeVenta = (props) => {
 
     data = {...props.venta,...data}
 
+     //Funcion de bitacora 
+     let dataUsuario={
+      Id:props.idUsuario
+    }
     
    
 
@@ -79,7 +84,8 @@ export const DetallesDeVenta = (props) => {
       if (result) {//axios
         axios.post(urlVenta,data).then((response)=>{
           props.dataVenta(response.data)
-          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta'))
+          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta')) 
+          axios.post(urlBitacoraInsertVenta,dataUsuario)
         })
       } else {//se cancela todo alv
         

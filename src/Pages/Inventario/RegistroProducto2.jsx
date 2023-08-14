@@ -27,6 +27,10 @@ const urlDelProducto = //BORRAR
 const urlModelos = //MOSTRAR MODELOS
   'http://localhost:3000/api/modelos';
 
+  //BITACORAS
+  const urlBitacoraInsertProducto='http://localhost:3000/api/bitacora/insertoproducto';
+  const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
+
 
 
 export const RegistroProducto2 = (props) => {
@@ -79,13 +83,13 @@ export const RegistroProducto2 = (props) => {
   
   
       //Funcion de bitacora 
-      /*  let dataB={
-         Id: props.idUsuario
-       } */
+      let dataUsuario={
+        Id:props.idUsuario
+      }
   
       axios.put(urlUpdProducto, data).then(() => {
         swal("Producto Actualizado Correctamente", "", "success").then(() => {
-          //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+          axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -115,10 +119,15 @@ export const RegistroProducto2 = (props) => {
       descripcion: descripcion,
     };
 
+     //Funcion de bitacora 
+     let dataUsuario={
+      Id:props.idUsuario
+    }
+
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
+        axios.post(urlBitacoraInsertProducto,dataUsuario)
         navegate('/menuInventario/ListaProductos');
       });
     }).catch(error => {
