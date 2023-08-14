@@ -125,14 +125,14 @@ export const NuevaCompra = ({
     }
 
     //Funcion de bitacora 
-    let data2={
-      Id:props.idUsuario
-    }
+    // let data2={
+    //   Id:props.idUsuario
+    // }
 
     console.log(data);
     await axios.post(urlCompra, data).then(() => {
       swal("Compra registrada con exito", "", "success")
-      axios.post(urlInsertCompraB,data2)
+      //axios.post(urlInsertCompraB,data2)
       navegate('/menuInventario/ListaCompra');
     })
 

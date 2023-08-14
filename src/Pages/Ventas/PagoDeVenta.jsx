@@ -54,9 +54,9 @@ export const PagoDeVenta = (props) => {
     }
 
     //Funcion de bitacora 
-    let data2={
-      Id:props.idUsuario
-    }
+    // let data2={
+    //   Id:props.idUsuario
+    // }
     console.log(props.venta.id);
     console.log(data);
 
@@ -72,7 +72,7 @@ export const PagoDeVenta = (props) => {
       await axios.post(urlPago,data).then(()=>{
        
         swal(`Pago registrado con exito`,"","success").then(()=>{
-          axios.post(urlInsertPagoB,data2)
+          //axios.post(urlInsertPagoB,data2)
           if (data.saldoAbono>data.saldoRestante) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
               props.dataVenta({}) 
