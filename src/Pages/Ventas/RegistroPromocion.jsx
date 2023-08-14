@@ -118,7 +118,7 @@ export const RegistroPromocion = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/ListaPromociones');
   };
 
   return (

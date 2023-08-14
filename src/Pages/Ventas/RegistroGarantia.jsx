@@ -101,7 +101,7 @@ const actualizarGarantia = async () => {
 
   //BOTON DE RETROCESO 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/listaGarantias');
   };
 
   return (

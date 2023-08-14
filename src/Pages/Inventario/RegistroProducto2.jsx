@@ -83,13 +83,13 @@ export const RegistroProducto2 = (props) => {
   
   
       //Funcion de bitacora 
-      let dataUsuario={
+     /*  let dataUsuario={
         Id:props.idUsuario
-      }
+      } */
   
       axios.put(urlUpdProducto, data).then(() => {
         swal("Producto Actualizado Correctamente", "", "success").then(() => {
-          axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
+          //axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -120,16 +120,17 @@ export const RegistroProducto2 = (props) => {
     };
 
      //Funcion de bitacora 
-     let dataUsuario={
+     /* let dataUsuario={
       Id:props.idUsuario
-    }
+    } */
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
-        axios.post(urlBitacoraInsertProducto,dataUsuario)
+       // axios.post(urlBitacoraInsertProducto,dataUsuario)
         navegate('/menuInventario/ListaProductos');
       });
+      
     }).catch(error => {
       console.log(error);
       swal('Error al crear Producto, los modelos deben ser unicos como tu.', '', 'error')
