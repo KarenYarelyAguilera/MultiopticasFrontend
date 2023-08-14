@@ -4,7 +4,9 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import axios from 'axios';
+import ReactModal from 'react-modal';
+import jsPDF from 'jspdf';
 //Styles
 import '../../Styles/Usuarios.css';
 
@@ -13,30 +15,77 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 
 
-const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
+//URLS
+const urlProducto = 'http://localhost:3000/api/productos';
+const urlLente = 'http://localhost:3000/api/lentes';
+const urlDescuento = 'http://localhost:3000/api/Descuento';
+const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
+const urlPromocion = 'http://localhost:3000/api/promociones';
+const urlGarantia = 'http://localhost:3000/api/garantias';
+const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 
-export const DetallesDeVenta = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
 
+export const DetallesDeVenta = (props) => {
+
+  const [Producto, setProducto] = useState([]);
+  const [Lente, setLente] = useState([]);
+  const [Descuento, setDescuento] = useState([]);
+  const [DescuentoLente, setDescuentoLente] = useState([]);
+  const [Promocion, setPromocion] = useState([]);
+  const [Garantia, setGarantia] = useState([]);
+
+
+  useEffect(() => {
+    fetch(urlProducto).then(response => response.json()).then(data => setProducto(data))
+    fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
+    fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
+    fetch(urlGarantia).then(response => response.json()).then(data => setGarantia(data))
+  }, [])
 
   const navegate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
-    let data={
-      fecha:new Date(),
-      fechaLimiteEntrega:document.getElementById("fechaLimite").value,
-      fechaEntrega:document.getElementById("fechaEntrega").value,
-      estado:parseInt(document.getElementById("estado").value),
-      observacion:document.getElementById("observacion").value,
-      
+    let producto = parseInt(document.getElementById("producto").value)
+    let Descuento = parseInt(document.getElementById('descuentoAro').value);
+    let Promocion = parseInt(document.getElementById('promocion').value);
+    let Garantia = parseInt(document.getElementById('garantia').value);
+    let cantidad = parseInt(document.getElementById("Cantidad").value)
+    let lente = parseFloat(document.getElementById("lente").value)
+
+    let data = {
+      IdGarantia: Garantia,
+      IdDescuento: Descuento,
+      IdPromocion: Promocion,
+      IdProducto:producto,
+      cantidad:cantidad,
+      precioLente:lente,
+      idUsuario:props.idUsuario
     }
 
-    navegate('/menuVentas/DetallesDeVenta');
+    data = {...props.venta,...data}
+
+    
+   
+
+    swal({
+      title: "Confirmar venta",
+      icon: "warning",
+      buttons: {
+        cancel: "Cancelar",
+        confirm: "Confirmar",
+      },
+    }).then((result) => {
+      if (result) {//axios
+        axios.post(urlVenta,data).then((response)=>{
+          props.dataVenta(response.data)
+          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta'))
+        })
+      } else {//se cancela todo alv
+        
+      }
+    });
+  
 
   };
 
@@ -59,59 +108,125 @@ export const DetallesDeVenta = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-          <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
+            <div className="contInput">
+              <TextCustom text="Aros:" className="titleInput" />
+              <select name="" className="selectCustom" id="producto">
+                {Producto.length ? (
+                  Producto.map(pre => (
+                    <option key={pre.IdProducto} value={pre.IdProducto}>
+                      {pre.descripcion}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+
+                )}
+              </select>
+            </div>
+
+
+            <div className="contInput">
+              <TextCustom text="Descuento Aro:" className="titleInput" />
+              <select name="" className="selectCustom" id="descuentoAro">
+              {Descuento.length ? (
+                  Descuento.map(pre => (
+                    <option key={pre.IdDescuento} value={pre.IdDescuento}>
+                      {pre.descPorcent}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+
+                )}
+              </select>
+            </div>
+
+
+            <div className="contInput">
+              <TextCustom text="Promocion de venta:" className="titleInput" />
+              <select name="" className="selectCustom" id="promocion">
+              {Promocion.length ? (
+                  Promocion.map(pre => (
+                    <option key={pre.IdPromocion} value={pre.IdPromocion}>
+                      {pre.descPorcent}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+
+                )}
               </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
+              <TextCustom text="Garantia de venta:" className="titleInput" />
+              <select name="" className="selectCustom" id="garantia">
+              {Garantia.length ? (
+                  Garantia.map(pre => (
+                    <option key={pre.IdGarantia} value={pre.IdGarantia}>
+                      {pre.descripcion}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+
+                )}
               </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
+              <TextCustom text="Cantidad" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Cantidad"
+                id="Cantidad"
+              />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
-            
-            <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
-            </div>
+              <TextCustom text="Precio del lente" className="titleInput" />
 
-            <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="Cliente">
-                <option value={1}>Sin informacion</option>
-                <option value={2}>Sin informacion</option>
-              </select>
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Precio del lente"
+                id="lente"
+              />
             </div>
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var cantidad = parseInt(document.getElementById("Cantidad").value)
+                  var lente = parseFloat(document.getElementById("lente").value)
+                  
+                  if (cantidad === "" || lente === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (isNaN(parseInt(cantidad))) {
+                  swal("El campo cantidad solo acepta números.", "", "error");
+                  } else if (isNaN(parseFloat(lente))) {
+                  swal("El campo precio de lente solo acepta números.", "", "error");
+                  }else {
+                    handleNext();
+                  }       
+                  }
+                }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>

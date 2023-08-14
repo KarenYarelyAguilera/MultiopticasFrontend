@@ -106,15 +106,9 @@ export const RecordatorioCitasEditar = props => {
 
 
     const handleClick = async () => {
-
-
         // let idCliente =document.getElementById('idClientes').value;
-        
         let Nota = document.getElementById('Nota').value;
         let fecha = document.getElementById('fecha').value;
-
-
-
 
 
         let data = {
@@ -168,7 +162,7 @@ export const RecordatorioCitasEditar = props => {
                                         className="inputCustom"
                                         placeholder="Cliente"
                                         id='cliente'
-                                        value={props.data.nombre}
+                                        value={`${props.data.IdCliente} - ${props.data.nombre}`}
                                         disabled
                                     />
                                 </div>
@@ -192,7 +186,7 @@ export const RecordatorioCitasEditar = props => {
 
                                      <input
                                         onChange={e => setFecha(e.target.value)}
-                                        type="text"
+                                        type="date"
                                         id="fecha"
                                         className="inputCustom"
                                         placeholderText="Fecha"

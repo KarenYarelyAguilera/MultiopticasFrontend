@@ -16,21 +16,21 @@ export const ConfigRol = props => {
   const urlRoles =
     'http://localhost:3000/api/Rol';
 
-  const urlPermisos = "http://localhost:3000/api/permisos/Rol";
+  const urlPermisos = "http://localhost:3000/api/permisosRol";
 
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
   const urlNRol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
 
-  const urlupConsulta =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosconsultar';
-  const urlupInsert =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosinsert';
-  const urlupUpdt =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosupdt';
-  const urlupDel =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisosdel';
+  const urlUsuario = "http://localhost:3000/api/permisosOBJ2"
+  const urlInventario = "http://localhost:3000/api/permisosOBJ3"
+  const urlClientes = "http://localhost:3000/api/permisosOBJ4"
+  const urlRecordatorio = "http://localhost:3000/api/permisosOBJ5"
+  const urlCompras = "http://localhost:3000/api/permisosOBJ6"
+  const urlSeguridad = "http://localhost:3000/api/permisosOBJ7"
+  const urlConfig = "http://localhost:3000/api/permisosOBJ8"
+  const urlVentas = "http://localhost:3000/api/permisosOBJ9"
    
 
   const [roles, setRoles] = useState([]);
@@ -79,46 +79,7 @@ export const ConfigRol = props => {
   const navegate = useNavigate();
 
   
-  const dataLeer = {
-    idrol: gRol,
-    usuario: usuarioLeer? 's' : 'n',
-    ventas: ventasLeer ? 's' : 'n',
-    inventario: inventarioLeer ? 's' : 'n',
-    clientes: clientesLeer ? 's' : 'n',
-    recordatorios: recordatoriosLeer ? 's' : 'n',
-    seguridad: seguridadLeer ? 's' : 'n',
-    config: configuracionLeer ? 's' : 'n',
-  };
-  const dataInsertar = {
-    idrol: gRol,
-    usuario: usuarioInsertar ? 's' : 'n',
-    ventas: ventasInsertar ? 's' : 'n',
-    inventario: inventarioInsertar ? 's' : 'n',
-    clientes: clientesInsertar ? 's' : 'n',
-    recordatorios: recordatoriosInsertar ? 's' : 'n',
-    seguridad: seguridadInsertar ? 's' : 'n',
-    config: configuracionInsertar ? 's' : 'n',
-  };
-  const dataEditar = {
-    idrol: gRol,
-    usuario: usuarioEditar ? 's' : 'n',
-    ventas: ventasEditar ? 's' : 'n',
-    inventario: inventarioEditar ? 's' : 'n',
-    clientes: clientesEditar ? 's' : 'n',
-    recordatorios: recordatoriosEditar ? 's' : 'n',
-    seguridad: seguridadEditar ? 's' : 'n',
-    config: configuracionEditar ? 's' : 'n',
-  };
-  const dataEliminar = {
-    idrol: gRol,
-    usuario: usuarioEliminar ? 's' : 'n',
-    ventas: ventasEliminar ? 's' : 'n',
-    inventario: inventarioEliminar ? 's' : 'n',
-    clientes: clientesEliminar ? 's' : 'n',
-    recordatorios: recordatoriosEliminar ? 's' : 'n',
-    seguridad: seguridadEliminar ? 's' : 'n',
-    config: configuracionEliminar ? 's' : 'n',
-  };
+  
 
   
 
@@ -179,6 +140,113 @@ export const ConfigRol = props => {
       }
     });
   };
+
+  const updUsuarios = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: usuarioLeer? 's' : 'n',
+        insert: usuarioInsertar ? 's' : 'n',
+        upd: usuarioEditar ? 's' : 'n',
+        del: usuarioEliminar ? 's' : 'n',
+      };
+      await axios.put(urlUsuario,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updVentas = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: ventasLeer? 's' : 'n',
+        insert: ventasInsertar ? 's' : 'n',
+        upd: ventasEditar ? 's' : 'n',
+        del: ventasEliminar ? 's' : 'n',
+      };
+      await axios.put(urlVentas,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updInventario = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: inventarioLeer? 's' : 'n',
+        insert: inventarioInsertar ? 's' : 'n',
+        upd: inventarioEditar ? 's' : 'n',
+        del: inventarioEliminar ? 's' : 'n',
+      };
+      await axios.put(urlInventario,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updClientes = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: clientesLeer? 's' : 'n',
+        insert: clientesInsertar ? 's' : 'n',
+        upd: clientesEditar ? 's' : 'n',
+        del: clientesEliminar ? 's' : 'n',
+      };
+      await axios.put(urlClientes,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updRecordatorios = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: recordatoriosLeer? 's' : 'n',
+        insert: recordatoriosInsertar ? 's' : 'n',
+        upd: recordatoriosEditar ? 's' : 'n',
+        del: recordatoriosEliminar ? 's' : 'n',
+      };
+      await axios.put(urlRecordatorio,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updSeguridad = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: seguridadLeer? 's' : 'n',
+        insert: seguridadInsertar ? 's' : 'n',
+        upd: seguridadEditar ? 's' : 'n',
+        del: seguridadEliminar ? 's' : 'n',
+      };
+      await axios.put(urlSeguridad,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+  const updConfiguracion = async ()=>{
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    }else{
+      const data = {
+        idRol:gRol,
+        select: configuracionLeer? 's' : 'n',
+        insert: configuracionInsertar ? 's' : 'n',
+        upd: configuracionEditar ? 's' : 'n',
+        del: configuracionEliminar ? 's' : 'n',
+      };
+      await axios.put(urlConfig,data).then(()=>swal("Permisos actualizados con exito","","success"))
+    }
+
+  }
+
 
   const handleNuevoRol = () => {
     swal(
@@ -386,37 +454,7 @@ export const ConfigRol = props => {
     setConfigEliminar(!configuracionEliminar);
   };
 
-  const handleBoton = () => {
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    } else {
-      // switch (accion) {
-      //   case 1:
-      //     sendData(urlupConsulta, data).finally(alert('actualizado'));
-      //     break;
-      //   case 2:
-      //     sendData(urlupInsert, data).finally(alert('actualizado'));
-      //     break;
-      //   case 3:
-      //     sendData(urlupUpdt, data).finally(alert('actualizado'));
-      //     break;
-      //   case 4:
-      //     sendData(urlupDel, data).finally(alert('actualizado'));
-      //     break;
-
-      //   default:
-      //     break;
-      // }
-      console.log("Leer");
-      console.log(dataLeer);
-      console.log("Insert");
-      console.log(dataInsertar);
-      console.log("Upd");
-      console.log(dataEditar);
-      console.log("Del");
-      console.log(dataEliminar);
-    }
-  };
+  
 
   const handleBack = () => {
     navegate('/config/roles');
@@ -529,7 +567,7 @@ export const ConfigRol = props => {
                 Nuevo
               </Button>
 
-              <Button className="btnSaveRol" onClick={handleBoton}>
+              <Button className="btnSaveRol" >
                 <SaveIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
@@ -881,32 +919,39 @@ export const ConfigRol = props => {
                 ></IOSSwitch>
               </div>
               <div className="contSwitchControl">
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updUsuarios} >
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updVentas}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updInventario}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updClientes}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updRecordatorios}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updSeguridad}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={updConfiguracion}>
+              <EditIcon style={{ marginRight: '5px' }} />
+              Editar Permiso
               </Button>
               </div>
             </div>

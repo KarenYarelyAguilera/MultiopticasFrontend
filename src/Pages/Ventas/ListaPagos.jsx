@@ -28,7 +28,7 @@ import { generatePDF } from '../../Components/generatePDF';
 export const ListaPagos = (props) => {
 
   const [cambio, setCambio] = useState(0);
-  const urlExpedientes = 'http://localhost:3000/api/Expediente';
+  const urlPagos = 'http://localhost:3000/api/pagos';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPdfDialog, setShowPdfDialog] = useState(false);
@@ -38,7 +38,7 @@ export const ListaPagos = (props) => {
   let [urlPDF, seturlPDF] = useState('');
 
   useEffect(() => {
-    axios.get(urlExpedientes).then(response =>{
+    axios.get(urlPagos).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
@@ -89,13 +89,13 @@ export const ListaPagos = (props) => {
   }
 
   const columns = [
-    { field: 'ID', headerName: 'ID', width: 100 },
-    { field: 'ID Venta', headerName: 'ID Venta', width: 200 },
-    { field: 'Tipo de Pago', headerName: 'Tipo de Pago', width: 200},
-    { field: 'Fecha', headerName: 'Fecha', width: 200 },
-    {field: 'Estado', headerName: 'Estado', width: 200 },
-    { field: 'Saldo Abonado', headerName: 'Saldo Abonado', width: 200 },
-    { field: 'Saldo Restante', headerName: 'Saldo Restante', width: 200 },
+    { field: 'IdPago', headerName: 'ID', width: 100 },
+    { field: 'IdVenta', headerName: 'ID Venta', width: 200 },
+    { field: 'MetodoDePago', headerName: 'Tipo de Pago', width: 200},
+    { field: 'fecha', headerName: 'Fecha', width: 200 },
+    {field: 'estado', headerName: 'Estado', width: 200 },
+    { field: 'saldoAbono', headerName: 'Saldo Abonado', width: 200 },
+    { field: 'saldoRestante', headerName: 'Saldo Restante', width: 200 },
 
     {
 
@@ -119,7 +119,7 @@ export const ListaPagos = (props) => {
 
           <Button
             className="btnAddExpe"
-            onClick={() => handleNewExpediente(params.row)}
+            onClick={() => seguimientoPago(params.row)}
           >
             <AddIcon></AddIcon>
           </Button>
@@ -129,16 +129,32 @@ export const ListaPagos = (props) => {
   ];
 
 
-  const handleNewExpediente = (expediente)=>{
-    let data={
-      id:expediente.IdExpediente,
-      idCliente:expediente.Cliente
-    }
+  const seguimientoPago = (pago) => {
+    const filasOriginales = filteredData; // Supongo que 'filteredData' contiene las filas originales
   
-    console.log(expediente);
-     props.data(data)
-     navegate('/menuClientes/DatosExpediente');
-  }
+    // Verificar si existe alguna fila con estado "Pagado" y mismo idVenta
+    const tienePagadoMismoIdVenta = filasOriginales.some(
+      (fila) => fila.estado === "Pagado" && fila.IdVenta === pago.IdVenta
+    );
+  
+    if (pago.estado === "Pendiente" && tienePagadoMismoIdVenta) {
+      swal("Existe una venta pagada con esta misma ID de Venta", "", "error");
+    } else if (pago.saldoRestante > 0 || pago.estado === "Pendiente") {
+      let data = {
+        id: pago.IdVenta,
+        saldoRestante: pago.saldoRestante
+      };
+  
+      props.data(data);
+      navegate('/menuVentas/PagoDeVenta');
+    } else {
+      swal("Venta Pagada No puede seguir", "", "error");
+    }
+  };
+  
+  
+  
+  
 
   const handleBack = () => {
     navegate('/ventas');
@@ -195,7 +211,7 @@ export const ListaPagos = (props) => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdExpediente}
+          getRowId={tableData => tableData.IdPago}
           rows={filteredData}
           columns={columns}
           pageSize={5}
