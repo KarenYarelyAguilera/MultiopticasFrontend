@@ -86,7 +86,7 @@ export const Login = props => {
       const respJsonPss = await axios.post(urlLogin, data); //sendData(urlLogin, data);
       const respJsonUsr = await axios.post(urlDUsuario, data2); //sendData(urlDUsuario, data2);
       //const respJsonFec = await sendData(urlFechaExpiracion, data2);
-
+      console.log(respJsonUsr.data);
       const dataBitacora = {
         Id: respJsonUsr.data[0].Id_Usuario,
       };
@@ -110,6 +110,7 @@ export const Login = props => {
         props.rol(respJsonUsr.data[0].Rol);
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
+        props.idRol(respJsonUsr.data[0].idRol)
 
         //para el perfil
         const dataPerfil={
