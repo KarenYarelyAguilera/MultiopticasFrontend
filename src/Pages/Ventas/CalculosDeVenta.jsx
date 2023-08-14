@@ -59,6 +59,19 @@ export const CalculosDeVenta = ({
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
+          <div className="contInput">
+              <TextCustom text="Subtotal" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Subtotal"
+                id="Subtotal"
+              />
+            </div>
+
             <div className="contInput">
               <TextCustom text="Precio de Aro" className="titleInput" />
 
@@ -72,16 +85,17 @@ export const CalculosDeVenta = ({
               />
             </div>
 
+
             <div className="contInput">
-              <TextCustom text="Subtotal" className="titleInput" />
+              <TextCustom text="Descuentos" className="titleInput" />
 
               <input
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
-                placeholder="Subtotal"
-                id="Subtotal"
+                placeholder="Descuentos"
+                id="Descuentos"
               />
             </div>
 
@@ -99,32 +113,6 @@ export const CalculosDeVenta = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Descuentos" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Descuentos"
-                id="Descuentos"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Cantidad" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Cantidad"
-                id="Cantidad"
-              />
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Total" className="titleInput" />
 
               <input
@@ -136,7 +124,7 @@ export const CalculosDeVenta = ({
                 id="Total"
               />
             </div>
-            
+
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -149,6 +137,7 @@ export const CalculosDeVenta = ({
                 <h1>Back</h1>
               </Button> */}
             </div>
+           
           </div>
         </div>
 

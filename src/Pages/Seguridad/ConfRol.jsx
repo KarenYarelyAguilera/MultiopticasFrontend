@@ -16,7 +16,7 @@ export const ConfigRol = props => {
   const urlRoles =
     'http://localhost:3000/api/Rol';
 
-  const urlPermisos = "http://localhost:3000/api/permisos/Rol";
+  const urlPermisos = "http://localhost:3000/api/permisosRol";
 
   const urlURol =
     'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
@@ -882,31 +882,31 @@ export const ConfigRol = props => {
               </div>
               <div className="contSwitchControl">
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
               <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
 
-              <Button className="openModal" onClick={handleNuevoRol}>
-                <AddIcon style={{color:"white"}}/>
+              <Button className="btnNewRol" onClick={handleNuevoRol}>
+              <EditIcon style={{ marginRight: '5px' }} />
               </Button>
               </div>
             </div>
