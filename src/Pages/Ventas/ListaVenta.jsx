@@ -32,17 +32,12 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
 export const ListaVenta = (props) => {
-  const [permisos, setPermisos] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   const urlVentas = 'http://localhost:3000/api/Ventas';
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
-
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
 
   useEffect(() => {
     console.log(props.id);
@@ -58,14 +53,6 @@ export const ListaVenta = (props) => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, []);
-
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:9
-  }
-
-
-  
 
   const navegate = useNavigate();
 
@@ -265,16 +252,11 @@ export const ListaVenta = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">     
+          <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
               onClick={() => {
-                if (permisos[0].insertar==="n") {
-                  swal("No tiene permisos para realizar esta accion","","error")
-                } else {
-                  navegate('/menuVentas/NuevaVenta');
-                  
-                }
+                navegate('/menuVentas/NuevaVenta');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
