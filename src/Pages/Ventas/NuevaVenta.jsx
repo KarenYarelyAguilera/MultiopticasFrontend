@@ -60,7 +60,7 @@ export const NuevaVenta = (props) => {
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
     //let Cliente = document.getElementById('cliente').value;
-    let Cliente = selectedOption ? selectedOption.value : null;
+    let Cliente = selectedOption.value;
     let Empleado = parseInt(document.getElementById('empleado').value);
     let RTN = document.getElementById('RTN').value;
 
@@ -114,21 +114,6 @@ export const NuevaVenta = (props) => {
 
             <div className="contPrincipalNewCita">
               <TextCustom text="Cliente" className="titleInput" />
-              {/*   <select name="" className="selectCustom" id="cliente">
-                {Cliente.length ? (
-                  Cliente.map(pre => (
-                    <option key={pre.IdCliente} value={pre.IdCliente}>
-                      {pre.idCliente}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select> */}
-
-              //select que jala los datos y concatena el idCliente y nombre
               <div className="contInput">
                 <Select
                   id="cliente"
@@ -138,11 +123,7 @@ export const NuevaVenta = (props) => {
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
                 />
-
-
               </div>
-
-
 
             </div>
 
@@ -225,9 +206,9 @@ export const NuevaVenta = (props) => {
                 onClick={() => {
                   var fechaEntrega = document.getElementById("fechaEntrega").value;
                   var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  var Cliente = selectedOption.value;
+                  //var Cliente = selectedOption.document.getElementById('cliente').value;
 
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente==="") {
+                  if (fechaEntrega === "" || fechaLimiteEntrega === "" ) {
                     swal("No deje campos vacíos.", "", "error");
                   } else {
                     handleNext();
