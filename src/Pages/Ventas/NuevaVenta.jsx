@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
+import Select from 'react-select';
 
 import swal from '@sweetalert/with-react';
 
@@ -36,6 +37,11 @@ export const NuevaVenta = (props)  => {
 
   const [cambio, setCambio] = useState(0)
 
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
+
+
+
+
   useEffect(() => {
     fetch(urlCliente).then(response => response.json()).then(data => setCliente(data))
     fetch(urlEmployees).then(response => response.json()).then(data => setIdEmpleado(data))
@@ -51,7 +57,7 @@ export const NuevaVenta = (props)  => {
 
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
-    let Cliente = document.getElementById('cliente').value;
+    let Cliente =  selectedOption.value;
     let Empleado = parseInt(document.getElementById('empleado').value);
     let RTN = document.getElementById('RTN').value;
     
@@ -103,9 +109,9 @@ export const NuevaVenta = (props)  => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contInput">
+            <div className="contPrincipalNewCita">
               <TextCustom text="Cliente" className="titleInput" />
-              <select name="" className="selectCustom" id="cliente">
+            {/*   <select name="" className="selectCustom" id="cliente">
                 {Cliente.length ? (
                   Cliente.map(pre => (
                     <option key={pre.IdCliente} value={pre.IdCliente}>
@@ -117,7 +123,22 @@ export const NuevaVenta = (props)  => {
                     No existe informacion
                   </option>
                 )}
-              </select>
+              </select> */}
+              <div className="contInput">
+              <Select 
+                    id="cliente"
+                   // className="inputCustomPreguntas"
+                    options={Cliente.map(pre => ({ value: pre.IdCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                    value={selectedOption}
+                    onChange={setSelectedOption}
+                    placeholder="Seleccione un cliente"
+                  />
+
+
+              </div>
+
+              
+
             </div>
 
             <div className="contInput">
