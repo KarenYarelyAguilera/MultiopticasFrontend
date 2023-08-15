@@ -232,7 +232,7 @@ export const AddClientes = (props) => {
                       }
                     }
                   }
-                }}
+                }}
                 onChange={e => setiIdentidad(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorIdentidad}
                 helperText={leyenda}
@@ -527,7 +527,7 @@ export const AddClientes = (props) => {
                       }
                     }
                   }
-                }}
+                }}
 
                 variant="contained"
                 className="btnStepper">
