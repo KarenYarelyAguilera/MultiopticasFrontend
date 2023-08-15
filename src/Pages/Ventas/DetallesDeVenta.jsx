@@ -13,11 +13,11 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-import Select from 'react-select'; //select para concatenar el idCiente y el nombre
+
 
 //URLS
 const urlProducto = 'http://localhost:3000/api/productos';
-const urlLente = 'http://localhost:3000/api/Lentes';
+const urlLente = 'http://localhost:3000/api/lentes';
 const urlDescuento = 'http://localhost:3000/api/Descuento';
 const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
@@ -34,7 +34,7 @@ export const DetallesDeVenta = (props) => {
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
- //Se deben manejar por separado cada SelectOption
+
   const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
@@ -46,7 +46,6 @@ export const DetallesDeVenta = (props) => {
     fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
     fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
     fetch(urlGarantia).then(response => response.json()).then(data => setGarantia(data))
-    fetch(urlLente).then(response => response.json()).then(data => setLente(data))
   }, [])
 
   const navegate = useNavigate();
