@@ -7,7 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
-import Select from 'react-select';
+import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 
 import swal from '@sweetalert/with-react';
 
@@ -23,11 +23,11 @@ const urlCliente = 'http://localhost:3000/api/clientes';
 const urlEmployees = 'http://localhost:3000/api/empleado';
 
 
-export const NuevaVenta = (props)  => {
+export const NuevaVenta = (props) => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [ventas,setVentas] = useState([])
+  const [ventas, setVentas] = useState([])
   const [Cliente, setCliente] = useState([]);
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [Empleado, setIdEmpleado] = useState([]);
@@ -47,21 +47,24 @@ export const NuevaVenta = (props)  => {
     fetch(urlEmployees).then(response => response.json()).then(data => setIdEmpleado(data))
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     setTableData(ventas)
-  },[cambio])
+  }, [cambio])
 
   const navegate = useNavigate();
+
+  
 
   const handleNext = async () => {
 
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
-    let Cliente =  selectedOption.value;
+    //let Cliente = document.getElementById('cliente').value;
+    let Cliente = selectedOption ? selectedOption.value : null;
     let Empleado = parseInt(document.getElementById('empleado').value);
     let RTN = document.getElementById('RTN').value;
-    
-    
+
+
 
     let data = {
       fechaEntrega: fechaLimiteEntrega,
@@ -71,8 +74,8 @@ export const NuevaVenta = (props)  => {
       RTN: RTN
     }
 
-      props.venta(data)
-      navegate('/menuVentas/DetallesDeVenta');
+    props.venta(data)
+    navegate('/menuVentas/DetallesDeVenta');
 
   };
 
@@ -111,7 +114,7 @@ export const NuevaVenta = (props)  => {
 
             <div className="contPrincipalNewCita">
               <TextCustom text="Cliente" className="titleInput" />
-            {/*   <select name="" className="selectCustom" id="cliente">
+              {/*   <select name="" className="selectCustom" id="cliente">
                 {Cliente.length ? (
                   Cliente.map(pre => (
                     <option key={pre.IdCliente} value={pre.IdCliente}>
@@ -124,20 +127,22 @@ export const NuevaVenta = (props)  => {
                   </option>
                 )}
               </select> */}
+
+              //select que jala los datos y concatena el idCliente y nombre
               <div className="contInput">
-              <Select 
-                    id="cliente"
-                   // className="inputCustomPreguntas"
-                    options={Cliente.map(pre => ({ value: pre.IdCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="Seleccione un cliente"
-                  />
+                <Select
+                  id="cliente"
+                  // className="inputCustomPreguntas"
+                  options={Cliente.map(pre => ({value: pre.IdCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un cliente"
+                />
 
 
               </div>
 
-              
+
 
             </div>
 
@@ -220,13 +225,14 @@ export const NuevaVenta = (props)  => {
                 onClick={() => {
                   var fechaEntrega = document.getElementById("fechaEntrega").value;
                   var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "") {
+                  var Cliente = selectedOption.value;
+
+                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente==="") {
                     swal("No deje campos vacíos.", "", "error");
                   } else {
                     handleNext();
-                  }       
                   }
+                }
                 }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
