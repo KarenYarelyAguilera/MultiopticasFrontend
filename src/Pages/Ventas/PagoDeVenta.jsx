@@ -73,7 +73,7 @@ export const PagoDeVenta = (props) => {
        
         swal(`Pago registrado con exito`,"","success").then(()=>{
           //axios.post(urlInsertPagoB,data2)
-          if (data.saldoAbono>data.saldoRestante) {
+          if (data.saldoAbono<=data.saldoRestante || data.saldoAbono>data.saldoRestante  ) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
               props.dataVenta({}) 
               navegate('/menuVentas/ListaPagos')

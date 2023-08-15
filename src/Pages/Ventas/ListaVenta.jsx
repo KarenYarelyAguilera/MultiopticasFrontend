@@ -269,12 +269,12 @@ export const ListaVenta = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                if (permisos[0].insertar==="n") {
-                  swal("No tiene permisos para realizar esta accion","","error")
-                } else {
+                // if (permisos[0].insertar==="n") {
+                //   swal("No tiene permisos para realizar esta accion","","error")
+                // } else {
                   navegate('/menuVentas/NuevaVenta');
                   
-                }
+                //}
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
