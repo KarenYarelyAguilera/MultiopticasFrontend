@@ -128,12 +128,12 @@ export const NuevaVenta = (props) => {
                 )}
               </select> */}
 
-              //select que jala los datos y concatena el idCliente y nombre
+              {/* select que jala los datos y concatena el idCliente y nombre */}
               <div className="contInput">
                 <Select
                   id="cliente"
                   // className="inputCustomPreguntas"
-                  options={Cliente.map(pre => ({value: pre.IdCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                  options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
