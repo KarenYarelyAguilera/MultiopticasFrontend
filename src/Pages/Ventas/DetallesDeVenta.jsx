@@ -23,7 +23,7 @@ const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
-const urlBitacoraInsertVenta='http://localhost:3000/api/bitacora/insertventa';
+const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
 
 
 export const DetallesDeVenta = (props) => {
@@ -34,8 +34,12 @@ export const DetallesDeVenta = (props) => {
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
+ //Se deben manejar por separado cada SelectOption
+  const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
+  const [selectedPromocion, setSelectedPromocion] = useState(null);
+  const [selectedGarantia, setSelectedGarantia] = useState(null);
 
-  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
+
 
   useEffect(() => {
     fetch(urlProducto).then(response => response.json()).then(data => setProducto(data))
@@ -49,10 +53,10 @@ export const DetallesDeVenta = (props) => {
 
   const handleNext = async () => {
 
-    let producto = selectedOption.document.getElementById('producto');
+    let producto = selectedAros.value;
     let Descuento = parseInt(document.getElementById('descuentoAro').value);
-    let Promocion = selectedOption.value;
-    let Garantia = selectedOption.value;
+    let Promocion = selectedPromocion.value;
+    let Garantia = selectedGarantia.value;
     let cantidad = parseInt(document.getElementById("Cantidad").value)
     let lente = parseFloat(document.getElementById("lente").value)
 
@@ -60,20 +64,20 @@ export const DetallesDeVenta = (props) => {
       IdGarantia: Garantia,
       IdDescuento: Descuento,
       IdPromocion: Promocion,
-      IdProducto:producto,
-      cantidad:cantidad,
-      precioLente:lente,
-      idUsuario:props.idUsuario
+      IdProducto: producto,
+      cantidad: cantidad,
+      precioLente: lente,
+      idUsuario: props.idUsuario
     }
 
-    data = {...props.venta,...data}
+    data = { ...props.venta, ...data }
 
-     //Funcion de bitacora 
+    //Funcion de bitacora 
     //  let dataUsuario={
     //   Id:props.idUsuario
     // }
-    
-   
+
+
 
     swal({
       title: "Confirmar venta",
@@ -84,16 +88,16 @@ export const DetallesDeVenta = (props) => {
       },
     }).then((result) => {
       if (result) {//axios
-        axios.post(urlVenta,data).then((response)=>{
+        axios.post(urlVenta, data).then((response) => {
           props.dataVenta(response.data)
-          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta')) 
-         // axios.post(urlBitacoraInsertVenta,dataUsuario)
+          swal("Venta registrada con exito", "", "success").then(() => navegate('/menuVentas/PagoDeVenta'))
+          // axios.post(urlBitacoraInsertVenta,dataUsuario)
         })
       } else {//se cancela todo alv
-        
+
       }
     });
-  
+
 
   };
 
@@ -122,9 +126,9 @@ export const DetallesDeVenta = (props) => {
                 <Select
                   id="producto"
                   // className="inputCustomPreguntas"
-                  options={Producto.map(pre => ({value: pre.IdProducto, label: `${pre.descripcion} L${pre.precio}` }))}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
+                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} L${pre.precio}` }))}
+                  value={selectedAros}
+                  onChange={setSelectedAros}
                   placeholder="Seleccione un Aro"
                 />
               </div>
@@ -134,7 +138,7 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Descuento Aro:" className="titleInput" />
               <select name="" className="selectCustom" id="descuentoAro">
-              {Descuento.length ? (
+                {Descuento.length ? (
                   Descuento.map(pre => (
                     <option key={pre.IdDescuento} value={pre.IdDescuento}>
                       {pre.descPorcent}
@@ -152,13 +156,14 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
-             <div className="contInput">
+              <div className="contInput">
                 <Select
                   id="promocion"
                   // className="inputCustomPreguntas"
-                  options={Promocion.map(pre => ({label: `${pre.descripcion} - ${pre.descPorcent}` }))}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
+
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${pre.descPorcent}` }))}
+                  value={selectedPromocion}
+                  onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
                 />
               </div>
@@ -170,9 +175,9 @@ export const DetallesDeVenta = (props) => {
                 <Select
                   id="garantia"
                   // className="inputCustomPreguntas"
-                  options={Garantia.map(pre => ({label: `${pre.descripcion} - ${pre.Meses}` }))}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
+                  options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses}` }))}
+                  value={selectedGarantia}
+                  onChange={setSelectedGarantia}
                   placeholder="Seleccione una Garantia"
                 />
               </div>
@@ -191,7 +196,7 @@ export const DetallesDeVenta = (props) => {
               />
             </div>
 
-            <div className="contInput">
+            {/* <div className="contInput">
               <TextCustom text="Precio del lente" className="titleInput" />
               <div className="contInput">
                 <Select
@@ -203,6 +208,19 @@ export const DetallesDeVenta = (props) => {
                   placeholder="Seleccione un Lente"
                 />
               </div>
+            </div> */}
+
+            <div className="contInput">
+              <TextCustom text="Precio del lente" className="titleInput" />
+
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Precio del lente"
+                id="lente"
+              />
             </div>
 
             <div className="contBtnStepper">
@@ -212,23 +230,23 @@ export const DetallesDeVenta = (props) => {
                 onClick={() => {
                   var cantidad = parseInt(document.getElementById("Cantidad").value)
                   var lente = parseFloat(document.getElementById("lente").value)
-                  
+
                   if (cantidad === "" || lente === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(cantidad))) {
-                  swal("El campo cantidad solo acepta números.", "", "error");
+                    swal("El campo cantidad solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(lente))) {
-                  swal("El campo precio de lente solo acepta números.", "", "error");
-                  }else if (cantidad <= 0) {
+                    swal("El campo precio de lente solo acepta números.", "", "error");
+                  } else if (cantidad <= 0) {
                     swal("El campo cantidad no acepta valores negativos.", "", "error");
-                  }else if (lente <= 0) {
+                  } else if (lente <= 0) {
                     swal("El campo precio de lente no acepta valores negativos.", "", "error");
                   }
                   else {
-                    
+
                     handleNext();
-                  }       
                   }
+                }
                 }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>

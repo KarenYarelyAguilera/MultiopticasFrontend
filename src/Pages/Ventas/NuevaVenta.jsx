@@ -60,7 +60,7 @@ export const NuevaVenta = (props) => {
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
     //let Cliente = document.getElementById('cliente').value;
-    let Cliente = selectedOption.value;
+    let Cliente = selectedOption ? selectedOption.value : null;
     let Empleado = parseInt(document.getElementById('empleado').value);
     let RTN = document.getElementById('RTN').value;
 
@@ -114,16 +114,35 @@ export const NuevaVenta = (props) => {
 
             <div className="contPrincipalNewCita">
               <TextCustom text="Cliente" className="titleInput" />
+              {/*   <select name="" className="selectCustom" id="cliente">
+                {Cliente.length ? (
+                  Cliente.map(pre => (
+                    <option key={pre.IdCliente} value={pre.IdCliente}>
+                      {pre.idCliente}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select> */}
+
+              {/* select que jala los datos y concatena el idCliente y nombre */}
               <div className="contInput">
                 <Select
                   id="cliente"
                   // className="inputCustomPreguntas"
-                  options={Cliente.map(pre => ({value: pre.IdCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                  options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
                 />
+
+
               </div>
+
+
 
             </div>
 
@@ -206,9 +225,9 @@ export const NuevaVenta = (props) => {
                 onClick={() => {
                   var fechaEntrega = document.getElementById("fechaEntrega").value;
                   var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  //var Cliente = selectedOption.document.getElementById('cliente').value;
+                  var Cliente = selectedOption.value;
 
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "" ) {
+                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente==="") {
                     swal("No deje campos vacíos.", "", "error");
                   } else {
                     handleNext();
@@ -233,6 +252,6 @@ export const NuevaVenta = (props) => {
           alt="No se encuentro la imagen"
         />
       </div>
-    </div>
-  );
+    </div>
+  );
 };
