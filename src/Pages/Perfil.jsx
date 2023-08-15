@@ -41,6 +41,7 @@ export const Perfil = (props) => {
   const [numeroIdentidad, setnumeroIdentidad] = React.useState(props.infoPerfil.numeroIdentidad || '');
   const [Correo_Electronico, setCorreo_Electronico] = React.useState(props.infoPerfil.Correo_Electronico || '');
 
+
   const [errorNombre, setErrorNombre] = React.useState();
   const [Msj, setMsj] = React.useState(false);
 
@@ -50,6 +51,7 @@ export const Perfil = (props) => {
   
   const [adv, setadv] = React.useState(false);
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
+
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
   const refContrasenia = useRef(null);
@@ -161,6 +163,7 @@ export const Perfil = (props) => {
                     }
                   }
                 }}
+
               onChange={e => setName(e.target.value)}
               type="text"
               name=""
@@ -171,6 +174,7 @@ export const Perfil = (props) => {
               value={nombre}
               error={errorNombre}
 
+
             />
             <p className="error">{Msj}</p>
           </div>
@@ -178,6 +182,7 @@ export const Perfil = (props) => {
           <div className="contInput">
             <TextCustom text="Apellido: " className="titleInput" />
             <input
+
                     onKeyDown={e => {
                       setApellido(e.target.value);
                       if (apellido === '') {
@@ -198,6 +203,7 @@ export const Perfil = (props) => {
                         }
                       }
                     }}
+
               onChange={e => setApellido(e.target.value)}
               type="text"
               name=""
@@ -207,6 +213,7 @@ export const Perfil = (props) => {
               id="apellido"
               value={apellido}
               error={errorApellido}
+
 
             />
             <p className="error">{aviso}</p>
@@ -226,12 +233,14 @@ export const Perfil = (props) => {
               id="identidad"
               value={numeroIdentidad}
              disabled
+
             />
           </div>
           <br />
           <div className="contInput">
             <TextCustom text="Correo:   " className="titleInput" />
             <input
+
                      onKeyDown={e => {
                       setCorreo_Electronico(e.target.value);
                       if (Correo_Electronico == '') {
@@ -259,6 +268,7 @@ export const Perfil = (props) => {
               id="correo"
               value={Correo_Electronico}
               error={errorcorreoelec}
+
             // disabled
             />
              {<p className="error">{advertencia}</p>}
@@ -313,6 +323,8 @@ export const Perfil = (props) => {
 
 
               //onClick={handleActualizarDatos}
+             // onClick={handleActualizarDatos}
+
             >Actualizar Datos</button>
           </div>
         </section>
