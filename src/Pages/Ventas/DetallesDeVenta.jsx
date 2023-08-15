@@ -13,11 +13,11 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-
+import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 
 //URLS
 const urlProducto = 'http://localhost:3000/api/productos';
-const urlLente = 'http://localhost:3000/api/lentes';
+const urlLente = 'http://localhost:3000/api/Lentes';
 const urlDescuento = 'http://localhost:3000/api/Descuento';
 const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
@@ -35,22 +35,24 @@ export const DetallesDeVenta = (props) => {
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
 
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
 
   useEffect(() => {
     fetch(urlProducto).then(response => response.json()).then(data => setProducto(data))
     fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
     fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
     fetch(urlGarantia).then(response => response.json()).then(data => setGarantia(data))
+    fetch(urlLente).then(response => response.json()).then(data => setLente(data))
   }, [])
 
   const navegate = useNavigate();
 
   const handleNext = async () => {
 
-    let producto = parseInt(document.getElementById("producto").value)
+    let producto = selectedOption.document.getElementById('producto');
     let Descuento = parseInt(document.getElementById('descuentoAro').value);
-    let Promocion = parseInt(document.getElementById('promocion').value);
-    let Garantia = parseInt(document.getElementById('garantia').value);
+    let Promocion = selectedOption.value;
+    let Garantia = selectedOption.value;
     let cantidad = parseInt(document.getElementById("Cantidad").value)
     let lente = parseFloat(document.getElementById("lente").value)
 
@@ -116,20 +118,16 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
-              <select name="" className="selectCustom" id="producto">
-                {Producto.length ? (
-                  Producto.map(pre => (
-                    <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select
+                  id="producto"
+                  // className="inputCustomPreguntas"
+                  options={Producto.map(pre => ({value: pre.IdProducto, label: `${pre.descripcion} L${pre.precio}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un Aro"
+                />
+              </div>
             </div>
 
 
@@ -154,38 +152,30 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
-              <select name="" className="selectCustom" id="promocion">
-              {Promocion.length ? (
-                  Promocion.map(pre => (
-                    <option key={pre.IdPromocion} value={pre.IdPromocion}>
-                      {pre.descPorcent}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+             <div className="contInput">
+                <Select
+                  id="promocion"
+                  // className="inputCustomPreguntas"
+                  options={Promocion.map(pre => ({label: `${pre.descripcion} - ${pre.descPorcent}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione una Promocion"
+                />
+              </div>
             </div>
 
             <div className="contInput">
               <TextCustom text="Garantia de venta:" className="titleInput" />
-              <select name="" className="selectCustom" id="garantia">
-              {Garantia.length ? (
-                  Garantia.map(pre => (
-                    <option key={pre.IdGarantia} value={pre.IdGarantia}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select
+                  id="garantia"
+                  // className="inputCustomPreguntas"
+                  options={Garantia.map(pre => ({label: `${pre.descripcion} - ${pre.Meses}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione una Garantia"
+                />
+              </div>
             </div>
 
             <div className="contInput">
@@ -203,15 +193,16 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Precio del lente" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Precio del lente"
-                id="lente"
-              />
+              <div className="contInput">
+                <Select
+                  id="lente"
+                  // className="inputCustomPreguntas"
+                  options={Lente.map(pre => ({label: `${pre.lente} L.${pre.precio}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un Lente"
+                />
+              </div>
             </div>
 
             <div className="contBtnStepper">
