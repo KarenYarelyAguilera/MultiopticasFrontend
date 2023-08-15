@@ -25,12 +25,12 @@ export const ListaInventario = (props) => {
   const [roles, setRoles] = useState([]);
 
   const urlProducto = 'http://localhost:3000/api/ProductoKardex'; //MUESTA LOS PRODUCTOS EN LA TABLA
-  
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
-         //COLOCAR APIS DE BITACORA AQUI---
+
+  //COLOCAR APIS DE BITACORA AQUI---
   //-------------------------------------------------------------------
 
   const [precio, setprecio] = useState('');
@@ -50,7 +50,8 @@ export const ListaInventario = (props) => {
   const [errordescripcion, setErrordescripcion] = useState(false);
 
   useEffect(() => {
-    axios.post(urlProducto,props.data).then((response)=>setTableData(response.data))
+    console.log(props.data);
+    axios.post(urlProducto, props.data).then((response) => setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -75,9 +76,9 @@ export const ListaInventario = (props) => {
           String(fechaCre.getMonth()).padStart(2, '0') + "/" +
           fechaCre.getFullYear();
         return {
-          'ID':row.Producto,
-          'Cantidad':row.Cantidad, 
-          'Movimiento':row.Movimiento,
+          'ID': row.Producto,
+          'Cantidad': row.Cantidad,
+          'Movimiento': row.Movimiento,
         };
       });
       return formattedData;
@@ -86,7 +87,8 @@ export const ListaInventario = (props) => {
     const urlPDF = 'Reporte_Kardex.pdf';
     const subTitulo = "LISTA DE KARDEX"
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
@@ -101,12 +103,16 @@ export const ListaInventario = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+          <Button
+            className="btnEdit"
+            title='Editar inventario'
+            onClick={() => swal("No es posible realizar esta accion","","error")}
+          >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdProducto)}
+            onClick={() => swal("No es posible realizar esta accion","","error")}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -133,7 +139,7 @@ export const ListaInventario = (props) => {
       ),
       buttons: ['Eliminar', 'Cancelar'],
     }).then(async op => {
-              swal('No puede eliminar este registro', '', 'error');
+      
     });
   }
 
@@ -209,10 +215,10 @@ export const ListaInventario = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo 
+              Nuevo
             </Button>
             <Button className="btnReport"
-             onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -220,11 +226,11 @@ export const ListaInventario = (props) => {
           </div>
         </div>
         <DataGrid
-        getRowId={(tableData) => {
-          // Generar un ID único utilizando Math.random()
-          const uniqueId = Math.random().toString(36).substr(2, 9);
-          return `${tableData.idProducto}-${uniqueId}`;
-        }}
+          getRowId={(tableData) => {
+            // Generar un ID único utilizando Math.random()
+            const uniqueId = Math.random().toString(36).substr(2, 9);
+            return `${tableData.idProducto}-${uniqueId}`;
+          }}
           rows={filteredData}
           columns={columns}
           pageSize={5}

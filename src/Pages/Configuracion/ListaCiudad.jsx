@@ -63,8 +63,9 @@ export const ListaCiudad = ({props,data,update}) => {
 
     const urlPDF = 'Report_Ciudades.pdf';
     const subTitulo = "LISTA DE CIUDADES"
+    const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
   const navegate = useNavigate();

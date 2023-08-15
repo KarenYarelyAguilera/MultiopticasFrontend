@@ -61,7 +61,8 @@ export const ListaCompra = (props) => {
     const urlPDF = 'Reporte_Compras.pdf';
     const subTitulo = "LISTA DE COMPRAS"
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
 
 
@@ -99,7 +100,7 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion","","error")
   }
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/Compras');
   };
 
   return (
@@ -134,7 +135,7 @@ export const ListaCompra = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/NuevaCompra');
+                navegate('menuInventario/NuevaCompra');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

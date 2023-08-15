@@ -49,21 +49,21 @@ export const MenuVentas = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
     //   vinculo: "/menuVentas/NuevaCompra", 
     // },
-    // {
-    //   titulo: "Lista de Compra",
-    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
-    //   vinculo: "/menuVentas/ListaCompra", 
-    // },
+    {
+      titulo: "Lista de Pagos",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
+      vinculo: "/menuVentas/ListaPagos", 
+    },
     // // {
     // //   titulo: "Registro de Garantias",
     // //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/640/196/non_2x/3d-quality-guarantee-medal-with-star-and-ribbon-icon-isolated-on-white-background-3d-prize-winner-and-award-concept-cartoon-minimal-style-3d-badge-icon-render-illustration-vector.jpg',
     // //   vinculo: "/menuVentas/RegistroGarantia", 
     // // },
-    // // {
-    // //   titulo: "Lista de Garantias",
-    // //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
-    // //   vinculo: "/menuVentas/listaGarantias", 
-    // // },
+    // {
+    //   titulo: "Lista de Garantias",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
+    //   vinculo: "/menuVentas/listaGarantias", 
+    // },
     // {
     //   titulo: "Registro de Sucursal",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',

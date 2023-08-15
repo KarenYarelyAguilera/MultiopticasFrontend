@@ -69,7 +69,8 @@ const handleGenerarReporte = () => {
   const urlPDF = 'Report_Garantias.pdf';
   const subTitulo = "LISTA DE GARANTIAS"
 
-  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
 };
 
   const navegate = useNavigate();
@@ -151,7 +152,7 @@ const handleGenerarReporte = () => {
 
   //BOTON DE RETROCEDER 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/config');
   };
 
    //FUNCION DE ACTUALIZAR 

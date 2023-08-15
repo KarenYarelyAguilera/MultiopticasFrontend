@@ -64,7 +64,8 @@ export const ListaGenero = ({props,data,update}) => {
   const urlPDF = 'Report_Genero.pdf';
   const subTitulo = "LISTA DE GÉNEROS"
 
-  generatePDF(formatDataForPDF, urlPDF, subTitulo);
+  const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
 };
   
   const navegate = useNavigate();

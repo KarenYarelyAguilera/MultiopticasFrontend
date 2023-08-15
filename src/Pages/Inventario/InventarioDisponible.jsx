@@ -71,7 +71,8 @@ export const InventarioDisponible = (props) => {
     const urlPDF = 'Reporte_InventarioDisponible.pdf';
     const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   };
   const columns = [
     { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
@@ -114,6 +115,7 @@ export const InventarioDisponible = (props) => {
   ];
 
   const ListaMovimiento = (param)=>{
+    console.log(param);
     props.data(param)
     navegate('/menuInventario/listaInventario')
   }
