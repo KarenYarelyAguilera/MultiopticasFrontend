@@ -164,7 +164,7 @@ const [searchTerm, setSearchTerm] = useState('');
           case 'update':
           data(id)
          update(true)
-      navegate('/menuVentas/RegistroDescuento')
+      navegate('/config/RegistroDescuento')
       break;
       default:
       break;
@@ -193,7 +193,7 @@ const [searchTerm, setSearchTerm] = useState('');
 
     //BOTON DE RETROCEDER 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/config');
   };
 
   return (

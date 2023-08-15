@@ -19,6 +19,7 @@ import swal from '@sweetalert/with-react';
 const urlPago = 'http://localhost:3000/api/pagos/crear';
 const urlMetodoPago = 'http://localhost:3000/api/tipopago';
 const urlEstadoVenta = 'http://localhost:3000/api/VentasEstados';
+const urlInsertPagoB = 'http://localhost:3000/api/bitacora/insertpago';
 
 export const PagoDeVenta = (props) => {
 
@@ -51,6 +52,11 @@ export const PagoDeVenta = (props) => {
       saldoRestante: saldoRestante
       
     }
+
+    //Funcion de bitacora 
+    // let data2={
+    //   Id:props.idUsuario
+    // }
     console.log(props.venta.id);
     console.log(data);
 
@@ -66,12 +72,14 @@ export const PagoDeVenta = (props) => {
       await axios.post(urlPago,data).then(()=>{
        
         swal(`Pago registrado con exito`,"","success").then(()=>{
-          if (data.saldoAbono>data.saldoRestante) {
+          //axios.post(urlInsertPagoB,data2)
+          if (data.saldoAbono<=data.saldoRestante || data.saldoAbono>data.saldoRestante  ) {
             swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
-              props.dataVenta({})
+              props.dataVenta({}) 
+              navegate('/menuVentas/ListaPagos')
              
             })
-            navegate('/menuVentas/ListaPagos')
+            
           }
           })
         
@@ -85,7 +93,7 @@ export const PagoDeVenta = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/ListaPagos');
   };
 
   return (

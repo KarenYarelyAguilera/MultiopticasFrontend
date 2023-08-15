@@ -152,7 +152,7 @@ const handleGenerarReporte = () => {
 
   //BOTON DE RETROCEDER 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/config');
   };
 
    //FUNCION DE ACTUALIZAR 
