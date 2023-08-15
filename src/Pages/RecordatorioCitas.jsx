@@ -68,7 +68,7 @@ export const RecordatorioCitas = (props) => {
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
   const urlClientes = 'http://localhost:3000/api/clientes';
   const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
-  const urlBitacoraAggCita='http://localhost:3000/api/bitacora/agregarcita';
+  const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
 
@@ -119,20 +119,20 @@ export const RecordatorioCitas = (props) => {
   const handleClick = async () => {
 
 
-   // let idCliente = document.getElementById('idClientes').value;
+    // let idCliente = document.getElementById('idClientes').value;
 
-   let idCliente = selectedOption.value; // Usamos el valor de la opción seleccionada
+    let idCliente = selectedOption.value; // Usamos el valor de la opción seleccionada
     let Nota = document.getElementById('nota').value;
-   // let fecha = document.getElementById('fecha').value
+    // let fecha = document.getElementById('fecha').value
 
     let dataIdCliente = {
       IdCliente: idCliente,
     }
 
 
-    await axios.post(urlFechaCita,dataIdCliente).then(response => {
+    await axios.post(urlFechaCita, dataIdCliente).then(response => {
 
-     // console.log(response.data)
+      // console.log(response.data)
       const fechaFormateada = new Date(response.data.fechaExpiracion).toISOString().slice(0, 10);
       console.log(fechaFormateada);
 
@@ -140,7 +140,7 @@ export const RecordatorioCitas = (props) => {
         //IdRecordatorio:props.data.IdRecordatorio,
         IdCliente: idCliente,
         Nota: Nota.toUpperCase(),
-         //fecha: fecha,
+        //fecha: fecha,
         fecha: fechaFormateada
 
       };
@@ -150,14 +150,14 @@ export const RecordatorioCitas = (props) => {
         Id: props.data.IdRecordatorio
       }
 
-      let dataUsuario={
-        Id:props.idUsuario
+      let dataUsuario = {
+        Id: props.idUsuario
       }
 
       //console.log(data);
       axios.post(urlPostCitas, dataC).then(response => {
         swal('Cita agregada con éxito', '', 'success').then(result => {
-          axios.post(urlBitacoraAggCita,dataUsuario)
+          axios.post(urlBitacoraAggCita, dataUsuario)
           navegate('/recordatorio');
         });
 
@@ -168,11 +168,11 @@ export const RecordatorioCitas = (props) => {
       });
 
 
-    }) .catch(error => {
+    }).catch(error => {
       console.log(error);
       swal("Error al obtener la fecha.", "", "error")
-  });
-    
+    });
+
     /* setFecha(response.data)
     console.log(response.data) */
 
@@ -209,9 +209,9 @@ export const RecordatorioCitas = (props) => {
                       </option>
                     )}
                   </select> */}
-                  <Select 
+                  <Select
                     id="idClientes"
-                   // className="inputCustomPreguntas"
+                    // className="inputCustomPreguntas"
                     options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
                     value={selectedOption}
                     onChange={setSelectedOption}
@@ -223,7 +223,7 @@ export const RecordatorioCitas = (props) => {
               </div>
 
 
-{/* 
+              {/* 
               <div className="contNewCita">
                 <TextCustom text="Fecha" className="titleInput" />   */}
               {/* <DatePicker
@@ -235,9 +235,9 @@ export const RecordatorioCitas = (props) => {
                   id="fecha"
                 /> */}
 
-           {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
+              {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
 
-         {/*   <input
+              {/*   <input
                   //onChange={e => setFecha(e.target.value)}
                   type="text"
                   id="fecha"
@@ -246,7 +246,7 @@ export const RecordatorioCitas = (props) => {
                   value={fecha}
                   disabled
                 ></input>  */}
-            {/*     </div>  */}
+              {/*     </div>  */}
 
 
               <div className="contNewCita">
