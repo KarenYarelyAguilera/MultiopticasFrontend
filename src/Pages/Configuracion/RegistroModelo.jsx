@@ -118,6 +118,7 @@ const actualizarModelo = async () => {
     });
   };
 
+  
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -190,13 +191,14 @@ const actualizarModelo = async () => {
             <div className="contInput">
               <TextCustom text="Año" className="titleInput" />
                 <input
-                type="number"
+                type="text"
                 //value={detalle}
                 onChange={(e) => setyear(e.target.value)}
                 onKeyDown={(e) => {
-                  if (year=== "") {
+                  const year = parseInt(e.target.value + e.key);
+                  if (isNaN(year) || year < 2000 || year > 2050) {
                     setErroranio(true);
-                    setaviso("Los campos no deben estar vacíos");
+                    setaviso("El año ingresado es invalido");
                   } else {
                     setErroranio(false);
                     setaviso("");
@@ -226,9 +228,10 @@ const actualizarModelo = async () => {
                     swal("No deje campos vacíos.", "", "error");
                   }  else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(modelo)) {
                     swal("El campo modelo solo acepta letras mayusculas guiones y numeros.", "", "error");
-                  }else if (isNaN(parseInt(año))) {
-                    swal("El campo año solo acepta números.", "", "error");
-                  }else{
+                  }else if (isNaN(año) || año < 2000 || año > 2050) {
+                    swal("El campo año es invalido.", "", "error");
+                  }
+                  else{
                     props.actualizar ? actualizarModelo() : handleNext();
                   }
                 }

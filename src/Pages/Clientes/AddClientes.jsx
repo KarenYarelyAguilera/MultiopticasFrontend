@@ -210,7 +210,11 @@ export const AddClientes = (props) => {
                   if (iIdentidad === '') {
                     setErrorIdentidad(true);
                     setleyenda('Los campos no deben estar vacíos');
-                  } else {
+                  }
+                  else if (iIdentidad.length !== 13) {
+                    setErrorIdentidad(true);
+                    setleyenda('El número de identidad debe tener exactamente 13 dígitos');
+                  }  else {
                     setErrorIdentidad(false);
                     var regex = /^\d{13}$/;
                     if (!regex.test(iIdentidad)) {
@@ -228,7 +232,7 @@ export const AddClientes = (props) => {
                       }
                     }
                   }
-                }}
+                }}
                 onChange={e => setiIdentidad(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error={errorIdentidad}
                 helperText={leyenda}
@@ -365,12 +369,18 @@ export const AddClientes = (props) => {
                   if (Telefono === '') {
                     setTexto('Los campos no deben estar vacíos');
                     setErrorTelefono(true);
+                  }else if (Telefono.length !== 8) {
+                    setErrorTelefono(true);
+                    setTexto('El número de telefono debe tener exactamente 8 dígitos');
                   } else {
                     setErrorTelefono(false);
                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
                     if (!regex.test(Telefono)) {
                       setErrorTelefono(true);
                       setTexto('Debe ingresar un número de teléfono válido de 8 dígitos');
+                    }else if (/(.)\1{2,}/.test(Telefono)) {
+                      setErrorTelefono(true);
+                      setTexto('No se permiten numeros consecutivas repetidos');
                     } else {
                       setErrorTelefono(false);
                       setTexto('');
@@ -470,7 +480,9 @@ export const AddClientes = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(Nidentidad))) {
                     swal("El campo identidad solo acepta números.", "", "error");
-                  } else {
+                  } else if (Nidentidad.length !== 13) {
+                    swal("El número de identidad debe tener exactamente 13 digitos", "", "error")
+                  }  else {
                     setErrorIdentidad(false);
                     var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
                     if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
@@ -503,6 +515,10 @@ export const AddClientes = (props) => {
                         swal("El campo direccion no acepta letras consecutivas repetidas.", "", "error");
                       } else if (isNaN(parseInt(phone))) {
                         swal("El campo teléfono solo acepta números.", "", "error");
+                      }else if (phone.length !== 8) {
+                        swal("El campo teléfono debe tener el formato correcto.", "", "error");
+                      }else if (/(.)\1{2,}/.test(phone)) {
+                        swal("El numero de telefono ingresado es invalido.", "", "error");
                       }
                       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                         swal("El campo correo debe contener un correo válido.", "", "error");
@@ -511,7 +527,7 @@ export const AddClientes = (props) => {
                       }
                     }
                   }
-                }}
+                }}
 
                 variant="contained"
                 className="btnStepper">

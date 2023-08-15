@@ -18,10 +18,10 @@ export const ConfigRol = props => {
 
   const urlPermisos = "http://localhost:3000/api/permisosRol";
 
-  const urlURol =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
-  const urlNRol =
-    'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
+  // const urlURol =
+  //   'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
+  // const urlNRol =
+  //   'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
 
   const urlUsuario = "http://localhost:3000/api/permisosOBJ2"
   const urlInventario = "http://localhost:3000/api/permisosOBJ3"
@@ -130,10 +130,10 @@ export const ConfigRol = props => {
                 fecha: fecha,
               };
 
-              if (sendData(urlURol, data)) {
-                swal('Rol actualizado exitosamente', '', 'success');
-                setCont(cont + 1);
-              }
+              // if (sendData(urlURol, data)) {
+              //   swal('Rol actualizado exitosamente', '', 'success');
+              //   setCont(cont + 1);
+              // }
             });
           }
           break;
@@ -291,10 +291,10 @@ export const ConfigRol = props => {
               fecha: fecha,
             };
 
-            if (sendData(urlNRol, data)) {
-              swal('Rol creado exitosamente', '', 'success');
-              setCont(cont + 1);
-            }
+            // if (sendData(urlNRol, data)) {
+            //   swal('Rol creado exitosamente', '', 'success');
+            //   setCont(cont + 1);
+            // }
           });
           break;
       }
