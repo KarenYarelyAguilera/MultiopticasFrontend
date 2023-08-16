@@ -207,9 +207,9 @@ export const ListaMarcas = ({props,data,update}) => {
               onClick={() => {
                 navegate('/config/RegistroMarcas');
               }}
-            >
+            > 
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Marca
+              Nuevo
             </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}

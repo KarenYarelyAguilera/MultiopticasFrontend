@@ -78,7 +78,7 @@ export const BarraLateral = props => {
             props.obj(2)}}> */}
 
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
-            <h1>USUARIOS</h1>
+            <h1>ADMINISTRACION</h1>
           </Link>
         </li>
       );
@@ -230,7 +230,7 @@ export const BarraLateral = props => {
            props.obj(2)}}> */}
 
                 <FontAwesomeIcon className="iconLi" icon={faUsers} />
-                <h1>USUARIOS</h1>
+                <h1>ADMINISTRACION</h1>
               </Link>
             </li>
             <li>
