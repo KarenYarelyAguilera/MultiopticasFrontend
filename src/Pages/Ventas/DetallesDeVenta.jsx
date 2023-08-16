@@ -22,8 +22,8 @@ const urlDescuento = 'http://localhost:3000/api/Descuento';
 const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
-const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
+const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 
 
 export const DetallesDeVenta = (props) => {
@@ -66,11 +66,14 @@ export const DetallesDeVenta = (props) => {
       IdPromocion: Promocion,
       IdProducto: producto,
       cantidad: cantidad,
-      precioLente: lente,
+      IdLente: lente,
       idUsuario: props.idUsuario
     }
 
     data = { ...props.venta, ...data }
+    await axios.post(urlVenta,data).then((response)=>{
+      const dataActualizada = {...data, ...response.data}
+      props.dataVenta(dataActualizada)})
 
     //Funcion de bitacora 
     //  let dataUsuario={
@@ -79,24 +82,9 @@ export const DetallesDeVenta = (props) => {
 
 
 
-    swal({
-      title: "Confirmar venta",
-      icon: "warning",
-      buttons: {
-        cancel: "Cancelar",
-        confirm: "Confirmar",
-      },
-    }).then((result) => {
-      if (result) {//axios
-        axios.post(urlVenta, data).then((response) => {
-          props.dataVenta(response.data)
-          swal("Venta registrada con exito", "", "success").then(() => navegate('/menuVentas/PagoDeVenta'))
-          // axios.post(urlBitacoraInsertVenta,dataUsuario)
-        })
-      } else {//se cancela todo alv
-
-      }
-    });
+   navegate('/menuVentas/Calculosdeventa')
+ 
+    
 
 
   };

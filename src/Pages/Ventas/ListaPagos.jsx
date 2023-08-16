@@ -139,6 +139,8 @@ export const ListaPagos = (props) => {
     const tienePagadoMismoIdVenta = filasOriginales.some(
       (fila) => fila.estado === "Pagado" && fila.IdVenta === pago.IdVenta
     );
+
+    console.log(tienePagadoMismoIdVenta);
   
     if (pago.estado === "Pendiente" && tienePagadoMismoIdVenta) {
       swal("Existe una venta pagada con esta misma ID de Venta", "", "error");

@@ -1626,7 +1626,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <CalculosDeVenta />
+                  <CalculosDeVenta venta={dataVenta} dataVenta={dVenta} />
                 </div>
              // </ProtectedRoute>
             }

@@ -137,7 +137,7 @@ export const ListaVenta = (props) => {
           <Button
             className="btnImprimirExp"
 
-            onClick={() => handlePrintModal(params.row)}
+            onClick={() => handlePrintModal(params.row.IdVenta)}
 
           >
 
