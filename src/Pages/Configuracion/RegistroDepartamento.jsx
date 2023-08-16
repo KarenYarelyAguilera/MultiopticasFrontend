@@ -81,7 +81,7 @@ export const RegistroDepartamento = (props) => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/config');
+        navegate('/config/ListaDepartamentos');
       } else {
       }
     });
@@ -171,7 +171,7 @@ export const RegistroDepartamento = (props) => {
                   }
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

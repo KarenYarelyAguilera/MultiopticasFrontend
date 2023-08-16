@@ -160,7 +160,7 @@ export const InventarioDisponible = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Inventario
+              Nuevo
             </Button>
             <Button className="btnReport"
              onClick={handleGenerarReporte}

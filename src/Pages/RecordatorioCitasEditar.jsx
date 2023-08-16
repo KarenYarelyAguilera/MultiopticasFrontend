@@ -240,7 +240,7 @@ export const RecordatorioCitasEditar = props => {
 
 
                             <div className="contNewCitaButtons">
-                                <button className='btnAgregarCita' onClick={handleClick}>Actualizar</button>
+                                <button className='btnAgregarCita' onClick={handleClick}>Guardar</button>
                                 <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
                             </div>
                         </div>
