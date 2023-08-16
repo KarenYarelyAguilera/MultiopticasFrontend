@@ -216,7 +216,7 @@ const handleGenerarReporte = () => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Garantia
+              Nuevo
             </Button>
             <Button className="btnReport"
              onClick={handleGenerarReporte}>

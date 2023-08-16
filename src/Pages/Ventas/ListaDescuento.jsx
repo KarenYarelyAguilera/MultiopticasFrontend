@@ -164,7 +164,7 @@ const [searchTerm, setSearchTerm] = useState('');
           case 'update':
           data(id)
          update(true)
-      navegate('/config/RegistroDescuento')
+      navegate('/MenuVentas/RegistroDescuento')
       break;
       default:
       break;
@@ -232,7 +232,7 @@ const [searchTerm, setSearchTerm] = useState('');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Descuento
+              Nuevo
             </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}>

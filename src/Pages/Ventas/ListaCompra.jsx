@@ -135,11 +135,11 @@ export const ListaCompra = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('menuInventario/NuevaCompra');
+                navegate('/menuCompras/NuevaCompra');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Compra
+              Nuevo
             </Button>
             <Button className="btnReport"
              onClick={handleGenerarReporte}
