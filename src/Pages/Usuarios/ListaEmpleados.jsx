@@ -20,6 +20,15 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const ListaEmpleados = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 2
+  }
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
@@ -60,30 +69,35 @@ export const ListaEmpleados = (props) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID': row.IdEmpleado,
-          'Nombre': row.nombre,
-          'Apellido': row.apellido,
-          'Telefono': row.telefonoEmpleado,
-          'Sucursal': row.departamento,
-          'Descripcion': row.descripcion,
-          'Numero de identidad': row.numeroIdentidad,
-        };
-      });
-      return formattedData;
-    };
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID': row.IdEmpleado,
+            'Nombre': row.nombre,
+            'Apellido': row.apellido,
+            'Telefono': row.telefonoEmpleado,
+            'Sucursal': row.departamento,
+            'Descripcion': row.descripcion,
+            'Numero de identidad': row.numeroIdentidad,
+          };
+        });
+        return formattedData;
+      };
 
-    const urlPDF = 'Reporte_Empleados.pdf';
-    const subTitulo = "LISTA DE EMPLEADOS"
+      const urlPDF = 'Reporte_Empleados.pdf';
+      const subTitulo = "LISTA DE EMPLEADOS"
 
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
   };
 
   /////////
@@ -129,76 +143,86 @@ export const ListaEmpleados = (props) => {
 
   //funcion de eliminar
   function handleDel(id) {
-    swal({
-      content: (
-        <div>
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      swal({
+        content: (
+          <div>
 
-          <div className="logoModal">¿Desea Eliminar este empleado?</div>
-          <div className="contEditModal">
+            <div className="logoModal">¿Desea Eliminar este empleado?</div>
+            <div className="contEditModal">
+
+            </div>
 
           </div>
+        ),
+        buttons: ['Eliminar', 'Cancelar'],
+      }).then(async op => {
+        switch (op) {
+          case null:
 
-        </div>
-      ),
-      buttons: ['Eliminar', 'Cancelar'],
-    }).then(async op => {
-      switch (op) {
-        case null:
+            let data = {
+              IdEmpleado: id,
+            };
 
-          let data = {
-            IdEmpleado: id,
-          };
+            //Funcion de Bitacora 
+            let dataB = {
+              Id: props.idUsuario
+            }
 
-          //Funcion de Bitacora 
-          let dataB = {
-            Id: props.idUsuario
-          }
+            console.log(data);
 
-          console.log(data);
+            await axios
+              .delete(urlDelEmployees, { data })
+              .then(response => {
+                axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                swal('Empleado eliminado correctamente', '', 'success');
+                setCambio(cambio + 1);
+              })
+              .catch(error => {
+                console.log(error);
+                swal('Error al eliminar el empleado', '', 'error');
+              });
 
-          await axios
-            .delete(urlDelEmployees, { data })
-            .then(response => {
-              axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Empleado eliminado correctamente', '', 'success');
-              setCambio(cambio + 1);
-            })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar el empleado', '', 'error');
-            });
+            break;
 
-          break;
+          default:
+            break;
+        }
+      });
+    }
 
-        default:
-          break;
-      }
-    });
   }
 
 
 
   //funcion de actualizar
   function handleUpdt(id) {
-    // onRowClick={empleado => {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el empleado: {id.nombre} ?
-        </div>
-      ),
-    }).then(op => {
-      switch (op) {
-        case 'update':
-          props.data(id)
-          props.update(true)
-          navegate('/usuarios/crearempleado')
-      }
-    });
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar el empleado: {id.nombre} ?
+          </div>
+        ),
+      }).then(op => {
+        switch (op) {
+          case 'update':
+            props.data(id)
+            props.update(true)
+            navegate('/usuarios/crearempleado')
+        }
+      });
+    }
+
+
 
     //}//}//
   }
@@ -245,7 +269,12 @@ export const ListaEmpleados = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearempleado');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/usuarios/crearempleado');
+                }
+               
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

@@ -26,6 +26,15 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:4
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -47,31 +56,36 @@ export const ListaClientes = (props) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'Identidad': row.idCliente,
-          'Nombre': row.nombre,
-          'Apellido': row.apellido,
-          'Genero': row.genero,
-          'Fecha Nacimiento': fechaNacimiento,
-          'Direccion': row.direccion,
-          'Telefono': row.Telefono,
-          'Email': row.Email,
-        };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Reporte_Clientes.pdf';
-    const subTitulo = "LISTA DE CLIENTES"
-    const orientation = "landscape";
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'Identidad': row.idCliente,
+            'Nombre': row.nombre,
+            'Apellido': row.apellido,
+            'Genero': row.genero,
+            'Fecha Nacimiento': fechaNacimiento,
+            'Direccion': row.direccion,
+            'Telefono': row.Telefono,
+            'Email': row.Email,
+          };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Reporte_Clientes.pdf';
+      const subTitulo = "LISTA DE CLIENTES"
+      const orientation = "landscape";
+  
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+ 
   };
 
   /////////
@@ -88,32 +102,42 @@ export const ListaClientes = (props) => {
   );
 
   const handleNewExpediente = (id) => {
-    props.datosclientes({ idCliente: id.idCliente })
+    if (permisos[0].insertar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      props.datosclientes({ idCliente: id.idCliente })
     navegate('/menuClientes/DatosExpediente');
+    }
+    
   }
 
   function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar este cliente: {id.nombre}?
-        </div>
-      ),
-    }).then((op) => {
-      switch (op) {
-        case 'update':
-          props.data(id)
-          props.update(true)
-          navegate('/menuClientes/nuevoCliente')
-          break;
-        default:
-          break;
-      }
-    });
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar este cliente: {id.nombre}?
+          </div>
+        ),
+      }).then((op) => {
+        switch (op) {
+          case 'update':
+            props.data(id)
+            props.update(true)
+            navegate('/menuClientes/nuevoCliente')
+            break;
+          default:
+            break;
+        }
+      });
+    }
+   
   };
 
 
@@ -157,42 +181,47 @@ export const ListaClientes = (props) => {
   ];
 
   function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">Desea Elimiar este Cliente?</div>
-          <div className="contEditModal">
-
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+            <div className="logoModal">Desea Elimiar este Cliente?</div>
+            <div className="contEditModal">
+  
+            </div>
           </div>
-        </div>
-      ),
-      buttons: ["Eliminar", "Cancelar"]
-    }).then(async (op) => {
-
-      switch (op) {
-        case null:
-
-          let data = {
-            idCliente: id,
-          };
-
-          console.log(data);
-
-          await axios.delete(urlDelCliente, { data }).then(response => {
-            swal("Cliente Eliminado correctamente", "", "success")
-            setCambio(cambio + 1)
-          }).catch(error => {
-            console.log(error);
-            swal("Error al eliminar el cliente", "", "error")
-          })
-
-          break;
-
-        default:
-          break;
-      }
-
-    });
+        ),
+        buttons: ["Eliminar", "Cancelar"]
+      }).then(async (op) => {
+  
+        switch (op) {
+          case null:
+  
+            let data = {
+              idCliente: id,
+            };
+  
+            console.log(data);
+  
+            await axios.delete(urlDelCliente, { data }).then(response => {
+              swal("Cliente Eliminado correctamente", "", "success")
+              setCambio(cambio + 1)
+            }).catch(error => {
+              console.log(error);
+              swal("Error al eliminar el cliente", "", "error")
+            })
+  
+            break;
+  
+          default:
+            break;
+        }
+  
+      });
+    }
+   
 
   }
 
@@ -232,7 +261,12 @@ export const ListaClientes = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuClientes/nuevoCliente');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuClientes/nuevoCliente');
+                }
+               
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
