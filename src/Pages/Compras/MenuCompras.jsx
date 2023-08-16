@@ -19,11 +19,11 @@ export const MenuCompras = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/716/non_2x/global-marketing-strategy-concept-marketing-team-macromarketing-flat-modern-illustration-vector.jpg',
     //   vinculo: "/menuVentas/NuevaVenta", 
     // },
-    {
-      titulo: "Nueva Compra",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
-      vinculo: "/menuCompras/NuevaCompra", 
-    },
+    // {
+    //   titulo: "Nueva Compra",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
+    //   vinculo: "/menuCompras/NuevaCompra", 
+    // },
     // {
     //   titulo: "Detalle de Venta",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/736/non_2x/company-growth-concept-key-to-success-business-assets-company-mission-vision-and-philosophy-flat-modern-illustration-vector.jpg',
