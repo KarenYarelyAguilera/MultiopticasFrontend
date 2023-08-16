@@ -123,7 +123,7 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
               <div className="contInput">
-                <Select
+                <Select className='selectCustom'
                   id="producto"
                   // className="inputCustomPreguntas"
                   options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} L${pre.precio}` }))}
@@ -157,7 +157,7 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
               <div className="contInput">
-                <Select
+                <Select className='selectCustom'
                   id="promocion"
                   // className="inputCustomPreguntas"
 
@@ -172,7 +172,7 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Garantia de venta:" className="titleInput" />
               <div className="contInput">
-                <Select
+                <Select className='selectCustom'
                   id="garantia"
                   // className="inputCustomPreguntas"
                   options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses}` }))}
