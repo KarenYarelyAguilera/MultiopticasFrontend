@@ -115,9 +115,8 @@ export const NuevaVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="cliente"
-                  // className="inputCustomPreguntas"
                   options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
@@ -143,9 +142,8 @@ export const NuevaVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select
                   id="empleado"
-                  // className="inputCustomPreguntas"
                   options={Empleado.map(pre => ({ value: pre.idEmpleado, label: `${pre.nombre} ${pre.apellido}` }))}
                   value={selectedEmpleado}
                   onChange={setSelectedEmpleado}
