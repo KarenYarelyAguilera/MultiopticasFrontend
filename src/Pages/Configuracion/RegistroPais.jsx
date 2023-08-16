@@ -83,7 +83,7 @@ export const RegistroPais = (props) => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/config');
+        navegate('/config/ListaPais');
       } else {
       }
     });
@@ -162,7 +162,7 @@ export const RegistroPais = (props) => {
                   }
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>

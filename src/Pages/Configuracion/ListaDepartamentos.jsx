@@ -207,7 +207,7 @@ function handleDel(id) {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Registro
+              Nuevo
             </Button>
 
             <Button className="btnReport"
