@@ -30,7 +30,16 @@ import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios';
 
-export const ListaCiudad = ({props,data,update}) => {
+export const ListaCiudad = ({idRol,data,update}) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:idRol,
+    idObj:8
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
@@ -47,25 +56,30 @@ export const ListaCiudad = ({props,data,update}) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdCiudad,
-                                'Ciudad':row.ciudad, 
-                              };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Report_Ciudades.pdf';
-    const subTitulo = "LISTA DE CIUDADES"
-    const orientation = "landscape";
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+                                return {
+                                  'N°':row.IdCiudad,
+                                  'Ciudad':row.ciudad, 
+                                };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Report_Ciudades.pdf';
+      const subTitulo = "LISTA DE CIUDADES"
+      const orientation = "landscape";
+  
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
 
   const navegate = useNavigate();
@@ -106,67 +120,77 @@ export const ListaCiudad = ({props,data,update}) => {
 
 //FUNCION DE ELIMINAR 
 function handleDel(id) {
-  swal({
-    content: (
-      <div>
-        <div className="logoModal">¿Desea elimiar esta ciudad?</div>
-        <div className="contEditModal">
+  if (permisos[0].eliminar==="n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  } else {
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea elimiar esta ciudad?</div>
+          <div className="contEditModal">
+          </div>
         </div>
-      </div>
-    ),
-    buttons: {
-      cancel: 'Eliminar',
-      delete: 'Cancelar',
-    },
-  }).then(async(op) => {
-
-    switch (op) {
-      case null:
-
-        let data = {
-          IdCiudad: id
-        };
-        console.log(data);
+      ),
+      buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+      },
+    }).then(async(op) => {
   
-        await axios.delete(urlDeleteCuidad,{data}).then(response=>{
-          swal("Ciudad eliminada correctamente","","success")
-          setCambio(cambio+1)
-        }).catch(error=>{
-          console.log(error);
-          swal("Error al eliminar la ciudad, asegúrese que no tenga relación con otros datos.","","error")
-        })
-       
-      break;
+      switch (op) {
+        case null:
+  
+          let data = {
+            IdCiudad: id
+          };
+          console.log(data);
     
-      default:
-      break;
-    }
-  });
+          await axios.delete(urlDeleteCuidad,{data}).then(response=>{
+            swal("Ciudad eliminada correctamente","","success")
+            setCambio(cambio+1)
+          }).catch(error=>{
+            console.log(error);
+            swal("Error al eliminar la ciudad, asegúrese que no tenga relación con otros datos.","","error")
+          })
+         
+        break;
+      
+        default:
+        break;
+      }
+    });
+  }
+  
 };
 
 //FUNCION DE ACTUALIZAR 
 function handleUpdt(id) {
-  swal({
-    buttons: {
-      update: 'Actualizar',
-      cancel: 'Cancelar',
-    },
-    content: (
-      <div className="logoModal">
-        ¿Desea actualizar la ciudad: {id.ciudad}?
-      </div>
-    ),
-  }).then((op) => {
-    switch (op) {
-        case 'update':
-        data(id)
-        update(true)
-    navegate('/config/RegistroCiudad')
-    break;
-    default:
-    break;
-    }
-  });
+  if (permisos[0].actualizar === "n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  } else {
+    swal({
+      buttons: {
+        update: 'Actualizar',
+        cancel: 'Cancelar',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar la ciudad: {id.ciudad}?
+        </div>
+      ),
+    }).then((op) => {
+      switch (op) {
+          case 'update':
+          data(id)
+          update(true)
+      navegate('/config/RegistroCiudad')
+      break;
+      default:
+      break;
+      }
+    })
+  }
+ ;
 };
 
   const handleBack = () => {
@@ -205,7 +229,12 @@ function handleUpdt(id) {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroCiudad');
+                if (permisos[0].insertar==="n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/config/RegistroCiudad');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

@@ -29,6 +29,15 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaSucursal = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:8
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const [roles, setRoles] = useState([]);
   const [Departamento, setDepartamento] = useState([]);
   const [ciudad, setCiudad] = useState([]);
@@ -79,28 +88,33 @@ export const ListaSucursal = (props) => {
 
 //IMPRIMIR PDF
 const handleGenerarReporte = () => {
-  const formatDataForPDF = () => {
-    const formattedData = tableData.map((row) => {
-      const fechaCre = new Date(row.fechaNacimiento);
-      const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                            String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                            fechaCre.getFullYear();
-                            return {
-                              'N°':row.IdSucursal,
-                              'Departamento':row.departamento, 
-                              'Ciudad':row.ciudad, 
-                              'Dirección':row.direccion, 
-                              'Teléfono':row.telefono,                        
-                            };
-    });
-    return formattedData;
-  };
+  if (permisos[0].consultar ==="n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  } else {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°':row.IdSucursal,
+                                'Departamento':row.departamento, 
+                                'Ciudad':row.ciudad, 
+                                'Dirección':row.direccion, 
+                                'Teléfono':row.telefono,                        
+                              };
+      });
+      return formattedData;
+    };
+  
+    const urlPDF = 'Report_Sucursales.pdf';
+    const subTitulo = "LISTA DE SUCURSALES"
+  
+    const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  }
 
-  const urlPDF = 'Report_Sucursales.pdf';
-  const subTitulo = "LISTA DE SUCURSALES"
-
-  const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
 };
 
   const navegate = useNavigate();
@@ -143,77 +157,87 @@ const handleGenerarReporte = () => {
 
   //FUNCION DE ELIMINAR 
   function handleDel(IdSucursal) {
-    swal({
-      content: (
-        <div>
-
-          <div className="logoModal">¿Desea Eliminar esta Sucursal?</div>
-          <div className="contEditModal">
-
+    if (permisos[0].eliminar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+  
+            <div className="logoModal">¿Desea Eliminar esta Sucursal?</div>
+            <div className="contEditModal">
+  
+            </div>
+  
           </div>
-
-        </div>
-      ),
-      buttons: ['Eliminar', 'Cancelar'],
-    }).then(async op => {
-      switch (op) {
-        case null:
-
-          let data = {
-            IdSucursal: IdSucursal,
-          };
-
-          //Funcion de Bitacora 
-          /*  let dataB = {
-             Id:props.idUsuario
-           } */
-
-          console.log(data);
-
-          await axios
-            .delete(urlDelSucursal, { data })
-            .then(response => {
-              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Sucursal eliminada correctamente', '', 'success');
-              setCambio(cambio + 1);
-            })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar la sucursal', '', 'error');
-            });
-
-          break;
-
-        default:
-          break;
-      }
-    });
-  }
-
-  //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar la sucursal: {id.ciudad} ?
-        </div>
-      ),
-    }).then(
-      op => {
+        ),
+        buttons: ['Eliminar', 'Cancelar'],
+      }).then(async op => {
         switch (op) {
-          case 'update':
-            props.data(id)
-            props.update(true)
-            navegate('/config/RegistroSucursal')
+          case null:
+  
+            let data = {
+              IdSucursal: IdSucursal,
+            };
+  
+            //Funcion de Bitacora 
+            /*  let dataB = {
+               Id:props.idUsuario
+             } */
+  
+            console.log(data);
+  
+            await axios
+              .delete(urlDelSucursal, { data })
+              .then(response => {
+                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                swal('Sucursal eliminada correctamente', '', 'success');
+                setCambio(cambio + 1);
+              })
+              .catch(error => {
+                console.log(error);
+                swal('Error al eliminar la sucursal', '', 'error');
+              });
+  
             break;
+  
           default:
             break;
         }
       });
+    }
+   
+  }
+
+  //FUNCION DE ACTUALIZAR
+  function handleUpdt(id) {
+    if (permisos[0].actualizar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar la sucursal: {id.ciudad} ?
+          </div>
+        ),
+      }).then(
+        op => {
+          switch (op) {
+            case 'update':
+              props.data(id)
+              props.update(true)
+              navegate('/config/RegistroSucursal')
+              break;
+            default:
+              break;
+          }
+        });
+    }
+  
   };
 
   //Funcion de Bitacora 
@@ -257,7 +281,12 @@ const handleGenerarReporte = () => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroSucursal');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/config/RegistroSucursal');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

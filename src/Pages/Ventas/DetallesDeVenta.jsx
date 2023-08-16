@@ -17,13 +17,13 @@ import Select from 'react-select'; //select para concatenar el idCiente y el nom
 
 //URLS
 const urlProducto = 'http://localhost:3000/api/productos';
-const urlLente = 'http://localhost:3000/api/lentes';
+const urlLente = 'http://localhost:3000/api/Lentes';
 const urlDescuento = 'http://localhost:3000/api/Descuento';
 const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
-const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
+const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
 
 
 export const DetallesDeVenta = (props) => {
@@ -39,6 +39,7 @@ export const DetallesDeVenta = (props) => {
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
   const [selectedDescuento, setSelectedDescuento] = useState(null);
+  const [selectedLente, setSelectedLente] = useState(null);
 
 
 
@@ -47,30 +48,34 @@ export const DetallesDeVenta = (props) => {
     fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
     fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
     fetch(urlGarantia).then(response => response.json()).then(data => setGarantia(data))
+    fetch(urlLente).then(response => response.json()).then(data => setLente(data))
   }, [])
 
   const navegate = useNavigate();
 
   const handleNext = async () => {
 
-    let producto = selectedAros.value;
-    let Descuento = selectedDescuento.value;
-    let Promocion = selectedPromocion.value;
-    let Garantia = selectedGarantia.value;
+    let producto = selectedAros ? selectedAros.value : null;
+    let Descuento = selectedDescuento ? selectedDescuento.value : null;
+    let Promocion = selectedPromocion ? selectedPromocion.value : null;
+    let Garantia = selectedGarantia ? selectedGarantia.value : null;
     let cantidad = parseInt(document.getElementById("Cantidad").value)
-    let lente = parseFloat(document.getElementById("lente").value)
-
+    let lente = selectedLente ? selectedLente.value : null;
     let data = {
       IdGarantia: Garantia,
       IdDescuento: Descuento,
       IdPromocion: Promocion,
       IdProducto: producto,
       cantidad: cantidad,
-      precioLente: lente,
+      IdLente: lente,
       idUsuario: props.idUsuario
     }
 
     data = { ...props.venta, ...data }
+    await axios.post(urlVenta, data).then((response) => {
+      const dataActualizada = { ...data, ...response.data }
+      props.dataVenta(dataActualizada)
+    })
 
     //Funcion de bitacora 
     //  let dataUsuario={
@@ -79,24 +84,9 @@ export const DetallesDeVenta = (props) => {
 
 
 
-    swal({
-      title: "Confirmar venta",
-      icon: "warning",
-      buttons: {
-        cancel: "Cancelar",
-        confirm: "Confirmar",
-      },
-    }).then((result) => {
-      if (result) {//axios
-        axios.post(urlVenta, data).then((response) => {
-          props.dataVenta(response.data)
-          swal("Venta registrada con exito", "", "success").then(() => navegate('/menuVentas/PagoDeVenta'))
-          // axios.post(urlBitacoraInsertVenta,dataUsuario)
-        })
-      } else {//se cancela todo alv
+    navegate('/menuVentas/Calculosdeventa')
 
-      }
-    });
+
 
 
   };
@@ -142,7 +132,7 @@ export const DetallesDeVenta = (props) => {
                   id="promocion"
                   // className="inputCustomPreguntas"
 
-                  options={Descuento.map(pre => ({ value: pre.IdDescuento, label: `${(pre.descPorcent)*100}%` }))}
+                  options={Descuento.map(pre => ({ value: pre.IdDescuento, label: `${(pre.descPorcent) * 100}%` }))}
                   value={selectedDescuento}
                   onChange={setSelectedDescuento}
                   placeholder="Seleccione un Descuento"
@@ -150,7 +140,7 @@ export const DetallesDeVenta = (props) => {
               </div>
             </div>
 
-            
+
 
 
             <div className="contInput">
@@ -160,7 +150,7 @@ export const DetallesDeVenta = (props) => {
                   id="promocion"
                   // className="inputCustomPreguntas"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent)*100}%` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
@@ -174,7 +164,7 @@ export const DetallesDeVenta = (props) => {
                 <Select className='selectCustom'
                   id="garantia"
                   // className="inputCustomPreguntas"
-                  options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
+                  options={Garantia.map(pre => ({ value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
                   value={selectedGarantia}
                   onChange={setSelectedGarantia}
                   placeholder="Seleccione una Garantia"
@@ -211,15 +201,16 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Precio del lente" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Precio del lente"
-                id="lente"
-              />
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="lente"
+                  // className="inputCustomPreguntas"
+                  options={Lente.map(pre => ({ value: pre.IdLente, label: `${pre.lente} - L.${pre.precio}` }))}
+                  value={selectedLente}
+                  onChange={setSelectedLente}
+                  placeholder="Seleccione un lente"
+                />
+              </div>
             </div>
 
             <div className="contBtnStepper">
@@ -227,19 +218,19 @@ export const DetallesDeVenta = (props) => {
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
+                  var producto = selectedAros ? selectedAros.value : null;
+                  var Descuento = selectedDescuento ? selectedDescuento.value : null;
+                  var Promocion = selectedPromocion ? selectedPromocion.value : null;
+                  var Garantia = selectedGarantia ? selectedGarantia.value : null;
                   var cantidad = parseInt(document.getElementById("Cantidad").value)
-                  var lente = parseFloat(document.getElementById("lente").value)
+                  var lente = selectedLente ? selectedLente.value : null;
 
-                  if (cantidad === "" || lente === "") {
+                  if (cantidad === "" || lente === "" || producto === "" || Descuento === "" || Promocion === "" || Garantia === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(cantidad))) {
                     swal("El campo cantidad solo acepta números.", "", "error");
-                  } else if (isNaN(parseFloat(lente))) {
-                    swal("El campo precio de lente solo acepta números.", "", "error");
                   } else if (cantidad <= 0) {
                     swal("El campo cantidad no acepta valores negativos.", "", "error");
-                  } else if (lente <= 0) {
-                    swal("El campo precio de lente no acepta valores negativos.", "", "error");
                   }
                   else {
 

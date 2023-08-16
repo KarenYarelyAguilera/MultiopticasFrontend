@@ -29,7 +29,16 @@ import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios';
 
-export const ListaMarcas = ({props,data,update}) => {
+export const ListaMarcas = ({idRol,data,update}) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:idRol,
+    idObj:8
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
@@ -45,25 +54,30 @@ export const ListaMarcas = ({props,data,update}) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdMarca,
-                                'Marca':row.descripcion, 
-                              };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Report_MARCA.pdf';
-    const subTitulo = "LISTA DE MARCAS"
-
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+                                return {
+                                  'N°':row.IdMarca,
+                                  'Marca':row.descripcion, 
+                                };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Report_MARCA.pdf';
+      const subTitulo = "LISTA DE MARCAS"
+  
+      const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
   
   const navegate = useNavigate();
@@ -109,68 +123,78 @@ export const ListaMarcas = ({props,data,update}) => {
 
 //FUNCION DE ELIMINAR 
   function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">¿Desea Elimiar esta marca?</div>
-          <div className="contEditModal">
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+            <div className="logoModal">¿Desea Elimiar esta marca?</div>
+            <div className="contEditModal">
+            </div>
           </div>
-        </div>
-      ),
-      buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
-      },
-    }).then(async(op) => {
-
-      switch (op) {
-        case null:
-
-          let data = {
-            IdMarca: id
-          };
-    
-          console.log(data);
-    
-          await axios.delete(urlDelMarca,{data}).then(response=>{
-            swal("Marca eliminada correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
-            console.log(error);
-            swal("Error al eliminar la marca, asegúrese que no tenga relación con otros datos.","","error")
-          })
-         
-        break;
+        ),
+        buttons: {
+          cancel: 'Eliminar',
+          delete: 'Cancelar',
+        },
+      }).then(async(op) => {
+  
+        switch (op) {
+          case null:
+  
+            let data = {
+              IdMarca: id
+            };
       
-        default:
-        break;
-      }
-    });
+            console.log(data);
+      
+            await axios.delete(urlDelMarca,{data}).then(response=>{
+              swal("Marca eliminada correctamente","","success")
+              setCambio(cambio+1)
+            }).catch(error=>{
+              console.log(error);
+              swal("Error al eliminar la marca, asegúrese que no tenga relación con otros datos.","","error")
+            })
+           
+          break;
+        
+          default:
+          break;
+        }
+      });
+    }
+    
   };
  
   //FUNCION DE ACTUALIZAR 
   function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar la marca?: {id.marca} ?
-        </div>
-      ),
-    }).then((op) => {
-      switch (op) {
-          case 'update':
-          data(id)
-          update(true)
-      navegate('/config/RegistroMarcas')
-      break;
-      default:
-      break;
-      }
-    });
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar la marca?: {id.marca} ?
+          </div>
+        ),
+      }).then((op) => {
+        switch (op) {
+            case 'update':
+            data(id)
+            update(true)
+        navegate('/config/RegistroMarcas')
+        break;
+        default:
+        break;
+        }
+      });
+    }
+   
   };
 
   return (
@@ -205,7 +229,12 @@ export const ListaMarcas = ({props,data,update}) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroMarcas');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/config/RegistroMarcas');
+                }
+                
               }}
             > 
               <AddIcon style={{ marginRight: '5px' }} />
