@@ -20,77 +20,87 @@ import axios from 'axios';
 import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
-const urlUpdateMarca = 'http://localhost:3000/api/marcas/actualizar';
+const urlInsertLente = 'http://localhost:3000/api/Lentes/NuevoLente';
+const urlUpdateLente = 'http://localhost:3000/api/Lentes/ActualizarLente';
 
 export const RegistroLente = (props) => {
-  const navegate = useNavigate();
 
   // const [marca, setmarca] = React.useState('');
   // const [leyenda, setleyenda] = React.useState('');
   // const [errorMarca, setErrorMarca] = React.useState(false);
 
   //Validacion 
-  const [marca, setmarca] = React.useState(props.data.descripcion||'');
-  const [aviso, setaviso] = React.useState('');
-  const [errormarca, setErrormarca] = React.useState(false);
-  
-  //INSERTAR MARCA 
+  const [lente, setLente] = React.useState(props.data.lente || '');
+  const [avisoL, setavisoL] = React.useState('');
+  const [errorLente, setErrorLente] = React.useState(false);
 
-  const handleNext = async () => {
-    let marca = document.getElementById("Marca").value;
+  const [precio, setPrecio] = React.useState(props.data.precio || '');
+  const [avisoP, setavisoP] = React.useState('');
+  const [errorPrecio, setErrorPrecio] = React.useState(false);
+
+  const navegate = useNavigate();
+
+  //INSERTAR LENTE
+
+  const handleNext = async (props) => {
+    let lente = document.getElementById("lente").value;
+    let precio = parseFloat(document.getElementById("precio").value);
 
     let data = {
-      descripcion:marca 
+      lente: lente,
+      precio: precio,
     }
-    
-    if (await axios.post(urlInsertMarca, data)) {
-      swal('Marca creada exitosamente.','', 'success');
-      navegate('/config/ListaMarcas');
+
+    if (await axios.post(urlInsertLente, data)) {
+      swal('Lente creado exitosamente.', '', 'success');
+      navegate('/MenuInventario/ListaLentes');
     }
 
   };
 
-//ACTUALIZAR
-const actualizarMarca = async () => {
+  //ACTUALIZAR
+  const actualizarLente = async () => {
 
-  let marca = document.getElementById("Marca").value;
+    let lente = document.getElementById("lente").value;
+    let precio = parseFloat(document.getElementById("precio").value);
 
-  const data = {
 
-    descripcion:marca,
-    IdMarca: props.data.IdMarca, //El dato de IdProducto se obtiene de Producto seleccionado.
-  }
+    const data = {
 
-  axios.put(urlUpdateMarca, data).then(() => {
-    swal("Marca Actualizada Correctamente", "", "success").then(() => {
-      navegate('/config/ListaMarcas');
-    })
-  }).catch(error => {
-    console.log(error);
-    swal('Error al Actualizar Marca , porfavor revise todos los campos.', '', 'error')
-    // axios.post(urlErrorInsertBitacora, dataB)
-  })
-
-};
-
-//BOTON DE RETROCESO 
-const handleBack = () => {
-  swal({
-    title: 'Advertencia',
-    text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
-    icon: 'warning',
-    buttons: ['Cancelar', 'Salir'],
-    dangerMode: true,
-  }).then((confirmExit) => {
-    if (confirmExit) {
-      props.update(false)
-      props.Data({})
-      navegate('/MenuInventario/ListaLentes');
-    } else {
+      lente: lente,
+      precio: precio,
+      IdLente: props.data.IdLente,//El dato de IdProducto se obtiene de Producto seleccionado.
     }
-  });
-};
+
+    axios.put(urlUpdateLente, data).then(() => {
+      swal("Lente Actualizado Correctamente", "", "success").then(() => {
+        navegate('/MenuInventario/ListaLentes');
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Lente , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
+
+  };
+
+  //BOTON DE RETROCESO 
+  const handleBack = () => {
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/MenuInventario/ListaLentes');
+      } else {
+      }
+    });
+  };
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -98,7 +108,7 @@ const handleBack = () => {
       </Button>
 
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizar Lente</h2> : <h2>Registro de Lente</h2>}
+        {props.actualizar ? <h2>Actualizar Lente</h2> : <h2>Registro de Lente</h2>}
 
         <h3>Complete todos los puntos para poder registrar los datos del Lente.</h3>
       </div>
@@ -107,120 +117,65 @@ const handleBack = () => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-          <div className="contInput">
+            <div className="contInput">
               <TextCustom text="Precio" className="titleInput" />
               <input
+                onChange={e => setPrecio(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorPrecio}
 
-              onKeyDown={e => 
-                {
-                setmarca(e.target.value);
-                if (marca === '') 
-                {
-                  setErrormarca(true);
-                  setaviso('Los campos no deben estar vacíos');
-                } else 
-                {
-                  setErrormarca(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(marca))
-                   {
-                    setErrormarca(true);
-                    setaviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(marca))
-                  {
-                    setErrormarca(true);
-                    setaviso('No se permiten letras consecutivas repetidas');
-                  } else 
-                  {
-                    setErrormarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-              onChange={e => setmarca(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error={errormarca}
-
-                helperText={aviso}
+                helperText={avisoP}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Precio"
-                id="Precio"
-                value ={marca}
+                id="precio"
+                value={precio}
               />
             </div>
-            <p className="error">{aviso}</p>
-             <div className="contInput">
+            <p className="error">{avisoP}</p>
+            <div className="contInput">
               <TextCustom text="Lente" className="titleInput" />
               <input
 
-              onKeyDown={e => 
-                {
-                setmarca(e.target.value);
-                if (marca === '') 
-                {
-                  setErrormarca(true);
-                  setaviso('Los campos no deben estar vacíos');
-                } else 
-                {
-                  setErrormarca(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(marca))
-                   {
-                    setErrormarca(true);
-                    setaviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(marca))
-                  {
-                    setErrormarca(true);
-                    setaviso('No se permiten letras consecutivas repetidas');
-                  } else 
-                  {
-                    setErrormarca(false);
-                    setaviso('');
-                  }
-                }
-              }}
-              onChange={e => setmarca(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error={errormarca}
+                onChange={e => setLente(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorLente}
 
-                helperText={aviso}
+                helperText={avisoL}
                 type="text"
                 name=""
                 maxLength={40}
                 className="inputCustom"
                 placeholder="Lente"
-                id="Lente"
-                value ={marca}
+                id="lente"
+                value={lente}
               />
             </div>
-            <p className="error">{aviso}</p>
+            <p className="error">{avisoL}</p>
 
-            
+
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={()=> {
-                  var Marca = document.getElementById("Marca").value;
-                  if (Marca ==="")
-                  {
-                    swal ("No deje campos vacíos.", "", "error");
-                  }   else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Marca)) {
-                    swal("El campo marca solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                } else if (/(.)\1{2,}/.test(Marca)) {
-                  setmarca(true);
-                  swal("El campo direccion no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                }else{
+                onClick={() => {
+                  var lente = document.getElementById("lente").value;
+                  var precio = parseFloat(document.getElementById("precio").value);
+                  if (lente === "" || precio=== "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  }else if (precio <= 0) {
+                    swal("El campo precio no acepta valores negativos.", "", "error");
+                  }else {
 
-                  props.actualizar ? actualizarMarca() : handleNext();}
+                    props.actualizar ? actualizarLente() : handleNext();
+                  }
                 }
-              }
+                }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
-             
+
             </div>
           </div>
         </div>

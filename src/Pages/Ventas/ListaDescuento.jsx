@@ -28,7 +28,16 @@ import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar 
 //GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaDescuento = ({props,data,update}) => {
+export const ListaDescuento = ({idRol,data,update}) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:idRol,
+    idObj:8
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
@@ -45,27 +54,32 @@ const [searchTerm, setSearchTerm] = useState('');
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdDescuento,
-                                'Estado':row.estado, 
-                                'Descuento del Cliente':row.descPorcent, 
-                                'Descuento del Empleado':row.descPorcentEmpleado, 
-                              };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Report_Descuento.pdf';
-    const subTitulo = "LISTA DE DESCUENTO"
-
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+                                return {
+                                  'N°':row.IdDescuento,
+                                  'Estado':row.estado, 
+                                  'Descuento del Cliente':row.descPorcent, 
+                                  'Descuento del Empleado':row.descPorcentEmpleado, 
+                                };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Report_Descuento.pdf';
+      const subTitulo = "LISTA DE DESCUENTO"
+  
+      const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
 
   const navegate = useNavigate();
@@ -107,69 +121,79 @@ const [searchTerm, setSearchTerm] = useState('');
 
  //FUNCION DE ELIMINAR 
   function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">
-          ¿Desea Elimiar este Descuento?</div>
-          <div className="contEditModal">
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+            <div className="logoModal">
+            ¿Desea Elimiar este Descuento?</div>
+            <div className="contEditModal">
+            </div>
           </div>
-        </div>
-      ),
-
-      buttons: {
-      cancel: 'Eliminar',
-      delete: 'Cancelar',
-      },
-     
-    }).then(async(op) => {
-
-      switch (op) {
-        case null:
-
-          let data = {
-            IdDescuento: id
-          };
-
-          console.log(data);
-
-          await axios.delete(urlDelDescuento,{data}).then(response=>{
-            swal("Descuento eliminado correctamente","","success")
-            setCambio(cambio+1)
-          }).catch(error=>{
-            console.log(error);
-            swal("Error al eliminar el descuento","","error")
-          })
-          break;
-          default:
-          break;
-      }
-    });
+        ),
+  
+        buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+        },
+       
+      }).then(async(op) => {
+  
+        switch (op) {
+          case null:
+  
+            let data = {
+              IdDescuento: id
+            };
+  
+            console.log(data);
+  
+            await axios.delete(urlDelDescuento,{data}).then(response=>{
+              swal("Descuento eliminado correctamente","","success")
+              setCambio(cambio+1)
+            }).catch(error=>{
+              console.log(error);
+              swal("Error al eliminar el descuento","","error")
+            })
+            break;
+            default:
+            break;
+        }
+      });
+    }
+ 
   };
 
   //FUNCION DE ACTUALIZAR 
   function handleUpdate (id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el descuento ?: {id.descuento}?
-        </div>
-      ),
-    }).then((op) => {
-      switch (op) {
-          case 'update':
-          data(id)
-         update(true)
-      navegate('/MenuVentas/RegistroDescuento')
-      break;
-      default:
-      break;
-      }
-    });
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar el descuento ?: {id.descuento}?
+          </div>
+        ),
+      }).then((op) => {
+        switch (op) {
+            case 'update':
+            data(id)
+           update(true)
+        navegate('/MenuVentas/RegistroDescuento')
+        break;
+        default:
+        break;
+        }
+      });
+    }
+    
   };
 
   //   let descCliente = parseFloat(document.getElementById("descCliente").value)
@@ -228,7 +252,12 @@ const [searchTerm, setSearchTerm] = useState('');
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/RegistroDescuento');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuVentas/RegistroDescuento');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

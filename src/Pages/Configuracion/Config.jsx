@@ -10,11 +10,11 @@ export const Configuracion = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/006/946/052/non_2x/abstract-concept-of-social-role-social-norms-gender-stereotypes-social-norms-role-exchange-is-an-abstract-metaphor-illustration-in-flat-modern-style-vector.jpg',
     //   vinculo: '/config/roles',
     // },
-   /*  {
-      titulo: 'Permisos',
-      imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
-      vinculo: '/config/verpermisos',
-    }, */
+    // {
+    //   titulo: 'Permisos',
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
+    //   vinculo: '/config/verpermisos',
+    // },
     {
       titulo: "Garantias",
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
@@ -35,11 +35,11 @@ export const Configuracion = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
       vinculo: "/config/listaSucursal",
     },
-    {
-      titulo: "Parametros",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
-      vinculo: "/config/ListaParametros",
-    },
+    // {
+    //   titulo: "Parametros",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
+    //   vinculo: "/config/ListaParametros",
+    // },
     // {
     //   titulo: "Bitacora",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/788/724/non_2x/checklist-on-smartphone-screen-online-survey-concept-hand-holds-mobile-phone-and-check-list-with-checkmark-illustration-flat-vector.jpg',
