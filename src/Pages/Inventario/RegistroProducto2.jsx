@@ -26,15 +26,11 @@ const urlDelProducto = //BORRAR
   'http://localhost:3000/api/productos/eliminar';
 const urlModelos = //MOSTRAR MODELOS
   'http://localhost:3000/api/modelos';
-
   //BITACORAS
   const urlBitacoraInsertProducto='http://localhost:3000/api/bitacora/insertoproducto';
   const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
 
-
-
-export const RegistroProducto2 = (props) => {
-  
+export const RegistroProducto2 = (props) => { 
   const [Modelo, setModelo] = useState([]);
 
   const [leyenda, setleyenda] = React.useState('');

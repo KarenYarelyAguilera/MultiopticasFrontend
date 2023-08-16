@@ -20,7 +20,16 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaLentes = ({props,data,update}) => {
+export const ListaLentes = ({idRol,data,update}) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:idRol,
+    idObj:3
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const urlLentes ='http://localhost:3000/api/Lentes';
   const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
@@ -45,6 +54,9 @@ export const ListaLentes = ({props,data,update}) => {
     ),
   );
   const handleGenerarReporte = () => {
+    if (permisos[0].consultar==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    }else{
     const formatDataForPDF = () => {
       const formattedData = filteredData.map((row) => {
         const fechaCre = new Date(row.fechaCompra);
@@ -65,6 +77,8 @@ export const ListaLentes = ({props,data,update}) => {
 
     const orientation = "landscape";
   generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+        
+}
   };
 
 
@@ -99,66 +113,76 @@ export const ListaLentes = ({props,data,update}) => {
 
 //FUNCION DE ELIMINAR 
 function handleDel(id) {
-  swal({
-    content: (
-      <div>
-        <div className="logoModal">¿Desea eliminar este Lente?</div>
-        <div className="contEditModal"> 
+  if (permisos[0].eliminar ==="n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  }else{
+    swal({
+      content: (
+        <div>
+          <div className="logoModal">¿Desea eliminar este Lente?</div>
+          <div className="contEditModal"> 
+          </div>
         </div>
-      </div>
-    ),
-
-    buttons: {
-      cancel: 'Eliminar',
-      delete: 'Cancelar',
-    },
-  }).then(async (op) => {
-
-    switch (op) {
-      case null:
-        let data = {
-          IdLente:id
-        }; 
-        console.log(data);
-
-        await axios .delete(urlLentesEliminar,{data}) .then(response => {
-            swal('Modelo eliminado correctamente', '', 'success');
-            setCambio(cambio + 1);
-          }).catch(error => {
-            console.log(error);
-            swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
-          });
-
-        break;
-        default:
-        break;
-    }
-  });
+      ),
+  
+      buttons: {
+        cancel: 'Eliminar',
+        delete: 'Cancelar',
+      },
+    }).then(async (op) => {
+  
+      switch (op) {
+        case null:
+          let data = {
+            IdLente:id
+          }; 
+          console.log(data);
+  
+          await axios .delete(urlLentesEliminar,{data}) .then(response => {
+              swal('Modelo eliminado correctamente', '', 'success');
+              setCambio(cambio + 1);
+            }).catch(error => {
+              console.log(error);
+              swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
+            });
+  
+          break;
+          default:
+          break;
+      }
+    });
+  }
+  
 };
 
     //FUNCION DE ACTUALIZAR DATOS 
     function handleUpdt(id) {
-      swal({
-        buttons: {
-          update: 'Actualizar',
-          cancel: 'Cancelar',
-        },
-        content: (
-          <div className="logoModal">
-            ¿Desea actualizar este Lente: {id.lente}?
-          </div>
-        ),
-      }).then((op)  => {
-          switch (op) {
-            case 'update':
-              data(id)
-              update(true)
-              navegate('/Inventario/RegistroLente')
-              break;
-              default:
-              break;
-          }
-        });
+      if (permisos[0].actualizar==="n") {
+        swal("No cuenta con los permisos para realizar esta accion","","error")
+      }else{
+        swal({
+          buttons: {
+            update: 'Actualizar',
+            cancel: 'Cancelar',
+          },
+          content: (
+            <div className="logoModal">
+              ¿Desea actualizar este Lente: {id.lente}?
+            </div>
+          ),
+        }).then((op)  => {
+            switch (op) {
+              case 'update':
+                data(id)
+                update(true)
+                navegate('/Inventario/RegistroLente')
+                break;
+                default:
+                break;
+            }
+          });
+      }
+     
     };
 
   const handleBack = () => {
@@ -197,7 +221,11 @@ function handleDel(id) {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/Inventario/RegistroLente');
+                if (permisos[0].insertar==="n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                }else{
+                  navegate('/Inventario/RegistroLente');
+                }
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
