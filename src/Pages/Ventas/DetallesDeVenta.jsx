@@ -13,7 +13,7 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-
+import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 
 //URLS
 const urlProducto = 'http://localhost:3000/api/productos';

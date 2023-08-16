@@ -20,18 +20,20 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaLentes = (props) => {
+export const ListaLentes = ({props,data,update}) => {
 
-  const urlCompras ='http://localhost:3000/api/compra';
+  const urlLentes ='http://localhost:3000/api/Lentes';
+  const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
 
+
+  const [cambio, setCambio] = useState(0)
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [Lente, setLente] = useState([]);
 
   useEffect(() => {
-    fetch(urlCompras)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, []);
+    axios.get(urlLentes).then(response=>setTableData(response.data))
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -50,16 +52,16 @@ export const ListaLentes = (props) => {
           String(fechaCre.getMonth()).padStart(2, '0') + "/" +
           fechaCre.getFullYear();
         return {
-          'ID':row.IdCompra,
-          'Fecha':fechaCompra,
-          'Total compra': row.totalCompra,
+          'ID':row.IdLente,
+          'Lente':row.lente,
+          'Precio': row.precio,
         };
       });
       return formattedData;
     };
 
-    const urlPDF = 'Reporte_Compras.pdf';
-    const subTitulo = "LISTA DE COMPRAS"
+    const urlPDF = 'Reporte_Lentes.pdf';
+    const subTitulo = "LISTA DE LENTES "
 
     const orientation = "landscape";
   generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
@@ -67,9 +69,9 @@ export const ListaLentes = (props) => {
 
 
   const columns = [
-    { field: 'ID Lente', headerName: 'ID Lente', width: 380 },
-    { field: 'Lente', headerName: 'Lente', width: 380 },
-    { field: 'Precio', headerName: 'Precio', width: 380 },
+    { field: 'IdLente', headerName: 'Id Lente', width: 380 },
+    { field: 'lente', headerName: 'Lente', width: 380 },
+    { field: 'precio', headerName: 'Precio', width: 380 },
    
     
     {
@@ -80,15 +82,12 @@ export const ListaLentes = (props) => {
       renderCell: params => (
         <div className="contActions">
           <Button
-            className="btnEdit"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
-          >
+           onClick={() => handleDel(params.row.IdLente)}>
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
         </div>
@@ -96,9 +95,72 @@ export const ListaLentes = (props) => {
     },
   ];
 
-  function handleButtonClick(id) {
-    swal("No es posible realizar esta accion","","error")
-  }
+  
+
+//FUNCION DE ELIMINAR 
+function handleDel(id) {
+  swal({
+    content: (
+      <div>
+        <div className="logoModal">¿Desea eliminar este Lente?</div>
+        <div className="contEditModal"> 
+        </div>
+      </div>
+    ),
+
+    buttons: {
+      cancel: 'Eliminar',
+      delete: 'Cancelar',
+    },
+  }).then(async (op) => {
+
+    switch (op) {
+      case null:
+        let data = {
+          IdLente:id
+        }; 
+        console.log(data);
+
+        await axios .delete(urlLentesEliminar,{data}) .then(response => {
+            swal('Modelo eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
+          });
+
+        break;
+        default:
+        break;
+    }
+  });
+};
+
+    //FUNCION DE ACTUALIZAR DATOS 
+    function handleUpdt(id) {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar este Lente: {id.lente}?
+          </div>
+        ),
+      }).then((op)  => {
+          switch (op) {
+            case 'update':
+              data(id)
+              update(true)
+              navegate('/Inventario/RegistroLente')
+              break;
+              default:
+              break;
+          }
+        });
+    };
+
   const handleBack = () => {
     navegate('/inventario');
   };
@@ -150,7 +212,7 @@ export const ListaLentes = (props) => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdCompra}
+          getRowId={tableData => tableData.IdLente}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

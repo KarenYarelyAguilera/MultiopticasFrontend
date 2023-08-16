@@ -673,8 +673,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <RegistroLente
                   actualizar={actualizar}
                   update={update}
-                  data={data}
-                  Data={Data} 
+                  data={data}garanr
+                  Data={Data}
                   />
               </div>
             //  </ProtectedRoute>
@@ -956,8 +956,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaLentes
-                  update={update} 
-                  data={Data} 
+                   update={update} 
+                   data={Data} 
                   />
                 </div>
             //  </ProtectedRoute>
