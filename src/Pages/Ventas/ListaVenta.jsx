@@ -38,6 +38,11 @@ export const ListaVenta = (props) => {
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
 
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:9
+  }
+
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
@@ -57,10 +62,7 @@ export const ListaVenta = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:9
-  }
+  
 
 
   
