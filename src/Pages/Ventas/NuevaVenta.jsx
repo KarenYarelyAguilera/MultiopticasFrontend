@@ -112,25 +112,10 @@ export const NuevaVenta = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contPrincipalNewCita">
-              <TextCustom text="Cliente" className="titleInput" />
-              {/*   <select name="" className="selectCustom" id="cliente">
-                {Cliente.length ? (
-                  Cliente.map(pre => (
-                    <option key={pre.IdCliente} value={pre.IdCliente}>
-                      {pre.idCliente}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select> */}
-
-              {/* select que jala los datos y concatena el idCliente y nombre */}
+            <div className="contInput">
+              <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <Select
+                <Select className='selectCustom'
                   id="cliente"
                   // className="inputCustomPreguntas"
                   options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
@@ -138,12 +123,7 @@ export const NuevaVenta = (props) => {
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
                 />
-
-
               </div>
-
-
-
             </div>
 
             <div className="contInput">
