@@ -112,7 +112,7 @@ const actualizarModelo = async () => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/config');
+        navegate('/config/lista');
       } else {
       }
     });
@@ -237,7 +237,7 @@ const actualizarModelo = async () => {
                 }
               }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>

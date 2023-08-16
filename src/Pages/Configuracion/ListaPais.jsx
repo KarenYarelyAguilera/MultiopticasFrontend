@@ -204,7 +204,7 @@ export const ListaPais = ({props,data,update}) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Registro
+              Nuevo
             </Button>
             <Button className="btnReport"
             onClick={handleGenerarReporte}

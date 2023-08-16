@@ -83,7 +83,7 @@ const urlSalirListaBitacora=
 
   const handleBack = () => { 
     axios.post(urlSalirListaBitacora,dataB) //BOTON DE RETROCESO API BITACORA 
-    navegate('/config');
+    navegate('/usuarios');
   };
 
   return (

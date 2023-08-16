@@ -209,7 +209,7 @@ function handleUpdt(id) {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Registro
+              Nuevo
             </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}

@@ -275,10 +275,10 @@ export const ListaVenta = (props) => {
                   navegate('/menuVentas/NuevaVenta');
                   
                 //}
-              }}
+              }} 
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Venta
+              Nuevo
             </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}
