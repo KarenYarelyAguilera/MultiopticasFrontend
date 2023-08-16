@@ -310,6 +310,6 @@ export const ListaVenta = (props) => {
           rowsPerPageOptions={[5]}
         />
       </div>
-    </div>
-  );
+    </div>
+  );
 };
