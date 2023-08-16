@@ -115,6 +115,7 @@ import { Backup } from './Pages/Administracion/Backup.jsx';
 import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
+import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
 
 
 function App() {
@@ -1479,6 +1480,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <RecuperacionPassword></RecuperacionPassword>
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/seguridad"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex" style={{ width: '99%' }}>
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario}  />
+                  <MenuSeguridad></MenuSeguridad>
+                </div>
+             // </ProtectedRoute>
             }
           ></Route>
 

@@ -457,7 +457,7 @@ export const ConfigRol = props => {
   
 
   const handleBack = () => {
-    navegate('/config/roles');
+    navegate('/seguridad');
   };
 
   const IOSSwitch = styled(props => (
