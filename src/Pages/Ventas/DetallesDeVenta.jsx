@@ -113,12 +113,12 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="producto"
-                  // className="inputCustomPreguntas"
                   options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} - L${pre.precio}` }))}
                   value={selectedAros}
                   onChange={setSelectedAros}
+                  menuPlacement="auto"
                   placeholder="Seleccione un Aro"
                 />
               </div>
@@ -128,9 +128,8 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Descuento Aro:" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="promocion"
-                  // className="inputCustomPreguntas"
 
                   options={Descuento.map(pre => ({ value: pre.IdDescuento, label: `${(pre.descPorcent) * 100}%` }))}
                   value={selectedDescuento}
@@ -146,9 +145,8 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="promocion"
-                  // className="inputCustomPreguntas"
 
                   options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
@@ -161,9 +159,8 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Garantia de venta:" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="garantia"
-                  // className="inputCustomPreguntas"
                   options={Garantia.map(pre => ({ value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
                   value={selectedGarantia}
                   onChange={setSelectedGarantia}
@@ -190,7 +187,6 @@ export const DetallesDeVenta = (props) => {
               <div className="contInput">
                 <Select
                   id="lente"
-                  // className="inputCustomPreguntas"
                   options={Lente.map(pre => ({label: `${pre.lente} L.${pre.precio}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
@@ -202,9 +198,8 @@ export const DetallesDeVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Precio del lente" className="titleInput" />
               <div className="contInput">
-                <Select className='selectCustom'
+                <Select 
                   id="lente"
-                  // className="inputCustomPreguntas"
                   options={Lente.map(pre => ({ value: pre.IdLente, label: `${pre.lente} - L.${pre.precio}` }))}
                   value={selectedLente}
                   onChange={setSelectedLente}
