@@ -250,7 +250,7 @@ export const ListaProductos = (props) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Producto
+              Nuevo
             </Button>
             <Button className="btnReport"
             onClick={handleGenerarReporte}

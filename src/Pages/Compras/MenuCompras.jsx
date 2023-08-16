@@ -55,7 +55,7 @@ export const MenuCompras = () => {
     //   vinculo: "/menuVentas/NuevaCompra", 
     // },
     {
-      titulo: "Lista de Compra",
+      titulo: "Compras",
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
       vinculo: "/menuInventario/ListaCompra", 
     },

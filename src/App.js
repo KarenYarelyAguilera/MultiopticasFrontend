@@ -113,6 +113,8 @@ import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
 import { Backup } from './Pages/Administracion/Backup.jsx';
 import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
+import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
+import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 
 
 function App() {
@@ -654,6 +656,31 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+<Route
+            path="/Inventario/RegistroLente"
+            element={
+            //  <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroLente
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}garanr
+                  Data={Data}
+                  />
+              </div>
+            //  </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/config/RegistroMarcas"
             element={
@@ -911,6 +938,32 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             //  </ProtectedRoute>
             }
           ></Route>
+
+<Route
+            path="/MenuInventario/ListaLentes"
+            element={
+
+            <ProtectedRoute activo={activo}>
+
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaLentes
+                   update={update} 
+                   data={Data} 
+                  />
+                </div>
+            //  </ProtectedRoute>
+            }
+          ></Route>
+
 
 <Route
             path="/config/ListaMetodosDePago"
@@ -1573,7 +1626,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <CalculosDeVenta />
+                  <CalculosDeVenta venta={dataVenta} dataVenta={dVenta} />
                 </div>
              // </ProtectedRoute>
             }

@@ -50,7 +50,7 @@ export const MenuVentas = () => {
     //   vinculo: "/menuVentas/NuevaCompra", 
     // },
     {
-      titulo: "Lista de Pagos",
+      titulo: "Pagos",
       imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
       vinculo: "/menuVentas/ListaPagos", 
     },

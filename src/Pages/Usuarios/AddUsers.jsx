@@ -452,7 +452,7 @@ export const AddUsers = (props) => {
                 }}
 
               >
-                <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button> : <Button
                 variant="contained"
                 className="btnStepper"
@@ -476,7 +476,7 @@ export const AddUsers = (props) => {
                   }
                 }}
               >
-                <h1>{'Finish' ? 'Crear Usuario' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>}
 
             </div>

@@ -139,7 +139,7 @@ export const RegistroSucursal = (props) => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/config');
+        navegate('/config/listaSucursal');
       } else {
       }
     });
@@ -314,7 +314,7 @@ export const RegistroSucursal = (props) => {
                 }
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

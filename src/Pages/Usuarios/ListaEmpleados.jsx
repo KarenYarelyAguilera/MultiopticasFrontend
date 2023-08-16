@@ -26,14 +26,14 @@ export const ListaEmpleados = (props) => {
 
   const urlEmployees = 'http://localhost:3000/api/empleado';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
- 
-//--------------------URL DE BITACORA--------------------
-const urlDelBitacora = 
-'http://localhost:3000/api/bitacora/EliminarEmpleado';
 
-const urlBitacoraBotonSalirLE= 
-'http://localhost:3000/api/bitacora/SalirListaEmpleado';
-//--------------------------------------------------------
+  //--------------------URL DE BITACORA--------------------
+  const urlDelBitacora =
+    'http://localhost:3000/api/bitacora/EliminarEmpleado';
+
+  const urlBitacoraBotonSalirLE =
+    'http://localhost:3000/api/bitacora/SalirListaEmpleado';
+  //--------------------------------------------------------
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,35 +58,35 @@ const urlBitacoraBotonSalirLE=
       .catch(error => console.log(error));
   }, [cambio]);
 
-      //IMPRIMIR PDF
-      const handleGenerarReporte = () => {
-        const formatDataForPDF = () => {
-          const formattedData = filteredData.map((row) => {
-            const fechaCre = new Date(row.fechaNacimiento);
-            const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                                  String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                                  fechaCre.getFullYear();
-                                  return {
-                                    'ID':row.IdEmpleado,
-                                    'Nombre':row.nombre, 
-                                    'Apellido':row.apellido,
-                                    'Telefono':row.telefonoEmpleado,
-                                    'Sucursal': row.departamento,
-                                    'Descripcion':row.descripcion,
-                                    'Numero de identidad':row.numeroIdentidad,
-                                  };
-          });
-          return formattedData;
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID': row.IdEmpleado,
+          'Nombre': row.nombre,
+          'Apellido': row.apellido,
+          'Telefono': row.telefonoEmpleado,
+          'Sucursal': row.departamento,
+          'Descripcion': row.descripcion,
+          'Numero de identidad': row.numeroIdentidad,
         };
-    
-        const urlPDF = 'Reporte_Empleados.pdf';
-        const subTitulo = "LISTA DE EMPLEADOS"
-    
-        const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-      };
-        
-        /////////
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_Empleados.pdf';
+    const subTitulo = "LISTA DE EMPLEADOS"
+
+    const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  };
+
+  /////////
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -99,17 +99,17 @@ const urlBitacoraBotonSalirLE=
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdEmpleado', headerName: 'ID', width: 190 },
-    { field: 'nombre', headerName: 'Nombre', width: 190 },
-    { field: 'apellido', headerName: 'Apellido', width: 190 },
-    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190 },
-    { field: 'departamento', headerName: 'Sucursal', width: 190 },
-    { field: 'descripcion', headerName: 'Genero', width: 190 },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190 },
+    { field: 'IdEmpleado', headerName: 'ID', width: 190, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
+    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190, headerAlign: 'center' },
+    { field: 'departamento', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
+    { field: 'descripcion', headerName: 'Genero', width: 190, headerAlign: 'center' },
+    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260,
+      width: 260, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions1">
@@ -144,14 +144,14 @@ const urlBitacoraBotonSalirLE=
     }).then(async op => {
       switch (op) {
         case null:
-          
+
           let data = {
             IdEmpleado: id,
           };
 
           //Funcion de Bitacora 
           let dataB = {
-            Id:props.idUsuario
+            Id: props.idUsuario
           }
 
           console.log(data);
@@ -159,7 +159,7 @@ const urlBitacoraBotonSalirLE=
           await axios
             .delete(urlDelEmployees, { data })
             .then(response => {
-              axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+              axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
               swal('Empleado eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
             })
@@ -176,9 +176,9 @@ const urlBitacoraBotonSalirLE=
     });
   }
 
-  
 
-//funcion de actualizar
+
+  //funcion de actualizar
   function handleUpdt(id) {
     // onRowClick={empleado => {
     swal({
@@ -203,13 +203,13 @@ const urlBitacoraBotonSalirLE=
     //}//}//
   }
 
- //Funcion de Bitacora 
- let dataB = {
-  Id:props.idUsuario
-}
+  //Funcion de Bitacora 
+  let dataB = {
+    Id: props.idUsuario
+  }
 
   const handleBack = () => {
-    axios.post (urlBitacoraBotonSalirLE,dataB)
+    axios.post(urlBitacoraBotonSalirLE, dataB)
     navegate('/usuarios');
   };
 
@@ -252,7 +252,7 @@ const urlBitacoraBotonSalirLE=
               Nuevo
             </Button>
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
 
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
