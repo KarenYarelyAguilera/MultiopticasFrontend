@@ -38,6 +38,7 @@ export const DetallesDeVenta = (props) => {
   const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
+  const [selectedDescuento, setSelectedDescuento] = useState(null);
 
 
 
@@ -53,7 +54,7 @@ export const DetallesDeVenta = (props) => {
   const handleNext = async () => {
 
     let producto = selectedAros.value;
-    let Descuento = parseInt(document.getElementById('descuentoAro').value);
+    let Descuento = selectedDescuento.value;
     let Promocion = selectedPromocion.value;
     let Garantia = selectedGarantia.value;
     let cantidad = parseInt(document.getElementById("Cantidad").value)
@@ -125,7 +126,7 @@ export const DetallesDeVenta = (props) => {
                 <Select className='selectCustom'
                   id="producto"
                   // className="inputCustomPreguntas"
-                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} L${pre.precio}` }))}
+                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} - L${pre.precio}` }))}
                   value={selectedAros}
                   onChange={setSelectedAros}
                   placeholder="Seleccione un Aro"
@@ -136,21 +137,20 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Descuento Aro:" className="titleInput" />
-              <select name="" className="selectCustom" id="descuentoAro">
-                {Descuento.length ? (
-                  Descuento.map(pre => (
-                    <option key={pre.IdDescuento} value={pre.IdDescuento}>
-                      {pre.descPorcent}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="promocion"
+                  // className="inputCustomPreguntas"
 
-                )}
-              </select>
+                  options={Descuento.map(pre => ({ value: pre.IdDescuento, label: `${(pre.descPorcent)*100}%` }))}
+                  value={selectedDescuento}
+                  onChange={setSelectedDescuento}
+                  placeholder="Seleccione un Descuento"
+                />
+              </div>
             </div>
+
+            
 
 
             <div className="contInput">
@@ -160,7 +160,7 @@ export const DetallesDeVenta = (props) => {
                   id="promocion"
                   // className="inputCustomPreguntas"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${pre.descPorcent}` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent)*100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
@@ -174,7 +174,7 @@ export const DetallesDeVenta = (props) => {
                 <Select className='selectCustom'
                   id="garantia"
                   // className="inputCustomPreguntas"
-                  options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses}` }))}
+                  options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
                   value={selectedGarantia}
                   onChange={setSelectedGarantia}
                   placeholder="Seleccione una Garantia"

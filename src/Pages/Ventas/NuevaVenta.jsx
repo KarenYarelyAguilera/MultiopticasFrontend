@@ -38,7 +38,7 @@ export const NuevaVenta = (props) => {
   const [cambio, setCambio] = useState(0)
 
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
-
+  const [selectedEmpleado, setSelectedEmpleado] = useState(null); 
 
 
 
@@ -118,7 +118,7 @@ export const NuevaVenta = (props) => {
                 <Select className='selectCustom'
                   id="cliente"
                   // className="inputCustomPreguntas"
-                  options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                  options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
@@ -142,20 +142,16 @@ export const NuevaVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-              <select id="empleado" className="selectCustom">
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.nombre}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="empleado"
+                  // className="inputCustomPreguntas"
+                  options={Empleado.map(pre => ({value: pre.idEmpleado, label: `${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedEmpleado}
+                  onChange={setSelectedEmpleado}
+                  placeholder="Seleccione un Empleado"
+                />
+              </div>
             </div>
 
 

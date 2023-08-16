@@ -64,6 +64,11 @@ export const ListaVenta = (props) => {
     idObj:9
   }
 
+  const objectDate = new Date();
+  const day = objectDate.getDate();
+  const month = objectDate.getMonth();
+  const year = objectDate.getFullYear();
+  let format1 = month + "/" + day + "/" + year;
 
   
 
@@ -103,7 +108,12 @@ export const ListaVenta = (props) => {
 
   const columns = [
     { field: 'IdVenta', headerName: 'IdVenta', width: 210 },
-    { field: 'fecha', headerName: 'Fecha', width: 310 },
+    { field: 'fecha', headerName: 'Fecha', width: 310, 
+    valueGetter: (params) => {
+      const date = new Date(params.row.fecha);
+      return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    },
+  },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
     { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
 
@@ -142,7 +152,7 @@ export const ListaVenta = (props) => {
   const handlePrintModal = async (id) => {
     const informacionventa = await axios.post(urlVentaDetalle, { id: id })
     const documento = new jsPDF();
-    documento.text(`                       MULTIOPTICAS, S.DE R.L. DE C.V.`, 20, 10);
+    documento.text(`---------------------MULTIOPTICAS, S.DE R.L. DE C.V.---------------------`, 20, 10);
 
     documento.text(`Fecha: ${informacionventa.data[0].fecha}`, 20, 20);
     documento.text(`RTN:  08011998014780`, 20, 30);
@@ -158,20 +168,21 @@ export const ListaVenta = (props) => {
     documento.text(`Empleado: ${informacionventa.data[0].Empleado}`, 20, 130);
     documento.text(`Fecha de Entrega: ${informacionventa.data[0].fechaEntrega}`, 20, 140);
     documento.text(`Fecha Limite Entrega: ${informacionventa.data[0].fechaLimiteEntrega}`, 20, 150);
-
     documento.text(`Tipo de Pago: ${informacionventa.data[0].TipoDePago}`, 20, 170);
     documento.text(`Promocion: ${informacionventa.data[0].Promocion}`, 20, 180);
+    documento.text(`Producto: ${informacionventa.data[0].Producto}`, 20, 190);
+    documento.text(`Garantia: ${informacionventa.data[0].Garantia}`, 20, 200);
+    documento.text(`Meses: ${informacionventa.data[0].Meses}`, 20, 210);
 
-    documento.text(`Producto: ${informacionventa.data[0].Producto}`, 20, 200);
-    documento.text(`Garantia: ${informacionventa.data[0].Garantia}`, 20, 210);
-    documento.text(`Meses: ${informacionventa.data[0].Meses}`, 20, 220);
-    documento.text(`Cantidad: ${informacionventa.data[0].cantidad}`, 20, 230);
 
-    documento.text(`Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 250);
+    documento.text(`Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 230);
+    documento.text(`Descuento: ${informacionventa.data[0].descuento}`, 20, 240);
+    documento.text(`Nuevo Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 250);
     documento.text(`Precio Lente: ${informacionventa.data[0].precioLente}`, 20, 260);
-    documento.text(`Subtotal: ${informacionventa.data[0].subtotal}`, 20, 270);
-    documento.text(`Rebajas: ${informacionventa.data[0].rebaja}`, 20, 280);
-    documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 290);
+    documento.text(`Cantidad: ${informacionventa.data[0].cantidad}`, 20, 270);
+    documento.text(`Subtotal: ${informacionventa.data[0].subtotal}`, 20, 280);
+    documento.text(`Rebajas: ${informacionventa.data[0].rebaja}`, 20, 290);
+    documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 300);
 
 
     documento.save('ventadetalle_factura.pdf');
@@ -190,6 +201,7 @@ export const ListaVenta = (props) => {
         <div className="logoModal">DATOS DE LA VENTA</div>
         <div className="contEditModal">
           <div className="contInput">
+          <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
             <label><b>Venta#{informacionventa.data[0].IdVenta}</b></label>
             <label><b>Fecha:{informacionventa.data[0].fecha}</b></label>
             <label><b>RTN: 08019020229809 </b></label>
@@ -206,20 +218,19 @@ export const ListaVenta = (props) => {
             <label><b>Empleado: {informacionventa.data[0].Empleado}  </b></label>
             <label><b>Fecha de Entrega:{informacionventa.data[0].fechaEntrega}</b></label>
             <label><b>Fecha Limite Entrega:{informacionventa.data[0].fechaLimiteEntrega}</b></label>
-          </div>
-          <div className="contInput">
             <label><b>Tipo de Pago:{informacionventa.data[0].TipoDePago}</b></label>
             <label><b>Promocion:{informacionventa.data[0].Promocion}</b></label>
-          </div>
-          <div className="contInput">
             <label><b>Producto:{informacionventa.data[0].Producto}</b></label>
             <label><b>Garantia:{informacionventa.data[0].Garantia}</b></label>
             <label><b>Meses:{informacionventa.data[0].Meses}</b></label>
-            <label><b>Cantidad:{informacionventa.data[0].cantidad}</b></label>
           </div>
+          
           <div className="contInput">
             <label><b>Precio Aro:{informacionventa.data[0].precioAro}</b></label>
+            <label><b>Descuento:{informacionventa.data[0].precioAro}</b></label>
+            <label><b>Nuevo Precio Aro:{informacionventa.data[0].precioAro}</b></label>
             <label><b>Precio Lente:{informacionventa.data[0].precioLente}</b></label>
+            <label><b>Cantidad:{informacionventa.data[0].cantidad}</b></label>
             <label><b>Subtotal: {informacionventa.data[0].subtotal}  </b></label>
             <label><b>Rebajas:{informacionventa.data[0].rebaja}</b></label>
             <label><b>Total a pagar:{informacionventa.data[0].totalVenta}</b></label>
