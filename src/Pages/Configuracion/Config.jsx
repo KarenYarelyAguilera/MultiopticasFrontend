@@ -10,11 +10,11 @@ export const Configuracion = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/006/946/052/non_2x/abstract-concept-of-social-role-social-norms-gender-stereotypes-social-norms-role-exchange-is-an-abstract-metaphor-illustration-in-flat-modern-style-vector.jpg',
     //   vinculo: '/config/roles',
     // },
-    {
+   /*  {
       titulo: 'Permisos',
       imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
       vinculo: '/config/verpermisos',
-    },
+    }, */
     {
       titulo: "Garantias",
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
