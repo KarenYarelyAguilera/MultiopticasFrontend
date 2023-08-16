@@ -113,6 +113,8 @@ import { PagoDeVenta } from './Pages/Ventas/PagoDeVenta.jsx';
 import { ListaInventario } from './Pages/Inventario/ListaInventario.jsx';
 import { Backup } from './Pages/Administracion/Backup.jsx';
 import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
+import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
+import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 
 
 function App() {
@@ -621,6 +623,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}garanr
                   Data={Data}
+                  idUsuario={idUsuario} 
                 ></RegistroProducto2>
 
               </div>
@@ -650,6 +653,31 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 ></RegistroProveedores>
               </div>
               // </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/Inventario/RegistroLente"
+            element={
+            //  <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                />
+                <BarraHorizontal user={usuario} />
+                <RegistroLente
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}garanr
+                  Data={Data}
+                  />
+              </div>
+            //  </ProtectedRoute>
             }
           ></Route>
 
@@ -910,6 +938,32 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             //  </ProtectedRoute>
             }
           ></Route>
+
+<Route
+            path="/MenuInventario/ListaLentes"
+            element={
+
+            <ProtectedRoute activo={activo}>
+
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaLentes
+                   update={update} 
+                   data={Data} 
+                  />
+                </div>
+            //  </ProtectedRoute>
+            }
+          ></Route>
+
 
 <Route
             path="/config/ListaMetodosDePago"
@@ -1206,7 +1260,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
+
                   <ListaPagos data={dVenta} />
+
                 </div>
               
             }
@@ -1417,7 +1473,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                   />
-                  <BarraHorizontal user={usuario} />
+                  <BarraHorizontal user={usuario}  />
                   <MenuCompras></MenuCompras>
                 </div>
              // </ProtectedRoute>
@@ -1550,7 +1606,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <PagoDeVenta venta={dataVenta} dataVenta={dVenta}/>
+                  <PagoDeVenta venta={dataVenta} dataVenta={dVenta} idUsuario={idUsuario}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1718,7 +1774,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <NuevaCompra idUsuario={idUsuario} />
+                  <NuevaCompra idUsuario={idUsuario}  />
                 </div>
             //  </ProtectedRoute>
             }

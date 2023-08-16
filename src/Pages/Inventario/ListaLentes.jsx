@@ -1,18 +1,13 @@
-//GENERADOR DE PFD
+import { DataGrid,esES } from '@mui/x-data-grid';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
-
-import { DataGrid,esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
-
-
+import axios from 'axios';
+import { generatePDF } from '../../Components/generatePDF';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
@@ -25,48 +20,20 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-//GENERADOR DE PDF 
-import { generatePDF } from '../../Components/generatePDF';
+export const ListaLentes = ({props,data,update}) => {
 
-import axios from 'axios';
+  const urlLentes ='http://localhost:3000/api/Lentes';
+  const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
 
-export const ListaCiudad = ({props,data,update}) => {
 
-  const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
-
-  const urlCuidad = 'http://localhost:3000/api/ciudades';
-  const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
-
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [Lente, setLente] = useState([]);
 
   useEffect(() => {
-    axios.get(urlCuidad).then(response=>setTableData(response.data))
+    axios.get(urlLentes).then(response=>setTableData(response.data))
   }, [cambio]);
-
-  //IMPRIMIR PDF
-  const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdCiudad,
-                                'Ciudad':row.ciudad, 
-                              };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Report_Ciudades.pdf';
-    const subTitulo = "LISTA DE CIUDADES"
-    const orientation = "landscape";
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-  };
 
   const navegate = useNavigate();
 
@@ -77,100 +44,125 @@ export const ListaCiudad = ({props,data,update}) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  const handleGenerarReporte = () => {
+    const formatDataForPDF = () => {
+      const formattedData = filteredData.map((row) => {
+        const fechaCre = new Date(row.fechaCompra);
+        const fechaCompra = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'ID':row.IdLente,
+          'Lente':row.lente,
+          'Precio': row.precio,
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_Lentes.pdf';
+    const subTitulo = "LISTA DE LENTES "
+
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  };
+
 
   const columns = [
-    { field: 'IdCiudad', headerName: 'ID Ciudad', width: 600 },
-    { field: 'ciudad', headerName: 'Ciudad', width: 600 },
-
+    { field: 'IdLente', headerName: 'Id Lente', width: 380 },
+    { field: 'lente', headerName: 'Lente', width: 380 },
+    { field: 'precio', headerName: 'Precio', width: 380 },
+   
+    
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 380,
 
       renderCell: params => (
-        <div className="contActions1">
-          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
+        <div className="contActions">
+          <Button
+            className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdCiudad)}
-          >
+           onClick={() => handleDel(params.row.IdLente)}>
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
         </div>
       ),
-      
     },
   ];
+
+  
 
 //FUNCION DE ELIMINAR 
 function handleDel(id) {
   swal({
     content: (
       <div>
-        <div className="logoModal">¿Desea elimiar esta ciudad?</div>
-        <div className="contEditModal">
+        <div className="logoModal">¿Desea eliminar este Lente?</div>
+        <div className="contEditModal"> 
         </div>
       </div>
     ),
+
     buttons: {
       cancel: 'Eliminar',
       delete: 'Cancelar',
     },
-  }).then(async(op) => {
+  }).then(async (op) => {
 
     switch (op) {
       case null:
-
         let data = {
-          IdCiudad: id
-        };
+          IdLente:id
+        }; 
         console.log(data);
-  
-        await axios.delete(urlDeleteCuidad,{data}).then(response=>{
-          swal("Ciudad eliminada correctamente","","success")
-          setCambio(cambio+1)
-        }).catch(error=>{
-          console.log(error);
-          swal("Error al eliminar la ciudad, asegúrese que no tenga relación con otros datos.","","error")
-        })
-       
-      break;
-    
-      default:
-      break;
+
+        await axios .delete(urlLentesEliminar,{data}) .then(response => {
+            swal('Modelo eliminado correctamente', '', 'success');
+            setCambio(cambio + 1);
+          }).catch(error => {
+            console.log(error);
+            swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
+          });
+
+        break;
+        default:
+        break;
     }
   });
 };
 
-//FUNCION DE ACTUALIZAR 
-function handleUpdt(id) {
-  swal({
-    buttons: {
-      update: 'Actualizar',
-      cancel: 'Cancelar',
-    },
-    content: (
-      <div className="logoModal">
-        ¿Desea actualizar la ciudad: {id.ciudad}?
-      </div>
-    ),
-  }).then((op) => {
-    switch (op) {
-        case 'update':
-        data(id)
-        update(true)
-    navegate('/config/RegistroCiudad')
-    break;
-    default:
-    break;
-    }
-  });
-};
+    //FUNCION DE ACTUALIZAR DATOS 
+    function handleUpdt(id) {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar este Lente: {id.lente}?
+          </div>
+        ),
+      }).then((op)  => {
+          switch (op) {
+            case 'update':
+              data(id)
+              update(true)
+              navegate('/Inventario/RegistroLente')
+              break;
+              default:
+              break;
+          }
+        });
+    };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/inventario');
   };
 
   return (
@@ -178,7 +170,7 @@ function handleUpdt(id) {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Ciudades</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Lentes</h2>
 
       <div
         style={{
@@ -205,14 +197,14 @@ function handleUpdt(id) {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/config/RegistroCiudad');
+                navegate('/Inventario/RegistroLente');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
+             onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -220,7 +212,7 @@ function handleUpdt(id) {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdCiudad}
+          getRowId={tableData => tableData.IdLente}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

@@ -100,7 +100,7 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion","","error")
   }
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/Compras');
   };
 
   return (
@@ -135,11 +135,11 @@ export const ListaCompra = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/NuevaCompra');
+                navegate('/menuCompras/NuevaCompra');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nueva Compra
+              Nuevo
             </Button>
             <Button className="btnReport"
              onClick={handleGenerarReporte}

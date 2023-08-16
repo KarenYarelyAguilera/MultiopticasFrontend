@@ -85,13 +85,13 @@ export const ListUsuarios = ({props,data,update,}) => {
   );
 
   const columns = [
-    { field: 'id_Usuario', headerName: 'ID', width: 70 },
-    { field: 'Usuario', headerName: 'Usuario', width: 130 },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150 },
-    { field: 'rol', headerName: 'Rol', width: 130 },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130 },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200 },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130,
+    { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
+    { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
+    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
+    { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
+    { field: 'Contrasenia', headerName: 'Contraseña', width: 130, headerAlign: 'center',
     valueGetter: (params) => {
       // Obtener la respuesta original
       const originalRespuesta = params.row.Contrasenia;
@@ -103,17 +103,19 @@ export const ListUsuarios = ({props,data,update,}) => {
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
-      width: 195,
+      width: 150, headerAlign: 'center'
     },
-    {
-      field: 'Fecha_Vencimiento',
-      headerName: 'Fecha de vencimiento',
-      width: 195,
+    { 
+      field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 150, headerAlign: 'center',
+      valueGetter: (params) => {
+        const date = new Date(params.row.Fecha_Vencimiento);
+        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+      },
     },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 190, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions">
@@ -247,7 +249,7 @@ export const ListUsuarios = ({props,data,update,}) => {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Usuario
+              Nuevo
             </Button>
 
             <Button className="btnReport"

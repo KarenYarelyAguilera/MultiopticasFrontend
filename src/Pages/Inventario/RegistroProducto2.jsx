@@ -27,6 +27,10 @@ const urlDelProducto = //BORRAR
 const urlModelos = //MOSTRAR MODELOS
   'http://localhost:3000/api/modelos';
 
+  //BITACORAS
+  const urlBitacoraInsertProducto='http://localhost:3000/api/bitacora/insertoproducto';
+  const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
+
 
 
 export const RegistroProducto2 = (props) => {
@@ -79,13 +83,13 @@ export const RegistroProducto2 = (props) => {
   
   
       //Funcion de bitacora 
-      /*  let dataB={
-         Id: props.idUsuario
-       } */
+     /*  let dataUsuario={
+        Id:props.idUsuario
+      } */
   
       axios.put(urlUpdProducto, data).then(() => {
         swal("Producto Actualizado Correctamente", "", "success").then(() => {
-          //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+          //axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -115,12 +119,18 @@ export const RegistroProducto2 = (props) => {
       descripcion: descripcion,
     };
 
+     //Funcion de bitacora 
+     /* let dataUsuario={
+      Id:props.idUsuario
+    } */
+
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
+       // axios.post(urlBitacoraInsertProducto,dataUsuario)
         navegate('/menuInventario/ListaProductos');
       });
+      
     }).catch(error => {
       console.log(error);
       swal('Error al crear Producto, los modelos deben ser unicos como tu.', '', 'error')
@@ -332,13 +342,15 @@ export const RegistroProducto2 = (props) => {
                     swal("El campo cantidadMinima no acepta valores negativos.", "", "error");
                   }else if (cantidadMax <= cantidadMin) {
                     swal("El campo cantidadMaxima no acepta valores menores.", "", "error");
+                  }else if (precio <= 0) {
+                    swal("El campo precio no acepta valores negativos.", "", "error");
                   }
                   else
                     props.actualizar ? actualizarProducto() : handleNext();
                 }
                 }
               >
-                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>

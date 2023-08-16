@@ -13,7 +13,7 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
-
+import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 
 //URLS
 const urlProducto = 'http://localhost:3000/api/productos';
@@ -23,6 +23,7 @@ const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
+const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
 
 
 export const DetallesDeVenta = (props) => {
@@ -33,6 +34,12 @@ export const DetallesDeVenta = (props) => {
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
+
+  const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
+  const [selectedPromocion, setSelectedPromocion] = useState(null);
+  const [selectedGarantia, setSelectedGarantia] = useState(null);
+  const [selectedDescuento, setSelectedDescuento] = useState(null);
+
 
 
   useEffect(() => {
@@ -46,10 +53,10 @@ export const DetallesDeVenta = (props) => {
 
   const handleNext = async () => {
 
-    let producto = parseInt(document.getElementById("producto").value)
-    let Descuento = parseInt(document.getElementById('descuentoAro').value);
-    let Promocion = parseInt(document.getElementById('promocion').value);
-    let Garantia = parseInt(document.getElementById('garantia').value);
+    let producto = selectedAros.value;
+    let Descuento = selectedDescuento.value;
+    let Promocion = selectedPromocion.value;
+    let Garantia = selectedGarantia.value;
     let cantidad = parseInt(document.getElementById("Cantidad").value)
     let lente = parseFloat(document.getElementById("lente").value)
 
@@ -57,16 +64,20 @@ export const DetallesDeVenta = (props) => {
       IdGarantia: Garantia,
       IdDescuento: Descuento,
       IdPromocion: Promocion,
-      IdProducto:producto,
-      cantidad:cantidad,
-      precioLente:lente,
-      idUsuario:props.idUsuario
+      IdProducto: producto,
+      cantidad: cantidad,
+      precioLente: lente,
+      idUsuario: props.idUsuario
     }
 
-    data = {...props.venta,...data}
+    data = { ...props.venta, ...data }
 
-    
-   
+    //Funcion de bitacora 
+    //  let dataUsuario={
+    //   Id:props.idUsuario
+    // }
+
+
 
     swal({
       title: "Confirmar venta",
@@ -77,15 +88,16 @@ export const DetallesDeVenta = (props) => {
       },
     }).then((result) => {
       if (result) {//axios
-        axios.post(urlVenta,data).then((response)=>{
+        axios.post(urlVenta, data).then((response) => {
           props.dataVenta(response.data)
-          swal("Venta registrada con exito","","success").then(()=>navegate('/menuVentas/PagoDeVenta'))
+          swal("Venta registrada con exito", "", "success").then(() => navegate('/menuVentas/PagoDeVenta'))
+          // axios.post(urlBitacoraInsertVenta,dataUsuario)
         })
       } else {//se cancela todo alv
-        
+
       }
     });
-  
+
 
   };
 
@@ -110,76 +122,64 @@ export const DetallesDeVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
-              <select name="" className="selectCustom" id="producto">
-                {Producto.length ? (
-                  Producto.map(pre => (
-                    <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="producto"
+                  // className="inputCustomPreguntas"
+                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.descripcion} - L${pre.precio}` }))}
+                  value={selectedAros}
+                  onChange={setSelectedAros}
+                  placeholder="Seleccione un Aro"
+                />
+              </div>
             </div>
 
 
             <div className="contInput">
               <TextCustom text="Descuento Aro:" className="titleInput" />
-              <select name="" className="selectCustom" id="descuentoAro">
-              {Descuento.length ? (
-                  Descuento.map(pre => (
-                    <option key={pre.IdDescuento} value={pre.IdDescuento}>
-                      {pre.descPorcent}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="promocion"
+                  // className="inputCustomPreguntas"
 
-                )}
-              </select>
+                  options={Descuento.map(pre => ({ value: pre.IdDescuento, label: `${(pre.descPorcent)*100}%` }))}
+                  value={selectedDescuento}
+                  onChange={setSelectedDescuento}
+                  placeholder="Seleccione un Descuento"
+                />
+              </div>
             </div>
+
+            
 
 
             <div className="contInput">
               <TextCustom text="Promocion de venta:" className="titleInput" />
-              <select name="" className="selectCustom" id="promocion">
-              {Promocion.length ? (
-                  Promocion.map(pre => (
-                    <option key={pre.IdPromocion} value={pre.IdPromocion}>
-                      {pre.descPorcent}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="promocion"
+                  // className="inputCustomPreguntas"
 
-                )}
-              </select>
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent)*100}%` }))}
+                  value={selectedPromocion}
+                  onChange={setSelectedPromocion}
+                  placeholder="Seleccione una Promocion"
+                />
+              </div>
             </div>
 
             <div className="contInput">
               <TextCustom text="Garantia de venta:" className="titleInput" />
-              <select name="" className="selectCustom" id="garantia">
-              {Garantia.length ? (
-                  Garantia.map(pre => (
-                    <option key={pre.IdGarantia} value={pre.IdGarantia}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select className='selectCustom'
+                  id="garantia"
+                  // className="inputCustomPreguntas"
+                  options={Garantia.map(pre => ({value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
+                  value={selectedGarantia}
+                  onChange={setSelectedGarantia}
+                  placeholder="Seleccione una Garantia"
+                />
+              </div>
             </div>
 
             <div className="contInput">
@@ -194,6 +194,20 @@ export const DetallesDeVenta = (props) => {
                 id="Cantidad"
               />
             </div>
+
+            {/* <div className="contInput">
+              <TextCustom text="Precio del lente" className="titleInput" />
+              <div className="contInput">
+                <Select
+                  id="lente"
+                  // className="inputCustomPreguntas"
+                  options={Lente.map(pre => ({label: `${pre.lente} L.${pre.precio}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un Lente"
+                />
+              </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Precio del lente" className="titleInput" />
@@ -215,17 +229,23 @@ export const DetallesDeVenta = (props) => {
                 onClick={() => {
                   var cantidad = parseInt(document.getElementById("Cantidad").value)
                   var lente = parseFloat(document.getElementById("lente").value)
-                  
+
                   if (cantidad === "" || lente === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(cantidad))) {
-                  swal("El campo cantidad solo acepta números.", "", "error");
+                    swal("El campo cantidad solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(lente))) {
-                  swal("El campo precio de lente solo acepta números.", "", "error");
-                  }else {
-                    handleNext();
-                  }       
+                    swal("El campo precio de lente solo acepta números.", "", "error");
+                  } else if (cantidad <= 0) {
+                    swal("El campo cantidad no acepta valores negativos.", "", "error");
+                  } else if (lente <= 0) {
+                    swal("El campo precio de lente no acepta valores negativos.", "", "error");
                   }
+                  else {
+
+                    handleNext();
+                  }
+                }
                 }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
