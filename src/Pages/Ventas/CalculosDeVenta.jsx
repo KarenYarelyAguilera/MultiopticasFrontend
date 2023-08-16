@@ -11,32 +11,38 @@ import '../../Styles/Usuarios.css';
 //Components
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
+import axios from 'axios';
+import { async } from 'q';
 
-
-const urlVenta = 'http://localhost/APIS-Multioptica/Venta/controller/venta.php?op=InsertVenta';
-
-export const CalculosDeVenta = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+export const CalculosDeVenta = (props) => {
+  const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVentaDbdb';
 
 
   const navegate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
-    let data={
-      fecha:new Date(),
-      fechaLimiteEntrega:document.getElementById("fechaLimite").value,
-      fechaEntrega:document.getElementById("fechaEntrega").value,
-      estado:parseInt(document.getElementById("estado").value),
-      observacion:document.getElementById("observacion").value,
-      
-    }
+    swal({
+      title: "Confirmar venta",
+      icon: "warning",
+      buttons: {
+        cancel: "Cancelar",
+        confirm: "Confirmar",
+      },
+    }).then(async (result) => {
+      if (result) {
+        axios.post(urlVenta,props.venta).then((response) => {
+          swal("Venta registrada con exito", "", "success").then(() => {
+            const dataResp = {...props.venta,...response.data}
+            props.dataVenta(dataResp)
+            navegate('/menuVentas/PagoDeVenta')})
+          // axios.post(urlBitacoraInsertVenta,dataUsuario)
+        })
+      } else {//se cancela todo alv
 
-    navegate('/menuVentas/CalculosDeVenta');
+      }
+    });
+    
 
   };
 
@@ -52,78 +58,38 @@ export const CalculosDeVenta = ({
       <div className="titleAddUser">
         <h2>Calculos de Venta</h2>
         <h3>
-          Complete todos los puntos para poder registrar los datos de Calculos de Venta.
+          .
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-          <div className="contInput">
-              <TextCustom text="Subtotal" className="titleInput" />
+          
+              <TextCustom text="Precio del Aro:" className="titleInput" />
+              <label>{props.venta.precioAro}</label>
+           
 
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Subtotal"
-                id="Subtotal"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Precio de Aro" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Precio de Aro"
-                id="Precio de Aro"
-              />
-            </div>
-
-
-            <div className="contInput">
-              <TextCustom text="Descuentos" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Descuentos"
-                id="Descuentos"
-              />
-            </div>
-
-            <div className="contInput">
+              <TextCustom text="Descuento:" className="titleInput" />
+              <label >{props.venta.descuento}</label>
+             
+              <TextCustom text="Aro con descuento:" className="titleInput" />
+              <label >{props.venta.nuevoPrecio}</label>
+        
+    
               <TextCustom text="Precio de Lente" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Precio de Lente"
-                id="Precio de Lente"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Total" className="titleInput" />
-
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Total"
-                id="Total"
-              />
-            </div>
+              <label >{props.venta.precioLente}</label>
+  
+  
+              <TextCustom text="Cantidad" className="titleInput" />
+              <label>{props.venta.cantidad}</label>
+              <TextCustom text="Subtotal" className="titleInput" />
+              <label>{props.venta.subtotal}</label>
+              <TextCustom text="Rebaja" className="titleInput" />
+              <label>{props.venta.rebaja}</label>
+              <TextCustom text="Total de la venta" className="titleInput" />
+              <label>{props.venta.total}</label>
+           
 
             <div className="contBtnStepper">
               <Button
