@@ -23,7 +23,7 @@ import { MarkChatReadOutlined } from '@mui/icons-material';
 const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
 const urlUpdateMarca = 'http://localhost:3000/api/marcas/actualizar';
 
-export const RegistroMarcas = (props) => {
+export const RegistroLente = (props) => {
   const navegate = useNavigate();
 
   // const [marca, setmarca] = React.useState('');
@@ -78,7 +78,7 @@ const actualizarMarca = async () => {
 const handleBack = () => {
   swal({
     title: 'Advertencia',
-    text: 'Hay un proceso de creación de marcas ¿Estás seguro que deseas salir?',
+    text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
     icon: 'warning',
     buttons: ['Cancelar', 'Salir'],
     dangerMode: true,
@@ -86,7 +86,7 @@ const handleBack = () => {
     if (confirmExit) {
       props.update(false)
       props.Data({})
-      navegate('/config/ListaMarcas');
+      navegate('/MenuInventario/ListaLentes');
     } else {
     }
   });
@@ -98,16 +98,17 @@ const handleBack = () => {
       </Button>
 
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizar Marca</h2> : <h2>Registro de Marca</h2>}
+      {props.actualizar ? <h2>Actualizar Lente</h2> : <h2>Registro de Lente</h2>}
 
-        <h3>Complete todos los puntos para poder registrar los datos de la Marca.</h3>
+        <h3>Complete todos los puntos para poder registrar los datos del Lente.</h3>
       </div>
 
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-             <div className="contInput">
-              <TextCustom text="Nombre de la Marca" className="titleInput" />
+
+          <div className="contInput">
+              <TextCustom text="Precio" className="titleInput" />
               <input
 
               onKeyDown={e => 
@@ -144,12 +145,58 @@ const handleBack = () => {
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Nombre de la Marca"
-                id="Marca"
+                placeholder="Precio"
+                id="Precio"
                 value ={marca}
               />
             </div>
             <p className="error">{aviso}</p>
+             <div className="contInput">
+              <TextCustom text="Lente" className="titleInput" />
+              <input
+
+              onKeyDown={e => 
+                {
+                setmarca(e.target.value);
+                if (marca === '') 
+                {
+                  setErrormarca(true);
+                  setaviso('Los campos no deben estar vacíos');
+                } else 
+                {
+                  setErrormarca(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(marca))
+                   {
+                    setErrormarca(true);
+                    setaviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(marca))
+                  {
+                    setErrormarca(true);
+                    setaviso('No se permiten letras consecutivas repetidas');
+                  } else 
+                  {
+                    setErrormarca(false);
+                    setaviso('');
+                  }
+                }
+              }}
+              onChange={e => setmarca(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errormarca}
+
+                helperText={aviso}
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Lente"
+                id="Lente"
+                value ={marca}
+              />
+            </div>
+            <p className="error">{aviso}</p>
+
+            
 
             <div className="contBtnStepper">
               <Button
@@ -171,7 +218,7 @@ const handleBack = () => {
                 }
               }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
              
             </div>

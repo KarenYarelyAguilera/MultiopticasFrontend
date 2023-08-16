@@ -216,7 +216,7 @@ function handleDel(id) {
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Metodo
+              Nuevo
             </Button>
             <Button className="btnReport"
             onClick={handleGenerarReporte}

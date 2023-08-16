@@ -54,11 +54,11 @@ export const MenuCompras = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
     //   vinculo: "/menuVentas/NuevaCompra", 
     // },
-    // {
-    //   titulo: "Lista de Compra",
-    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
-    //   vinculo: "/menuVentas/ListaCompra", 
-    // },
+    {
+      titulo: "Compras",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
+      vinculo: "/menuInventario/ListaCompra", 
+    },
     // {
     //   titulo: "Registro de Garantias",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/640/196/non_2x/3d-quality-guarantee-medal-with-star-and-ribbon-icon-isolated-on-white-background-3d-prize-winner-and-award-concept-cartoon-minimal-style-3d-badge-icon-render-illustration-vector.jpg',

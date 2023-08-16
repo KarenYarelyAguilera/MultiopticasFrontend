@@ -57,7 +57,7 @@ export const RegistroDescuento = (props) => {
     axios.put(urlUpdDescuento, data).then(() => {
       swal("Descuento Actualizado Correctamente", "", "success").then(() => {
         //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/menuVentas/listaDescuento');
+        navegate('/MenuVentas/listaDescuento');
       })
     }).catch(error => {
       console.log(error);
@@ -86,7 +86,7 @@ export const RegistroDescuento = (props) => {
     axios.post(urlDescuento, data).then(response => {
       swal('Descuento agregado con exito', '', 'success').then(result => {
         //axios.post(urlInsertBitacora, dataB)
-        navegate('/menuVentas/listaDescuento');
+        navegate('/config/listaDescuento');
       });
     }).catch(error => {
       console.log(error);
@@ -97,7 +97,7 @@ export const RegistroDescuento = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/ventas');
+    navegate('/menuVentas/listaDescuento');
   };
 
   return (
@@ -229,7 +229,7 @@ export const RegistroDescuento = (props) => {
                 }
                 }
               >
-                {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

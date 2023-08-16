@@ -20,7 +20,7 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const ListaCompra = (props) => {
+export const ListaLentes = (props) => {
 
   const urlCompras ='http://localhost:3000/api/compra';
 
@@ -67,9 +67,9 @@ export const ListaCompra = (props) => {
 
 
   const columns = [
-    { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
-    { field: 'fechaCompra', headerName: 'Fecha de la compra', width: 380 },
-    { field: 'totalCompra', headerName: 'Total de la compra', width: 380 },
+    { field: 'ID Lente', headerName: 'ID Lente', width: 380 },
+    { field: 'Lente', headerName: 'Lente', width: 380 },
+    { field: 'Precio', headerName: 'Precio', width: 380 },
    
     
     {
@@ -100,7 +100,7 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion","","error")
   }
   const handleBack = () => {
-    navegate('/Compras');
+    navegate('/inventario');
   };
 
   return (
@@ -108,7 +108,7 @@ export const ListaCompra = (props) => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Compras</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Lentes</h2>
 
       <div
         style={{
@@ -135,7 +135,7 @@ export const ListaCompra = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuCompras/NuevaCompra');
+                navegate('/Inventario/RegistroLente');
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

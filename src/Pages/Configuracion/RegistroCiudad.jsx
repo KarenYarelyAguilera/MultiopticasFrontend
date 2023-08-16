@@ -84,7 +84,7 @@ const handleBack = () => {
     if (confirmExit) {
       props.update(false)
       props.Data({})
-      navegate('/config');
+      navegate('/config/ListaCiudad');
     } else {
     }
   });
@@ -174,7 +174,7 @@ const handleBack = () => {
                   }
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Actualizar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
