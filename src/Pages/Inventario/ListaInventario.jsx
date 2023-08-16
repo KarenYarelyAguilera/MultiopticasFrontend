@@ -20,6 +20,15 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaInventario = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 3
+  }
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [cambio, setCambio] = useState(0)
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -69,26 +78,31 @@ export const ListaInventario = (props) => {
     ),
   );
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaYHora);
-        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID': row.Producto,
-          'Cantidad': row.Cantidad,
-          'Movimiento': row.Movimiento,
-        };
-      });
-      return formattedData;
-    };
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaYHora);
+          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID': row.Producto,
+            'Cantidad': row.Cantidad,
+            'Movimiento': row.Movimiento,
+          };
+        });
+        return formattedData;
+      };
 
-    const urlPDF = 'Reporte_Kardex.pdf';
-    const subTitulo = "LISTA DE KARDEX"
+      const urlPDF = 'Reporte_Kardex.pdf';
+      const subTitulo = "LISTA DE KARDEX"
 
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
   };
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
@@ -106,13 +120,13 @@ export const ListaInventario = (props) => {
           <Button
             className="btnEdit"
             title='Editar inventario'
-            onClick={() => swal("No es posible realizar esta accion","","error")}
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => swal("No es posible realizar esta accion","","error")}
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -139,7 +153,7 @@ export const ListaInventario = (props) => {
       ),
       buttons: ['Eliminar', 'Cancelar'],
     }).then(async op => {
-      
+
     });
   }
 
@@ -211,7 +225,12 @@ export const ListaInventario = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroProducto2');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuInventario/RegistroProducto2');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

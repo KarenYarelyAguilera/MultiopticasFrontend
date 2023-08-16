@@ -23,6 +23,15 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const InventarioDisponible = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 3
+  }
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
 
   const urlInventario = 'http://localhost:3000/api/inventarios';
 
@@ -31,7 +40,7 @@ export const InventarioDisponible = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get(urlInventario).then((response)=>setTableData(response.data))
+    axios.get(urlInventario).then((response) => setTableData(response.data))
     console.log(tableData);
   }, [cambio]);
 
@@ -51,28 +60,33 @@ export const InventarioDisponible = (props) => {
   );
 
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaYHora);
-        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID':row.IdInventario,
-          'ID Producto':row.idProducto, 
-          'Marca':row.descripcion,
-          'Producto':row.detalle,
-          'Cantidad':row.cantidad,
-        };
-      });
-      return formattedData;
-    };
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaYHora);
+          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID': row.IdInventario,
+            'ID Producto': row.idProducto,
+            'Marca': row.descripcion,
+            'Producto': row.detalle,
+            'Cantidad': row.cantidad,
+          };
+        });
+        return formattedData;
+      };
 
-    const urlPDF = 'Reporte_InventarioDisponible.pdf';
-    const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
+      const urlPDF = 'Reporte_InventarioDisponible.pdf';
+      const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
 
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
   };
   const columns = [
     { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
@@ -80,9 +94,9 @@ export const InventarioDisponible = (props) => {
     { field: 'descripcion', headerName: 'Marca', width: 400 },
     { field: 'detalle', headerName: 'Producto', width: 400 },
     { field: 'cantidad', headerName: 'Cantidad', width: 400 },
-    
-  
-    
+
+
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -93,19 +107,20 @@ export const InventarioDisponible = (props) => {
           <Button
             className="btnEdit"
             title='Editar inventario'
-            onClick={() => swal("No es posible realizar esta accion","","error")}
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => swal("No es posible realizar esta accion","","error")}
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
           <Button
             className="btnImprimirExp"
-            onClick={() => ListaMovimiento(params.row) }
+            onClick={() =>
+              ListaMovimiento(params.row)}
           >
             <Visibility></Visibility>
           </Button>
@@ -114,10 +129,15 @@ export const InventarioDisponible = (props) => {
     },
   ];
 
-  const ListaMovimiento = (param)=>{
-    console.log(param);
-    props.data(param)
-    navegate('/menuInventario/listaInventario')
+  const ListaMovimiento = (param) => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      console.log(param);
+      props.data(param)
+      navegate('/menuInventario/listaInventario')
+    }
+
   }
 
   const handleBack = () => {
@@ -156,14 +176,19 @@ export const InventarioDisponible = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroProducto2');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuInventario/RegistroProducto2');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
             <Button className="btnReport"
-             onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
 
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />

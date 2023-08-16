@@ -18,7 +18,15 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaPromocion = (props) => {
-
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:8
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
@@ -99,77 +107,87 @@ export const ListaPromocion = (props) => {
 
   //FUNCION DE ELIMINAR 
   function handleDel(IdPromocion) {
-    swal({
-      content: (
-        <div>
-
-          <div className="logoModal">¿Desea Eliminar esta Promocion?</div>
-          <div className="contEditModal">
-
+    if (permisos[0].eliminar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+  
+            <div className="logoModal">¿Desea Eliminar esta Promocion?</div>
+            <div className="contEditModal">
+  
+            </div>
+  
           </div>
-
-        </div>
-      ),
-      buttons: ['Eliminar', 'Cancelar'],
-    }).then(async op => {
-      switch (op) {
-        case null:
-
-          let data = {
-            IdPromocion: IdPromocion,
-          };
-
-          //Funcion de Bitacora 
-          /*  let dataB = {
-             Id:props.idUsuario
-           } */
-
-          console.log(data);
-
-          await axios
-            .delete(urlDelPromocion, { data })
-            .then(response => {
-              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Promocion eliminada correctamente', '', 'success');
-              setcambio(cambio + 1);
-            })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar la promocion', '', 'error');
-            });
-
-          break;
-
-        default:
-          break;
-      }
-    });
+        ),
+        buttons: ['Eliminar', 'Cancelar'],
+      }).then(async op => {
+        switch (op) {
+          case null:
+  
+            let data = {
+              IdPromocion: IdPromocion,
+            };
+  
+            //Funcion de Bitacora 
+            /*  let dataB = {
+               Id:props.idUsuario
+             } */
+  
+            console.log(data);
+  
+            await axios
+              .delete(urlDelPromocion, { data })
+              .then(response => {
+                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                swal('Promocion eliminada correctamente', '', 'success');
+                setcambio(cambio + 1);
+              })
+              .catch(error => {
+                console.log(error);
+                swal('Error al eliminar la promocion', '', 'error');
+              });
+  
+            break;
+  
+          default:
+            break;
+        }
+      });
+    }
+    
   }
   
 //FUNCION DE ACTUALIZAR
 function handleUpdt(id) {
-  swal({
-    buttons: {
-      update: 'ACTUALIZAR',
-      cancel: 'CANCELAR',
-    },
-    content: (
-      <div className="logoModal">
-        ¿Desea actualizar la promocion: {id.descripcion} ?
-      </div>
-    ),
-  }).then(
-    op => {
-      switch (op) {
-        case 'update':
-          props.data(id)
-          props.update(true)
-          navegate('/menuVentas/RegistroPromociones')
-          break;
-        default:
-          break;
-      }
-    });
+  if (permisos[0].actualizar ==="n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  } else {
+    swal({
+      buttons: {
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar la promocion: {id.descripcion} ?
+        </div>
+      ),
+    }).then(
+      op => {
+        switch (op) {
+          case 'update':
+            props.data(id)
+            props.update(true)
+            navegate('/menuVentas/RegistroPromociones')
+            break;
+          default:
+            break;
+        }
+      });
+  }
+
 };
 
 //Funcion de Bitacora 
@@ -212,7 +230,12 @@ let dataB = {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuVentas/RegistroPromociones');
+                if (permisos[0].insertar==="n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuVentas/RegistroPromociones');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

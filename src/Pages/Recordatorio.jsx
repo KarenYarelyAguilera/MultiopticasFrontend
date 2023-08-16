@@ -68,6 +68,15 @@ const events = [
 ];
 
 export const Recordatorio = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:5
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
 
@@ -126,28 +135,33 @@ export const Recordatorio = (props) => {
    */
 
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fecha);
-        const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID': row.IdRecordatorio,
-          'Cliente': row.IdCliente,
-          'Nombre': row.nombre,
-          'Apellido': row.apellido,
-          'Nota': row.Nota,
-          'Fecha': fecha,
-        };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Reporte_Recordatorio.pdf';
-    const subTitulo = "LISTA DE RECORDATORIO"
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fecha);
+          const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID': row.IdRecordatorio,
+            'Cliente': row.IdCliente,
+            'Nombre': row.nombre,
+            'Apellido': row.apellido,
+            'Nota': row.Nota,
+            'Fecha': fecha,
+          };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Reporte_Recordatorio.pdf';
+      const subTitulo = "LISTA DE RECORDATORIO"
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
 
 
@@ -212,93 +226,99 @@ export const Recordatorio = (props) => {
 
   //funcion de eliminar
   function handleDel(id) {
-    swal({
-      content: (
-        <div>
-          <div className="logoModal">¿Desea Eliminar esta cita? </div>
-          <div className="contEditModal"></div>
-        </div>
-      ),
-      buttons: ['Eliminar', 'Cancelar'],
-    }).then(async op => {
-      switch (op) {
-        case null:
+    if (permisos[0].eliminar ==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+            <div className="logoModal">¿Desea Eliminar esta cita? </div>
+            <div className="contEditModal"></div>
+          </div>
+        ),
+        buttons: ['Eliminar', 'Cancelar'],
+      }).then(async op => {
+        switch (op) {
+          case null:
+  
+            let data = {
+              IdRecordatorio: id,
+            };
+            console.log(data);
+  
+  
+            let dataUsuario = {
+              Id: props.idUsuario
+            }
+  
+  
+            await axios.delete(urlDelCita, { data }).then(response => {
+              swal('Cita eliminada correctamente', '', 'success');
+              axios.post(urlBitacoraDelCita, dataUsuario)
+              setCambio(cambio + 1);
+            })
+              .catch(error => {
+                console.log(error);
+                swal('Error al eliminar cita', '', 'error');
+              });
+  
+            break;
+          default:
+            break;
+        }
+      });
+    }
 
-          let data = {
-            IdRecordatorio: id,
-          };
-          console.log(data);
-
-
-          let dataUsuario = {
-            Id: props.idUsuario
-          }
-
-
-          await axios.delete(urlDelCita, { data }).then(response => {
-            swal('Cita eliminada correctamente', '', 'success');
-            axios.post(urlBitacoraDelCita, dataUsuario)
-            setCambio(cambio + 1);
-          })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar cita', '', 'error');
-            });
-
-          break;
-        default:
-          break;
-      }
-    });
   }
 
   //funcion de actualizar
   function handleUpdt(id) {
-    console.log(id);
+    if (permisos[0].actualizar==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      console.log(id);
 
-    /* let data = {
-      Id_Pregunta:id,
-    }; */
-
-    props.data({
-      IdRecordatorio: id.IdRecordatorio,
-      nombre: id.nombre,
-      fecha: id.fecha,
-      Nota: id.Nota,
-    })
-
-
-
-
-
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea modificar esta cita: {id.nombre} ?
-        </div>
-      ),
-    }).then(op => {
-      switch (op) {
-        case 'update':
-
-          let data = {
-            IdRecordatorio: id.IdRecordatorio,
-            nombre: id.nombre,
-
-
-          };
-          console.log(data)
-
-          props.data(id)
-          props.update(true)
-
-          navegate("/recordatorioCitasEditar");
-      }
-    });
+      /* let data = {
+        Id_Pregunta:id,
+      }; */
+  
+      props.data({
+        IdRecordatorio: id.IdRecordatorio,
+        nombre: id.nombre,
+        fecha: id.fecha,
+        Nota: id.Nota,
+      })
+  
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea modificar esta cita: {id.nombre} ?
+          </div>
+        ),
+      }).then(op => {
+        switch (op) {
+          case 'update':
+  
+            let data = {
+              IdRecordatorio: id.IdRecordatorio,
+              nombre: id.nombre,
+  
+  
+            };
+            console.log(data)
+  
+            props.data(id)
+            props.update(true)
+  
+            navegate("/recordatorioCitasEditar");
+        }
+      });
+    }
+   
   }
 
 
@@ -332,7 +352,14 @@ export const Recordatorio = (props) => {
           <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
-              onClick={() => { navegate('/recordatorioCitas'); }}
+              onClick={() => {
+                if (permisos[0].insertar ==="n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/recordatorioCitas');
+                } 
+                
+               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
