@@ -45,7 +45,7 @@ export const PagoDeVenta = (props) => {
 
 
     let data={
-      IdVenta:props.venta.id,
+      IdVenta:props.venta.id.id || props.venta.id,
       IdTipoPago: MetodoPago,
       fecha: fechaActual,
       saldoAbono: saldoAbono,
@@ -73,13 +73,19 @@ export const PagoDeVenta = (props) => {
        
         swal(`Pago registrado con exito`,"","success").then(()=>{
           //axios.post(urlInsertPagoB,data2)
-          if (data.saldoAbono<=data.saldoRestante || data.saldoAbono>data.saldoRestante  ) {
-            swal(`Cambio: ${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
+          if (data.saldoAbono<=data.saldoRestante ) {
+            swal(`El saldo restante es de: L.${(data.saldoRestante-data.saldoAbono)}`).then(()=>{
               props.dataVenta({}) 
               navegate('/menuVentas/ListaPagos')
              
-            })
-            
+            }) 
+          }else {
+            swal(`El cambio sera de: L${(data.saldoAbono-data.saldoRestante)}`).then(()=>{
+              props.dataVenta({}) 
+              navegate('/menuVentas/ListaPagos')
+             
+            })  
+
           }
           })
         

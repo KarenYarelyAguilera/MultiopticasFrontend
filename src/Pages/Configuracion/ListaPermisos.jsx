@@ -77,7 +77,7 @@ export const ListaPermisos = (props) => {
   };
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/seguridad');
   };
 
   return (

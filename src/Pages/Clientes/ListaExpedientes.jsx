@@ -26,6 +26,15 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaExpedientes = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:4
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const [cambio, setCambio] = useState(0);
   const urlExpedientes = 'http://localhost:3000/api/Expediente';
@@ -46,27 +55,32 @@ export const ListaExpedientes = (props) => {
   
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaCreacion);
-        const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-        return {
-          'N°': row.IdExpediente,
-          'Cliente': row.Cliente,
-          'Fecha de creación': fechaCreacion,
-          'Empleado': row.CreadoPor,
-        };
-      });
-      return formattedData;
-    };
-
-    urlPDF = 'Reporte_Expediente.pdf';
-    const subTitulo = "LISTA DE EXPEDIENTES"
-    const orientation = "landscape";
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaCreacion);
+          const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+          return {
+            'N°': row.IdExpediente,
+            'Cliente': row.Cliente,
+            'Fecha de creación': fechaCreacion,
+            'Empleado': row.CreadoPor,
+          };
+        });
+        return formattedData;
+      };
+  
+      urlPDF = 'Reporte_Expediente.pdf';
+      const subTitulo = "LISTA DE EXPEDIENTES"
+      const orientation = "landscape";
+  
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
   
   const navegate = useNavigate();
@@ -127,14 +141,19 @@ export const ListaExpedientes = (props) => {
 
 
   const handleNewExpediente = (expediente)=>{
-    let data={
-      id:expediente.IdExpediente,
-      idCliente:expediente.Cliente
+    if (permisos[0].insertar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      let data={
+        id:expediente.IdExpediente,
+        idCliente:expediente.Cliente
+      }
+    
+      console.log(expediente);
+       props.data(data)
+       navegate('/menuClientes/DatosExpediente');
     }
-  
-    console.log(expediente);
-     props.data(data)
-     navegate('/menuClientes/DatosExpediente');
+    
   }
 
   const handleBack = () => {
@@ -177,7 +196,12 @@ export const ListaExpedientes = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuClientes/lista');
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuClientes/lista');
+                }
+               
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />

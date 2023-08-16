@@ -21,7 +21,15 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaCompra = (props) => {
-
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:6
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
   const urlCompras ='http://localhost:3000/api/compra';
 
   const [tableData, setTableData] = useState([]);
@@ -43,26 +51,31 @@ export const ListaCompra = (props) => {
     ),
   );
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaCompra);
-        const fechaCompra = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID':row.IdCompra,
-          'Fecha':fechaCompra,
-          'Total compra': row.totalCompra,
-        };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Reporte_Compras.pdf';
-    const subTitulo = "LISTA DE COMPRAS"
-
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaCompra);
+          const fechaCompra = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID':row.IdCompra,
+            'Fecha':fechaCompra,
+            'Total compra': row.totalCompra,
+          };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Reporte_Compras.pdf';
+      const subTitulo = "LISTA DE COMPRAS"
+  
+      const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
 
 
@@ -135,7 +148,12 @@ export const ListaCompra = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuCompras/NuevaCompra');
+                if (permisos[0].insertar ==="n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuCompras/NuevaCompra');
+                }
+                
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
