@@ -26,6 +26,15 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaPagos = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:9
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const [cambio, setCambio] = useState(0);
   const urlPagos = 'http://localhost:3000/api/pagos';
@@ -46,30 +55,35 @@ export const ListaPagos = (props) => {
   
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaCreacion);
-        const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-        return {
-          'IdPago': row.IdPago,
-          'IdVenta': row.IdVenta,
-          'Tipo de Pago': row.MetodoDePago,
-          'Fecha': row.fecha,
-          'Estado': row.estado,
-          'Saldo Abonado': row.saldoAbono,
-          'Saldo Restante': row.saldoRestante,
-        };
-      });
-      return formattedData;
-    };
-
-    urlPDF = 'Reporte_Pagos.pdf';
-    const subTitulo = "LISTA DE PAGOS"
-    const orientation = "landscape";
-
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaCreacion);
+          const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                                fechaCre.getFullYear();
+          return {
+            'IdPago': row.IdPago,
+            'IdVenta': row.IdVenta,
+            'Tipo de Pago': row.MetodoDePago,
+            'Fecha': row.fecha,
+            'Estado': row.estado,
+            'Saldo Abonado': row.saldoAbono,
+            'Saldo Restante': row.saldoRestante,
+          };
+        });
+        return formattedData;
+      };
+  
+      urlPDF = 'Reporte_Pagos.pdf';
+      const subTitulo = "LISTA DE PAGOS"
+      const orientation = "landscape";
+  
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+   
   };
   
   const navegate = useNavigate();
@@ -133,7 +147,10 @@ export const ListaPagos = (props) => {
 
 
   const seguimientoPago = (pago) => {
-    const filasOriginales = filteredData; // Supongo que 'filteredData' contiene las filas originales
+    if (permisos[0].insertar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const filasOriginales = filteredData; // Supongo que 'filteredData' contiene las filas originales
   
     // Verificar si existe alguna fila con estado "Pagado" y mismo idVenta
     const tienePagadoMismoIdVenta = filasOriginales.some(
@@ -155,6 +172,8 @@ export const ListaPagos = (props) => {
     } else {
       swal("Venta Pagada No puede seguir", "", "error");
     }
+    }
+    
   };
   
   

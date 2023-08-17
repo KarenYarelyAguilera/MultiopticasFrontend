@@ -75,7 +75,7 @@ export const ListaParametros = ({props,data,update}) => {
     alert(param.row.Id_Parametro+"\n"+param.row.Parametro)
   }
   const handleBack = () => {
-    navegate('/config');
+    navegate('/seguridad');
   };
 
 

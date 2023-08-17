@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import axios from 'axios';
 
 
 //Mui-Material-Icons
@@ -22,8 +23,16 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
-export const Kardex = () => {
-
+export const Kardex = (props) => {
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 3
+  }
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const urlKardex ='http://localhost:3000/api/kardex';
 
   const [tableData, setTableData] = useState([]);
@@ -45,28 +54,33 @@ export const Kardex = () => {
     ),
   );
   const handleGenerarReporte = () => {
-    const formatDataForPDF = () => {
-      const formattedData = filteredData.map((row) => {
-        const fechaCre = new Date(row.fechaYHora);
-        const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'ID':row.IdKardex,
-          'Tipo Movimiento':row.TipoMovimiento, 
-          'Producto':row.Producto,
-          'Cantidad': row.cantidad,
-          'Fecha':fechaYHora,
-        };
-      });
-      return formattedData;
-    };
-
-    const urlPDF = 'Reporte_Kardex.pdf';
-    const subTitulo = "LISTA DE KARDEX"
-
-    const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaYHora);
+          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID':row.IdKardex,
+            'Tipo Movimiento':row.TipoMovimiento, 
+            'Producto':row.Producto,
+            'Cantidad': row.cantidad,
+            'Fecha':fechaYHora,
+          };
+        });
+        return formattedData;
+      };
+  
+      const urlPDF = 'Reporte_Kardex.pdf';
+      const subTitulo = "LISTA DE KARDEX"
+  
+      const orientation = "landscape";
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+  
   };
 
   const columns = [

@@ -115,6 +115,7 @@ import { Backup } from './Pages/Administracion/Backup.jsx';
 import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
+import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
 
 
 function App() {
@@ -194,9 +195,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaPromocion update={update} data={Data} />
+                  <ListaPromocion update={update} data={Data} idRol={idRol} />
                 </div>
             //  </ProtectedRoute>
             }
@@ -488,7 +490,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListUsuarios update={update} data={Data} />
+                <ListUsuarios update={update} data={Data} idRol={idRol}/>
               </div>
               //</ProtectedRoute>
             }
@@ -845,7 +847,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   obj={cObjeto}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaEmpleados update={update} data={Data} />
+                <ListaEmpleados update={update} data={Data} idRol={idRol} />
               </div>
               //  </ProtectedRoute>
             }
@@ -889,6 +891,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaModelos
                   update={update} 
                   data={Data} 
+                  idRol = {idRol}
                   />
                 </div>
               </ProtectedRoute>
@@ -928,11 +931,13 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaMarcas
                   update={update} 
                   data={Data} 
+                  idRol={idRol}
                   />
                 </div>
             //  </ProtectedRoute>
@@ -983,6 +988,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaMetodosDePago
                    update={update} 
                    data={Data} 
+                   idRol={idRol}
                   />
                 </div>
              </ProtectedRoute>
@@ -1006,6 +1012,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaDepartamentos
                   update={update} 
                   data={Data}
+                  idRol={idRol}
                   />
                 </div>
               </ProtectedRoute>
@@ -1029,6 +1036,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaCiudad 
                   update={update} 
                   data={Data} 
+                  idRol={idRol}
                   />
                 </div>
               </ProtectedRoute>
@@ -1052,6 +1060,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaPais 
                   update={update} 
                   data={Data} 
+                  idRol={idRol}
                   />
                 </div>
             </ProtectedRoute>
@@ -1075,6 +1084,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <ListaGenero 
                    update={update} 
                    data={Data} 
+                   idRol={idRol}
                   />
                 </div>
              </ProtectedRoute>
@@ -1093,9 +1103,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
-                  <BarraHorizontal user={usuario} />
-                  <Kardex />
+                  <BarraHorizontal user={usuario}  />
+                  <Kardex idRol={idRol}/>
                 </div>
               </ProtectedRoute>
             }
@@ -1133,9 +1144,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
                   <BarraHorizontal user={usuario} />
-                  <InventarioDisponible data={Data}/>
+                  <InventarioDisponible data={Data} idRol={idRol}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1155,7 +1167,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaPromocion update={update} data={Data} />
+                  <ListaPromocion update={update} data={Data} idRol={idRol}/>
                   
                 </div>
               //</ProtectedRoute>
@@ -1216,13 +1228,17 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   estado={access}
                   Rol={Rol}
                   obj={cObjeto}
+                  idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
                 <ListaClientes 
                 datosclientes={registroclientes} 
                 // update={update} data={Data} 
                 update={update} 
-                data={Data}  />
+                data={Data} 
+                idRol={idRol}
+                 />
+               
               </div>
               // </ProtectedRoute>
             }
@@ -1242,7 +1258,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaExpedientes data={Data} />
+                  <ListaExpedientes data={Data} idRol={idRol} />
                 </div>
               </ProtectedRoute>
             }
@@ -1263,7 +1279,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                   <BarraHorizontal user={usuario} />
 
-                  <ListaPagos data={dVenta} />
+                  <ListaPagos data={dVenta} idRol = {idRol}/>
 
                 </div>
               
@@ -1287,6 +1303,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <ListaGarantia 
                   update={update} 
                   data={Data} 
+                  idRol= {idRol}
                 />
               </div>
               // </ProtectedRoute>
@@ -1305,6 +1322,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
                   <BarraHorizontal user={usuario} />
                   <ListaVenta datosventa={dVenta} idRol={idRol} />
@@ -1325,9 +1343,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol= {idRol}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaCompra />
+                  <ListaCompra idRol= {idRol}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1345,8 +1364,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     estado={access}
                     Rol={Rol}
                     obj={cObjeto}
+                    idRol={idRol}
                   />
-                  <ListaInventario data={data} Data={Data}/>
+                  <ListaInventario data={data} Data={Data} idRol={idRol}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1366,7 +1386,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                   />
                   <BarraHorizontal user={usuario} />
-                  <ListaSucursal update={update} data={Data}/>
+                  <ListaSucursal update={update} data={Data} idRol = {idRol}/>
                 </div>
              // </ProtectedRoute>
             }
@@ -1389,6 +1409,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <ListaDescuento 
                 update={update} 
                 data={Data} 
+                idRol= {idRol}
                 />
               </div>
                </ProtectedRoute>
@@ -1459,6 +1480,26 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   <RecuperacionPassword></RecuperacionPassword>
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+<Route
+            path="/seguridad"
+            element={
+              //<ProtectedRoute activo={activo}>
+                <div className="flex" style={{ width: '99%' }}>
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                  />
+                  <BarraHorizontal user={usuario}  />
+                  <MenuSeguridad></MenuSeguridad>
+                </div>
+             // </ProtectedRoute>
             }
           ></Route>
 
@@ -2014,6 +2055,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={Data} 
                     idUsuario={idUsuario} 
+                    idRol={idRol}
                    
                   // infoPerfil={infoPerfil}
                     user={usuario}
