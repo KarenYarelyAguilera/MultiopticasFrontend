@@ -9,16 +9,16 @@ import { useNavigate } from "react-router";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
-export const PageTwo = ({ correo, id, autor }) => {
+export const PageTwo = ({ correo: password2, id, autor }) => {
   const navegate = useNavigate()
 
   const urlUserExist = "http://localhost:3000/api/login"
 
   const [contra1, setContra1] = useState("");
-  const [msj, setMsjs] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
+  const [msj, setMsjs] = useState("");
+
   const [contra2, setContra2] = useState("");
-  //const [contra2, setContra2] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
   const [advertencia, setadvertencia] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +37,7 @@ export const PageTwo = ({ correo, id, autor }) => {
     const contra2 = document.getElementById("contra2").value
 
     const data = {
-      correo: correo,
+      correo: password2,
       clave: contra1,
       id: id,
       autor: autor
@@ -73,11 +73,46 @@ export const PageTwo = ({ correo, id, autor }) => {
             <TextCustom text="Nueva contraseña" className="titleInput" />
             <div className="contInput">
               <input
-                type="password"
+
+                onChange={(e) => {
+                  setContra1(e.target.value);
+                  if (contra1 === "") {
+                    setErrorContra1(true);
+                    setMsjs("Los campos no deben estar vacíos");
+                  } else {
+                    setErrorContra1(false);
+                    var regularExpression = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/;
+                    if (!regularExpression.test(contra1)) {
+                      setErrorContra1(true);
+                      setMsjs("La contraseña debe contener al menos una letra, un número y un carácter especial");
+                    } else {
+                      setErrorContra1(false);
+                      setMsjs("");
+                    }
+                  }
+                }}
+                placeholder='Contraseña'
+                type={showPassword ? 'text' : 'password'}
+                inputProps={{ maxLength: 20 }}
+                inputRef={refContrasenia}
                 name=""
                 className="inputCustom"
                 id="contra1"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      maxLength={30}
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
+              <p className='error'>{msj}</p>
             </div>
           </div>
 
@@ -86,11 +121,39 @@ export const PageTwo = ({ correo, id, autor }) => {
             <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
             <div className="contInput">
               <input
-                type="password"
+                onChange={(e) => {
+                  setContra2(e.target.value);
+                  if (contra2 === "") {
+                    setErrorContra2(true);
+                    setadvertencia("Los campos no deben estar vacíos");
+                  }
+                  if (contra2 === contra1) {
+                  } else {
+                  }
+                }
+                }
+                placeholder='Contraseña'
+                type={showPassword ? 'text' : 'password'}
+                inputProps={{ maxLength: 20 }}
+                inputRef={refContrasenia}
                 name=""
                 className="inputCustom"
                 id="contra2"
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      maxLength={30}
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
+              <p className='error'>{advertencia}</p>
             </div>
           </div>
 
@@ -100,7 +163,24 @@ export const PageTwo = ({ correo, id, autor }) => {
             className="btnSubmit"
             type="button"
             value="Cambiar contraseña"
-            onClick={handleClick}
+            /*  onClick={handleClick} */
+
+            onClick={() => {
+              var password = document.getElementById("contra1").value;
+              var password2 = document.getElementById("contra2").value;
+
+              if (password === "" || password2 === "") {
+                swal("No deje campos vacíos.", "", "error");
+              }else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
+                swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+              } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+              } else if (contra1 !== contra2) {
+                swal("Las contraseñas deben coincidir.", "", "error");
+              }else {
+                handleClick()
+              }
+            }}
           />
         </div>
       </form>

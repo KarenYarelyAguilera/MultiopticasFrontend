@@ -57,7 +57,7 @@ export const RegistroDescuento = (props) => {
     axios.put(urlUpdDescuento, data).then(() => {
       swal("Descuento Actualizado Correctamente", "", "success").then(() => {
         //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/MenuVentas/listaDescuento');
+        navegate('/menuVentas/listaDescuento');
       })
     }).catch(error => {
       console.log(error);
@@ -86,7 +86,7 @@ export const RegistroDescuento = (props) => {
     axios.post(urlDescuento, data).then(response => {
       swal('Descuento agregado con exito', '', 'success').then(result => {
         //axios.post(urlInsertBitacora, dataB)
-        navegate('/config/listaDescuento');
+        navegate('/menuVentas/listaDescuento');
       });
     }).catch(error => {
       console.log(error);

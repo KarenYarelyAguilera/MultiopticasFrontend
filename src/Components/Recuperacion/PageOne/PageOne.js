@@ -7,15 +7,11 @@ export const PageOne = ({ onButtonClick, correo }) => {
   return (
 
     <main>
-      <div className="titleRecuperacion">
-          <h2>Confirme tu correo electrónico</h2>
-          <h3>Confirma tu identidad introduciendo el correo que utilizaste a la hora de crear la cuenta</h3>
-        </div>
       <form className="measure">
         <div className="contPrincipalRecuperacion">
           <div className='divInfoRecuperacion'>
-
-          <TextCustom text="Respuesta:" className="titleInput" />
+          <TextCustom text="Confirma tu identidad introduciendo el correo que utilizaste a la hora de crear la cuenta." className="titleInput" />
+          <TextCustom text="Ingrese su correo electrónico:" className="titleInput" />
           <div className="contInput">
             <input
               type="text"

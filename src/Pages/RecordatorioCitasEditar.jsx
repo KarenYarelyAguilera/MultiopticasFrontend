@@ -63,9 +63,12 @@ export const RecordatorioCitasEditar = props => {
     const [Nota, setNota] = React.useState(props.data.Nota || '');
     const [fecha, setFecha] = React.useState(props.data.fecha || '');
 
+    const [errorNotas, setErrorNotas] = React.useState();
+    const [Msj, setMsj] = React.useState(false);
+
 
     const urlUpdateCitas = 'http://localhost:3000/api/actualizarCita'
-    const urlBitacoraUpdCita='http://localhost:3000/api/bitacora/actualizarcita';
+    const urlBitacoraUpdCita = 'http://localhost:3000/api/bitacora/actualizarcita';
 
     const data = {
         IdRecordatorio: props.data.IdRecordatorio,
@@ -88,12 +91,12 @@ export const RecordatorioCitasEditar = props => {
             icon: 'warning',
             buttons: ['Cancelar', 'Salir'],
             dangerMode: true,
-          }).then((confirmExit) => {
+        }).then((confirmExit) => {
             if (confirmExit) {
-              navegate('/recordatorio');
+                navegate('/recordatorio');
             } else {
             }
-          });
+        });
     };
 
     const objectDate = new Date();
@@ -112,24 +115,24 @@ export const RecordatorioCitasEditar = props => {
 
 
         let data = {
-            IdRecordatorio:props.data.IdRecordatorio,
+            IdRecordatorio: props.data.IdRecordatorio,
             //IdCliente: idCliente,
-            Nota:Nota.toUpperCase(),
-            fecha:fecha,
-         
+            Nota: Nota.toUpperCase(),
+            fecha: fecha,
+
         };
 
 
         console.log(data);
 
-        let dataUsuario={
-            Id:props.idUsuario
-          }
-    
+        let dataUsuario = {
+            Id: props.idUsuario
+        }
+
 
         await axios.put(urlUpdateCitas, data).then(() => {
             swal("Cita Actualizado Correctamente", "", "success").then(() => {
-                axios.post(urlBitacoraUpdCita,dataUsuario)
+                axios.post(urlBitacoraUpdCita, dataUsuario)
                 navegate('/recordatorio')
             })
         }).catch(error => {
@@ -156,7 +159,7 @@ export const RecordatorioCitasEditar = props => {
                                 <TextCustom text="Cliente" className="titleInput" />
                                 <div className="contInput">
                                     <input
-                                    // onChange={e => (e.target.value)}
+                                        // onChange={e => (e.target.value)}
                                         type="text"
                                         name=""
                                         className="inputCustom"
@@ -184,7 +187,7 @@ export const RecordatorioCitasEditar = props => {
                                     /> */}
 
 
-                                     <input
+                                    <input
                                         onChange={e => setFecha(e.target.value)}
                                         type="date"
                                         id="fecha"
@@ -203,8 +206,31 @@ export const RecordatorioCitasEditar = props => {
                                 <TextCustom text="Nota" className="titleInput" />
                                 <div className="contInput">
                                     <input
-                                        onChange={e => setNota(e.target.value)}
+                                        onKeyDown={e => {
+                                            setNota(e.target.value);
+                                            if (Nota === '') {
+                                                setErrorNotas(true);
+                                                setMsj('Los campos no deben estar vacíos');
+                                            } else {
+                                                setErrorNotas(false);
+                                                var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                                                if (!regex.test(Nota)) {
+                                                    setErrorNotas(true);
+                                                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                                                } else if (/(.)\1{2,}/.test(Nota)) {
+                                                    setErrorNotas(true);
+                                                    setMsj('No se permiten letras consecutivas repetidas');
+                                                } else {
+                                                    setErrorNotas(false);
+                                                    setMsj('');
+                                                }
+                                            }
+                                        }}
+
+                                        onChange={e => setNota(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                                        error={errorNotas}
                                         type="text"
+                                        helperText={Msj}
                                         name=""
                                         maxLength={40}
                                         className="inputCustomText"
@@ -212,7 +238,7 @@ export const RecordatorioCitasEditar = props => {
                                         placeholder="Nota"
                                         id="Nota"
                                         value={Nota}
-                                       // disabled="false"
+                                    // disabled="false"
                                     />
                                 </div>
                             </div>
@@ -240,7 +266,28 @@ export const RecordatorioCitasEditar = props => {
 
 
                             <div className="contNewCitaButtons">
-                                <button className='btnAgregarCita' onClick={handleClick}>Guardar</button>
+                                {/* <button className='btnAgregarCita' onClick={handleClick}>Guardar</button> */}
+                                <Button
+                                    className='btnAgregarCita'
+                                    type="submit"
+                                    onClick={() => {
+
+                                        var nota = document.getElementById("Nota").value;
+
+                                        if (nota === "") {
+                                            swal("No deje campos vacíos.", "", "error");
+                                        } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
+                                            swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                                        } else if (/(.)\1{2,}/.test(nota)) {
+                                            setErrorNotas(true);
+                                            swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                                        } else {
+                                            handleClick();
+                                        }
+                                    }}
+                                >Guardar</Button>
+
+
                                 <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
                             </div>
                         </div>

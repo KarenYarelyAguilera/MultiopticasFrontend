@@ -16,7 +16,7 @@ export const Configuracion = () => {
     //   vinculo: '/config/verpermisos',
     // },
     {
-      titulo: "Garantias",
+      titulo: "Garantías",
       imagen: 'https://static.vecteezy.com/system/resources/previews/002/099/543/non_2x/man-made-a-grocery-list-for-the-store-recipe-flat-illustration-vector.jpg',
       vinculo: "/menuVentas/listaGarantias",
     },
@@ -72,7 +72,7 @@ export const Configuracion = () => {
     // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/025/143/512/non_2x/invoice-icon-design-free-vector.jpg',
-      titulo: 'Metodos De Pago',
+      titulo: 'Métodos De Pago',
       vinculo: '/config/ListaMetodosDePago',
     },
     {
@@ -112,7 +112,7 @@ export const Configuracion = () => {
     // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/000/144/399/non_2x/dotted-world-map-vector.jpg',
-      titulo: 'Paises',
+      titulo: 'Países',
       vinculo: '/config/ListaPais',
     },
     // {
@@ -122,7 +122,7 @@ export const Configuracion = () => {
     // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/007/737/986/non_2x/male-and-female-gender-icon-symbol-free-vector.jpg',
-      titulo: 'Genero',
+      titulo: 'Género',
       vinculo: '/config/ListaGenero',
     },
   ];

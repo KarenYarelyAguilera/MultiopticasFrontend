@@ -42,15 +42,15 @@ export const PageTwo = ({ onButtonClick,correo1,id, autor }) => {
   };
   return (
     <main>
-      <div className="titleRecuperacion">
+     {/*  <div className="titleRecuperacion">
           <h2>Codigo de confirmación</h2>
           <h3>Asegurese que la dirección del correo que ingresaste sea la correcta para enviar el codigo de confirmación.</h3>
-        </div>
+        </div> */}
       <form className="measure">
         <div className="contPrincipalRecuperacion">
           <div className='divInfoRecuperacion'>
-
-          <TextCustom text="Respuesta:" className="titleInput" />
+          <TextCustom text="Asegurese que la dirección del correo que ingresaste sea la correcta para enviar el codigo de confirmación." className="titleInput" />
+          <TextCustom text="Confirme su correo:" className="titleInput" />
           <div className="contInput">
             <input
               type="text"

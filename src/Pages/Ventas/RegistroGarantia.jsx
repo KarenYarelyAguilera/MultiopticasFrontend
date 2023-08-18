@@ -151,10 +151,7 @@ const actualizarGarantia = async () => {
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
                     if (!regex.test(mesesGarantia)) {
                       seterrormesesGarantia(true);
-                      setmensaje('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
-                    } else if (/(.)\1{2,}/.test(mesesGarantia)) {
-                      seterrormesesGarantia(true);
-                      setmensaje("No se permiten letras consecutivas repetidas");
+                      setmensaje('El campo meses solo acepta numeros.')
                     } else {
                       seterrormesesGarantia(false);
                       setmensaje("");
@@ -188,8 +185,7 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
               <input
-                onKeyDown={e => {
-                  setDescripcion(e.target.value);
+                onKeyDown={e => { setDescripcion(e.target.value);
                   if (descripcion === "") {
                     setErrorDescripcion(true);
                     setleyenda("Los campos no deben de quedar vacíos");
@@ -211,7 +207,6 @@ const actualizarGarantia = async () => {
                 }
                 onChange={e => setDescripcion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
                 error= {errorDescripcion}
-
                 type="text"
                 name=""
                 maxLength={100}
@@ -234,20 +229,17 @@ const actualizarGarantia = async () => {
                 var descripcion  = document.getElementById ("descripcion").value;
                 var mesesGarantia = document.getElementById ("mesesGarantia").value;
                 
-                if ( descripcion ==="" || mesesGarantia ==="" )
-                {
+                if ( descripcion ==="" || mesesGarantia ==="" ){
                   swal ("No deje campos vacios.","","error");
-                } else if (/^[A-Z]+(?: [A-Z]+)*$/.test(descripcion))
-                {
+                } else if (/^[A-Z]+(?: [A-Z]+)*$/.test(descripcion)){
+                  setErrorDescripcion(true);
                   swal("El campo de descripcion solo acepta letras mayusculas.","","error");
-                }else if (isNaN(parseInt(mesesGarantia)))
-                {
+                }else if (isNaN(parseInt(mesesGarantia))){
+                  seterrormesesGarantia(true)
                   swal("El campo meses solo acepta numeros.","","error");
                 }else{
-
                 }
                   props.actualizar ? actualizarGarantia() : handleNext();
-                
                 }
                 }
               >

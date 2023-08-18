@@ -118,12 +118,14 @@ export const ListaExpedientes = (props) => {
         <div className="contActions1">
           <Button
             className="btnEdit"
-
+            title='Editar inventario'
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
+            onClick={() => swal("No es posible realizar esta accion", "", "error")}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>

@@ -114,7 +114,7 @@ export const AddClientes = (props) => {
       })
     }).catch(error => {
       console.log(error);
-      swal('Error al Actualizar Cliente! , por favor revise todos los campos.', '', 'error')
+     
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
