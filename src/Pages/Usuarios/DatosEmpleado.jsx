@@ -198,13 +198,25 @@ export const DatosEmpleado = (props) => {
   //Funcion de bitacora 
   let dataB = {
     Id: props.idUsuario
-  }
-  const handleBack = () => {
-    props.Data({})
-    props.update(false)
-    axios.post(urlBitacoraSalirRE, dataB)//BOTON DE RETROCESO API BITACORA 
-    navegate('/usuarios');
   };
+  const handleBack = () => {
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de empleado ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.Data({})
+        props.update(false)
+        axios.post(urlBitacoraSalirRE, dataB)//BOTON DE RETROCESO API BITACORA 
+        navegate('/empleados/lista');
+      } else {
+      }
+    });
+
+  }
 
   return (
     <div className="ContUsuarios">
@@ -346,25 +358,32 @@ export const DatosEmpleado = (props) => {
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
               <input
-                onChange={e => setTelefono(e.target.value)}
-                onKeyDown={(e) => {
-                  setTelefono(e.target.value);
-                  if (e.target.value === '') {
-                    setTexto('Los campos no deben estar vacíos');
-                    setErrorTelefono(true);
-                  } else {
-                    setErrorTelefono(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(e.target.value)) {
-                      setErrorTelefono(true);
-                      setTexto('Solo deben ingresar números');
-                    } else {
-                      setErrorTelefono(false);
-                      setTexto('');
-                    }
-                  }
-                }}
+                 onChange={e => setTelefono(e.target.value)}
 
+                 onKeyDown={e => {
+                   setTelefono(e.target.value);
+                   if (Telefono === '') {
+                     setTexto('Los campos no deben estar vacíos');
+                     setErrorTelefono(true);
+                   }else if (Telefono.length !== 8) {
+                     setErrorTelefono(true);
+                     setTexto('El número de telefono debe tener exactamente 8 dígitos');
+                   } else {
+                     setErrorTelefono(false);
+                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
+                     if (!regex.test(Telefono)) {
+                       setErrorTelefono(true);
+                       setTexto('Debe ingresar un número de teléfono válido de 8 dígitos');
+                     }else if (/(.)\1{2,}/.test(Telefono)) {
+                       setErrorTelefono(true);
+                       setTexto('No se permiten numeros consecutivas repetidos');
+                     } else {
+                       setErrorTelefono(false);
+                       setTexto('');
+                     }
+                   }
+                 }}
+                 
                 error={errorTelefono}
                 type="phone"
                 name=""
@@ -384,7 +403,7 @@ export const DatosEmpleado = (props) => {
                 {sucursales.length ? (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                      {pre.IdSucursal}
+                      {pre.direccion}
                     </option>
                   ))
                 ) : (
