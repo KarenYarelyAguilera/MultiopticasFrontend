@@ -63,6 +63,11 @@ export const RecordatorioCitas = (props) => {
 
   const [fecha, setFechas] = React.useState(props.data.fecha || '');
 
+  const [Notas, setNotas] = React.useState(props.data.Nota || '');
+  const [errorNotas, setErrorNotas] = React.useState();
+  const [Msj, setMsj] = React.useState(false);
+
+
 
 
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
@@ -252,18 +257,63 @@ export const RecordatorioCitas = (props) => {
               <div className="contNewCita">
                 <TextCustom text="Nota" className="titleInput" />
                 <input
-                  type="text"
-                  name=""
-                  maxLength={40}
-                  className="inputCustomText"
-                  placeholder="Nota"
-                  id="nota"
+                onKeyDown={e => {
+                  setNotas(e.target.value);
+                  if (Notas === '') {
+                    setErrorNotas(true);
+                    setMsj('Los campos no deben estar vacíos');
+                  } else {
+                    setErrorNotas(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(Notas)) {
+                      setErrorNotas(true);
+                      setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(Notas)) {
+                      setErrorNotas(true);
+                      setMsj('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorNotas(false);
+                      setMsj('');
+                    }
+                  }
+                }}
+
+                onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorNotas}
+                type="text"
+                helperText={Msj}
+                name=""
+                maxLength={40}
+                className="inputCustomText"
+                placeholder="Nota"
+                id="nota"
+                value={Notas}
                 />
+                {/*  <p className='error'>{Msj}</p> */}
               </div>
 
 
               <div className="contNewCitaButtons">
-                <button className='btnAgregarCita' onClick={handleClick}>Guardar</button>
+                 {/*  <button className='btnAgregarCita' onClick={handleClick}>Guardar</button> */}
+              <Button
+                  className='btnAgregarCita'
+                  type="submit"
+                  onClick={() => {
+
+                    var nota = document.getElementById("nota").value;
+
+                    if (nota === "") {
+                      swal("No deje campos vacíos.", "", "error");
+                    } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
+                      swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                    } else if (/(.)\1{2,}/.test(nota)) {
+                      setErrorNotas(true);
+                      swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                    } else {
+                      handleClick();
+                    }
+                  }}
+                >Guardar</Button>
                 <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
               </div>
             </div>

@@ -8,7 +8,7 @@ import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
 import fondoPDF from "../../IMG/fondoPDF.jpg";
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 
 
 import swal from '@sweetalert/with-react';
@@ -31,25 +31,25 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { generatePDF } from '../../Components/generatePDF';
 //URL
- const urlNuevoExpediente='http://localhost:3000/api/Expediente/NuevoExpediente'
-const urlEliminarExpediente='http://localhost:3000/api/Expediente/DeleteExpediente'
-const urlExpediente='http://localhost:3000/api/Expediente'
-const urlNuevoDiagnostico='http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
-const urlDiagnosticos='http://localhost:3000/api/ExpedienteDetalle'
+const urlNuevoExpediente = 'http://localhost:3000/api/Expediente/NuevoExpediente'
+const urlEliminarExpediente = 'http://localhost:3000/api/Expediente/DeleteExpediente'
+const urlExpediente = 'http://localhost:3000/api/Expediente'
+const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlDiagnosticos = 'http://localhost:3000/api/ExpedienteDetalle'
 
 const urlClientes = 'http://localhost:3000/api/clientes';
 //const urlEmployees='http://localhost:3000/api/empleado'
 const urlEmployees =
-'http://localhost:3000/api/empleado';
+  'http://localhost:3000/api/empleado';
 
-export const DatosExpediente = ( props) => {
+export const DatosExpediente = (props) => {
 
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [Empleado, setIdEmpleado] = useState([]);
   const [cambio, setCambio] = useState(0);
-  
+
   useEffect(() => {
     console.log(props.id.idCliente);
     console.log(props.datosclientes.idCliente);
@@ -59,11 +59,11 @@ export const DatosExpediente = ( props) => {
     }).catch(error => console.log(error))
   }, []);
 
- // const [modalData, setModalData] = useState({});
+  // const [modalData, setModalData] = useState({});
 
-//DIAGNOSTICO
+  //DIAGNOSTICO
   useEffect(() => {
-    axios.post(urlDiagnosticos,props.id).then(response =>{
+    axios.post(urlDiagnosticos, props.id).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, []);
@@ -118,11 +118,11 @@ export const DatosExpediente = ( props) => {
 
           <Button
             className="btnImprimirExp"
-            onClick={()=> handlePrintModal(params.row)}
+            onClick={() => handlePrintModal(params.row)}
           >
             <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
-          
+
         </div>
       ),
     },
@@ -130,14 +130,14 @@ export const DatosExpediente = ( props) => {
 
   const handlePrintModal = (modalData) => {
     const documento = new jsPDF();
-    
+
     const fecha = new Date();
     const año = fecha.getFullYear();
-    const mes = String(fecha.getMonth() + 1).padStart(2,'0');
-    const dia = String(fecha.getDate()).padStart(2,'0');
-    
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const dia = String(fecha.getDate()).padStart(2, '0');
+
     const fechaSinSlash = dia + "/" + mes + "/" + año;
-    
+
     const pdfWidth = documento.internal.pageSize.getWidth(); // Obtener el ancho del PDF
     const imgWidth = 40; // Ancho deseado de la imagen
     const imgHeight = 15; // Alto deseado de la imagen
@@ -176,7 +176,7 @@ export const DatosExpediente = ( props) => {
     documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 210);
     documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 220);
     documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 230);
-  
+
     documento.save('historial_expediente.pdf');
     //setModalData({})
   };
@@ -210,7 +210,7 @@ export const DatosExpediente = ( props) => {
   //   generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
   // };
 
-   //PANTALLA MODAL---------------------------------------------------------------------------
+  //PANTALLA MODAL---------------------------------------------------------------------------
   function handleUpdt(id) {
     //setModalData(id);
     console.log(id);
@@ -218,87 +218,87 @@ export const DatosExpediente = ( props) => {
       <div>
         <div className="logoModal">DATOS GENERALES</div>
         <div className="contEditModal">
-        <div className="contInput">
-        <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
-       </div>
-        
-         <div className="contInput">
-         <label><b>Optometrista:{id.Optometrista}</b></label>
-            </div> 
-            <div className="contInput">
+          <div className="contInput">
+            <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
+          </div>
+
+          <div className="contInput">
+            <label><b>Optometrista:{id.Optometrista}</b></label>
+          </div>
+          <div className="contInput">
             <label><b>Asesor de venta:{id.AsesorVenta}</b></label>
-            </div>
-            <div className="contInput">
+          </div>
+          <div className="contInput">
             <label><b>Fecha de expiracion:{id.fechaExpiracion}</b></label>
-            </div>
-            <div className="contInput">
+          </div>
+          <div className="contInput">
             <label><b>Antecedentes clinicos:{id.Antecedentes}</b></label>
-            </div> 
-            <h3>
+          </div>
+          <h3>
             ----------------DIAGNOSTICO-----------------
-            </h3>
-            <div className="contInput">
-              <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
-            </div>
-            <div className="contInput">
+          </h3>
+          <div className="contInput">
+            <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
+          </div>
+          <div className="contInput">
             <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
-              <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
-            </div>
-            <div className="contInput">
-              <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
-            </div>
-            <div className="contInput">
+          <div className="contInput">
+            <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
+          </div>
+          <div className="contInput">
+            <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
+          </div>
+          <div className="contInput">
             <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
-            </div>
-            <div className="contInput">
+          </div>
+          <div className="contInput">
             <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
-            </div>
-            <div className="contInput">
+          </div>
+          <div className="contInput">
             <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
-            </div>
+          </div>
 
-            <div className="contInput">
+          <div className="contInput">
             <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
-            </div>
-            
+          </div>
+
         </div>
       </div>,
-    ).then( async() => {
+    ).then(async () => {
     });
 
   }
 
- 
+
 
   //Insertar un nuevo expediente
-  
+
   const handleNext = async () => {
-   let Cliente = document.getElementById('cliente').value;
-   let Empleado = document.getElementById('empleado').value;
-   let fechaCreacion= document.getElementById('fecha').value;
+    let Cliente = document.getElementById('cliente').value;
+    let Empleado = document.getElementById('empleado').value;
+    let fechaCreacion = document.getElementById('fecha').value;
 
     let fecha = new Date(fechaCreacion)
 
@@ -309,23 +309,23 @@ export const DatosExpediente = ( props) => {
     let fechaFormateada = anio + "/" + mes + "/" + dia;
 
     let data = {
-      IdCliente:Cliente,
-      fechaCreacion:fechaFormateada,
-      IdEmpleado:Empleado,
-   }
+      IdCliente: Cliente,
+      fechaCreacion: fechaFormateada,
+      IdEmpleado: Empleado,
+    }
 
-   await axios.post(urlNuevoExpediente,data).then(response=>{
-        let data={ IdExpediente:response.data.id}
-        props.dataa(data)
-       //console.log(response.data.id)
-    swal('Expediente creado con exito', '', 'success').then(result => {
-       navegate('/menuClientes/DetalleExpediente');
-     });
+    await axios.post(urlNuevoExpediente, data).then(response => {
+      let data = { IdExpediente: response.data.id }
+      props.dataa(data)
+      //console.log(response.data.id)
+      swal('Expediente creado con exito', '', 'success').then(result => {
+        navegate('/menuClientes/DetalleExpediente');
+      });
 
-   }).catch(error=>{
-     console.log(error);
-     swal("Error al registrar expediente.", "", "error")
-   })
+    }).catch(error => {
+      console.log(error);
+      swal("Error al registrar expediente.", "", "error")
+    })
 
   };
 
@@ -344,39 +344,39 @@ export const DatosExpediente = ( props) => {
             <div className="contInput">
               <TextCustom text="Cliente" className="titleInput" />
               <input
-                 type="text"
-                 name="input1"
-                 className="inputCustom"
-                 maxLength={15}
-                 placeholder="Cliente"
-                 variant="standard"
-                 id="cliente"
-                 label="Usuario"
-                 value={props.id.idCliente || props.datosclientes.idCliente}
-                 disabled
+                type="text"
+                name="input1"
+                className="inputCustom"
+                maxLength={15}
+                placeholder="Cliente"
+                variant="standard"
+                id="cliente"
+                label="Usuario"
+                value={props.id.idCliente || props.datosclientes.idCliente}
+                disabled
               />
             </div>
             <div className="contInput">
               <TextCustom text="Fecha de Creacion" className="titleInput" />
               <input
-               type="date"
-               name=""
-               maxLength={8}
-               className="inputCustom"
-               placeholder="Fecha de Creacion"
-               id="fecha"
-               value={fechaActual}
-               onChange={(e) => setFechaActual(e.target.value)}
-               disabled
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Creacion"
+                id="fecha"
+                value={fechaActual}
+                onChange={(e) => setFechaActual(e.target.value)}
+                disabled
               />
             </div>
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-            
+
               <select id="empleado"
-              value={props.datosclientes.IdEmpleado}
-               className="selectCustom">
-            
+                value={props.datosclientes.IdEmpleado}
+                className="selectCustom">
+
                 {Empleado.length ? (
                   Empleado.map(pre => (
                     <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
@@ -387,10 +387,10 @@ export const DatosExpediente = ( props) => {
                   <option value="No existe informacion">
                     No existe informacion
                   </option>
-                
+
                 )}
               </select>
-              
+
             </div>
             {/* <div className="contInput">
               <TextCustom text="Creado Por" className="titleInput" />
@@ -408,11 +408,11 @@ export const DatosExpediente = ( props) => {
               <p class="error"></p>
             </div> */}
             <div className="contBtnStepper1">
-              <Button 
-              onClick={() => {
-                navegate('/menuClientes/DetalleExpediente');
-              }}
-              variant="contained" className="btnStepper">
+              <Button
+                onClick={() => {
+                  navegate('/menuClientes/DetalleExpediente');
+                }}
+                variant="contained" className="btnStepper">
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
@@ -433,20 +433,20 @@ export const DatosExpediente = ( props) => {
               }}
             />
             <input
-               type="text"
-               className="inputSearch"
-               placeholder="Buscar"
-               value={searchTerm}
-               onChange={e => setSearchTerm(e.target.value)}
+              type="text"
+              className="inputSearch"
+              placeholder="Buscar"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
-              <Button 
-              onClick= {handleNext} //INSERTA 
-              className="btnCreate1">
+              <Button
+                onClick={handleNext} //INSERTA 
+                className="btnCreate1">
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar
               </Button>
-              <Button className="btnReport1" onClick={() => {}}>
+              <Button className="btnReport1" onClick={() => { }}>
                 Cancelar
               </Button>
             </div>
@@ -457,8 +457,8 @@ export const DatosExpediente = ( props) => {
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            getRowId={(row) => row.IdExpedienteDetalle} 
-/>
+            getRowId={(row) => row.IdExpedienteDetalle}
+          />
         </div>
       </div>
     </div>

@@ -189,7 +189,7 @@ export const ListaInventario = (props) => {
   }
 
   const handleBack = () => {
-    navegate('/inventario');
+    navegate('/Inventario/InventarioDisponible');
   };
 
 

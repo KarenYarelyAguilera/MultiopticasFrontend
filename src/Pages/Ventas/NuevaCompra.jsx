@@ -339,7 +339,7 @@ export const NuevaCompra = ({
                 variant="contained"
                 className="btnStepper"
               >
-                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
+                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

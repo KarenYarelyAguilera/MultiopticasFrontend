@@ -23,6 +23,11 @@ export const PreguntasPerfil = props => {
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
 
+  
+  const [Resp, setResp] = React.useState(props.data.Respuesta || '');
+  const [errorResp, setErrorResp] = React.useState();
+  const [Msj, setMsj] = React.useState(false);
+
 
   const dataId = {
     Id_Usuario: props.idUsuario,
@@ -108,8 +113,32 @@ export const PreguntasPerfil = props => {
             <TextCustom text="Ingrese su respuesta:" className="titleInput" />
             <div className="contInput">
               <input
-                maxLength="20"
+              onKeyDown={e => {
+                setResp(e.target.value);
+                if (Resp === '') {
+                  setErrorResp(true);
+                  setMsj('Los campos no deben estar vacíos');
+                } else {
+                  setErrorResp(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(Resp)) {
+                    setErrorResp(true);
+                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(Resp)) {
+                    setErrorResp(true);
+                    setMsj('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorResp(false);
+                    setMsj('');
+                  }
+                }
+              }}
+
+                onChange={e => setResp(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorResp}
                 type="text"
+                helperText={Msj}
+                maxLength={100}
                 name=""
                 className="inputCustom"
                 placeholder="Respuesta"
@@ -120,9 +149,25 @@ export const PreguntasPerfil = props => {
           <div className='divSubmitQuestion'>
             <input
               className="btnSubmitPreguntas"
-              type="button"
+              type="submit"
               value="Guardar"
-              onClick={handleClick}
+             // onClick={handleClick}
+             onClick={() => {
+
+              var respuesta = document.getElementById("respuestap").value;
+
+              if (respuesta === "") {
+                swal("No deje campos vacíos.", "", "error");
+              } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(respuesta)) {
+                swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+              } else if (/(.)\1{2,}/.test(respuesta)) {
+                setErrorResp(true);
+                swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+              } else {
+                handleClick();
+              }
+            }}
+
             />
             <br />
             <input
