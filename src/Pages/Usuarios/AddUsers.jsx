@@ -110,10 +110,7 @@ export const AddUsers = (props) => {
 
 
   const actualizar = async () => {
-    let usuario =
-      document.getElementById('empleado').options[
-        document.getElementById('empleado').selectedIndex
-      ].text;
+    let usuario =selectedOption
 
     let user = String(usuario);
     let nombre = document.getElementById('nombre').value;
@@ -148,24 +145,20 @@ export const AddUsers = (props) => {
 
   const insertar = async () => {
     let id = document.getElementById('empleado').value;
-    let usuario =
-      document.getElementById('empleado').options[
-        document.getElementById('empleado').selectedIndex
-      ].text;
 
-    let user = String(usuario);
     let nombre = document.getElementById('nombre').value;
     let correo = document.getElementById('correo').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {
       id: id,
-      usuario: user.toUpperCase(),
+      usuario: nombre,
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,
       rol: rol,
     };
+    console.log(data);
 
  //Funcion de bitacora 
     let dataB = {
