@@ -84,8 +84,8 @@ export const Registration = ({
       telefonoEmpleado: telefono,
       IdGenero: genero,
       numeroIdentidad: identidad,
-      correo: correo,
       clave: refContrasenia.current.value,
+      correo: correo,
     };
 
     const dataValida={

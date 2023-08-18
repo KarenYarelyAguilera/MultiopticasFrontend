@@ -57,38 +57,57 @@ export const CalculosDeVenta = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Calculos de Venta</h2>
-        <h3>
-          .
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
-          <div className="InputContPrincipal1">
+          <div className="InputContCalclos">
+            <div className="infoCalculos">
+              <TextCustom text="PRECIO DEL ARO" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.precioAro}</label>
+            </div>
 
-          
-              <TextCustom text="Precio del Aro:" className="titleInput" />
-              <label>{props.venta.precioAro}</label>
-           
-
-              <TextCustom text="Descuento:" className="titleInput" />
-              <label >{props.venta.descuento}</label>
-             
-              <TextCustom text="Aro con descuento:" className="titleInput" />
-              <label >{props.venta.nuevoPrecio}</label>
+            <div className="infoCalculos">
+              <TextCustom text="DESCUENTO" className="titleInput" />
+              |
+              <label className='titleInput'>L{props.venta.descuento}</label>
+            </div>
+            
+            <div className="infoCalculos">
+              <TextCustom text="ARO CON DESCUENTO:" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.nuevoPrecio}</label>
+            </div>
         
-    
-              <TextCustom text="Precio de Lente" className="titleInput" />
-              <label >{props.venta.precioLente}</label>
+            <div className="infoCalculos">
+              <TextCustom text="PRECIO DEL LENTE" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.precioLente}</label>
+            </div>
   
-  
-              <TextCustom text="Cantidad" className="titleInput" />
-              <label>{props.venta.cantidad}</label>
-              <TextCustom text="Subtotal" className="titleInput" />
-              <label>{props.venta.subtotal}</label>
-              <TextCustom text="Rebaja" className="titleInput" />
-              <label>{props.venta.rebaja}</label>
-              <TextCustom text="Total de la venta" className="titleInput" />
-              <label>{props.venta.total}</label>
+            <div className="infoCalculos">
+              <TextCustom text="CANTIDAD" className="titleInput" />
+              |
+              <label className='titleInput'>{props.venta.cantidad}</label>
+            </div>
+
+            <div className="infoCalculos">
+              <TextCustom text="SUBTOTAL" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.subtotal}</label>
+            </div>
+
+            <div className="infoCalculos">
+              <TextCustom text="REBAJA" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.rebaja}</label>
+            </div>
+
+            <div className="infoCalculos">
+              <TextCustom text="TOTAL DE LA VENTA" className="titleInput" />
+              |
+              <label className='titleInput'>L {props.venta.total}</label>
+            </div>
            
 
             <div className="contBtnStepper">

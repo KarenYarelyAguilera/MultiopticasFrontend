@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect, useContext } from 'react';
 
 import { useNavigate } from 'react-router';
@@ -21,9 +21,18 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListUsuarios = ({props,data,update,}) => {
+export const ListUsuarios = ({ idRol, data, update, }) => {
   const [roles, setRoles] = useState([]);
-  
+  const [permisos, setPermisos] = useState([]);
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso = {
+    idRol: idRol,
+    idObj: 2
+  }
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
+
 
 
   const urlUsers =
@@ -32,46 +41,51 @@ export const ListUsuarios = ({props,data,update,}) => {
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
 
-//  const urlBitacoraDelUsuario=
-//    'http://localhost:3000/api/bitacora/EliminarUsuario';
+  //  const urlBitacoraDelUsuario=
+  //    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [cambio,setCambio]=useState(0)
+  const [cambio, setCambio] = useState(0)
 
   useEffect(() => {
-    axios.get(urlUsers).then(response=>setTableData(response.data))
+    axios.get(urlUsers).then(response => setTableData(response.data))
   }, [cambio]);
 
 
   //IMPRIMIR PDF
-    const handleGenerarReporte = () => {
+  const handleGenerarReporte = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
-          const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                                fechaCre.getFullYear();
-                                return {
-                                  'ID':row.id_Usuario,
-                                  'Usuario':row.Usuario, 
-                                  'Nombre Usuario':row.Nombre_Usuario,
-                                  'Rol':row.rol,
-                                  'Estado': row.Estado_Usuario,
-                                  'Correo electronico':row.Correo_Electronico,
-                                
-                                };
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'ID': row.id_Usuario,
+            'Usuario': row.Usuario,
+            'Nombre Usuario': row.Nombre_Usuario,
+            'Rol': row.rol,
+            'Estado': row.Estado_Usuario,
+            'Correo electronico': row.Correo_Electronico,
+
+          };
         });
         return formattedData;
       };
-  
+
       const urlPDF = 'Reporte_Usuarios.pdf';
       const subTitulo = "LISTA DE USUARIOS"
-  
+
       const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
     };
+  }
+
 
   const navegate = useNavigate();
 
@@ -91,21 +105,22 @@ export const ListUsuarios = ({props,data,update,}) => {
     { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
-    { field: 'Contrasenia', headerName: 'Contraseña', width: 130, headerAlign: 'center',
-    valueGetter: (params) => {
-      // Obtener la respuesta original
-      const originalRespuesta = params.row.Contrasenia;
-      // Crear un string de asteriscos con la misma longitud que la respuesta original
-      const asterisks = '*'.repeat(originalRespuesta.length);
-      return asterisks;
+    {
+      field: 'Contrasenia', headerName: 'Contraseña', width: 130, headerAlign: 'center',
+      valueGetter: (params) => {
+        // Obtener la respuesta original
+        const originalRespuesta = params.row.Contrasenia;
+        // Crear un string de asteriscos con la misma longitud que la respuesta original
+        const asterisks = '*'.repeat(originalRespuesta.length);
+        return asterisks;
+      },
     },
-  },
     {
       field: 'Fecha_Ultima_Conexion',
       headerName: 'Ultima Conexion',
       width: 150, headerAlign: 'center'
     },
-    { 
+    {
       field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 150, headerAlign: 'center',
       valueGetter: (params) => {
         const date = new Date(params.row.Fecha_Vencimiento);
@@ -127,7 +142,7 @@ export const ListUsuarios = ({props,data,update,}) => {
           </Button>
           <Button
             className="btnDelete"
-           onClick={() => handleDel(params.row.id_Usuario)}
+            onClick={() => handleDel(params.row.id_Usuario)}
 
           >
             <DeleteForeverIcon></DeleteForeverIcon>
@@ -141,75 +156,85 @@ export const ListUsuarios = ({props,data,update,}) => {
   };
 
   function handleDel(id) {
-    swal({
-      buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          Desea eliminar este usuario?
-        </div>
-      ),
-      
-    }).then(async (op)=> {
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      swal({
+        buttons: {
+          cancel: 'Eliminar',
+          delete: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea eliminar este usuario?
+          </div>
+        ),
 
-      switch (op) {
-        case null:
+      }).then(async (op) => {
 
-          let data = {
-            id: id,
-          };
+        switch (op) {
+          case null:
 
-          // let dataB = {
-          //   Id: props.idU
-          // }
+            let data = {
+              id: id,
+            };
 
-          console.log(data);
+            // let dataB = {
+            //   Id: props.idU
+            // }
 
-         await axios.delete(urlDelUser,{data}).then(response=>{
-            swal("Usuario eliminado correctamente","","success")
-            // axios.post(urlBitacoraDelUsuario,dataB)
-            setCambio(cambio+1)
-          }).catch(error=>{
-            console.log(error);
-            swal("Error al eliminar el empleado","","error")
-          })
+            console.log(data);
 
-          break;
+            await axios.delete(urlDelUser, { data }).then(response => {
+              swal("Usuario eliminado correctamente", "", "success")
+              // axios.post(urlBitacoraDelUsuario,dataB)
+              setCambio(cambio + 1)
+            }).catch(error => {
+              console.log(error);
+              swal("Error al eliminar el empleado", "", "error")
+            })
 
-        default:
-          break;
-      }
+            break;
 
-    });
-    
+          default:
+            break;
+        }
+
+      });
+    }
+
+
   }
 
   function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'Actualizar',
-        cancel: 'Cancelar',
-      },
-      content: (
-        <div className="logoModal">
-          Que accion desea realizar con el cliente:{' '}
-          {id.Usuario}
-        </div>
-      ),
-    }).then(
-      op => {
-      switch (op) {
-        case 'update':
-        data(id)
-        update(true)
-        navegate('/usuarios/crearusuario')
-          break;
-        default:
-          break;
-      }
-    });
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar el usuario:{' '}
+            {id.Usuario} ?
+          </div>
+        ),
+      }).then(
+        op => {
+          switch (op) {
+            case 'update':
+              data(id)
+              update(true)
+              navegate('/usuarios/crearusuario')
+              break;
+            default:
+              break;
+          }
+        });
+    }
+
   };
 
 
@@ -245,7 +270,12 @@ export const ListUsuarios = ({props,data,update,}) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/usuarios/crearusuario');
+                if (permisos[0].insertar === "n") {
+                  swal("No tiene permisos para realizar esta acción","","error")
+                } else {
+                  navegate('/usuarios/crearusuario');
+                }
+               
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
@@ -253,9 +283,9 @@ export const ListUsuarios = ({props,data,update,}) => {
             </Button>
 
             <Button className="btnReport"
-             onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
-           
+
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

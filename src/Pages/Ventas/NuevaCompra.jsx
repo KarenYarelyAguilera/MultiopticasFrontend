@@ -395,6 +395,6 @@ export const NuevaCompra = ({
           />
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 };
