@@ -235,6 +235,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     Rol={Rol}
                     obj={cObjeto}
                     idUsuario={idUsuario}
+                    idRol={idRol}
                   />
 
                   <BarraHorizontal user={usuario} correo={mail} idUsuario={idUsuario}/>

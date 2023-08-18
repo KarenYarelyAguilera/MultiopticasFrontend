@@ -80,24 +80,7 @@ export const NuevaCompra = ({
   useEffect(() => {
     setTotal(cantidad * costo);
   }, [cantidad, costo]);
-
   const navegate = useNavigate();
-
-  // const AggDataGrid = () => {
-  //   let dataGrid = {
-  //     idUsuario: idUsuario,
-  //     idProducto: parseInt(document.getElementById("producto").value),
-  //     idProveedor: parseInt(document.getElementById("proveedor").value),
-  //     cantidad: parseInt(document.getElementById("cantidad").value),
-  //     fechaYHora: fechaActual,
-  //     costo: parseFloat(document.getElementById("costo").value),
-  //   }
-
-  //   setCambio(cambio + 1)
-  //   setCompras([...compras, dataGrid])
-
-
-  // }
   const AggDataGrid = () => {
     const productoId = parseInt(document.getElementById("producto").value);
     const cantidad = parseInt(document.getElementById("cantidad").value);
