@@ -166,7 +166,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         },
         content: (
           <div className="logoModal">
-            Desea eliminar este usuario?
+            ¿Desea eliminar este usuario?
           </div>
         ),
 
@@ -217,8 +217,8 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         },
         content: (
           <div className="logoModal">
-            Que accion desea realizar con el cliente:{' '}
-            {id.Usuario}
+            ¿Desea actualizar el usuario:{' '}
+            {id.Usuario} ?
           </div>
         ),
       }).then(
