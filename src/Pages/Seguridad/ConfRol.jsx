@@ -630,9 +630,9 @@ export const ConfigRol = props => {
               <TextCustom text="Ventas " className="titleInput" />
               <TextCustom text="Inventario" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />
-              <TextCustom text="Recordatorios" className="titleInput" />
+              <TextCustom text="Citas" className="titleInput" />
               <TextCustom text="Seguridad" className="titleInput" />
-              <TextCustom text="Configuracion" className="titleInput" />
+              <TextCustom text="Mantenimiento" className="titleInput" />
             </div>
 
             <div className="contSelect">

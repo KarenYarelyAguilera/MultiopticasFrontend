@@ -8,9 +8,9 @@ import { useState } from 'react';
 
 export const PageThree = ({ onButtonClick, correo, id }) => {
   const urlVerificar = 'http://localhost:3000/api/token/verificar';
-  const [pasar,setPasar]=useState(false)
+  const [pasar, setPasar] = useState(false)
 
-   
+
 
   const handleClick = async () => {
     const codigo = document.getElementById('codigo').value;
@@ -19,36 +19,38 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
       codigo: codigo,
       id: id,
     };
-    await axios.post(urlVerificar, data).then(response=>{
-      
-      if (response.data==false) {
+    await axios.post(urlVerificar, data).then(response => {
+
+      if (response.data == false) {
         swal(
           'Por favor ingrese su codigo de verificacion',
           '',
           'warning',
         )
-      }else{
+      } else {
         onButtonClick('pagefour')
 
       }
     });
-   
+
     return pasar;
   };
 
   return (
     <main>
-      <div className="titleRecuperacion">
+      {/*  <div className="titleRecuperacion">
         <h2>Envió de codigo</h2>
         <h3>
           Se te acaba de enviar a tu correo electrónico un codigo de
           confirmación para realizar el cambio de contraseña
         </h3>
-      </div>
+      </div> */}
       <form className="measure">
         <div className="contPrincipalRecuperacion">
           <div className="divInfoRecuperacion">
-            <TextCustom text="Ingresa el codigo" className="titleInput" />
+            <TextCustom text="Se te acaba de enviar a tu correo electrónico un codigo de
+                            confirmación para realizar el cambio de contraseña." className="titleInput" />
+            <TextCustom text="Ingresa el código:" className="titleInput" />
             <div className="contInput">
               <input type="text" name="" className="inputCustom" id="codigo" />
             </div>

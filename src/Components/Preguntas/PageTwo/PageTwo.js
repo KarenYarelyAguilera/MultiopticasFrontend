@@ -68,9 +68,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
       <form className="measure">
         <div className="contPrincipalRecuperacion">
           <div className='divInfoRecuperacion'>
-
-         
-          
+            
           <TextCustom text="Confirme su correo electrónico:" className="titleInput" />
           <div className="contInput">
             <input

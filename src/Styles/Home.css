@@ -527,3 +527,26 @@
   transition: 0.4s;
   translate: -2px;
 }
+/* Estilos para el contenedor principal */
+.container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  min-height: 90vh; /* Al menos la altura del viewport */
+}
+
+/* Estilos para el contenido centrado */
+.centeredContent {
+  text-align: center; /* Alinea el contenido interno al centro horizontal */
+  width: 100%; /* Asegura que el contenido se ajuste al ancho del contenedor */
+}
+
+/* Estilos para la primera sección */
+.section {
+  background-color: blue; /* Color de fondo azul */
+  width: 100px; /* Ajusta el ancho según tus necesidades */
+  height: 100px; /* Ajusta la altura según tus necesidades */
+  padding: 1px; /* Ajusta el espaciado interno según tus necesidades */
+  display: flex;
+  margin: 0 auto; /* Centra horizontalmente utilizando márgenes automáticos */
+}

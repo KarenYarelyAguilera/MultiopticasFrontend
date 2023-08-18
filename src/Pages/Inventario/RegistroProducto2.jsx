@@ -129,7 +129,7 @@ export const RegistroProducto2 = (props) => {
       
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Producto, los modelos deben ser unicos como tu.', '', 'error')
+      swal('Error al crear Producto, los modelos deben ser únicos.', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
