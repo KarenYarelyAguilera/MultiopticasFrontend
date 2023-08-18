@@ -10,7 +10,6 @@ import swal from '@sweetalert/with-react';
 //Mui-Material-Icons
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
 //Styles
@@ -20,6 +19,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import axios from 'axios';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const urlCompra = 'http://localhost:3000/api/compra/NuevaCompra';
 const urlProducto = "http://localhost:3000/api/productos";
@@ -82,25 +82,43 @@ export const NuevaCompra = ({
   }, [cantidad, costo]);
 
   const navegate = useNavigate();
-
+  
   const AggDataGrid = () => {
-    let dataGrid = {
-      idUsuario: idUsuario,
-      idProducto: parseInt(document.getElementById("producto").value),
-      idProveedor: parseInt(document.getElementById("proveedor").value),
-      cantidad: parseInt(document.getElementById("cantidad").value),
-      fechaYHora: fechaActual,
-      costo: parseFloat(document.getElementById("costo").value),
+    const productoId = parseInt(document.getElementById("producto").value);
+    const cantidad = parseInt(document.getElementById("cantidad").value);
+    const costo = parseFloat(document.getElementById("costo").value);
+  
+    const existingIndex = compras.findIndex(item => item.idProducto === productoId);
+    console.log(existingIndex);
+    if (existingIndex !== -1) {
+      const updatedCompras = [...compras];
+      updatedCompras[existingIndex].cantidad += cantidad;
+      updatedCompras[existingIndex].costo += costo;
+      setCompras(updatedCompras);
+    } else {
+      const dataGrid = {
+        idUsuario: idUsuario,
+        idProducto: productoId,
+        idProveedor: parseInt(document.getElementById("proveedor").value),
+        cantidad: cantidad,
+        fechaYHora: fechaActual,
+        costo: costo,
+      };
+      setCompras([...compras, dataGrid]);
+      setCambio(cambio + 1);
     }
-
-    setCambio(cambio + 1)
-    setCompras([...compras, dataGrid])
-
-
-  }
+  
+  };
 
   const handleBack = () => {
     navegate('/Compras');
+  };
+  const eliminarCompra = (idProducto) => {
+    console.log(idProducto);
+    const nuevasCompras = compras.filter(compra => compra.idProducto !== idProducto);
+    console.log(nuevasCompras);
+    setCompras(nuevasCompras);
+    setCambio(cambio+1)
   };
 
   const columns = [
@@ -109,7 +127,21 @@ export const NuevaCompra = ({
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 145 },
     { field: 'costo', headerName: 'Costo de la Compra', width: 145 },
-    { field: 'Total', headerName: 'Total', width: 145 },
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 260,
+
+      renderCell: params => (
+        <div className="contActions1">
+          <Button
+            className="btnDelete"
+            onClick={() => eliminarCompra(params.row.idProducto)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
+          </div>)
+    }
   ];
 
   var idCounter = 0
@@ -365,6 +397,6 @@ export const NuevaCompra = ({
           />
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 };

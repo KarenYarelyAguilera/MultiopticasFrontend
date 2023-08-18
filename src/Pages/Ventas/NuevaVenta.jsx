@@ -38,7 +38,7 @@ export const NuevaVenta = (props) => {
   const [cambio, setCambio] = useState(0)
 
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
-
+  const [selectedEmpleado, setSelectedEmpleado] = useState(null);
 
 
 
@@ -53,7 +53,7 @@ export const NuevaVenta = (props) => {
 
   const navegate = useNavigate();
 
-  
+
 
   const handleNext = async () => {
 
@@ -61,7 +61,7 @@ export const NuevaVenta = (props) => {
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
     //let Cliente = document.getElementById('cliente').value;
     let Cliente = selectedOption ? selectedOption.value : null;
-    let Empleado = parseInt(document.getElementById('empleado').value);
+    let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
     let RTN = document.getElementById('RTN').value;
 
 
@@ -112,38 +112,17 @@ export const NuevaVenta = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contPrincipalNewCita">
-              <TextCustom text="Cliente" className="titleInput" />
-              {/*   <select name="" className="selectCustom" id="cliente">
-                {Cliente.length ? (
-                  Cliente.map(pre => (
-                    <option key={pre.IdCliente} value={pre.IdCliente}>
-                      {pre.idCliente}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select> */}
-
-              {/* select que jala los datos y concatena el idCliente y nombre */}
+            <div className="contInput">
+              <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <Select
+                <Select 
                   id="cliente"
-                  // className="inputCustomPreguntas"
-                  options={Cliente.map(pre => ({value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                  options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
                   value={selectedOption}
                   onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
                 />
-
-
               </div>
-
-
-
             </div>
 
             <div className="contInput">
@@ -162,20 +141,15 @@ export const NuevaVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-              <select id="empleado" className="selectCustom">
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.nombre}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
+              <div className="contInput">
+                <Select
+                  id="empleado"
+                  options={Empleado.map(pre => ({ value: pre.idEmpleado, label: `${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedEmpleado}
+                  onChange={setSelectedEmpleado}
+                  placeholder="Seleccione un Empleado"
+                />
+              </div>
             </div>
 
 
@@ -225,9 +199,10 @@ export const NuevaVenta = (props) => {
                 onClick={() => {
                   var fechaEntrega = document.getElementById("fechaEntrega").value;
                   var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  var Cliente = selectedOption.value;
+                  let Cliente = selectedOption ? selectedOption.value : null;
+                  let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
 
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente==="") {
+                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else {
                     handleNext();

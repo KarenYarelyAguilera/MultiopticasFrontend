@@ -10,7 +10,7 @@ import '../../Styles/Home.css';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 
-export const MenuCompras = () => {
+export const MenuSeguridad = () => {
 
   const dataCards = 
   [
@@ -19,11 +19,16 @@ export const MenuCompras = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/716/non_2x/global-marketing-strategy-concept-marketing-team-macromarketing-flat-modern-illustration-vector.jpg',
     //   vinculo: "/menuVentas/NuevaVenta", 
     // },
-    /* {
-      titulo: "Nueva Compra",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
-      vinculo: "/menuCompras/NuevaCompra", 
-    }, */
+    {
+      titulo: 'Permisos',
+      imagen: 'https://static.vecteezy.com/system/resources/previews/007/132/142/non_2x/handy-flat-illustration-of-task-list-vector.jpg',
+      vinculo: '/config/verpermisos',
+    },
+    {
+      titulo: "Roles",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/000/517/735/non_2x/cyber-security-vector.png',
+      vinculo: "/config/roles", 
+    },
     // {
     //   titulo: "Detalle de Venta",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/736/non_2x/company-growth-concept-key-to-success-business-assets-company-mission-vision-and-philosophy-flat-modern-illustration-vector.jpg',
@@ -34,6 +39,11 @@ export const MenuCompras = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/720/non_2x/company-goals-and-philosophy-concept-business-mission-flat-modern-illustration-vector.jpg',
     //   vinculo: "/menuVentas/DetalleVentaDescuento", 
     // },
+    {
+      titulo: "Parametros",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
+      vinculo: "/config/ListaParametros",
+    },
     // {
     //   titulo: "Detalle de Venta Promocion",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/718/non_2x/global-marketing-strategy-concept-marketing-team-target-affiliate-program-flat-modern-illustration-vector.jpg',
@@ -54,11 +64,11 @@ export const MenuCompras = () => {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/012/446/648/non_2x/successful-business-target-plan-vector.jpg',
     //   vinculo: "/menuVentas/NuevaCompra", 
     // },
-    {
-      titulo: "Compras",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
-      vinculo: "/menuInventario/ListaCompra", 
-    },
+    // {
+    //   titulo: "Compras",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/513/157/non_2x/effective-planning-time-management-business-concept-vector.jpg',
+    //   vinculo: "/menuInventario/ListaCompra", 
+    // },
     // {
     //   titulo: "Registro de Garantias",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/640/196/non_2x/3d-quality-guarantee-medal-with-star-and-ribbon-icon-isolated-on-white-background-3d-prize-winner-and-award-concept-cartoon-minimal-style-3d-badge-icon-render-illustration-vector.jpg',

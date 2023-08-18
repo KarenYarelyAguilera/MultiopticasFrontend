@@ -21,6 +21,9 @@ import AddUser from '../../IMG/AddUser.jpg';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
+import Select from 'react-select'; //select para concatenar el idCiente y el nombre
+
+
 export const AddUsers = (props) => {
 
   const [Nombreusuario, setNombreusuario] = useState(props.data.Nombre || '');
@@ -49,6 +52,8 @@ export const AddUsers = (props) => {
   const navegate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
 
   
 
@@ -219,7 +224,7 @@ export const AddUsers = (props) => {
           <div className="InputContPrincipal1">
             <div className="contInput">
               <TextCustom text="Empleado" className="titleInput" />
-              <select id="empleado" className="selectCustom">
+             {/*  <select id="empleado" className="selectCustom">
                 {Empleado.length ? (
                   Empleado.map(pre => (
                     <option key={pre.numeroIdentidad} value={pre.numeroIdentidad}>
@@ -231,7 +236,17 @@ export const AddUsers = (props) => {
                     No existe informacion
                   </option>
                 )}
-              </select>
+              </select> */}
+
+              <Select 
+                  id="empleado"
+                  options={Empleado.map(pre => ({ value: pre.IdEmpleado, label: `${pre.numeroIdentidad} - ${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un empleado"
+                />
+
+
             </div>
 
             <div className="contInput">
