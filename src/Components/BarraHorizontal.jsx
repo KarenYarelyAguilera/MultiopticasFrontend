@@ -4,16 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import {
-  faClipboardList,
-  faPeopleRoof,
-  faHandHoldingDollar,
-  faCalendar,
-  faUsers,
-  faFileLines,
-  faShieldHalved,
-  faGear,
   faRightFromBracket,
-  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';

@@ -12,27 +12,28 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
 
 
 
-  const handleClick = async () => {
+   const handleClick = async () => {
     const codigo = document.getElementById('codigo').value;
     let data = {
       correo: correo,
       codigo: codigo,
       id: id,
     };
-    await axios.post(urlVerificar, data).then(response => {
-
-      if (response.data == false) {
+    console.log(data);
+    await axios.post(urlVerificar, data).then(response=>{
+      
+      if (response.data==false) {
         swal(
           'Por favor ingrese su codigo de verificacion',
           '',
           'warning',
         )
-      } else {
+      }else{
         onButtonClick('pagefour')
 
       }
     });
-
+   
     return pasar;
   };
 

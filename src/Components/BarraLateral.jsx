@@ -22,8 +22,6 @@ import {
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
-const urlP =
-  'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=permisos';
 
 //--------------------URL DE BITACORAS----------------------------------
 const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
@@ -33,9 +31,6 @@ const urlBIngresoPCita='http://localhost:3000/api/bitacora/citas';
 //-----------------------------------------------------------------------
 
 export const BarraLateral = props => {
-  const data = {
-    rol: props.Rol,
-  };
   //Funcion de bitacora
   const dataB = {
     Id: props.idUsuario,
@@ -137,9 +132,9 @@ export const BarraLateral = props => {
       );
     }
   };
-
+  console.log(consulta[5] === 's' && pantallas[5] === 7 && props.idRol===1);
   const Seguridad = () => {
-    if (consulta[5] === 's' && pantallas[5] === 7) {
+    if (consulta[5] === 's' && pantallas[5] === 7 && props.idRol===1) {
       return (
         <li>
           <Link className="link" to="">
@@ -211,28 +206,22 @@ export const BarraLateral = props => {
       <div className="navPrincipal">
         <nav>
           <ul>
-            <li>
+
+            {props.idRol===1?<>
+              <li>
               <Link
                 className="link"
                 to="/usuarios"
                 onClick={() => {
                   axios.post(urlBitacoraModEmple, dataB); //Bitacora del modulo de usuario/empleado
                   props.obj(2);
-                }}
-              >
-                {/* fetch(urlBitacoraUsuario, {
-             method: "POST",
-             headers: {
-               "Content-Type": "application/json",
-             },
-             body: JSON.stringify(dataB),
-           })
-           props.obj(2)}}> */}
-
+                }}>
                 <FontAwesomeIcon className="iconLi" icon={faUsers} />
                 <h1>ADMINISTRACION</h1>
               </Link>
             </li>
+            </>:<></>}
+            
             <li>
               <Link className="link" to="/menuClientes">
                 <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
@@ -276,8 +265,9 @@ export const BarraLateral = props => {
               </Link>
             </li>
 
-            <li>
-              <Link className="link" to="/seguridad">
+                {props.idRol===1?<>
+                  <li>
+              <Link className="link" to="/config/roles">
                 <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
                 <h1>SEGURIDAD</h1>
               </Link>
@@ -296,6 +286,8 @@ export const BarraLateral = props => {
                 <h1>MANTENIMIENTO</h1>
               </Link>
             </li>
+                </>:<></>}
+            
 
             {/* <Usuario />
             <Ventas />
@@ -306,14 +298,7 @@ export const BarraLateral = props => {
             <Recordatorios />
 
             <Seguridad /> */}
-            <Inventario />
-            <Clientes />
-            <Ventas />
-            <Recordatorios />
-            <Usuario />
-            <Reportes />
-            <Seguridad />
-            <Configuracion />
+            
           </ul>
         </nav>
       </div>

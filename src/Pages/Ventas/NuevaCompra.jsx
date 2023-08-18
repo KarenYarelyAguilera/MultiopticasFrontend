@@ -80,9 +80,7 @@ export const NuevaCompra = ({
   useEffect(() => {
     setTotal(cantidad * costo);
   }, [cantidad, costo]);
-
   const navegate = useNavigate();
-  
   const AggDataGrid = () => {
     const productoId = parseInt(document.getElementById("producto").value);
     const cantidad = parseInt(document.getElementById("cantidad").value);

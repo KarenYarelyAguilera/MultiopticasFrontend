@@ -187,12 +187,10 @@ export const ListaVenta = (props) => {
 
 
       documento.text(`Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 230);
-      documento.text(`Descuento: ${informacionventa.data[0].descuento}`, 20, 240);
-      documento.text(`Nuevo Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 250);
       documento.text(`Precio Lente: ${informacionventa.data[0].precioLente}`, 20, 260);
       documento.text(`Cantidad: ${informacionventa.data[0].cantidad}`, 20, 270);
       documento.text(`Subtotal: ${informacionventa.data[0].subtotal}`, 20, 280);
-      documento.text(`Rebajas: ${informacionventa.data[0].rebaja}`, 20, 290);
+      documento.text(`Rebajas por promocion: ${informacionventa.data[0].rebaja}`, 20, 290);
       documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 300);
 
 
@@ -201,16 +199,24 @@ export const ListaVenta = (props) => {
     }
 
   };
-
+  function formatearFecha(fecha) {
+    const año = fecha.getUTCFullYear();
+    const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
+    const dia = fecha.getUTCDate().toString().padStart(2, '0');
+    
+    return `${año}-${mes}-${dia}`;
+  }
   //PANTALLA MODAL---------------------------------------------------------------------------
   async function handleUpdt(id) {
+
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       console.log(id);
-
       const informacionventa = await axios.post(urlVentaDetalle, { id: id })
-
+      
+      
+      
       swal(
         <div>
           <div className="logoModal">DATOS DE LA VENTA</div>
@@ -241,13 +247,11 @@ export const ListaVenta = (props) => {
             </div>
 
             <div className="contInput">
-              <label><b>Precio Aro:{informacionventa.data[0].precioAro}</b></label>
-              <label><b>Descuento:{informacionventa.data[0].precioAro}</b></label>
-              <label><b>Nuevo Precio Aro:{informacionventa.data[0].precioAro}</b></label>
+              <label><b>Aro Rebajado:{informacionventa.data[0].precioAro}</b></label>
               <label><b>Precio Lente:{informacionventa.data[0].precioLente}</b></label>
               <label><b>Cantidad:{informacionventa.data[0].cantidad}</b></label>
               <label><b>Subtotal: {informacionventa.data[0].subtotal}  </b></label>
-              <label><b>Rebajas:{informacionventa.data[0].rebaja}</b></label>
+              <label><b>Rebaja por promocion:{informacionventa.data[0].rebaja}</b></label>
               <label><b>Total a pagar:{informacionventa.data[0].totalVenta}</b></label>
             </div>
 
