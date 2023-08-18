@@ -10,13 +10,7 @@ import axios from 'axios';
 const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
 const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
 
-export const Registration = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-
-}) => {
+export const Registration = (props) => {
 
   const [Nombreusuario, setNombreusuario] = useState("");
   const [errorNombreusuario, setErrorNombreusuario] = useState(false);

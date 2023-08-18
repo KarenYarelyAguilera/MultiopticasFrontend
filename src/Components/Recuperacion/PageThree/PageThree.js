@@ -19,6 +19,7 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
       codigo: codigo,
       id: id,
     };
+    console.log(data);
     await axios.post(urlVerificar, data).then(response=>{
       
       if (response.data==false) {
