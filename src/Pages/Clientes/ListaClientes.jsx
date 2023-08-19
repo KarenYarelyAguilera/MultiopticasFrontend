@@ -56,7 +56,7 @@ export const ListaClientes = (props) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    if (permisos[0].consultar="n") {
+    if (permisos[0].consultar==="n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
       const formatDataForPDF = () => {
