@@ -97,11 +97,11 @@ export const Inventario = props => {
     //   titulo: 'Registro de Proveedores',
     //   vinculo: '/menuInventario/RegistroProveedores', 
     // },
-    // {
-    //   imagen: 'https://static.vecteezy.com/system/resources/previews/004/430/976/non_2x/health-list-with-a-yellow-color-free-vector.jpg',
-    //   titulo: 'Lista de Proveedores',
-    //   vinculo: '/menuInventario/ListaProveedores',
-    // },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/004/430/976/non_2x/health-list-with-a-yellow-color-free-vector.jpg',
+      titulo: 'Lista de Proveedores',
+      vinculo: '/menuInventario/ListaProveedores',
+    },
   ];
 
   return (
