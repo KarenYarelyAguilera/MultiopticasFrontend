@@ -21,9 +21,9 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
-const urlExpediente = 'http://localhost:3000/api/Expediente'
-const urlClientes = 'http://localhost:3000/api/clientes'
+const urlNuevoDiagnostico = 'http://194.163.45.55:4000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlExpediente = 'http://194.163.45.55:4000/api/Expediente'
+const urlClientes = 'http://194.163.45.55:4000/api/clientes'
 
 
 

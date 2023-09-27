@@ -30,7 +30,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaGarantia = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -42,8 +42,8 @@ export const ListaGarantia = ({idRol,data,update}) => {
   const [cambio, setCambio] = useState(0)
 
   //URL DE GARANTIA GET Y DELETE 
-  const urlGarantias ='http://localhost:3000/api/garantias';
-  const urlDelGarantias ='http://localhost:3000/api/garantias/eliminar';
+  const urlGarantias ='http://194.163.45.55:4000/api/garantias';
+  const urlDelGarantias ='http://194.163.45.55:4000/api/garantias/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

@@ -21,19 +21,19 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const Login = props => {
-  const urlLogin = 'http://localhost:3000/api/login/compare';
-  const urlDUsuario = 'http://localhost:3000/api/login';
-  const urlFechaExpiracion =
-    'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
+  const urlLogin = 'http://194.163.45.55:4000/api/login/compare';
+  const urlDUsuario = 'http://194.163.45.55:4000/api/login';
+  // const urlFechaExpiracion =
+  //   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=fechaExpiracion';
 
   const urlBitacoraLogin =
-    'http://localhost:3000/api/bitacora/Login';
-  const urlIntentos =
-    'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
+    'http://194.163.45.55:4000/api/bitacora/Login';
+  // const urlIntentos =
+  //   'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
 
 
 
-  const urlUsuario= 'http://localhost:3000/api/usuario'; //para el perfil
+  const urlUsuario= 'http://194.163.45.55:4000/api/usuario'; //para el perfil
 
   const [usuario, setUsuario] = useState('');
   const [prueba, setprueba] = useState('');

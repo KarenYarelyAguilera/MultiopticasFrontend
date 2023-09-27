@@ -889,6 +889,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   />
                 <BarraHorizontal user={usuario} />
                 <ListaEmpleados update={update} data={Data} idRol={idRol} />
+                
               </div>
               //  </ProtectedRoute>
             }

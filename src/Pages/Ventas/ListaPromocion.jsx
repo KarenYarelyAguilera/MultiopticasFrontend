@@ -19,7 +19,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaPromocion = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -30,8 +30,8 @@ export const ListaPromocion = (props) => {
   const [cambio, setcambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
-  const urlPromociones ='http://localhost:3000/api/promociones';
-  const urlDelPromocion = 'http://localhost:3000/api/promociones/eliminar';
+  const urlPromociones ='http://194.163.45.55:4000/api/promociones';
+  const urlDelPromocion = 'http://194.163.45.55:4000/api/promociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

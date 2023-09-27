@@ -23,10 +23,10 @@ export const Bitacora = (props) => {
   const [cambio,setCambio] = useState(0)
 
 const urlBitacora=
-"http://localhost:3000/api/bitacora";
+"http://194.163.45.55:4000/api/bitacora";
 
 const urlSalirListaBitacora=
-"http://localhost:3000/api/bitacora/SalirListaBitacora";
+"http://194.163.45.55:4000/api/bitacora/SalirListaBitacora";
 
 
 //   const urlProducto =

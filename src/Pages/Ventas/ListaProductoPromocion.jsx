@@ -23,8 +23,8 @@ export const ListaProductoPromocion = (props) => {
   const [roles, setRoles] = useState([]);
 
  //URLS
- const urlProductosProm = 'http://localhost:3000/api/productopromociones';
- const urlDelProductosProm = 'http://localhost:3000/api/productopromociones/eliminar';
+ const urlProductosProm = 'http://194.163.45.55:4000/api/productopromociones';
+ const urlDelProductosProm = 'http://194.163.45.55:4000/api/productopromociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

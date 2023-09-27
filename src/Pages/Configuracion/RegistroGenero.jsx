@@ -20,8 +20,8 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
  //API DE GENERO
- const urlInsetGenero = 'http://localhost:3000/api/Genero/insertar';
- const urlUpdateGenero = 'http://localhost:3000/api/Genero/actualizar';
+ const urlInsetGenero = 'http://194.163.45.55:4000/api/Genero/insertar';
+ const urlUpdateGenero = 'http://194.163.45.55:4000/api/Genero/actualizar';
  
 
 export const RegistroGenero = (props) => {

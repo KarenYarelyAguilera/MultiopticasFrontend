@@ -16,14 +16,14 @@ import swal from '@sweetalert/with-react';
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 
 //URLS
-const urlProducto = 'http://localhost:3000/api/productos';
-const urlLente = 'http://localhost:3000/api/Lentes';
-const urlDescuento = 'http://localhost:3000/api/Descuento';
-const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
-const urlPromocion = 'http://localhost:3000/api/promociones';
-const urlGarantia = 'http://localhost:3000/api/garantias';
-const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
-const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
+const urlProducto = 'http://194.163.45.55:4000/api/productos';
+const urlLente = 'http://194.163.45.55:4000/api/Lentes';
+const urlDescuento = 'http://194.163.45.55:4000/api/Descuento';
+const urlDescuentoLente = 'http://194.163.45.55:4000/api/DescuentosLentes';
+const urlPromocion = 'http://194.163.45.55:4000/api/promociones';
+const urlGarantia = 'http://194.163.45.55:4000/api/garantias';
+const urlBitacoraInsertVenta = 'http://194.163.45.55:4000/api/bitacora/insertventa';
+const urlVenta = 'http://194.163.45.55:4000/api/Ventas/NuevaVenta';
 
 
 export const DetallesDeVenta = (props) => {

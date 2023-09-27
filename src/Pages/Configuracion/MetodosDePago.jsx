@@ -20,8 +20,8 @@ import axios from 'axios';
 
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
-const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
+const urlInsertMetodoPago = 'http://194.163.45.55:4000/api/tipopago/crear';
+const urlUpdateMetodoPago = 'http://194.163.45.55:4000/api/tipopago/actualizar';
 export const MetodosDePago  = (props) => {
 
   const navegate = useNavigate();

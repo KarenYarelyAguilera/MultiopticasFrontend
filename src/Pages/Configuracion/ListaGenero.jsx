@@ -31,7 +31,7 @@ import axios from 'axios';
 
 export const ListaGenero = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -44,8 +44,8 @@ export const ListaGenero = ({idRol,data,update}) => {
   const [marcah, setMarcah] = useState()
 
   //API DE GENERO
- const urlGenero = 'http://localhost:3000/api/Genero';
- const urlDeleteGenero = 'http://localhost:3000/api/Genero/borrar';
+ const urlGenero = 'http://194.163.45.55:4000/api/Genero';
+ const urlDeleteGenero = 'http://194.163.45.55:4000/api/Genero/borrar';
  
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

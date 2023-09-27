@@ -22,7 +22,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:6
@@ -30,7 +30,7 @@ export const ListaCompra = (props) => {
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
-  const urlCompras ='http://localhost:3000/api/compra';
+  const urlCompras ='http://194.163.45.55:4000/api/compra';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

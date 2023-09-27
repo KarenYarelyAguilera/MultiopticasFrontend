@@ -19,19 +19,19 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 
-const urlSucursales = 'http://localhost:3000/api/empleado/sucursal';
+const urlSucursales = 'http://194.163.45.55:4000/api/empleado/sucursal';
 
 /* const urlUsers =
   'http://localhost/APIS-Multioptica/usuario/controller/usuario.php?op=users'; */
-const urlIEmpleado = 'http://localhost:3000/api/empleado'; //Api para crear el empleado
-const urlUpdEmpleado = 'http://localhost:3000/api/empleado/actualizar'
+const urlIEmpleado = 'http://194.163.45.55:4000/api/empleado'; //Api para crear el empleado
+const urlUpdEmpleado = 'http://194.163.45.55:4000/api/empleado/actualizar'
 
 
 //----------------------------------URL de bitacora --------------------------------------------
-const urlUpdBitacora = 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
-const urlInsertBitacora = 'http://localhost:3000/api/bitacora/RegistroEmpleado';
-const urlErrorInsertBitacora = 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
-const urlBitacoraSalirRE = 'http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
+const urlUpdBitacora = 'http://194.163.45.55:4000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/ErrorActualizarEmpleado';
+const urlBitacoraSalirRE = 'http://194.163.45.55:4000/api/bitacora/SalirRegistroEmpleado';
 //---------------------------------------------------------------- ------------------------------
 
 export const DatosEmpleado = (props) => {
@@ -62,7 +62,7 @@ export const DatosEmpleado = (props) => {
   const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
-  const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
+  const urlEmpleadoExist = 'http://194.163.45.55:4000/api/empleado/RegistroInvalido';
 
 
 

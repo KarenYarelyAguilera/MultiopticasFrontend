@@ -20,8 +20,8 @@ import axios from 'axios';
 import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
-const urlUpdateMarca = 'http://localhost:3000/api/marcas/actualizar';
+const urlInsertMarca = 'http://194.163.45.55:4000/api/marcas/crear';
+const urlUpdateMarca = 'http://194.163.45.55:4000/api/marcas/actualizar';
 
 export const RegistroMarcas = (props) => {
   const navegate = useNavigate();

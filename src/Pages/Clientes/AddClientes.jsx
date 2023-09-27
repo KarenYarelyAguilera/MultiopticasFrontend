@@ -17,13 +17,13 @@ import axios from 'axios';
 
 
 const urlGenero = 
-    'http://localhost:3000/api/Genero';
+    'http://194.163.45.55:4000/api/Genero';
 
 const urlInsertCliente =
-  'http://localhost:3000/api/clientes/clienteNuevo';
+  'http://194.163.45.55:4000/api/clientes/clienteNuevo';
 //insertar usuario
 const urlClienteActualizar =
-  'http://localhost:3000/api/clientes/actualizar';
+  'http://194.163.45.55:4000/api/clientes/actualizar';
 //actualizar usuario
 
 

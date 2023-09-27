@@ -34,13 +34,13 @@ import { DataGrid, esES } from '@mui/x-data-grid';
 export const ListaVenta = (props) => {
   
 
-  const urlVentas = 'http://localhost:3000/api/Ventas';
-  const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
+  const urlVentas = 'http://194.163.45.55:4000/api/Ventas';
+  const urlVentaDetalle = 'http://194.163.45.55:4000/api/VentaDetalle'
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:9

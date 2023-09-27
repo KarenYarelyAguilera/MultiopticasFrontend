@@ -24,10 +24,10 @@ import axios from 'axios';
 
 
 //--------------------URL DE BITACORAS----------------------------------
-const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
-const urlCierre = 'http://localhost:3000/api/bitacora/Cierre';
-const urlBitacoraConfig = 'http://localhost:3000/api/bitacora/Configuracion';
-const urlBIngresoPCita='http://localhost:3000/api/bitacora/citas';
+const urlBitacoraModEmple = 'http://194.163.45.55:4000/api/bitacora/Empleado';
+const urlCierre = 'http://194.163.45.55:4000/api/bitacora/Cierre';
+const urlBitacoraConfig = 'http://194.163.45.55:4000/api/bitacora/Configuracion';
+const urlBIngresoPCita='http://194.163.45.55:4000/api/bitacora/citas';
 //-----------------------------------------------------------------------
 
 export const BarraLateral = props => {

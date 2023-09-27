@@ -29,7 +29,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaDepartamentos = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -42,8 +42,8 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
   const [marcah, setMarcah] = useState()
 
 
-  const urlDepartamento = 'http://localhost:3000/api/departamentos';
-  const urlDeleteDepartamento = 'http://localhost:3000/api/departamento/eliminar';
+  const urlDepartamento = 'http://194.163.45.55:4000/api/departamentos';
+  const urlDeleteDepartamento = 'http://194.163.45.55:4000/api/departamento/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

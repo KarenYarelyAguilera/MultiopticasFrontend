@@ -15,9 +15,9 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlProductos = 'http://localhost:3000/api/productos'; //API DE PRODUCTO
-const urlUpdateGarantia = 'http://localhost:3000/api/garantias/actualizar';//API DE ACTUALIZAR
-const urlInsertGarantia = 'http://localhost:3000/api/garantias/crear';//CREAR 
+const urlProductos = 'http://194.163.45.55:4000/api/productos'; //API DE PRODUCTO
+const urlUpdateGarantia = 'http://194.163.45.55:4000/api/garantias/actualizar';//API DE ACTUALIZAR
+const urlInsertGarantia = 'http://194.163.45.55:4000/api/garantias/crear';//CREAR 
 
 
 export const RegistroGarantia = (props) => {

@@ -22,7 +22,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaLentes = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:3
@@ -31,8 +31,8 @@ export const ListaLentes = ({idRol,data,update}) => {
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
 
-  const urlLentes ='http://localhost:3000/api/Lentes';
-  const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
+  const urlLentes ='http://194.163.45.55:4000/api/Lentes';
+  const urlLentesEliminar ='http://194.163.45.55:4000/api/Lentes/BorrarLente';
 
 
   const [cambio, setCambio] = useState(0)

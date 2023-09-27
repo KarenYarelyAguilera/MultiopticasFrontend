@@ -20,8 +20,8 @@ import axios from 'axios';
 import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertLente = 'http://localhost:3000/api/Lentes/NuevoLente';
-const urlUpdateLente = 'http://localhost:3000/api/Lentes/ActualizarLente';
+const urlInsertLente = 'http://194.163.45.55:4000/api/Lentes/NuevoLente';
+const urlUpdateLente = 'http://194.163.45.55:4000/api/Lentes/ActualizarLente';
 
 export const RegistroLente = (props) => {
 

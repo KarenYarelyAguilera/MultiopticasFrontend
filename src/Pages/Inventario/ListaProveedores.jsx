@@ -24,8 +24,8 @@ export const ListaProveedores = (props) => {
   const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
   //URLS
-  const urlProveedores = 'http://localhost:3000/api/proveedor';
-  const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
+  const urlProveedores = 'http://194.163.45.55:4000/api/proveedor';
+  const urlDelProveedor = 'http://194.163.45.55:4000/api/proveedor/EliminarProveedor';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

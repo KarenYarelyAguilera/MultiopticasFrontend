@@ -11,10 +11,10 @@ import axios from 'axios';
 export const PageThree = ({ onButtonClick, correo, id, autor  }) => {
 
   const [Preguntas, setPreguntas] = useState([]);
-  const urlPreguntas = 'http://localhost:3000/api/preguntas';
-  const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
-  // const urlBloquearUsu="http://localhost:3000/api/usuario/estado"
-  // const urlId = 'http://localhost:3000/api/token/id';
+  const urlPreguntas = 'http://194.163.45.55:4000/api/preguntas';
+  const urlRespuestas = 'http://194.163.45.55:4000/api/preguntas/respuestas/agregar';
+  // const urlBloquearUsu="http://194.163.45.55:4000/api/usuario/estado"
+  // const urlId = 'http://194.163.45.55:4000/api/token/id';
 
 //
   //const [id, setId] = useState(0);

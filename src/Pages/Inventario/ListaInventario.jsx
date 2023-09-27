@@ -21,7 +21,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaInventario = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 3
@@ -33,7 +33,7 @@ export const ListaInventario = (props) => {
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
 
-  const urlProducto = 'http://localhost:3000/api/ProductoKardex'; //MUESTA LOS PRODUCTOS EN LA TABLA
+  const urlProducto = 'http://194.163.45.55:4000/api/ProductoKardex'; //MUESTA LOS PRODUCTOS EN LA TABLA
 
 
   const [tableData, setTableData] = useState([]);

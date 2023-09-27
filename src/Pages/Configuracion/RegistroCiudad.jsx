@@ -19,8 +19,8 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 
-const urlInsertCiudad = 'http://localhost:3000/api/ciudad/crear';
-const urlUpdateCiudad= 'http://localhost:3000/api/ciudad/actualizar';
+const urlInsertCiudad = 'http://194.163.45.55:4000/api/ciudad/crear';
+const urlUpdateCiudad= 'http://194.163.45.55:4000/api/ciudad/actualizar';
 
 
 export const RegistroCiudad = (props) => {

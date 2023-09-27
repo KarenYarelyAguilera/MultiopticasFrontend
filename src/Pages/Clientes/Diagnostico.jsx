@@ -21,9 +21,9 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 
-const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
-const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
-const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
+const urlNuevoDiagnostico = 'http://194.163.45.55:4000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlPostCitas = 'http://194.163.45.55:4000/api/recordatorioCitas/agregar';
+const urlBitacoraAggCita = 'http://194.163.45.55:4000/api/bitacora/agregarcita';
 
 
 export const Diagnostico = (props) => {

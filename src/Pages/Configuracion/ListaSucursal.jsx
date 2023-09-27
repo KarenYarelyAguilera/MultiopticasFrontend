@@ -30,7 +30,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaSucursal = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -43,11 +43,11 @@ export const ListaSucursal = (props) => {
   const [ciudad, setCiudad] = useState([]);
   const [cambio, setCambio] = useState(0)
 
-  const urlDepartamentos = 'http://localhost:3000/api/departamentos';
-  const urlCiudades = 'http://localhost:3000/api/ciudades';
+  const urlDepartamentos = 'http://194.163.45.55:4000/api/departamentos';
+  const urlCiudades = 'http://194.163.45.55:4000/api/ciudades';
 
-  const urlSucursales = 'http://localhost:3000/api/sucursales';
-  const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar';
+  const urlSucursales = 'http://194.163.45.55:4000/api/sucursales';
+  const urlDelSucursal = 'http://194.163.45.55:4000/api/sucursal/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

@@ -27,7 +27,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaExpedientes = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:4
@@ -37,7 +37,7 @@ export const ListaExpedientes = (props) => {
   },[])
 
   const [cambio, setCambio] = useState(0);
-  const urlExpedientes = 'http://localhost:3000/api/Expediente';
+  const urlExpedientes = 'http://194.163.45.55:4000/api/Expediente';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPdfDialog, setShowPdfDialog] = useState(false);

@@ -19,7 +19,7 @@ export const ListaPermisos = (props) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
-  const urlPermisosvista ='http://localhost:3000/api/permisos';//Lista de permisos
+  const urlPermisosvista ='http://194.163.45.55:4000/api/permisos';//Lista de permisos
   
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

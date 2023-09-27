@@ -18,8 +18,8 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
-const urlInsertDepartamento = 'http://localhost:3000/api/departamento/crear';
-const urlUpdateDepartamento= 'http://localhost:3000/api/departamento/actualizar';
+const urlInsertDepartamento = 'http://194.163.45.55:4000/api/departamento/crear';
+const urlUpdateDepartamento= 'http://194.163.45.55:4000/api/departamento/actualizar';
 
 export const RegistroDepartamento = (props) => {
 

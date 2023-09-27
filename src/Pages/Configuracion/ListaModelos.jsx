@@ -31,7 +31,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaModelos = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -48,8 +48,8 @@ export const ListaModelos = ({idRol,data,update}) => {
   
 
   //URL DE LAS APIS DE MODELO
-  const urlModelos ='http://localhost:3000/api/modelos'; //LLama todos los datos de la tabla de modelo.
-  const urlDelModelo = 'http://localhost:3000/api/modelo/eliminar'; //Elimina datos de modelo.
+  const urlModelos ='http://194.163.45.55:4000/api/modelos'; //LLama todos los datos de la tabla de modelo.
+  const urlDelModelo = 'http://194.163.45.55:4000/api/modelo/eliminar'; //Elimina datos de modelo.
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

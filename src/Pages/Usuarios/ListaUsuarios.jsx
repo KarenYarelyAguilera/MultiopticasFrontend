@@ -24,7 +24,7 @@ import { generatePDF } from '../../Components/generatePDF';
 export const ListUsuarios = ({ idRol, data, update, }) => {
   const [roles, setRoles] = useState([]);
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: idRol,
     idObj: 2
@@ -36,13 +36,13 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
   const urlUsers =
-    'http://localhost:3000/api/usuarios';
+    'http://194.163.45.55:4000/api/usuarios';
 
   const urlDelUser =
-    'http://localhost:3000/api/usuario/delete';
+    'http://194.163.45.55:4000/api/usuario/delete';
 
   //  const urlBitacoraDelUsuario=
-  //    'http://localhost:3000/api/bitacora/EliminarUsuario';
+  //    'http://194.163.45.55:4000/api/bitacora/EliminarUsuario';
 
 
   const [tableData, setTableData] = useState([]);

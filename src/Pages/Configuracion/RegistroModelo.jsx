@@ -17,9 +17,9 @@ import swal from '@sweetalert/with-react';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 //APIS DE MODELO 
-const urlMarcas = 'http://localhost:3000/api/marcas'; 
-const urlInsertModelo ='http://localhost:3000/api/modelos/crear';
-const urlUpdateModelo ='http://localhost:3000/api/modelo/actualizar';
+const urlMarcas = 'http://194.163.45.55:4000/api/marcas'; 
+const urlInsertModelo ='http://194.163.45.55:4000/api/modelos/crear';
+const urlUpdateModelo ='http://194.163.45.55:4000/api/modelo/actualizar';
 
 export const RegistroModelo = (props) => {
 

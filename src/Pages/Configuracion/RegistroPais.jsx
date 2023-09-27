@@ -19,8 +19,8 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 
 
-const urlInsertPais = 'http://localhost:3000/api/pais/crear';
-const urlUpdatePais = 'http://localhost:3000/api/pais/actualizar';
+const urlInsertPais = 'http://194.163.45.55:4000/api/pais/crear';
+const urlUpdatePais = 'http://194.163.45.55:4000/api/pais/actualizar';
 
 export const RegistroPais = (props) => {
 

@@ -31,16 +31,16 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { generatePDF } from '../../Components/generatePDF';
 //URL
-const urlNuevoExpediente = 'http://localhost:3000/api/Expediente/NuevoExpediente'
-const urlEliminarExpediente = 'http://localhost:3000/api/Expediente/DeleteExpediente'
-const urlExpediente = 'http://localhost:3000/api/Expediente'
-const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
-const urlDiagnosticos = 'http://localhost:3000/api/ExpedienteDetalle'
+const urlNuevoExpediente = 'http://194.163.45.55:4000/api/Expediente/NuevoExpediente'
+const urlEliminarExpediente = 'http://194.163.45.55:4000/api/Expediente/DeleteExpediente'
+const urlExpediente = 'http://194.163.45.55:4000/api/Expediente'
+const urlNuevoDiagnostico = 'http://194.163.45.55:4000/api/ExpedienteDetalle/NuevoExpedinteDetalle'
+const urlDiagnosticos = 'http://194.163.45.55:4000/api/ExpedienteDetalle'
 
-const urlClientes = 'http://localhost:3000/api/clientes';
-//const urlEmployees='http://localhost:3000/api/empleado'
+const urlClientes = 'http://194.163.45.55:4000/api/clientes';
+//const urlEmployees='http://194.163.45.55:4000/api/empleado'
 const urlEmployees =
-  'http://localhost:3000/api/empleado';
+  'http://194.163.45.55:4000/api/empleado';
 
 export const DatosExpediente = (props) => {
 

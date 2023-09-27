@@ -27,7 +27,7 @@ import { generatePDF } from '../../Components/generatePDF';
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:4
@@ -37,11 +37,11 @@ export const ListaClientes = (props) => {
   },[])
 
   const urlClientes =
-    'http://localhost:3000/api/clientes';
+    'http://194.163.45.55:4000/api/clientes';
   const urlUpdateCliente =
-    'http://localhost:3000/api/clientes/actualizar';
+    'http://194.163.45.55:4000/api/clientes/actualizar';
 
-  const urlDelCliente = "http://localhost:3000/api/clientes/eliminar"
+  const urlDelCliente = "http://194.163.45.55:4000/api/clientes/eliminar"
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

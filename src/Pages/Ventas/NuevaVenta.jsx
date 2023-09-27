@@ -19,8 +19,8 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 //import swal from '@sweetalert/with-react';
 
 //URLS
-const urlCliente = 'http://localhost:3000/api/clientes';
-const urlEmployees = 'http://localhost:3000/api/empleado';
+const urlCliente = 'http://194.163.45.55:4000/api/clientes';
+const urlEmployees = 'http://194.163.45.55:4000/api/empleado';
 
 
 export const NuevaVenta = (props) => {

@@ -21,8 +21,8 @@ export const PreguntasLoginxPV = props => {
 
     const navegate = useNavigate();
     const [Preguntas, setPreguntas] = useState([]);
-    const urlPreguntas = 'http://localhost:3000/api/preguntas';
-    const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
+    const urlPreguntas = 'http://194.163.45.55:4000/api/preguntas';
+    const urlRespuestas = 'http://194.163.45.55:4000/api/preguntas/respuestas/agregar';
   
   
     const dataId = {

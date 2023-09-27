@@ -21,7 +21,7 @@ import axios from 'axios';
 
 export const ListaEmpleados = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 2
@@ -33,15 +33,15 @@ export const ListaEmpleados = (props) => {
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
-  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+  const urlEmployees = 'http://194.163.45.55:4000/api/empleado';
+  const urlDelEmployees = 'http://194.163.45.55:4000/api/empleado/eliminar';
 
   //--------------------URL DE BITACORA--------------------
   const urlDelBitacora =
-    'http://localhost:3000/api/bitacora/EliminarEmpleado';
+    'http://194.163.45.55:4000/api/bitacora/EliminarEmpleado';
 
   const urlBitacoraBotonSalirLE =
-    'http://localhost:3000/api/bitacora/SalirListaEmpleado';
+    'http://194.163.45.55:4000/api/bitacora/SalirListaEmpleado';
   //--------------------------------------------------------
 
   const [tableData, setTableData] = useState([]);

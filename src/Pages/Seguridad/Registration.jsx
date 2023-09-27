@@ -7,8 +7,8 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-const urlIEmpleado = 'http://localhost:3000/api/usuario/AutoRegistro';
-const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
+const urlIEmpleado = 'http://194.163.45.55:4000/api/usuario/AutoRegistro';
+const urlEmpleadoExist = 'http://194.163.45.55:4000/api/empleado/RegistroInvalido';
 
 export const Registration = (props) => {
 

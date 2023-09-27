@@ -18,15 +18,15 @@ import axios from 'axios';
 
 //APIS DE PRODUCTOSPROMO
 const urlProductoProm = //CREAR
-  'http://localhost:3000/api/productopromociones/crear';
+  'http://194.163.45.55:4000/api/productopromociones/crear';
 const urlUpdProductoProm = //ACTUALIZAR
-  'http://localhost:3000/api/productopromociones/actualizar';
+  'http://194.163.45.55:4000/api/productopromociones/actualizar';
 const urlDelProductoProm = //BORRAR
-  'http://localhost:3000/api/productopromociones/eliminar';
+  'http://194.163.45.55:4000/api/productopromociones/eliminar';
 const urlProducto = //Productos
-  'http://localhost:3000/api/productos';
+  'http://194.163.45.55:4000/api/productos';
 const urlPromocion = //Promos
-  'http://localhost:3000/api/promociones';
+  'http://194.163.45.55:4000/api/promociones';
 
 
 export const PromocionProducto = (props) => {

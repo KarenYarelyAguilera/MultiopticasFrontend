@@ -20,11 +20,11 @@ import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
 
 //APIS DE PROMOCION
 const urlPromocion = //CREAR
-  'http://localhost:3000/api/promociones/crear';
+  'http://194.163.45.55:4000/api/promociones/crear';
 const urlUpdPromocion = //ACTUALIZAR
-  'http://localhost:3000/api/promociones/actualizar';
+  'http://194.163.45.55:4000/api/promociones/actualizar';
 const urlDelPromocion = //BORRAR
-  'http://localhost:3000/api/promociones/eliminar';
+  'http://194.163.45.55:4000/api/promociones/eliminar';
 
 
 export const RegistroPromocion = (props) => {

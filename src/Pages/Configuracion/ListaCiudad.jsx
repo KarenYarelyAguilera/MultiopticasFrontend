@@ -32,7 +32,7 @@ import axios from 'axios';
 
 export const ListaCiudad = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -44,8 +44,8 @@ export const ListaCiudad = ({idRol,data,update}) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
-  const urlCuidad = 'http://localhost:3000/api/ciudades';
-  const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
+  const urlCuidad = 'http://194.163.45.55:4000/api/ciudades';
+  const urlDeleteCuidad = 'http://194.163.45.55:4000/api/ciudad/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
