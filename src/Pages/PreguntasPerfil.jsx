@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import passwordRecovery from '../IMG/passwordrecovery.png';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { TextCustom } from '../Components/TextCustom';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
@@ -18,15 +18,15 @@ import '../Styles/Usuarios.css';
 
 export const PreguntasPerfil = props => {
 
-  const navegate = useNavigate();
+  const navigate = useNavigate();
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
 
-  
-  const [Resp, setResp] = React.useState(props.data.Respuesta || '');
-  const [errorResp, setErrorResp] = React.useState();
-  const [Msj, setMsj] = React.useState(false);
+
+  const [Resp, setResp] = useState(props.data.Respuesta || '');
+  const [errorResp, setErrorResp] = useState(false);
+  const [Msj, setMsj] = useState('');
 
 
   const dataId = {
@@ -51,46 +51,44 @@ export const PreguntasPerfil = props => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
-        navegate('/Preguntas/lista');
-      } else {
+        navigate('/Preguntas/lista');
       }
     });
   };
 
-
   const handleClick = async () => {
+ 
+      const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
+      const respuestap = Resp;
 
-    const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
-    const respuestap = document.getElementById('respuestap').value;
+  
+        const data = {
+          idPregunta: Id_Pregunta,
+          respuesta: respuestap.toUpperCase(),
+          idUser: props.idUsuario,
+          creadoPor: props.infoPerfil.nombre.toUpperCase(),
+        };
 
-    let data = {
-      idPregunta: Id_Pregunta,
-      respuesta: respuestap.toUpperCase(),
-      idUser: props.idUsuario,
-      creadoPor: props.infoPerfil.nombre.toUpperCase(),
-    };
-    console.log(data);
-
-    await axios.post(urlRespuestas, data).then(response => {
-      swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/Preguntas/lista'))
-    });
-
+        await axios.post(urlRespuestas, data).then(response => {
+          swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/Preguntas/lista'))
+        }).catch(error => {
+          swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error") })
+  
+   
   };
 
   return (
     <div className="divSection">
       <div className="divInfoQuestion">
-
         <div className="titleRecuPassword">
           <h2>Preguntas de seguridad</h2>
           <h3>Responda una de las preguntas para poder configurar su perfil</h3>
         </div>
-
         <form className="measure">
           <br />
           <br />
           <div className='divInfoQuestionResp'>
-            <TextCustom text="Preguntas de configuración:" className="titleInput" />
+            <label className="titleInput">Preguntas de configuración:</label>
             <div className="contInput">
               <select id="Id_preguntas" className="inputCustomPreguntas">
                 {Preguntas.length ? (
@@ -100,8 +98,8 @@ export const PreguntasPerfil = props => {
                     </option>
                   ))
                 ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
+                  <option value="No existe información">
+                    No existe información
                   </option>
                 )}
               </select>
@@ -110,63 +108,65 @@ export const PreguntasPerfil = props => {
           <br />
           <br />
           <div className='divInfoQuestionResp'>
-            <TextCustom text="Ingrese su respuesta:" className="titleInput" />
+            <label className="titleInput">Ingrese su respuesta:</label>
             <div className="contInput">
               <input
-              onKeyDown={e => {
-                setResp(e.target.value);
-                if (Resp === '') {
-                  setErrorResp(true);
-                  setMsj('Los campos no deben estar vacíos');
-                } else {
-                  setErrorResp(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(Resp)) {
+                onChange={e => {
+                  const value = e.target.value;
+                  setResp(value);
+
+                  if (value === '') {
                     setErrorResp(true);
-                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(Resp)) {
-                    setErrorResp(true);
-                    setMsj('No se permiten letras consecutivas repetidas');
+                    setMsj('Los campos no deben estar vacíos, ingrese mas de 5 caracteres');
                   } else {
                     setErrorResp(false);
-                    setMsj('');
+                    const regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(value)) {
+                      setErrorResp(true);
+                      setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(value)) {
+                      setErrorResp(true);
+                      setMsj('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorResp(false);
+                      setMsj('');
+                    }
                   }
-                }
-              }}
-
-                onChange={e => setResp(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                }}
                 error={errorResp}
                 type="text"
                 helperText={Msj}
+                minLength={5}
                 maxLength={100}
-                name=""
+                name="respuestap"
                 className="inputCustom"
                 placeholder="Respuesta"
-                id='respuestap'
+                value={Resp}
               />
             </div>
+            <p className="error">{Msj}</p>
           </div>
           <div className='divSubmitQuestion'>
             <input
               className="btnSubmitPreguntas"
-              type="submit"
+              type="button"
               value="Guardar"
-             // onClick={handleClick}
-             onClick={() => {
+              //onClick={handleClick}
+              onClick={() => {
+                const respuestap = Resp;
 
-              var respuesta = document.getElementById("respuestap").value;
+                if (respuestap === '') {
+                  swal('No deje campos vacíos.', '', 'error');
+                } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(respuestap)) {
+                  swal('El campo solo acepta letras mayúsculas y solo un espacio entre palabras.', '', 'error');
+                } else if (/(.)\1{2,}/.test(respuestap)) {
+                  setErrorResp(true);
+                  swal('El campo nombre no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
+                }else{
+                  handleClick()
+                }
 
-              if (respuesta === "") {
-                swal("No deje campos vacíos.", "", "error");
-              } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(respuesta)) {
-                swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-              } else if (/(.)\1{2,}/.test(respuesta)) {
-                setErrorResp(true);
-                swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-              } else {
-                handleClick();
-              }
-            }}
+              }}
 
             />
             <br />
@@ -178,10 +178,9 @@ export const PreguntasPerfil = props => {
             />
           </div>
         </form>
-
       </div>
       <div className="divImgSection">
-        <img src={passwordRecovery} alt="Iamgen no encontrada" />
+        <img src={passwordRecovery} alt="Imagen no encontrada" />
       </div>
     </div>
   );
