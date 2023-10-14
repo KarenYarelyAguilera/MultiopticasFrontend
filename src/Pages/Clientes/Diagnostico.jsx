@@ -29,7 +29,10 @@ const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 export const Diagnostico = (props) => {
 
   const navegate = useNavigate();
-
+  
+  const [EnfermedadPresentada, setEnfermedadPresentada] = React.useState('');
+  const [errorEnfermedadPresentada, setErrorEnfermedadPresentada] = React.useState(false);
+  const [Advertencia, setAdvertencia] = React.useState(false);
 
   const handleNext = async () => {
     let EsferaOjoDerecho = document.getElementById('ODEsfera').value;
@@ -306,10 +309,32 @@ export const Diagnostico = (props) => {
             <div className="contInput">
               <TextCustom text="Enfermedad Presentada" className="titleInput" />
               <input
+               onKeyDown={e => {
+                setEnfermedadPresentada(e.target.value);
+                if (e.target.value === '') {
+                  setErrorEnfermedadPresentada(true);
+                  setAdvertencia('Los campos no deben estar vacíos');
+                } else {
+                  setErrorEnfermedadPresentada(false);
+                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                  if (!regex.test(e.target.value)) {
+                    setErrorEnfermedadPresentada(true);
+                    setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                  } else if (/(.)\1{2,}/.test(e.target.value)) {
+                    setErrorEnfermedadPresentada(true);
+                    setAdvertencia('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorEnfermedadPresentada(false);
+                    setAdvertencia('');
+                  }
+                }
 
+              }}
+              error={errorEnfermedadPresentada}
+                helperText={Advertencia}
                 type="text"
                 name=""
-                maxLength={100}
+                maxLength={40}
                 className="inputCustomText"
                 placeholder="Enfermedad Presentada"
                 id="Enfermedadpresentada"
@@ -322,7 +347,27 @@ export const Diagnostico = (props) => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={handleNext}
+                onClick={() => {
+                  var EnfermedadPresentada = document.getElementById("Enfermedadpresentada").value;
+                  if (EnfermedadPresentada === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  }
+                  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(EnfermedadPresentada)) {
+                    swal("El campo enfermedad solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                  }
+                  else if (EnfermedadPresentada.length < 3) {
+                    setErrorEnfermedadPresentada(true);
+                    swal("El campo enfermedad no acepta menos de 2 carácteres.", "", "error");
+                  }
+                   else if (/(.)\1{2,}/.test(EnfermedadPresentada)) {
+                    setErrorEnfermedadPresentada(true);
+                    swal("El campo enfermedad no acepta letras consecutivas repetidas.", "", "error");
+                  }
+                  else {
+                    handleNext();
+                  }
+                  }}         
+                        // onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>

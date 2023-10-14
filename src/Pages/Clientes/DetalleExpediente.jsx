@@ -284,16 +284,29 @@ export const DetalleExpediente = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Optometrista)) {
                     swal("El campo optometrista solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
-                  } else if (/(.)\1{2,}/.test(Optometrista)) {
+                  }
+                  else if (Optometrista.length < 3) {
+                    setErrorNombreOptometrista(true);
+                    swal("El campo optometrista no acepta menos de 2 carácteres.", "", "error");
+                  }
+                   else if (/(.)\1{2,}/.test(Optometrista)) {
                     setErrorNombreOptometrista(true);
                     swal("El campo optometrista no acepta letras consecutivas repetidas.", "", "error");
                   } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AsesorDeVentas)) {
                     swal("El campo asesor solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
-                  } else if (/(.)\1{2,}/.test(AsesorDeVentas)) {
+                  }  else if (AsesorDeVentas.length < 3) {
+                    setErrorNombreAsesor(true);
+                    swal("El campo Asesor no acepta menos de 2 carácteres.", "", "error");
+                  }
+                   else if (/(.)\1{2,}/.test(AsesorDeVentas)) {
                     setErrorNombreAsesor(true);
                     swal("El campo asesor no acepta letras consecutivas repetidas.", "", "error");
                   } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(AntecedentesClinicos)) {
                     swal("El campo antecedentes solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                  }
+                  else if (AntecedentesClinicos.length < 3) {
+                    setErrorAntecedentesC(true);
+                    swal("El campo Antecendentes no acepta menos de 2 carácteres.", "", "error");
                   } else if (/(.)\1{2,}/.test(AntecedentesClinicos)) {
                     setErrorAntecedentesC(true);
                     swal("El campo antecedentes no acepta letras consecutivas repetidas.", "", "error");
