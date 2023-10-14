@@ -6,7 +6,7 @@ import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 
@@ -31,13 +31,13 @@ import { generatePDF } from '../../Components/generatePDF';
 export const ListaPreguntasDeSeguridad = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:8
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 8
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [roles, setRoles] = useState([]);
   const [Departamento, setDepartamento] = useState([]);
   const [ciudad, setCiudad] = useState([]);
@@ -50,7 +50,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar';
 
   const urlGetPreguntas = 'http://localhost:3000/api/preguntas';
-  const urlDelPreguntas='http://localhost:3000/api/preguntas/eliminar'
+  const urlDelPreguntas = 'http://localhost:3000/api/preguntas/eliminar'
 
 
   const [tableData, setTableData] = useState([]);
@@ -59,7 +59,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [errordepartamento, setErrordepartamento] = useState(false);
   const [aviso, setaviso] = useState(false);
 
-  
+
   const [mensaje, setmensaje] = useState('');
   const [errorciudad, setErrorciudad] = useState(false);
 
@@ -75,51 +75,48 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [texto, setTexto] = useState(false);
 
   //COLOCAR APIS DE BITACORA AQUI---  
-  
+
   //-------------------------------------------------------------------
 
-/*   useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-    fetch(urlDepartamentos)
-      .then(response => response.json())
-      .then(data => setDepartamento(data));
-      fetch(urlCiudades)
-      .then(response => response.json())
-      .then(data => setCiudad(data));
-  }, [cambio]); */
+  /*   useEffect(() => {
+      fetch(urlSucursales)
+        .then(response => response.json())
+        .then(data => setTableData(data));
+      fetch(urlDepartamentos)
+        .then(response => response.json())
+        .then(data => setDepartamento(data));
+        fetch(urlCiudades)
+        .then(response => response.json())
+        .then(data => setCiudad(data));
+    }, [cambio]); */
 
-//IMPRIMIR PDF
-const handleGenerarReporte = () => {
-  if (permisos[0].consultar ==="n") {
-    swal("No cuenta con los permisos para realizar esta accion","","error")
-  } else {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdSucursal,
-                                'Departamento':row.departamento, 
-                                'Ciudad':row.ciudad, 
-                                'Dirección':row.direccion, 
-                                'Teléfono':row.telefono,                        
-                              };
-      });
-      return formattedData;
-    };
-  
-    const urlPDF = 'Report_PreguntasDeSeguridad.pdf';
-    const subTitulo = "LISTA DE PREGUNTAS DE SEGURIDAD"
-  
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-  }
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'N°': row.Id_Pregunta,
+            'Preguntas': row.Pregunta,
+          };
+        });
+        return formattedData;
+      };
 
-};
+      const urlPDF = 'Report_PreguntasDeSeguridad.pdf';
+      const subTitulo = "LISTA DE PREGUNTAS DE SEGURIDAD"
+
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
+  };
 
   const navegate = useNavigate();
 
@@ -141,7 +138,7 @@ const handleGenerarReporte = () => {
   const columns = [
     { field: 'Id_Pregunta', headerName: 'ID', width: 250 },
     { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
-    
+
 
     {
       field: 'borrar',
@@ -166,36 +163,36 @@ const handleGenerarReporte = () => {
 
   //FUNCION DE ELIMINAR 
   function handleDel(Id_Pregunta) {
-    if (permisos[0].eliminar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
         content: (
           <div>
-  
+
             <div className="logoModal">¿Desea Eliminar esta Pregunta?</div>
             <div className="contEditModal">
-  
+
             </div>
-  
+
           </div>
         ),
         buttons: ['Eliminar', 'Cancelar'],
       }).then(async op => {
         switch (op) {
           case null:
-  
+
             let data = {
               Id_Pregunta: Id_Pregunta,
             };
-  
+
             //Funcion de Bitacora 
             /*  let dataB = {
                Id:props.idUsuario
              } */
-  
+
             console.log(data);
-  
+
             await axios
               .delete(urlDelPreguntas, { data })
               .then(response => {
@@ -207,15 +204,15 @@ const handleGenerarReporte = () => {
                 console.log(error);
                 swal('Error al eliminar la pregunta', '', 'error');
               });
-  
+
             break;
-  
+
           default:
             break;
         }
       });
     }
-   
+
   }
 
   //FUNCION DE ACTUALIZAR
@@ -223,31 +220,31 @@ const handleGenerarReporte = () => {
     // if (permisos[0].actualizar ==="n") {
     //   swal("No cuenta con los permisos para realizar esta accion","","error")
     // } else {
-      swal({
-        buttons: {
-          update: 'ACTUALIZAR',
-          cancel: 'CANCELAR',
-        },
-        content: (
-          <div className="logoModal">
-            ¿Desea actualizar Esta Pregunta: "{Id_Pregunta.Pregunta}" ?
-          </div>
-        ),
-      }).then(
-        op => {
-          switch (op) {
-            case 'update':
-              props.data(Id_Pregunta)
-              props.update(true)
-              
-              navegate('/config/AgregarPreguntas')
-              break;
-            default:
-              break;
-          }
-        });
-   // }
-  
+    swal({
+      buttons: {
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar Esta Pregunta: "{Id_Pregunta.Pregunta}" ?
+        </div>
+      ),
+    }).then(
+      op => {
+        switch (op) {
+          case 'update':
+            props.data(Id_Pregunta)
+            props.update(true)
+
+            navegate('/config/AgregarPreguntas')
+            break;
+          default:
+            break;
+        }
+      });
+    // }
+
   };
 
   //Funcion de Bitacora 
@@ -292,18 +289,18 @@ const handleGenerarReporte = () => {
               className="btnCreate"
               onClick={() => {
                 if (permisos[0].insertar === "n") {
-                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                  swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
                   navegate('/config/AgregarPreguntas');
                 }
-                
+
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport" 
-            onClick={handleGenerarReporte}>
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
@@ -316,7 +313,7 @@ const handleGenerarReporte = () => {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-        
+
         />
       </div>
     </div>
