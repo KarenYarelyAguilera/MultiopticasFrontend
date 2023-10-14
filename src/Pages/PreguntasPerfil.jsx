@@ -157,6 +157,8 @@ export const PreguntasPerfil = props => {
 
                 if (respuestap === '') {
                   swal('No deje campos vacíos.', '', 'error');
+                } else if (respuestap.length < 4 || respuestap.length > 50) {
+                  swal('La longitud del campo debe estar entre 5 y 50 caracteres.', '', 'error');
                 } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(respuestap)) {
                   swal('El campo solo acepta letras mayúsculas y solo un espacio entre palabras.', '', 'error');
                 } else if (/(.)\1{2,}/.test(respuestap)) {

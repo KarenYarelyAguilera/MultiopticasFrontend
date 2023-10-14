@@ -43,11 +43,15 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [ciudad, setCiudad] = useState([]);
   const [cambio, setCambio] = useState(0)
 
-  const urlDepartamentos = 'http://localhost:3000/api/departamentos';
+  const urlDepartamentos = 'http://localhost:3000/api/preguntas';
   const urlCiudades = 'http://localhost:3000/api/ciudades';
 
   const urlSucursales = 'http://localhost:3000/api/sucursales';
   const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar';
+
+  const urlGetPreguntas = 'http://localhost:3000/api/preguntas';
+  const urlDelPreguntas='http://localhost:3000/api/preguntas/eliminar'
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,7 +78,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
   
   //-------------------------------------------------------------------
 
-  useEffect(() => {
+/*   useEffect(() => {
     fetch(urlSucursales)
       .then(response => response.json())
       .then(data => setTableData(data));
@@ -84,7 +88,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
       fetch(urlCiudades)
       .then(response => response.json())
       .then(data => setCiudad(data));
-  }, [cambio]);
+  }, [cambio]); */
 
 //IMPRIMIR PDF
 const handleGenerarReporte = () => {
@@ -119,6 +123,13 @@ const handleGenerarReporte = () => {
 
   const navegate = useNavigate();
 
+
+  useEffect(() => {
+    axios.get(urlGetPreguntas).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, [cambio]);
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -128,8 +139,8 @@ const handleGenerarReporte = () => {
   );
 
   const columns = [
-    { field: 'Id', headerName: 'ID', width: 250 },
-    { field: 'Preguntas', headerName: 'Preguntas', width: 1000 },
+    { field: 'Id_Pregunta', headerName: 'ID', width: 250 },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
     
 
     {
@@ -144,7 +155,7 @@ const handleGenerarReporte = () => {
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdSucursal)}
+            onClick={() => handleDel(params.row.Id_Pregunta)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -154,7 +165,7 @@ const handleGenerarReporte = () => {
   ];
 
   //FUNCION DE ELIMINAR 
-  function handleDel(IdSucursal) {
+  function handleDel(Id_Pregunta) {
     if (permisos[0].eliminar ==="n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
@@ -175,7 +186,7 @@ const handleGenerarReporte = () => {
           case null:
   
             let data = {
-              IdSucursal: IdSucursal,
+              Id_Pregunta: Id_Pregunta,
             };
   
             //Funcion de Bitacora 
@@ -186,15 +197,15 @@ const handleGenerarReporte = () => {
             console.log(data);
   
             await axios
-              .delete(urlDelSucursal, { data })
+              .delete(urlDelPreguntas, { data })
               .then(response => {
                 //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Sucursal eliminada correctamente', '', 'success');
+                swal('Pregunta eliminada correctamente', '', 'success');
                 setCambio(cambio + 1);
               })
               .catch(error => {
                 console.log(error);
-                swal('Error al eliminar la sucursal', '', 'error');
+                swal('Error al eliminar la pregunta', '', 'error');
               });
   
             break;
@@ -208,10 +219,10 @@ const handleGenerarReporte = () => {
   }
 
   //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    if (permisos[0].actualizar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
-    } else {
+  function handleUpdt(Id_Pregunta) {
+    // if (permisos[0].actualizar ==="n") {
+    //   swal("No cuenta con los permisos para realizar esta accion","","error")
+    // } else {
       swal({
         buttons: {
           update: 'ACTUALIZAR',
@@ -219,22 +230,23 @@ const handleGenerarReporte = () => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar Alguna Pregunta: {id.ciudad} ?
+            ¿Desea actualizar Esta Pregunta: "{Id_Pregunta.Pregunta}" ?
           </div>
         ),
       }).then(
         op => {
           switch (op) {
             case 'update':
-              props.data(id)
+              props.data(Id_Pregunta)
               props.update(true)
-              navegate('/config')
+              
+              navegate('/config/AgregarPreguntas')
               break;
             default:
               break;
           }
         });
-    }
+   // }
   
   };
 
@@ -282,7 +294,7 @@ const handleGenerarReporte = () => {
                 if (permisos[0].insertar === "n") {
                   swal("No cuenta con los permisos para realizar esta accion","","error")
                 } else {
-                  navegate('/config/PreguntasSeguridad');
+                  navegate('/config/AgregarPreguntas');
                 }
                 
               }}
@@ -298,120 +310,13 @@ const handleGenerarReporte = () => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdSucursal}
+          getRowId={tableData => tableData.Id_Pregunta}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-        // onRowClick={usuario => {
-        //   swal({
-        //     buttons: {
-        //       update: 'Actualizar',
-        //       cancel: 'Cancelar',
-        //     },
-        //     content: (
-        //       <div className="logoModal">
-        //         Que accion desea realizar con el cliente:{' '}
-        //         {usuario.row.Usuario}
-        //       </div>
-        //     ),
-        //   }).then(op => {
-        //     switch (op) {
-        //       case 'update':
-        //         swal(
-        //           <div>
-        //             <div className="logoModal">Datos a actualizar</div>
-        //             <div className="contEditModal">
-        //               <div className="contInput">
-        //                 <TextCustom text="Usuario" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="nombre"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Usuario}
-        //                 />
-        //               </div>
-
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Nombre de Usuario"
-        //                   className="titleInput"
-        //                 />
-        //                 <input
-        //                   type="text"
-        //                   id="nombreUsuario"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Nombre_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Estado" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   className='inputCustom'
-        //                   id="EstadoUsuario"
-        //                   value={usuario.row.Estado_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Contraseña"
-        //                   className="titleInput"
-        //                 />
-        //                 <input type="text" id="contrasenia" className='inputCustom'/>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Rol" className="titleInput" />
-        //                 <select id="rol" className="selectCustom">
-        //                   {roles.length ? (
-        //                     roles.map(pre => (
-        //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
-        //                         {pre.Rol}
-        //                       </option>
-        //                     ))
-        //                   ) : (
-        //                     <option value="No existe informacion">
-        //                       No existe informacion
-        //                     </option>
-        //                   )}
-        //                 </select>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Email" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="Email"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Correo_Electronico}
-        //                 />
-        //               </div>
-        //             </div>
-        //           </div>,
-        //         ).then(() => {
-        //           let data = {
-        //             Usuario: document.getElementById('nombre').value,
-        //             Nombre_Usuario:
-        //               document.getElementById('nombreUsuario').value,
-        //             Estado_Usuario:
-        //               document.getElementById('EstadoUsuario').value,
-        //             Contrasenia: document.getElementById('contrasenia').value,
-        //             Id_Rol: document.getElementById('rol').value,
-        //             Correo_Electronico:
-        //               document.getElementById('Email').value,
-        //             Id_usuario: usuario.row.id_Usuario,
-        //           };
-
-        //           if (sendData(urlUpdateUser, data)) {
-        //             swal(<h1>Usuario Actualizado Correctamente</h1>);
-        //           }
-        //         });
-        //         break;
-        //       default:
-        //         break;
-        //     }
-        //   });
-        // }}
+        
         />
       </div>
     </div>

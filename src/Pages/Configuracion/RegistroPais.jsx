@@ -26,16 +26,16 @@ export const RegistroPais = (props) => {
 
   const navegate = useNavigate();
 
-  const [pais, setPais] = React.useState(props.data.Pais ||'');
+  const [pais, setPais] = React.useState(props.data.Pais || '');
   const [errorPais, setErrorPais] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
   //INSERTAR DATOS
-  const handleNext =  async () => {
+  const handleNext = async () => {
     let pais = document.getElementById("pais").value;
 
     let data = {
-      pais:pais 
+      pais: pais
     };
     axios.post(urlInsertPais, data).then(response => {
       swal('Pais creado exitosamente', '', 'success').then(result => {
@@ -44,21 +44,21 @@ export const RegistroPais = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al crear el pais, por favor revise los campos.', '', 'error')
-   
+
     })
-    
+
   };
 
   //ACTUALIZAR
   const actualizar = async () => {
 
     let pais = document.getElementById("pais").value;
-  
+
     const data = {
-      pais:pais,
+      pais: pais,
       IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
     }
-  
+
     axios.put(urlUpdatePais, data).then(() => {
       swal("Datos Actualizado Correctamente", "", "success").then(() => {
         navegate('/config/ListaPais');
@@ -68,9 +68,9 @@ export const RegistroPais = (props) => {
       swal('Error al Actualizar! , por favor revise todos los campos.', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
-  
+
   };
-  
+
   //BOTON DE RETROCESO 
   const handleBack = () => {
     swal({
@@ -95,7 +95,7 @@ export const RegistroPais = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizacion de Pais</h2> : <h2>Registro de Pais</h2>}
+        {props.actualizar ? <h2>Actualizacion de Pais</h2> : <h2>Registro de Pais</h2>}
         <h3>Complete todos los puntos para poder registrar el pais.</h3>
       </div>
       <div className="infoAddUser">
@@ -105,11 +105,9 @@ export const RegistroPais = (props) => {
               <TextCustom text="Pais" className="titleInput" />
               <input
 
-                 onKeyDown={e=>
-                   {
-                   setPais(e.target.value);
-                  if (pais==="")
-                  {
+                onKeyDown={e => {
+                  setPais(e.target.value);
+                  if (pais === "") {
                     setErrorPais(true);
                     setAviso('Los campos no deben estar vacíos');
                   } else {
@@ -128,7 +126,7 @@ export const RegistroPais = (props) => {
                   }
                 }}
                 onChange={e => setPais(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error ={errorPais}  
+                error={errorPais}
                 helperText={aviso}
                 type="text"
                 name=""
@@ -138,7 +136,7 @@ export const RegistroPais = (props) => {
                 id="pais"
                 value={pais}
               />
-               <p className="error">{aviso}</p>
+              <p className="error">{aviso}</p>
             </div>
 
             <div className="contBtnStepper">
@@ -148,21 +146,21 @@ export const RegistroPais = (props) => {
                 onClick={() => {
                   var pais = document.getElementById("pais").value;
 
-                  if (pais ==="")
-                  {
+                  if (pais === "") {
                     swal("No deje campos vacíos.", "", "error");
                   }
                   else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(pais)) {
                     swal("El campo pais solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                } else if (/(.)\1{2,}/.test(pais)) {
-                  setErrorPais(true);
-                  swal("El campo pais no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                }else{
-                  props.actualizar ? actualizar() : handleNext();}
+                  } else if (/(.)\1{2,}/.test(pais)) {
+                    setErrorPais(true);
+                    swal("El campo pais no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                  } else {
+                    props.actualizar ? actualizar() : handleNext();
                   }
                 }
+                }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
             </div>
           </div>
