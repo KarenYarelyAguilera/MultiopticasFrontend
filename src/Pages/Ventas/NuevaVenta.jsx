@@ -34,6 +34,7 @@ export const NuevaVenta = (props) => {
   const [fechaEntrega, setfechaEntrega] = React.useState('');
   const [fechaLimiteEntrega, setfechaLimiteEntrega] = React.useState('');
   const [Rtn, setRtn] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
 
   const [cambio, setCambio] = useState(0)
 
@@ -59,7 +60,6 @@ export const NuevaVenta = (props) => {
 
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
-    //let Cliente = document.getElementById('cliente').value;
     let Cliente = selectedOption ? selectedOption.value : null;
     let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
     let RTN = document.getElementById('RTN').value;
@@ -115,7 +115,7 @@ export const NuevaVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <Select 
+                <Select
                   id="cliente"
                   options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
                   value={selectedOption}
@@ -177,16 +177,38 @@ export const NuevaVenta = (props) => {
               />
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  >
               <TextCustom text="RTN" className="titleInput" />
-
               <input
+
+                onKeyDown={e => {
+                  setRtn(e.target.value);
+                  if (Rtn.length !== 14) {
+                    setRtn(true);
+                    setleyenda('El número de RTN debe tener exactamente 14 dígitos');
+                  } else {
+                    setRtn(false);
+                    var regex = /^\d{14}$/;
+                    if (!regex.test(Rtn)) {
+                      setRtn(true);
+                      setleyenda('El número de RTN debe tener el formato correcto');
+                    } else {
+
+                      setRtn(false);
+                      setleyenda('');
+
+                    }
+                  }
+                }}
+
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="(Opcional)"
                 id="RTN"
+
+
               />
             </div>
 
@@ -198,15 +220,40 @@ export const NuevaVenta = (props) => {
                 className="btnStepper"
                 onClick={() => {
                   var fechaEntrega = document.getElementById("fechaEntrega").value;
-                  var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
+                  var fechaLimiteEntrega = Date.parse(document.getElementById("fechaLimiteEntrega").value);
                   let Cliente = selectedOption ? selectedOption.value : null;
                   let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
+                  let RTN = parseInt(document.getElementById('RTN').value);
+                  var FE = fechaEntrega;
+                  var FLE = fechaLimiteEntrega;
 
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "") {
+
+                  if (Date.parse(FLE) < Date.parse(FE)) {
+                    console.log("Corrige la fecha nmms")
+                  }
+
+                  if ((fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "")) {
                     swal("No deje campos vacíos.", "", "error");
+                  if (Rtn.length !== 14) {
+                      setRtn(true);
+                      setleyenda('El número de RTN debe tener exactamente 14 dígitos');
+                    } else {
+                      setRtn(false);
+                      var regex = /^\d{14}$/;
+                      if (!regex.test(Rtn)) {
+                        setRtn(true);
+                        setleyenda('El número de RTN debe tener el formato correcto');
+                      } else {
+  
+                        setRtn(false);
+                        setleyenda('');
+  
+                      }
+                    }
                   } else {
                     handleNext();
                   }
+
                 }
                 }
               >
