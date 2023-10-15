@@ -144,10 +144,15 @@ export const RegistroProveedores = (props) => {
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProveedor, data).then(response => {
-      swal('Proveedor agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
-        navegate('/menuInventario/ListaProveedores');
-      });
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Proveedor ya existe!', '', 'error')
+      }else{
+        swal('Proveedor agregado con exito', '', 'success').then(result => {
+          //axios.post(urlInsertBitacora, dataB)
+          navegate('/menuInventario/ListaProveedores');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al crear Proveedor, porfavor revise los campos.', '', 'error')
