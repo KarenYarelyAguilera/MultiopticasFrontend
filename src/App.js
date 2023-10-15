@@ -116,6 +116,7 @@ import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
+import { ListaPreguntasDeSeguridad } from './Pages/Configuracion/ListaPreguntasDeSeguridad.jsx';
 
 
 function App() {
@@ -1468,6 +1469,28 @@ ba
                   <ListaSucursal update={update} data={Data} idRol = {idRol}/>
                 </div>
               </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/config/PreguntasSeguridad"
+            element={
+             // <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                    idUsuario={idUsuario}
+                    idRol={idRol}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <ListaPreguntasDeSeguridad update={update} data={Data} idRol = {idRol}/>
+                </div>
+             // </ProtectedRoute>
             }
           ></Route>
 
