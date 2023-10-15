@@ -33,7 +33,12 @@ export const NuevaVenta = (props) => {
   const [Empleado, setIdEmpleado] = useState([]);
   const [fechaEntrega, setfechaEntrega] = React.useState('');
   const [fechaLimiteEntrega, setfechaLimiteEntrega] = React.useState('');
-  const [Rtn, setRtn] = React.useState('');
+  //const [Rtn, setRtn] = React.useState('');
+  const [leyenda, setleyenda] = React.useState('');
+
+  const [RTN, setRTN] = useState(props.data.Rtn || '');
+  const [errorRTN, setErrorRTN] = React.useState(false);
+  const [texto, setTexto] = React.useState(false);
 
   const [cambio, setCambio] = useState(0)
 
@@ -59,7 +64,6 @@ export const NuevaVenta = (props) => {
 
     let fechaEntrega = document.getElementById('fechaEntrega').value;
     let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
-    //let Cliente = document.getElementById('cliente').value;
     let Cliente = selectedOption ? selectedOption.value : null;
     let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
     let RTN = document.getElementById('RTN').value;
@@ -67,8 +71,8 @@ export const NuevaVenta = (props) => {
 
 
     let data = {
-      fechaEntrega: fechaLimiteEntrega,
-      fechaLimiteEntrega: fechaEntrega,
+      fechaEntrega: fechaEntrega,
+      fechaLimiteEntrega: fechaLimiteEntrega,
       IdCliente: Cliente,
       idEmpleado: Empleado,
       RTN: RTN
@@ -115,7 +119,7 @@ export const NuevaVenta = (props) => {
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <Select 
+                <Select
                   id="cliente"
                   options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
                   value={selectedOption}
@@ -177,44 +181,48 @@ export const NuevaVenta = (props) => {
               />
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  >
               <TextCustom text="RTN" className="titleInput" />
-
               <input
-                type="text"
+                error={errorRTN}
+                type="number"
+                min="1"
+                max="99999999999999"
                 name=""
-                maxLength={13}
+                maxLength={14}
                 className="inputCustom"
                 placeholder="(Opcional)"
                 id="RTN"
+                helperText={texto}
               />
+
             </div>
-
-
 
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
+
                 onClick={() => {
-                  var fechaEntrega = document.getElementById("fechaEntrega").value;
-                  var fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
+                  let fechaEntrega = document.getElementById("fechaEntrega").value;
+                  let fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
                   let Cliente = selectedOption ? selectedOption.value : null;
                   let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
-
-                  if (fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "") {
-                    swal("No deje campos vacíos.", "", "error");
+                
+                  if (fechaLimiteEntrega < fechaEntrega) {
+                    swal("Porfavor ingrese correctamente las fechas", "", "error")
                   } else {
-                    handleNext();
+                    if ((fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "")) {
+                      swal("No deje campos vacíos.", "", "error");
+                    }else {
+                      handleNext();
+                    }
                   }
                 }
                 }
               >
                 <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1>
               </Button>
-              {/* <Button onClick={handleBack} className="btnStepper">
-                <h1>Back</h1>
-              </Button> */}
             </div>
           </div>
         </div>
