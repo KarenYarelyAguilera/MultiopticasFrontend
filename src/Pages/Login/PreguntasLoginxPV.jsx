@@ -19,106 +19,157 @@ import '../../Styles/Usuarios.css';
 export const PreguntasLoginxPV = props => {
 
 
-    const navegate = useNavigate();
-    const [Preguntas, setPreguntas] = useState([]);
-    const urlPreguntas = 'http://localhost:3000/api/preguntas';
-    const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
-  
-  
-    const dataId = {
-      Id_Usuario: props.idUsuario,
-      user: props.user,
-    };
-    //  console.log(dataId);
-  
-    //para las preguntas
-    useEffect(() => {
-      axios.get(urlPreguntas).then(response => {
-        setPreguntas(response.data);
-      }).catch(error => console.log(error))
-    }, []);
-  
-  
-    const handleClick = async () => {
-  
+  const navegate = useNavigate();
+  const [Preguntas, setPreguntas] = useState([]);
+  const urlPreguntas = 'http://localhost:3000/api/preguntas';
+  const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
+
+  const [Resp, setResp] = useState(props.data.Respuesta || '');
+  const [errorResp, setErrorResp] = useState(false);
+  const [Msj, setMsj] = useState('');
+
+  const dataId = {
+    Id_Usuario: props.idUsuario,
+    user: props.user,
+  };
+  //  console.log(dataId);
+
+  //para las preguntas
+  useEffect(() => {
+    axios.get(urlPreguntas).then(response => {
+      setPreguntas(response.data);
+    }).catch(error => console.log(error))
+  }, []);
+
+
+  const handleClick = async () => {
+ 
       const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
-      const respuestap = document.getElementById('respuestap').value;
-  
-      let data = {
-        idPregunta: Id_Pregunta,
-        respuesta: respuestap,
-        idUser: props.idUsuario,
-       creadoPor: props.user,
-      };
-      console.log(data);
-  
-      await axios.post(urlRespuestas, data).then(response => {
-        swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/loginPrimeraVez'))
-      });
-  
-    };
-  
-    return (
-      <div className="divSection">
-        <div className="divInfoQuestion">
-  
-          <div className="titleRecuPassword">
-            <h2>Preguntas de seguridad</h2>
-            <h3>Responda una de las preguntas para poder configurar su perfil</h3>
-          </div>
-  
-          <form className="measure">
-            <br />
-            <br />
-            <div className='divInfoQuestionResp'>
-              <TextCustom text="Preguntas de configuración:" className="titleInput" />
-              <div className="contInput">
-                <select id="Id_preguntas" className="inputCustomPreguntas">
-                  {Preguntas.length ? (
-                    Preguntas.map(pre => (
-                      <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
-                        {pre.Pregunta}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="No existe informacion">
-                      No existe informacion
+      const respuestap = Resp;
+
+   
+        let data = {
+          idPregunta: Id_Pregunta,
+          respuesta: respuestap,
+          idUser: props.idUsuario,
+          creadoPor: props.user,
+        };
+        console.log(data);
+
+        await axios.post(urlRespuestas, data).then(response => {
+          swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/loginPrimeraVez'))
+        }).catch(error => {
+          swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error") });
+     
+   
+
+  };
+
+  return (
+    <div className="divSection">
+      <div className="divInfoQuestion">
+
+        <div className="titleRecuPassword">
+          <h2>Preguntas de seguridad</h2>
+          <h3>Responda una de las preguntas para poder configurar su perfil</h3>
+        </div>
+
+        <form className="measure">
+          <br />
+          <br />
+          <div className='divInfoQuestionResp'>
+            <TextCustom text="Preguntas de configuración:" className="titleInput" />
+            <div className="contInput">
+              <select id="Id_preguntas" className="inputCustomPreguntas">
+                {Preguntas.length ? (
+                  Preguntas.map(pre => (
+                    <option key={pre.Id_Pregunta} value={pre.Id_Pregunta}>
+                      {pre.Pregunta}
                     </option>
-                  )}
-                </select>
-              </div>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
-            <br />
-            <br />
-            <div className='divInfoQuestionResp'>
-              <TextCustom text="Ingrese su respuesta:" className="titleInput" />
-              <div className="contInput">
-                <input
-                  maxLength="20"
-                  type="text"
-                  name=""
-                  className="inputCustom"
-                  placeholder="Respuesta"
-                  id='respuestap'
-                />
-              </div>
-            </div>
-            <div className='divSubmitQuestion'>
+          </div>
+          <br />
+          <br />
+          <div className='divInfoQuestionResp'>
+            <label className="titleInput">Ingrese su respuesta:</label>
+            <div className="contInput">
               <input
-                className="btnSubmitPreguntas"
-                type="button"
-                value="Guardar"
-                onClick={handleClick}
+                onChange={e => {
+                  const value = e.target.value;
+                  setResp(value);
+
+                  if (value === '') {
+                    setErrorResp(true);
+                    setMsj('Los campos no deben estar vacíos');
+                  } else {
+                    setErrorResp(false);
+                    const regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(value)) {
+                      setErrorResp(true);
+                      setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(value)) {
+                      setErrorResp(true);
+                      setMsj('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorResp(false);
+                      setMsj('');
+                    }
+                  }
+                }}
+                error={errorResp}
+                type="text"
+                helperText={Msj}
+                minLength={5}
+                maxLength={100}
+                name="respuestap"
+                className="inputCustom"
+                placeholder="Respuesta"
+                value={Resp}
               />
             </div>
-          </form>
-  
-        </div>
-        <div className="divImgSection">
-          <img src={passwordRecovery} alt="Iamgen no encontrada" />
-        </div>
+            <p className="error">{Msj}</p>
+          </div>
+
+          <div className='divSubmitQuestion'>
+            <input
+              className="btnSubmitPreguntas"
+              type="button"
+              value="Guardar"
+              onClick={() => {
+                const respuestap = Resp;
+
+                if (respuestap === '') {
+                  swal('No deje campos vacíos.', '', 'error');
+                } else if (respuestap.length < 4 || respuestap.length > 50) {
+                  swal('La longitud del campo debe estar entre 5 y 50 caracteres.', '', 'error');
+                } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(respuestap)) {
+                  swal('El campo solo acepta letras mayúsculas y solo un espacio entre palabras.', '', 'error');
+                } else if (/(.)\1{2,}/.test(respuestap)) {
+                  setErrorResp(true);
+                  swal('El campo nombre no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
+                }else{
+                  handleClick()
+                }
+
+              }}
+
+            />
+          </div>
+        </form>
+
       </div>
-    );
+      <div className="divImgSection">
+        <img src={passwordRecovery} alt="Iamgen no encontrada" />
+      </div>
+    </div>
+  );
 
 
 }

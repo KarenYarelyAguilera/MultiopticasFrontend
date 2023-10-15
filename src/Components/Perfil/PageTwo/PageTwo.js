@@ -94,6 +94,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 placeholder='Contraseña'
                 type={showPassword ? 'text' : 'password'}
                 inputProps={{ maxLength: 20 }}
+                minLength={8}
                 inputRef={refContrasenia}
                 name=""
                 className="inputCustom"
@@ -134,7 +135,8 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 }
                 placeholder='Contraseña'
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20 }}
+                inputProps={{ maxLength: 20}}
+                minLength={8}
                 inputRef={refContrasenia}
                 name=""
                 className="inputCustom"
@@ -171,13 +173,17 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
 
               if (password === "" || password2 === "") {
                 swal("No deje campos vacíos.", "", "error");
-              }else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
+              } else if (password.length < 8 || password.length > 50) {
+                swal('La longitud del campo debe estar entre 8 y 50 caracteres.', '', 'error');
+              } else if (password2.length < 8 || password2.length > 50) {
+                swal('La longitud del campo debe estar entre 8 y 50 caracteres.', '', 'error');
+              } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
                 swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
               } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
                 swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
               } else if (contra1 !== contra2) {
                 swal("Las contraseñas deben coincidir.", "", "error");
-              }else {
+              } else {
                 handleClick()
               }
             }}
