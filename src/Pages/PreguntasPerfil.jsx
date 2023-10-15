@@ -22,6 +22,7 @@ export const PreguntasPerfil = props => {
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
+  const urlBPreguntaslAgg = 'http://localhost:3000/api/bitacora/nuevaPregunta';
 
 
   const [Resp, setResp] = useState(props.data.Respuesta || '');
@@ -29,10 +30,7 @@ export const PreguntasPerfil = props => {
   const [Msj, setMsj] = useState('');
 
 
-  const dataId = {
-    Id_Usuario: props.idUsuario,
-    user: props.user,
-  };
+  
   //  console.log(dataId);
 
   //para las preguntas
@@ -67,9 +65,16 @@ export const PreguntasPerfil = props => {
           respuesta: respuestap.toUpperCase(),
           idUser: props.idUsuario,
           creadoPor: props.infoPerfil.nombre.toUpperCase(),
+          fechaCrea: new Date(),
         };
 
+        const dataId = {
+          Id: props.idUsuario,
+        };
+        console.log(dataId);
+
         await axios.post(urlRespuestas, data).then(response => {
+          axios.post(urlBPreguntaslAgg, dataId)
           swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/Preguntas/lista'))
         }).catch(error => {
           swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error") })
