@@ -128,6 +128,7 @@ function App() {
   const [idUsuario, setIdUsuario] = useState(0);
   const [data, setData] = useState({});
   const [dataVenta,setDataVenta]=useState({})
+  const [bitacora,setBitacora]=useState({})
   const [actualizar, setActualizar] = useState(false);
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -144,7 +145,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const registroclientes  = reg => setregistros(reg);
   const dVenta = venta=>setDataVenta(venta)
   const idrol = idr=>setIdRol(idr)
-
+  const bita = bit=>setBitacora(bit)
 
 
 //hook para manipular el perfil y sus variables
@@ -179,6 +180,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 mail={mail}
                 idUsuario={id}
                 vPerfil={perfil}
+                bitacora={bita}
               />
             }
           />
@@ -481,6 +483,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={actualizar}
                   limpiarData={Data}
                   limpiarUpdate={update}
+                  activo={bitacora}
                 ></AddUsers>
               </div>
               //</ProtectedRoute>
@@ -1187,7 +1190,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idRol={idRol}
                   />
                   <BarraHorizontal user={usuario} />
-                  <Bitacora />
+                  <Bitacora
+                  bitacora={bitacora}
+                  bita={bita}
+                  />
                 </div>
              // </ProtectedRoute>
             }
@@ -1542,6 +1548,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  idUsuario={idUsuario}
+                  activo={bitacora}
                 ></DatosEmpleado>
               </div>
               // </ProtectedRoute>

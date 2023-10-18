@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 
 export const AddUsers = (props) => {
@@ -80,8 +81,7 @@ export const AddUsers = (props) => {
     'http://localhost:3000/api/usuario/update';
 
   //------------URL DE BITACORA-----------------------
-  const urlBitacoraInsert = 
-     'http://localhost:3000/api/bitacora/InsertUsuario';
+  const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/InsertUsuario';
     
   const urlBitacoraUpdUsuario = 
     'http://localhost:3000/api/bitacora/ActualizacionUsuario';
@@ -90,6 +90,8 @@ export const AddUsers = (props) => {
   'http://localhost:3000/api/bitacora/SalirRegistroUsuario'; 
 
  //---------------------------------------------------------
+
+
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -164,9 +166,14 @@ export const AddUsers = (props) => {
     let dataB = {
       Id: props.idU
     }
+    const bitacora ={
+      urlB:urlInsert,
+      activo:props.activo,
+      dataB:dataB
+   }
 
     if (await axios.post(urlInsert, data)) {
-      (await axios.post(urlBitacoraInsert, dataB)) //Registro de nuevo usuario bitacora   
+      Bitacora(bitacora) //Registro de nuevo usuario bitacora   
       swal('Usuario creado exitosamente.', '', 'success');
       navegate('/usuarios/lista');
       //sendData(urlBitacoraUsuario,dataB)

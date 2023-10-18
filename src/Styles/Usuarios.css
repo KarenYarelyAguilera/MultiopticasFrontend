@@ -905,6 +905,17 @@ button {
   border-radius: 25px !important;
 }
 
+.btnOn {
+  background-color: rgb(130, 212, 119) !important;
+  color: white !important;
+  border-radius: 25px !important;
+}
+.btnOff {
+  background-color: rgb(236, 105, 105) !important;
+  color: white !important;
+  border-radius: 25px !important;
+}
+
 .btnReport {
   border: 2px solid black !important;
   color: black !important;
