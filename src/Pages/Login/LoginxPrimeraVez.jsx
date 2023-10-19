@@ -104,6 +104,7 @@ export const LoginxPrimeraVez = props => {
         swal("Ya no puede agregar más preguntas", "", "error");
       } else if (cantidadRegistros === parseInt(response.data)) {
         swal("Preguntas configuradas, porfavor configure la nueva contraseña", "", "success");
+        props.loginPvz(1)
         navigate('/cambiocontrasenia'); //Redireccionar al nuevo componente
       } else if (cantidadRegistros === 0) {
         swal("Comenzando configuracion", "", "success");

@@ -217,10 +217,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               // <ProtectedRoute activo={activo}>
               <div className="flex">
                 <PageFour
-                    loginpvez={loginpvez}
+                    loginpvez={loginPvz}
                     correo={correo}
                     idUsuario={idUsuario}
                     autor={usuario}
+                    primeraVez={loginpvez}
                 />
               </div>
               //  </ProtectedRoute>
@@ -311,7 +312,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 user={usuario}
                 // mail={correo}
                 infoPerfil={infoPerfil}
-
+                loginPvz={loginPvz}
               />
             }
           ></Route>
