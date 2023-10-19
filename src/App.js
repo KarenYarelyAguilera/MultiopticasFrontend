@@ -129,7 +129,8 @@ function App() {
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
   const [data, setData] = useState({});
-  const [dataVenta, setDataVenta] = useState({})
+  const [dataVenta,setDataVenta]=useState({})
+  const [bitacora,setBitacora]=useState({})
   const [actualizar, setActualizar] = useState(false);
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -143,10 +144,11 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const id = idd => setIdUsuario(idd);
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
-  const registroclientes = reg => setregistros(reg);
-  const dVenta = venta => setDataVenta(venta)
-  const idrol = idr => setIdRol(idr)
   const loginPvz = lpv => setLoginpvez(lpv);
+  const registroclientes  = reg => setregistros(reg);
+  const dVenta = venta=>setDataVenta(venta)
+  const idrol = idr=>setIdRol(idr)
+  const bita = bit=>setBitacora(bit)
 
 
 
@@ -182,6 +184,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 mail={mail}
                 idUsuario={id}
                 vPerfil={perfil}
+                bitacora={bita}
               />
             }
           />
@@ -501,6 +504,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={actualizar}
                   limpiarData={Data}
                   limpiarUpdate={update}
+                  activo={bitacora}
                 ></AddUsers>
               </div>
               //</ProtectedRoute>
@@ -1195,22 +1199,27 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
           <Route
             path="/Administracion/Bitacora"
             element={
-              // <ProtectedRoute activo={activo}>
-              <div className="flex">
-                <BarraLateral
-                  user={user}
-                  rol={rol}
-                  mail={mail}
-                  estado={access}
-                  Rol={Rol}
-                  obj={cObjeto}
-                  idUsuario={idUsuario}
-                  idRol={idRol}
-                />
-                <BarraHorizontal user={usuario} />
-                <Bitacora />
-              </div>
-              // </ProtectedRoute>
+
+             // <ProtectedRoute activo={activo}>
+                <div className="flex">
+                  <BarraLateral
+                    user={user}
+                    rol={rol}
+                    mail={mail}
+                    estado={access}
+                    Rol={Rol}
+                    obj={cObjeto}
+                    idUsuario={idUsuario}
+                    idRol={idRol}
+                  />
+                  <BarraHorizontal user={usuario} />
+                  <Bitacora
+                  bitacora={bitacora}
+                  bita={bita}
+                  />
+                </div>
+             // </ProtectedRoute>
+
             }
           ></Route>
 
@@ -1563,6 +1572,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  idUsuario={idUsuario}
+                  activo={bitacora}
                 ></DatosEmpleado>
               </div>
               // </ProtectedRoute>
