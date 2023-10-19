@@ -48,11 +48,11 @@ export const Progress = props => {
     <div className="divSection">
       <div className="divInfoQuestion">
         <div className="titleRecuPassword">
-          {props.loginpvez == 1 ? <> </> : <> <h2>Preguntas de Seguridad</h2>
-            <h3>Contesta cada paso, para poder autenticar tu usuario.</h3></>}
+          <h2>Preguntas de Seguridad</h2>
+            <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
 
         </div>
-        {props.loginpvez == 1 ? <></> : <><MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
+        <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
           {
             {
               pageone: <PageOne correo={crr1} onButtonClick={nextPage} />,
@@ -61,7 +61,7 @@ export const Progress = props => {
               pagefour: <PageFour correo={correo1} id={Id} autor={autor} />,
 
             }[page]
-          }</>}
+          }
 
       </div>
 
