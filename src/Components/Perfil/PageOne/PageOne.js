@@ -6,9 +6,10 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const PageOne = ({ correo, onButtonClick }) => {
- 
+  const navegate = useNavigate();
 
   const [contra2, setContra2] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
@@ -23,13 +24,12 @@ export const PageOne = ({ correo, onButtonClick }) => {
   };
 
 
- 
+  const handleBack = () => {
+    navegate('/dashboard');
+  };
 
   const handleClick = ()=>{
-
     const urlCompararContra = "http://localhost:3000/api/login/compare"
-
-
     const contra1 = document.getElementById("contra1").value
     //const contra2 = document.getElementById("contra2").value
 
@@ -49,16 +49,9 @@ export const PageOne = ({ correo, onButtonClick }) => {
     })
   }
 
-  
-
- 
-
-
 
   return (
-
     <main>
-      
       <form className="measure">
         <div className="contPrincipalRecuperacion">
           <div className='divInfoRecuperacion'>
@@ -106,6 +99,14 @@ export const PageOne = ({ correo, onButtonClick }) => {
             value="Siguiente"
             onClick={handleClick}
           />
+          <input
+            className="btnSubmit"
+            type="button"
+            value="Cancelar"
+            onClick={()=> {navegate('/config/perfil')}}
+          />
+
+
         </div>
       </form>
     </main>

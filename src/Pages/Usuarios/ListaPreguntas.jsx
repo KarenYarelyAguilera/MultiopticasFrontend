@@ -111,6 +111,7 @@ export const ListaPreguntas = (props) => {
 
           let data = {
             Id_Pregunta: id,
+            Id_Usuario:props.idUsuario,
           };
           console.log(data);
 

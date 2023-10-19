@@ -21,6 +21,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
   const data={
     correo:correo1
   }
+  console.log(data);
   
     const handleClick = async () => {
       const respuesta = document.getElementById('respuesta').value;
@@ -37,6 +38,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
               "correo": correo1,
               "id": response.data[0].Id_Usuario,
             };
+            console.log(data2);
     
             axios.post(urlUserExist, data2).then(()=> onButtonClick('pagethree')).catch(() => {
               swal("Ocurrió un error al realizar la segunda petición POST");
@@ -105,7 +107,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
               type="text"
               name=""
               className="inputCustom"
-              placeholder="Respuesta"
+              placeholder="Correo"
               id='respuesta'
             />
           </div>
@@ -117,25 +119,27 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
             className="btnSubmit"
             type="button"
             value="Siguiente"
-            onClick={handleClick}
+            //onClick={handleClick}
 
-            
-           /*  onClick={() => {
+            onClick={() => {
+              const correo = document.getElementById('respuesta').value;
 
-              handleClick()
+              if (correo === "") {
+                swal('No deje campos vacíos.', '', 'error');
+              } else if (correo.length < 13 || correo.length > 50) {
+                swal('La longitud del campo debe estar entre 5 y 50 caracteres.', '', 'error');
+              } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                swal('Formato incorrecto', '', 'error');
+              } else if (/(.)\1{2,}/.test(correo)) {
+                setErrorCorreo(true);
+                swal('El campo nombre no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
+              } else {
+                handleClick()
+              }
 
-                if (pasar===false) {
-                  swal(
-                    'Revise su dirección de correo electrónico',
-                    '',
-                    'warning',
-                  )
-                }else{
-                  onButtonClick('pagethree')
-                } 
-              
-            }}  */ 
-            
+
+            }}
+
 
 
           />
