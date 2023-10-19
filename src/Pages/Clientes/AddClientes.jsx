@@ -253,6 +253,10 @@ export const AddClientes = (props) => {
               <input
                 onKeyDown={e => {
                   setNombre(e.target.value);
+                  if (e.target.value.length < 2) {
+                    setErrorNombre(true);
+                    setMsj('El nombre debe tener al menos 2 caracteres');
+                  }
                   if (Nombre === '') {
                     setErrorNombre(true);
                     setMsj('Los campos no deben estar vacíos');
@@ -499,20 +503,32 @@ export const AddClientes = (props) => {
                       }
                       if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nombre)) {
                         swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                      } else if (/(.)\1{2,}/.test(nombre)) {
+                      } else if (nombre.length < 3) {
+                        setErrorNombre(true);
+                        swal("El campo nombre no acepta menos de 2 carácteres.", "", "error");
+                      }
+                       else if (/(.)\1{2,}/.test(nombre)) {
                         setErrorNombre(true);
                         swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
                       }
                       else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(apellido)) {
                         swal("El campo apellido solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                      }
+                      else if (apellido.length < 3) {
+                        setErrorApellido(true);
+                        swal("El campo apellido no acepta menos de 2 carácteres.", "", "error");
                       } else if (/(.)\1{2,}/.test(apellido)) {
                         setErrorApellido(true);
                         swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
                       } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(direccion)) {
-                        swal("El campo dirrecion solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                        swal("El campo dirección solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
+                      }
+                      else if (direccion.length < 3) {
+                        setErrordireccion(true);
+                        swal("El campo dirección no acepta menos de 2 carácteres.", "", "error");
                       } else if (/(.)\1{2,}/.test(direccion)) {
                         setErrordireccion(true);
-                        swal("El campo direccion no acepta letras consecutivas repetidas.", "", "error");
+                        swal("El campo dirección no acepta letras consecutivas repetidas.", "", "error");
                       } else if (isNaN(parseInt(phone))) {
                         swal("El campo teléfono solo acepta números.", "", "error");
                       }else if (phone.length !== 8) {
