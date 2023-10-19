@@ -34,7 +34,6 @@ export const LoginxPrimeraVez = props => {
   //parametros
   const [Parametro, setParametro] = useState('');
   const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
-  const urlEstadoA = 'http://localhost:3000/api/usuario/EstadoActivo';
 
   const dataUser = {
     Id_Usuario: props.idUsuario,
@@ -104,11 +103,8 @@ export const LoginxPrimeraVez = props => {
       if (cantidadRegistros > parseInt(response.data)) {
         swal("Ya no puede agregar más preguntas", "", "error");
       } else if (cantidadRegistros === parseInt(response.data)) {
-        swal("Preguntas configuradas, ya puede iniciar sesión", "", "success");
-        axios.put(urlEstadoA, dataId).then(response=>{
-          console.log(response.dataId);
-         });
-        navigate('/');
+        swal("Preguntas configuradas, porfavor configure la nueva contraseña", "", "success");
+        navigate('/cambiocontrasenia'); //Redireccionar al nuevo componente
       } else if (cantidadRegistros === 0) {
         swal("Comenzando configuracion", "", "success");
         navigate('/preguntasLoginxPV');
