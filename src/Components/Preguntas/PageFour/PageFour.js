@@ -9,7 +9,7 @@ import axios from "axios";
 import { blue } from '@mui/material/colors';
 
 
-export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) => {
+export const PageFour = ({ correo, idUsuario, autor, loginpvez, id, primeraVez }) => {
 
   const [clave1, setContra1] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
@@ -33,9 +33,6 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
   const handleClick = () => {
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
-    const urlEstadoA = 'http://localhost:3000/api/usuario/EstadoActivo';
-
-
 
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
@@ -62,10 +59,10 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
         if (response.data === false) {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
-          axios.put(urlEstadoA, dataId).then(response=>{ //Mantiene el estado del usuario en Nuevo
-            loginpvez(0)
-            swal("Contraseña actualizada", "", "success").then(() => navegate("/"))
-          });
+          swal("Contraseña actualizada, su administrador activara su cuenta", "", "success").then(() => navegate("/"))
+          loginpvez(0)
+
+
         }
       })
     }
@@ -73,17 +70,17 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
   return (
     <main>
       <div className="titleRecuperacion">
-       {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
-       {/* Ternaria de ejemplo para colocar los estilos MALDITASEA */}
-       {primeraVez=== 1 ? <div>
-        
+        {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
+        {/* Ternaria de ejemplo para colocar los estilos MALDITASEA */}
+        {primeraVez === 1 ? <div>
+
           <p>lorem</p>
           <p>lorem</p>
           <p>lorem</p>
           <p>lorem</p>
           <p>lorem</p>
 
-       </div>:<></>}
+        </div> : <></>}
 
         <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas." className="titleInput" />
       </div>
