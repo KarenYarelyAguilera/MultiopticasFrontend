@@ -40,18 +40,24 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
+  const urlUserStateUpdate="http://localhost:3000/api/usuario/estado/seleccionado"
+
+    const urlUserBlock="http://localhost:3000/api/usuarios/inactivos"
 
   //  const urlBitacoraDelUsuario=
   //    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataBlock, setTableDataBlock] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo]=useState(false)
 
   useEffect(() => {
     axios.get(urlUsers).then(response => setTableData(response.data))
-  }, [cambio]);
+    axios.get(urlUserBlock).then(response => setTableDataBlock(response.data))
+  }, [cambio,inactivo]);
 
 
   //IMPRIMIR PDF
@@ -96,12 +102,20 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
-  );
+  ) 
+
+  const filteredDataBlock=
+  tableDataBlock.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  ) 
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150, headerAlign: 'center' },
     { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
@@ -136,7 +150,10 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row)}
+            onClick={() =>{
+              inactivo==false?  handleUpdt(params.row):actualizarEstado(params.row)
+            
+            }}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -154,6 +171,46 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const handleBack = () => {
     navegate('/usuarios');
   };
+
+  function actualizarEstado(id) {
+    swal({
+      buttons:{
+        ok: 'Editar Estado',
+        cancel:'Cancelar',
+      },
+      content:(
+        <div>
+    <h2>Cambio de Estado al usuario {id.Usuario}</h2>
+     
+        <h4>Estado</h4>
+        <select id='Estado'>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+          <option value="Bloqueado">Bloqueado</option>
+        </select>
+     
+    </div>
+      )
+    }).then(async (op)=>{
+
+      let estado = document.getElementById("Estado").value
+      let data={
+        id:id.id_Usuario,
+        estado:estado
+      }
+      console.log(data);
+      op=="ok"? await axios.put(urlUserStateUpdate,data).then(()=>{
+        
+          
+      
+        swal("Estado Cambiado Exitosamente","","success").then(()=>{
+          setCambio(cambio+1)
+        })
+      }).catch((e)=>console.log(e))
+      :console.log("qweqew");
+    })
+  }
+
 
   function handleDel(id) {
     if (permisos[0].eliminar === "n") {
@@ -282,6 +339,20 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
               Nuevo
             </Button>
 
+
+
+            <Button
+              className="btnCreate"
+              onClick={() => {
+                setInactivo(inactivo===false?true:false)
+                
+              }}
+            >
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo===false?"Inactivos":"Activos"}
+            </Button>
+
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
@@ -294,7 +365,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
-          rows={filteredData}
+          rows={inactivo===false?filteredData:filteredDataBlock}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
