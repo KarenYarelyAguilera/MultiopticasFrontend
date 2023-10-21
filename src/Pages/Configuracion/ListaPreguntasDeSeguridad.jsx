@@ -6,7 +6,7 @@ import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from "../../IMG/fondoPDF.jpg";
 
 
@@ -31,23 +31,27 @@ import { generatePDF } from '../../Components/generatePDF';
 export const ListaPreguntasDeSeguridad = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:8
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 8
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [roles, setRoles] = useState([]);
   const [Departamento, setDepartamento] = useState([]);
   const [ciudad, setCiudad] = useState([]);
   const [cambio, setCambio] = useState(0)
 
-  const urlDepartamentos = 'http://localhost:3000/api/departamentos';
+  const urlDepartamentos = 'http://localhost:3000/api/preguntas';
   const urlCiudades = 'http://localhost:3000/api/ciudades';
 
   const urlSucursales = 'http://localhost:3000/api/sucursales';
   const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar';
+
+  const urlGetPreguntas = 'http://localhost:3000/api/preguntas';
+  const urlDelPreguntas = 'http://localhost:3000/api/preguntas/eliminar'
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,7 +59,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [errordepartamento, setErrordepartamento] = useState(false);
   const [aviso, setaviso] = useState(false);
 
-  
+
   const [mensaje, setmensaje] = useState('');
   const [errorciudad, setErrorciudad] = useState(false);
 
@@ -71,53 +75,57 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [texto, setTexto] = useState(false);
 
   //COLOCAR APIS DE BITACORA AQUI---  
-  
+
   //-------------------------------------------------------------------
 
-  useEffect(() => {
-    fetch(urlSucursales)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-    fetch(urlDepartamentos)
-      .then(response => response.json())
-      .then(data => setDepartamento(data));
-      fetch(urlCiudades)
-      .then(response => response.json())
-      .then(data => setCiudad(data));
-  }, [cambio]);
+  /*   useEffect(() => {
+      fetch(urlSucursales)
+        .then(response => response.json())
+        .then(data => setTableData(data));
+      fetch(urlDepartamentos)
+        .then(response => response.json())
+        .then(data => setDepartamento(data));
+        fetch(urlCiudades)
+        .then(response => response.json())
+        .then(data => setCiudad(data));
+    }, [cambio]); */
 
-//IMPRIMIR PDF
-const handleGenerarReporte = () => {
-  if (permisos[0].consultar ==="n") {
-    swal("No cuenta con los permisos para realizar esta accion","","error")
-  } else {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdSucursal,
-                                'Departamento':row.departamento, 
-                                'Ciudad':row.ciudad, 
-                                'Dirección':row.direccion, 
-                                'Teléfono':row.telefono,                        
-                              };
-      });
-      return formattedData;
-    };
-  
-    const urlPDF = 'Report_PreguntasDeSeguridad.pdf';
-    const subTitulo = "LISTA DE PREGUNTAS DE SEGURIDAD"
-  
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-  }
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'N°': row.Id_Pregunta,
+            'Preguntas': row.Pregunta,
+          };
+        });
+        return formattedData;
+      };
 
-};
+      const urlPDF = 'Report_PreguntasDeSeguridad.pdf';
+      const subTitulo = "LISTA DE PREGUNTAS DE SEGURIDAD"
+
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
+  };
 
   const navegate = useNavigate();
+
+
+  useEffect(() => {
+    axios.get(urlGetPreguntas).then(response => {
+      setTableData(response.data)
+    }).catch(error => console.log(error))
+  }, [cambio]);
 
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
@@ -128,9 +136,9 @@ const handleGenerarReporte = () => {
   );
 
   const columns = [
-    { field: 'Id', headerName: 'ID', width: 250 },
-    { field: 'Preguntas', headerName: 'Preguntas', width: 1000 },
-    
+    { field: 'Id_Pregunta', headerName: 'ID', width: 250 },
+    { field: 'Pregunta', headerName: 'Preguntas', width: 550 },
+
 
     {
       field: 'borrar',
@@ -144,7 +152,7 @@ const handleGenerarReporte = () => {
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdSucursal)}
+            onClick={() => handleDel(params.row.Id_Pregunta)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -154,88 +162,89 @@ const handleGenerarReporte = () => {
   ];
 
   //FUNCION DE ELIMINAR 
-  function handleDel(IdSucursal) {
-    if (permisos[0].eliminar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+  function handleDel(Id_Pregunta) {
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
         content: (
           <div>
-  
+
             <div className="logoModal">¿Desea Eliminar esta Pregunta?</div>
             <div className="contEditModal">
-  
+
             </div>
-  
+
           </div>
         ),
         buttons: ['Eliminar', 'Cancelar'],
       }).then(async op => {
         switch (op) {
           case null:
-  
+
             let data = {
-              IdSucursal: IdSucursal,
+              Id_Pregunta: Id_Pregunta,
             };
-  
+
             //Funcion de Bitacora 
             /*  let dataB = {
                Id:props.idUsuario
              } */
-  
+
             console.log(data);
-  
+
             await axios
-              .delete(urlDelSucursal, { data })
+              .delete(urlDelPreguntas, { data })
               .then(response => {
                 //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Sucursal eliminada correctamente', '', 'success');
+                swal('Pregunta eliminada correctamente', '', 'success');
                 setCambio(cambio + 1);
               })
               .catch(error => {
                 console.log(error);
-                swal('Error al eliminar la sucursal', '', 'error');
+                swal('Error al eliminar la pregunta', '', 'error');
               });
-  
+
             break;
-  
+
           default:
             break;
         }
       });
     }
-   
+
   }
 
   //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    if (permisos[0].actualizar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
-    } else {
-      swal({
-        buttons: {
-          update: 'ACTUALIZAR',
-          cancel: 'CANCELAR',
-        },
-        content: (
-          <div className="logoModal">
-            ¿Desea actualizar Alguna Pregunta: {id.ciudad} ?
-          </div>
-        ),
-      }).then(
-        op => {
-          switch (op) {
-            case 'update':
-              props.data(id)
-              props.update(true)
-              navegate('/config')
-              break;
-            default:
-              break;
-          }
-        });
-    }
-  
+  function handleUpdt(Id_Pregunta) {
+    // if (permisos[0].actualizar ==="n") {
+    //   swal("No cuenta con los permisos para realizar esta accion","","error")
+    // } else {
+    swal({
+      buttons: {
+        update: 'ACTUALIZAR',
+        cancel: 'CANCELAR',
+      },
+      content: (
+        <div className="logoModal">
+          ¿Desea actualizar Esta Pregunta: "{Id_Pregunta.Pregunta}" ?
+        </div>
+      ),
+    }).then(
+      op => {
+        switch (op) {
+          case 'update':
+            props.data(Id_Pregunta)
+            props.update(true)
+
+            navegate('/config/AgregarPreguntas')
+            break;
+          default:
+            break;
+        }
+      });
+    // }
+
   };
 
   //Funcion de Bitacora 
@@ -280,138 +289,31 @@ const handleGenerarReporte = () => {
               className="btnCreate"
               onClick={() => {
                 if (permisos[0].insertar === "n") {
-                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                  swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
-                  navegate('/config/PreguntasSeguridad');
+                  navegate('/config/AgregarPreguntas');
                 }
-                
+
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
-            <Button className="btnReport" 
-            onClick={handleGenerarReporte}>
+            <Button className="btnReport"
+              onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdSucursal}
+          getRowId={tableData => tableData.Id_Pregunta}
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-        // onRowClick={usuario => {
-        //   swal({
-        //     buttons: {
-        //       update: 'Actualizar',
-        //       cancel: 'Cancelar',
-        //     },
-        //     content: (
-        //       <div className="logoModal">
-        //         Que accion desea realizar con el cliente:{' '}
-        //         {usuario.row.Usuario}
-        //       </div>
-        //     ),
-        //   }).then(op => {
-        //     switch (op) {
-        //       case 'update':
-        //         swal(
-        //           <div>
-        //             <div className="logoModal">Datos a actualizar</div>
-        //             <div className="contEditModal">
-        //               <div className="contInput">
-        //                 <TextCustom text="Usuario" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="nombre"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Usuario}
-        //                 />
-        //               </div>
 
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Nombre de Usuario"
-        //                   className="titleInput"
-        //                 />
-        //                 <input
-        //                   type="text"
-        //                   id="nombreUsuario"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Nombre_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Estado" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   className='inputCustom'
-        //                   id="EstadoUsuario"
-        //                   value={usuario.row.Estado_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Contraseña"
-        //                   className="titleInput"
-        //                 />
-        //                 <input type="text" id="contrasenia" className='inputCustom'/>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Rol" className="titleInput" />
-        //                 <select id="rol" className="selectCustom">
-        //                   {roles.length ? (
-        //                     roles.map(pre => (
-        //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
-        //                         {pre.Rol}
-        //                       </option>
-        //                     ))
-        //                   ) : (
-        //                     <option value="No existe informacion">
-        //                       No existe informacion
-        //                     </option>
-        //                   )}
-        //                 </select>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Email" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="Email"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Correo_Electronico}
-        //                 />
-        //               </div>
-        //             </div>
-        //           </div>,
-        //         ).then(() => {
-        //           let data = {
-        //             Usuario: document.getElementById('nombre').value,
-        //             Nombre_Usuario:
-        //               document.getElementById('nombreUsuario').value,
-        //             Estado_Usuario:
-        //               document.getElementById('EstadoUsuario').value,
-        //             Contrasenia: document.getElementById('contrasenia').value,
-        //             Id_Rol: document.getElementById('rol').value,
-        //             Correo_Electronico:
-        //               document.getElementById('Email').value,
-        //             Id_usuario: usuario.row.id_Usuario,
-        //           };
-
-        //           if (sendData(urlUpdateUser, data)) {
-        //             swal(<h1>Usuario Actualizado Correctamente</h1>);
-        //           }
-        //         });
-        //         break;
-        //       default:
-        //         break;
-        //     }
-        //   });
-        // }}
         />
       </div>
     </div>

@@ -31,9 +31,10 @@ export const Login = props => {
   const urlIntentos =
     'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
 
+    const urlParamBitacora = 'http://localhost:3000/api/parametros/bitacora'
 
 
-  const urlUsuario= 'http://localhost:3000/api/usuario'; //para el perfil
+  const urlUsuario = 'http://localhost:3000/api/usuario'; //para el perfil
 
   const [usuario, setUsuario] = useState('');
   const [prueba, setprueba] = useState('');
@@ -93,7 +94,7 @@ export const Login = props => {
 
       console.log(respJsonUsr.data[0].Estado_Usuario);
 
-      if (respJsonPss.data.result &&respJsonUsr.data[0].Estado_Usuario === 'Nuevo') {   
+      if (respJsonPss.data.result && respJsonUsr.data[0].Estado_Usuario === 'Nuevo') {
         props.mail(respJsonUsr.data[0].Correo_Electronico);
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
@@ -113,13 +114,15 @@ export const Login = props => {
         props.idRol(respJsonUsr.data[0].idRol)
 
         //para el perfil
-        const dataPerfil={
-          Correo_Electronico:refUsuario.current.value,
+        const dataPerfil = {
+          Correo_Electronico: refUsuario.current.value,
         }
 
-        await axios.post(urlUsuario, dataPerfil).then((responsePerfil)=>props.vPerfil(responsePerfil.data))//consumo de api para obntener los datos del perfil
 
+        await axios.post(urlUsuario, dataPerfil).then((responsePerfil)=>props.vPerfil(responsePerfil.data))//consumo de api para obntener los datos del perfil
+        await axios.get(urlParamBitacora).then(response=>props.bitacora(response.data.valor))
         await axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
+
       }
     } catch (error) {
       setContador(contador + 1)
@@ -182,7 +185,7 @@ export const Login = props => {
           <div className="contInputLogin">
             <TextCustom text="Contraseña" className="titleInput" />
             <FilledInput
-              
+
               onKeyDown={e => {
                 setContra(e.target.value);
                 if (contra.length > 100) {
@@ -193,7 +196,7 @@ export const Login = props => {
                   setMsj('');
                 }
               }}
-              onClick={ e => {
+              onClick={e => {
                 setContra(e.target.value);
                 if (contra === '') {
                   setErrorContra(true);
@@ -205,7 +208,7 @@ export const Login = props => {
               }
               }
               error={errorContra}
-              inputProps={{maxLength:150}}
+              inputProps={{ maxLength: 150 }}
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"
