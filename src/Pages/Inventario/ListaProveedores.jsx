@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -13,16 +15,27 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaProveedores = (props) => {
+  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const dataPermiso={
+    idRol:props.idRol,
+    idObj:3
+  }
+  useEffect(()=>{
+    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
+  },[])
 
   const [cambio, setCambio] = useState(0)
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
+  const [permisos, setPermisos] = useState([]);
+  
   //URLS
   const urlProveedores = 'http://localhost:3000/api/proveedor';
   const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
@@ -79,6 +92,43 @@ export const ListaProveedores = (props) => {
       .then(data => setTableData(data));
   }, [cambio]);
 
+  //IMPRIMIR PDF
+
+  const handleGenerarReporte = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = filteredData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'IdProveedor': row.IdProveedor,
+            'Empresa Proveedora': row.CiaProveedora,
+            'Encargado': row.encargado,
+            'Productos': row.Productos,
+            'Pais': row.Pais,
+            'Ciudad': row.Ciudad,
+            'Direccion': row.direccion,
+            'Telefono': row.telefono,
+            'Email': row.correoElectronico,
+          };
+        });
+        return formattedData;
+      };
+
+      const urlPDF = 'Reporte_Proveedores.pdf';
+      const subTitulo = "LISTA DE PROVEEDORES"
+      const orientation = "landscape";
+
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    }
+
+  };
+
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -95,10 +145,10 @@ export const ListaProveedores = (props) => {
     { field: 'encargado', headerName: 'Encargado', width: 150 },
     { field: 'Pais', headerName: 'Pais', width: 150 },
     { field: 'Ciudad', headerName: 'Ciudad', width: 150 },
-    { field: 'Productos', headerName: 'Producto', width: 150 },
+    { field: 'Productos', headerName: 'Producto', width: 250 },
     { field: 'direccion', headerName: 'Direccion', width: 150 },
     { field: 'telefono', headerName: 'Telefono', width: 150 },
-    { field: 'correoElectronico', headerName: 'Correo Electronico', width: 150 },
+    { field: 'correoElectronico', headerName: 'Correo Electronico', width: 230 },
 
 
     {
@@ -124,77 +174,87 @@ export const ListaProveedores = (props) => {
 
   //FUNCION DE ELIMINAR 
   function handleDel(IdProveedor) {
-    swal({
-      content: (
-        <div>
-
-          <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
-          <div className="contEditModal">
-
+    if (permisos[0].eliminar==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        content: (
+          <div>
+  
+            <div className="logoModal">¿Desea Eliminar este Proveedor?</div>
+            <div className="contEditModal">
+  
+            </div>
+  
           </div>
-
-        </div>
-      ),
-      buttons: ['Eliminar', 'Cancelar'],
-    }).then(async op => {
-      switch (op) {
-        case null:
-
-          let data = {
-            IdProveedor: IdProveedor,
-          };
-
-          //Funcion de Bitacora 
-          /*  let dataB = {
-             Id:props.idUsuario
-           } */
-
-          console.log(data);
-
-          await axios
-            .delete(urlDelProveedor, { data })
-            .then(response => {
-              //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-              swal('Proveedor eliminado correctamente', '', 'success');
-              setCambio(cambio + 1);
-            })
-            .catch(error => {
-              console.log(error);
-              swal('Error al eliminar el Proveedor', '', 'error');
-            });
-
-          break;
-
-        default:
-          break;
-      }
-    });
-  }
-
-  //FUNCION DE ACTUALIZAR
-  function handleUpdt(id) {
-    swal({
-      buttons: {
-        update: 'ACTUALIZAR',
-        cancel: 'CANCELAR',
-      },
-      content: (
-        <div className="logoModal">
-          ¿Desea actualizar el proveedor: {id.CiaProveedora} ?
-        </div>
-      ),
-    }).then(
-      op => {
+        ),
+        buttons: ['Eliminar', 'Cancelar'],
+      }).then(async op => {
         switch (op) {
-          case 'update':
-            props.data(id)
-            props.update(true)
-            navegate('/menuInventario/RegistroProveedores')
+          case null:
+  
+            let data = {
+              IdProveedor: IdProveedor,
+            };
+  
+            //Funcion de Bitacora 
+            /*  let dataB = {
+               Id:props.idUsuario
+             } */
+  
+            console.log(data);
+  
+            await axios
+              .delete(urlDelProveedor, { data })
+              .then(response => {
+                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                swal('Proveedor eliminado correctamente', '', 'success');
+                setCambio(cambio + 1);
+              })
+              .catch(error => {
+                console.log(error);
+                swal('Error al eliminar el Proveedor', '', 'error');
+              });
+  
             break;
+  
           default:
             break;
         }
       });
+    }
+   
+  }
+
+  //FUNCION DE ACTUALIZAR
+  function handleUpdt(id) {
+    if (permisos[0].actualizar==="n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else {
+      swal({
+        buttons: {
+          update: 'ACTUALIZAR',
+          cancel: 'CANCELAR',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar el proveedor: {id.CiaProveedora} ?
+          </div>
+        ),
+      }).then(
+        op => {
+          switch (op) {
+            case 'update':
+              props.data(id)
+              props.update(true)
+              navegate('/menuInventario/RegistroProveedores')
+              break;
+            default:
+              break;
+          }
+        });
+    }
+    
   };
 
   //Funcion de Bitacora 
@@ -203,7 +263,7 @@ export const ListaProveedores = (props) => {
   }
 
   const handleBack = () => {
-    navegate('/config');
+    navegate('/inventario');
   };
 
   return (
@@ -238,13 +298,19 @@ export const ListaProveedores = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                navegate('/menuInventario/RegistroProveedores');
+                if (permisos[0].insertar==="n") {
+                  swal("No tiene permisos para realizar esta acción","","error")
+                } else {
+                  navegate('/menuInventario/RegistroProveedores');
+                }
+               
               }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo Proveedor
+              NUEVO
             </Button>
-            <Button className="btnReport">
+            <Button className="btnReport"  
+            onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

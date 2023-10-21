@@ -480,7 +480,8 @@ export const AddClientes = (props) => {
                   var direccion = document.getElementById("direccion").value;
                   var phone = document.getElementById("phone").value;
                   var correo = document.getElementById("correo").value;
-                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "") {
+                  var fechaNacimiento= document.getElementById("fechaN").value;
+                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "" || fechaNacimiento==="") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(Nidentidad))) {
                     swal("El campo identidad solo acepta números.", "", "error");
