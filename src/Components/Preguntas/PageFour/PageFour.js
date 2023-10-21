@@ -7,6 +7,8 @@ import swal from "sweetalert";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { blue } from '@mui/material/colors';
+import passwordRecovery from '../../../IMG/passwordrecovery.png';
+
 
 
 export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) => {
@@ -71,24 +73,16 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
     }
   }
   return (
-    <main>
-      <div className="titleRecuperacion">
-       {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
-       {/* Ternaria de ejemplo para colocar los estilos MALDITASEA */}
-       {primeraVez=== 1 ? <div>
-        
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
+    <main >
+      <div className="divSection">
+        <div className="divInfoQuestion">
 
-       </div>:<></>}
-
-        <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas." className="titleInput" />
-      </div>
       <form className="measure">
         <div className="contPrincipalRecuperacion">
+        <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe" className="titleInputCambio" />
+        <TextCustom text=" de incluir letras mayusculas y minusculas." className="titleInputCambio"></TextCustom>
+        <br/>
+        <br/>
           <div className='divInfoRecuperacion'>
 
             <TextCustom text="Nueva contraseña" className="titleInput" />
@@ -212,6 +206,12 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
           />
         </div>
       </form>
+      </div>
+      <div className="divImgSection">
+        <img src={passwordRecovery} alt="Iamgen no encontrada" />
+      </div>
+      </div>
+
     </main>
 
   );
