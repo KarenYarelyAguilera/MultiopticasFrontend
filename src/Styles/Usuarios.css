@@ -899,8 +899,21 @@ button {
   grid-gap: 20px;
 }
 
+
+.btnActionsNewReport1 {
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+  grid-gap: 20px;
+}
+
 .btnCreate {
   background-color: coral !important;
+  color: white !important;
+  border-radius: 25px !important;
+}
+
+.btnInactivo {
+  background-color: rgb(212, 7, 7) !important;
   color: white !important;
   border-radius: 25px !important;
 }
