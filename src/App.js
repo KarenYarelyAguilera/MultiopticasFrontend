@@ -294,7 +294,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <Progress
                 estado={activo}
                 id={idUsuario}
-                loginpvez={loginpvez}
+              //loginpvez={loginpvez}
               // activo={activo}
               // user={usuario}
               // mail={correo}

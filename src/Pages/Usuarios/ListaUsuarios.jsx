@@ -116,7 +116,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
-    { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
     {
