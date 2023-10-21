@@ -310,7 +310,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -323,7 +323,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -342,7 +342,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
             <Button
-              className="btnCreate"
+              className="btnInactivo"
               onClick={() => {
                 setInactivo(inactivo===false?true:false)
                 
