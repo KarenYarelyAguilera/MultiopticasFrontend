@@ -182,17 +182,21 @@ export const DatosEmpleado = (props) => {
         })
       }
     }) */
-    const bitacora ={
-      urlB:urlInsertBitacora,
-      activo:props.activo,
-      dataB:dataB
-   }
-  
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    }
+
     axios.post(urlIEmpleado, data).then(response => {
-      swal('Empleado agregado con exito', '', 'success').then(result => {
-        Bitacora(bitacora)
-        navegate('/empleados/lista');
-      });
+      if (response.data == false) {
+        swal('¡Uno de los datos ya existe!', '', 'error')
+      } else {
+        swal('Empleado agregado con exito', '', 'success').then(result => {
+          Bitacora(bitacora)
+          navegate('/empleados/lista');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
@@ -364,32 +368,32 @@ export const DatosEmpleado = (props) => {
             <div className="contInput">
               <TextCustom text="Telefono" className="titleInput" />
               <input
-                 onChange={e => setTelefono(e.target.value)}
+                onChange={e => setTelefono(e.target.value)}
 
-                 onKeyDown={e => {
-                   setTelefono(e.target.value);
-                   if (Telefono === '') {
-                     setTexto('Los campos no deben estar vacíos');
-                     setErrorTelefono(true);
-                   }else if (Telefono.length !== 8) {
-                     setErrorTelefono(true);
-                     setTexto('El número de telefono debe tener exactamente 8 dígitos');
-                   } else {
-                     setErrorTelefono(false);
-                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
-                     if (!regex.test(Telefono)) {
-                       setErrorTelefono(true);
-                       setTexto('Debe ingresar un número de teléfono válido de 8 dígitos');
-                     }else if (/(.)\1{2,}/.test(Telefono)) {
-                       setErrorTelefono(true);
-                       setTexto('No se permiten numeros consecutivas repetidos');
-                     } else {
-                       setErrorTelefono(false);
-                       setTexto('');
-                     }
-                   }
-                 }}
-                 
+                onKeyDown={e => {
+                  setTelefono(e.target.value);
+                  if (Telefono === '') {
+                    setTexto('Los campos no deben estar vacíos');
+                    setErrorTelefono(true);
+                  } else if (Telefono.length !== 8) {
+                    setErrorTelefono(true);
+                    setTexto('El número de telefono debe tener exactamente 8 dígitos');
+                  } else {
+                    setErrorTelefono(false);
+                    var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
+                    if (!regex.test(Telefono)) {
+                      setErrorTelefono(true);
+                      setTexto('Debe ingresar un número de teléfono válido de 8 dígitos');
+                    } else if (/(.)\1{2,}/.test(Telefono)) {
+                      setErrorTelefono(true);
+                      setTexto('No se permiten numeros consecutivas repetidos');
+                    } else {
+                      setErrorTelefono(false);
+                      setTexto('');
+                    }
+                  }
+                }}
+
                 error={errorTelefono}
                 type="phone"
                 name=""

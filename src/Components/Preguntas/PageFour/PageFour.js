@@ -59,7 +59,7 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez, id, primeraVez }
         if (response.data === false) {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
-          swal("Contraseña actualizada, su administrador activara su cuenta", "", "success").then(() => navegate("/"))
+          swal("Contraseña actualizada, espere que su administrador active su cuenta", "", "success").then(() => navegate("/"))
           loginpvez(0)
 
 
@@ -73,12 +73,8 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez, id, primeraVez }
         {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
         {/* Ternaria de ejemplo para colocar los estilos MALDITASEA */}
         {primeraVez === 1 ? <div>
+          <h1>Cambio de contraseña por primer login</h1> <br></br>
 
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
-          <p>lorem</p>
 
         </div> : <></>}
 
