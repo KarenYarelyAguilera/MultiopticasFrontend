@@ -25,6 +25,8 @@ export const Bitacora = (props) => {
 const urlBitacora=
 "http://localhost:3000/api/bitacora";
 
+const urlOnOffBitacora ="http://localhost:3000/api/parametro/bitacora"
+
 const urlSalirListaBitacora=
 "http://localhost:3000/api/bitacora/SalirListaBitacora";
 
@@ -86,6 +88,25 @@ const urlSalirListaBitacora=
     navegate('/usuarios');
   };
 
+  const handleUpdateBitacora = ()=>{
+    let parametro = {
+      Parametro: props.bitacora ==="si"?"no":"si"
+    }
+
+    axios.put(urlOnOffBitacora,parametro).then(()=>{
+      let cambio = props.bitacora ==="si"?"no":"si"
+
+      props.bita(cambio)
+      
+      if (props.bitacora==="si") {
+        swal("La bitacora esta Inactiva","","success")
+      }else if (props.bitacora==="no") {
+        swal("La bitacora esta Activa","","success")
+      }
+    
+    })
+  }
+
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -119,7 +140,16 @@ const urlSalirListaBitacora=
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
+            {props.bitacora==="si"?
+             <Button className="btnOff" onClick={handleUpdateBitacora}>
+              Desactivar Bitacora
+             </Button>:
+              <Button className="btnOn"onClick={handleUpdateBitacora}>
+              Activar Bitacora
+              </Button> }
+           
           </div>
+          
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdBitacora}
