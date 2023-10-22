@@ -31,6 +31,7 @@ export const Login = props => {
   const urlIntentos =
     'http://localhost/APIS-Multioptica/parametros/controller/parametro.php?op=intentos';
 
+    const urlParamBitacora = 'http://localhost:3000/api/parametros/bitacora'
 
 
   const urlUsuario = 'http://localhost:3000/api/usuario'; //para el perfil
@@ -117,9 +118,11 @@ export const Login = props => {
           Correo_Electronico: refUsuario.current.value,
         }
 
-        await axios.post(urlUsuario, dataPerfil).then((responsePerfil) => props.vPerfil(responsePerfil.data))//consumo de api para obntener los datos del perfil
 
-        await axios.post(urlBitacoraLogin, dataBitacora).then(() => navegate('/dashboard'))
+        await axios.post(urlUsuario, dataPerfil).then((responsePerfil)=>props.vPerfil(responsePerfil.data))//consumo de api para obntener los datos del perfil
+        await axios.get(urlParamBitacora).then(response=>props.bitacora(response.data.valor))
+        await axios.post(urlBitacoraLogin,dataBitacora).then(()=>navegate('/dashboard'))
+
       }
     } catch (error) {
       setContador(contador + 1)

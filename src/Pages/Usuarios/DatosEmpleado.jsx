@@ -18,6 +18,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 const urlSucursales = 'http://localhost:3000/api/empleado/sucursal';
 
@@ -181,10 +182,15 @@ export const DatosEmpleado = (props) => {
         })
       }
     }) */
-
+    const bitacora ={
+      urlB:urlInsertBitacora,
+      activo:props.activo,
+      dataB:dataB
+   }
+  
     axios.post(urlIEmpleado, data).then(response => {
       swal('Empleado agregado con exito', '', 'success').then(result => {
-        axios.post(urlInsertBitacora, dataB)
+        Bitacora(bitacora)
         navegate('/empleados/lista');
       });
     }).catch(error => {

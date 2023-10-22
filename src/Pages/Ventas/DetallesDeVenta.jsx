@@ -173,7 +173,7 @@ export const DetallesDeVenta = (props) => {
               <TextCustom text="Cantidad" className="titleInput" />
 
               <input
-                type="text"
+                type="number"
                 name=""
                 maxLength={13}
                 className="inputCustom"

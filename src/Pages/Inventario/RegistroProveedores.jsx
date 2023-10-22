@@ -33,41 +33,36 @@ const urlCiudades = //Ciudades
 
 export const RegistroProveedores = (props) => {
 
-  const [proveedores, setProveedores] = useState([]);
-  const [Pais, setPais] = useState([]);
+  
   const [Ciudad, setCiudad] = useState([]);
 
-  const [proveed, setproveed] = React.useState('');
-  const [leyenda, setleyenda] = React.useState('');
-  const [errorproveedor, setErrorproveedor] = React.useState(false);
-
-  const [productos, setProductos] = React.useState('');
+  const [productos, setProductos] = React.useState(props.data.Productos ||'');
   const [aviso, setaviso] = React.useState('');
   const [errorProductos, setErrorProductos] = React.useState(false);
 
-  const [nombre, setnombre] = React.useState('');
+  const [nombre, setnombre] = React.useState(props.data.CiaProveedora ||'');
   const [msj, setmsj] = React.useState('');
   const [errornombre, setErrornombre] = React.useState(false);
 
-  const [encargado, setencargado] = React.useState('');
+  const [encargado, setencargado] = React.useState(props.data.encargado ||'');
   const [mensaje, setmensaje] = React.useState('');
   const [errorencargado, setErrorencargado] = React.useState(false);
 
-  const [avi, setavi] = React.useState('');
+  const [Pais, setPais] = useState([],props.data.Pais ||'');
   const [errorpais, setErrorpais] = React.useState(false);
 
   const [advertencia, setadvertencia] = React.useState('');
   const [errorciudad, setErrorciudad] = React.useState(false);
 
-  const [direccion, setdireccion] = React.useState('');
+  const [direccion, setdireccion] = React.useState(props.data.direccion ||'');
   const [validacion, setvalidacion] = React.useState('');
   const [errordireccion, setErrordireccion] = React.useState(false);
 
-  const [tel, settel] = React.useState('');
+  const [tel, settel] = React.useState(props.data.telefono ||'');
   const [adv, setadv] = React.useState('');
   const [errortel, setErrortel] = React.useState(false);
 
-  const [correo, setcorreo] = React.useState('');
+  const [correo, setcorreo] = React.useState(props.data.correoElectronico ||'');
   const [parrafo, setparrafo] = React.useState('');
   const [errorcorreo, setErrorcorreo] = React.useState(false);
 
@@ -149,10 +144,15 @@ export const RegistroProveedores = (props) => {
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProveedor, data).then(response => {
-      swal('Proveedor agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
-        navegate('/menuInventario/ListaProveedores');
-      });
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Proveedor ya existe!', '', 'error')
+      }else{
+        swal('Proveedor agregado con exito', '', 'success').then(result => {
+          //axios.post(urlInsertBitacora, dataB)
+          navegate('/menuInventario/ListaProveedores');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al crear Proveedor, porfavor revise los campos.', '', 'error')
@@ -199,12 +199,14 @@ export const RegistroProveedores = (props) => {
                     }
                   }
                 }}
+                onChange={e => setnombre(e.target.value)}
                 type="text"
                 name=""
                 maxLength={50}
                 className="inputCustom"
                 placeholder="nombreProveedor"
                 id="CiaProveedora"
+                value={nombre}
               />
               <p class="error">{msj}</p>
             </div>
@@ -213,13 +215,31 @@ export const RegistroProveedores = (props) => {
               <TextCustom text="Productos" className="titleInput" />
 
               <input
-
+                onKeyDown={e => {
+                  setProductos(e.target.value);
+                  if (nombre == '') {
+                    setErrorProductos(true);
+                    setmsj('Los campos no deben estar vacios');
+                  } else {
+                    setErrorProductos(false);
+                    var preg_match = /^[a-zA-Z]+$/;
+                    if (!preg_match.test(productos)) {
+                      setErrorProductos(true);
+                      setmsj('Solo deben de ingresar letras');
+                    } else {
+                      setErrorProductos(false);
+                      setmsj('');
+                    }
+                  }
+                }}
+                onChange={e => setProductos(e.target.value)}
                 type="text"
                 name=""
                 maxLength={200}
                 className="inputCustom"
                 placeholder="Producto que le ofrece..."
                 id="productos"
+                value={productos}
               />
               <p class="error">{aviso}</p>
             </div>
@@ -244,12 +264,14 @@ export const RegistroProveedores = (props) => {
                     }
                   }
                 }}
+                onChange={e => setencargado(e.target.value)}
                 type="text"
                 name=""
                 maxLength={50}
                 className="inputCustom"
                 placeholder="encargado"
                 id="encargado"
+                value= {encargado}
               />
               <p class="error">{mensaje}</p>
             </div>
@@ -262,13 +284,16 @@ export const RegistroProveedores = (props) => {
                     <option key={pre.IdPais} value={pre.IdPais}>
                       {pre.Pais}
                     </option>
+                    
                   ))
                 ) : (
                   <option value="No existe informacion">
                     No existe informacion
                   </option>
                 )}
+                
               </select>
+               
             </div>
 
             <div className="contInput">
@@ -293,12 +318,14 @@ export const RegistroProveedores = (props) => {
                     }
                   }
                 }}
+                onChange={e => settel(e.target.value)}
                 type="text"
                 name=""
-                maxLength={20}
+                maxLength={13}
                 className="inputCustom"
                 placeholder="telefono"
                 id="telefono"
+                value={tel}
               />
               <p class="error">{adv}</p>
             </div>
@@ -318,6 +345,8 @@ export const RegistroProveedores = (props) => {
                   </option>
                 )}
               </select>
+             {/*  onChange={e => setencargado(e.target.value)}
+              value={Ciudad} */}
             </div>
 
             <div className="contInput">
@@ -342,12 +371,14 @@ export const RegistroProveedores = (props) => {
                     }
                   }
                 }}
+                onChange={e => setcorreo(e.target.value)}
                 type="text"
                 name=""
                 maxLength={100}
                 className="inputCustom"
                 placeholder="correoElectronico"
                 id="correoElectronico"
+                value={correo}
               />
               <p class="error">{parrafo}</p>
             </div>
@@ -366,12 +397,14 @@ export const RegistroProveedores = (props) => {
                   }
                 }
                 }
+                onChange={e => setdireccion(e.target.value)}
                 type="text"
                 name=""
                 maxLength={100}
                 className="inputCustomText"
                 placeholder="direccion"
                 id="direccion"
+                value= {direccion}
               />
               <p class="error">{validacion}</p>
             </div>

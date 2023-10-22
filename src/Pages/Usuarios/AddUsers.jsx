@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 
 export const AddUsers = (props) => {
@@ -80,8 +81,7 @@ export const AddUsers = (props) => {
     'http://localhost:3000/api/usuario/update';
 
   //------------URL DE BITACORA-----------------------
-  const urlBitacoraInsert = 
-     'http://localhost:3000/api/bitacora/InsertUsuario';
+  const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/InsertUsuario';
     
   const urlBitacoraUpdUsuario = 
     'http://localhost:3000/api/bitacora/ActualizacionUsuario';
@@ -90,6 +90,8 @@ export const AddUsers = (props) => {
   'http://localhost:3000/api/bitacora/SalirRegistroUsuario'; 
 
  //---------------------------------------------------------
+
+
 
   const [Empleado, setIdEmpleado] = useState([]);
   const [Rol, setRol] = useState([]);
@@ -119,9 +121,8 @@ export const AddUsers = (props) => {
 
     let data = {
       idUsuario: props.data.id_Usuario,
-      usuario: user.toUpperCase(),
+      usuario: nombre.toUpperCase(),
       nombreUsuario: nombre.toUpperCase(),
-      clave: refContrasenia.current.value,
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,
       idRol: rol,
@@ -144,35 +145,41 @@ export const AddUsers = (props) => {
   };
 
   const insertar = async () => {
-    let id = document.getElementById('empleado').value;
+    
 
     let nombre = document.getElementById('nombre').value;
     let correo = document.getElementById('correo').value;
     let rol = document.getElementById('cargo').value;
 
     let data = {
-      id: id,
+      id: selectedOption.value,
       usuario: nombre,
       nombre: nombre,
       clave: refContrasenia.current.value,
       correo: correo,
       rol: rol,
     };
-    console.log(data);
 
  //Funcion de bitacora 
     let dataB = {
       Id: props.idU
     }
+    const bitacora ={
+      urlB:urlInsert,
+      activo:props.activo,
+      dataB:dataB
+   }
 
-    if (await axios.post(urlInsert, data)) {
-      (await axios.post(urlBitacoraInsert, dataB)) //Registro de nuevo usuario bitacora   
+    await axios.post(urlInsert, data).then(()=>{
+      Bitacora(bitacora) //Registro de nuevo usuario bitacora   
       swal('Usuario creado exitosamente.', '', 'success');
       navegate('/usuarios/lista');
-      //sendData(urlBitacoraUsuario,dataB)
-    }else{
+    }).catch(()=>{
       swal('!Error al crear Usuario! Ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
-    }
+    })
+      //sendData(urlBitacoraUsuario,dataB)
+   
+    
   };
 
  //Funcion de bitacora 
@@ -281,8 +288,8 @@ export const AddUsers = (props) => {
               <p className='error'>{mensaje}</p>
             </div>
 
-
-            <div className="contInput">
+                {props.update? <></>:<>
+                <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
                 onChange={(e) => {
@@ -367,7 +374,8 @@ export const AddUsers = (props) => {
                 }
               ></FilledInput>
               <p className='error'>{advertencia}</p>
-            </div>
+            </div></>}
+            
 
             <div className="contInput">
               <TextCustom text="Correo Electronico" className="titleInput" />
@@ -441,16 +449,14 @@ export const AddUsers = (props) => {
                 onClick={() => {
                     var usuario = document.getElementById("nombre").value;
                     var correo = document.getElementById("correo").value;
-                    var password = document.getElementById("filled-adornment-password").value;
-                    if (usuario === "" || password === "" || correo === "") {
+                   
+                    if (usuario === ""  || correo === "") {
                       swal("No deje campos vacíos.", "", "error");}
                       else if (!/^[A-Z]+$/.test(usuario)) {
                         swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
                         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                           swal("El campo correo debe contener un correo válido.", "", "error");
-                        } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
-                          swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
-                        } else if (contra1 !== contra2) {
+                        }else if (contra1 !== contra2) {
                           swal("Las contraseñas deben coincidir.", "", "error");
                         }
                  
@@ -467,21 +473,18 @@ export const AddUsers = (props) => {
                 onClick={() => {
                   var usuario = document.getElementById("nombre").value;
                   var correo = document.getElementById("correo").value;
-                  var password = document.getElementById("filled-adornment-password").value;
-                  if (usuario === "" || password === "" || correo === "") {
+                  if (usuario === ""  || correo === "") {
                     swal("No deje campos vacíos.", "", "error");}
                     else if (!/^[A-Z]+$/.test(usuario)) {
                       swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
                       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                         swal("El campo correo debe contener un correo válido.", "", "error");
-                      } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
-                        swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
                       } else if (contra1 !== contra2) {
                         swal("Las contraseñas deben coincidir.", "", "error");
                       }
                   else {
                     insertar()
-                  }
+                   }
                 }}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
