@@ -98,7 +98,7 @@ export const Login = props => {
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         props.access(respJsonUsr.data[0].Estado_Usuario)
-        navegate('/loginPrimeraVez'); //configuracion de preguntas//
+        navegate('/preguntasLoginxPV'); //configuracion de preguntas//
       }
       if (
         respJsonPss.data.result &&
