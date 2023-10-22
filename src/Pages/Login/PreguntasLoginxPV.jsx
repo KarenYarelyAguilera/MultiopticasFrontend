@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import passwordRecovery from '../../IMG/passwordrecovery.png';
-import { useNavigate } from 'react-router';
+import { Await, useNavigate } from 'react-router';
 import { TextCustom } from '../../Components/TextCustom';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
@@ -18,21 +18,35 @@ import '../../Styles/Usuarios.css';
 
 export const PreguntasLoginxPV = props => {
 
-
   const navegate = useNavigate();
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+
 
   const [Resp, setResp] = useState(props.data.Respuesta || '');
   const [errorResp, setErrorResp] = useState(false);
   const [Msj, setMsj] = useState('');
+  const [NumPreg, setNumPreg] = useState(0);
+  const [Contador, setContador] = useState(0);
+
 
   const dataId = {
     Id_Usuario: props.idUsuario,
     user: props.user,
   };
   //  console.log(dataId);
+
+
+
+//para el parametro
+  useEffect(() => {
+    axios.get(urlParametro).then(response => {
+      setNumPreg(response.data);
+      //console.log(NumPreg);
+    }).catch(error => console.log(error))
+  }, []);
 
   //para las preguntas
   useEffect(() => {
@@ -42,30 +56,55 @@ export const PreguntasLoginxPV = props => {
   }, []);
 
 
+
+
   const handleClick = async () => {
- 
+    try {
       const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
       const respuestap = Resp;
 
-   
-        let data = {
-          idPregunta: Id_Pregunta,
-          respuesta: respuestap,
-          idUser: props.idUsuario,
-          creadoPor: props.user,
-        };
-        console.log(data);
+      let data = {
+        idPregunta: Id_Pregunta,
+        respuesta: respuestap,
+        idUser: props.idUsuario,
+        creadoPor: props.user,
+        fechaCrea: new Date(),
+      };
+      //console.log(data);
+
+      setContador(Contador + 1); // Incremento
+
+
+      if (Contador < NumPreg) {
+        setResp('');// Limpiar la respuesta
 
         await axios.post(urlRespuestas, data).then(response => {
-          swal("Pregunta registrada correctamente", "", "success").then(() => navegate('/loginPrimeraVez'))
-        }).catch(error => {
-          swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error") });
-     
-   
+            swal("Pregunta registrada correctamente", "", "success");
+          }).catch(error => {
+            setContador(Contador - 1);// Decrementar el contador en caso de error
+            swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error");
+          });
+
+      } /* else if (Contador === NumPreg) {
+        swal("Llegó al límite de preguntas para configurar", "", "success");
+        navegate('/');
+      } */ else {
+        //swal("Llegó al límite de preguntas para configurar", "", "success");
+        navegate('/cambiocontrasenia');
+      }
+
+    } catch (error) {
+      console.log('error');
+      swal("Error al ingresar la pregunta y respuesta", "", "error");
+    }
+
 
   };
 
+
+
   return (
+
     <div className="divSection">
       <div className="divInfoQuestion">
 
@@ -131,7 +170,9 @@ export const PreguntasLoginxPV = props => {
                 name="respuestap"
                 className="inputCustom"
                 placeholder="Respuesta"
+                id='Respuesta'
                 value={Resp}
+
               />
             </div>
             <p className="error">{Msj}</p>
@@ -154,10 +195,10 @@ export const PreguntasLoginxPV = props => {
                 } else if (/(.)\1{2,}/.test(respuestap)) {
                   setErrorResp(true);
                   swal('El campo nombre no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
-                }else{
-                  handleClick()
-                }
+                } else {
+                  handleClick();
 
+                }
               }}
 
             />
