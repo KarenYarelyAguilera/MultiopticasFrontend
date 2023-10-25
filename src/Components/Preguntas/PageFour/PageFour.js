@@ -6,12 +6,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { blue } from '@mui/material/colors';
-import passwordRecovery from '../../../IMG/passwordrecovery.png';
 
 
-
-export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) => {
+export const PageFour = ({ correo, id, autor }) => {
 
   const [clave1, setContra1] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
@@ -35,26 +32,17 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
   const handleClick = () => {
 
     const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
-    const urlEstadoA = 'http://localhost:3000/api/usuario/EstadoActivo';
-
 
 
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
 
-    const dataId = {
-      Id_Usuario: idUsuario,
-    };
-
     const data = {
       correo: correo,
       clave: contra1,
-      id: idUsuario || id,
+      id: id,
       autor: autor
     }
-
-    console.log(data);
-
     if (contra1 !== contra2) {
       swal("Las contraseñas no coinciden", "", "warning")
     } else {
@@ -64,25 +52,19 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
         if (response.data === false) {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
-          axios.put(urlEstadoA, dataId).then(response=>{ //Mantiene el estado del usuario en Nuevo
-            loginpvez(0)
-            swal("Contraseña actualizada", "", "success").then(() => navegate("/"))
-          });
+          swal("Contraseña actualizada", "", "success").then(() => navegate("/"))
         }
       })
     }
   }
   return (
-    <main >
-      <div className="divSection">
-        <div className="divInfoQuestion">
-
+    <main>
+      <div className="titleRecuperacion">
+       {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
+        <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas." className="titleInput" />
+      </div>
       <form className="measure">
         <div className="contPrincipalRecuperacion">
-        <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe" className="titleInputCambio" />
-        <TextCustom text=" de incluir letras mayusculas y minusculas." className="titleInputCambio"></TextCustom>
-        <br/>
-        <br/>
           <div className='divInfoRecuperacion'>
 
             <TextCustom text="Nueva contraseña" className="titleInput" />
@@ -206,14 +188,8 @@ export const PageFour = ({ correo, idUsuario, autor, loginpvez,id,primeraVez }) 
           />
         </div>
       </form>
-      </div>
-      <div className="divImgSection">
-        <img src={passwordRecovery} alt="Iamgen no encontrada" />
-      </div>
-      </div>
-
     </main>
 
   );
 };
-export default PageFour;
+export default PageFour;

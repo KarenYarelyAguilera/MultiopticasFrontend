@@ -78,6 +78,7 @@ import { ListaProveedores } from './Pages/Inventario/ListaProveedores.jsx';
 import { ListaPromocion } from './Pages/Ventas/ListaPromocion.jsx';
 import { RegistroPromocion } from './Pages/Ventas/RegistroPromocion.jsx';
 import { ListaParametros } from './Pages/Configuracion/ListaParametros.jsx';
+import { ActualizarParametro } from './Pages/Configuracion/ActualizarParametro.jsx';
 import { InventarioDisponible } from './Pages/Inventario/InventarioDisponible.jsx';
 import { Kardex } from './Pages/Inventario/Kardex.jsx';
 import { Bitacora } from './Pages/Configuracion/Bitacora.jsx';
@@ -116,21 +117,21 @@ import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
-import {PageFour} from './Components/Preguntas/PageFour/PageFour.js';
+//import { PageFour } from './Components/Preguntas/PageFour/PageFour.js';
 
 
 function App() {
   const [registros, setregistros] = useState({});
   const [obj, setobj] = useState(0);
-  const [loginpvez, setLoginpvez] = useState(0);
+  //const [loginpvez, setLoginpvez] = useState(0);
   const [Rol, setRol] = useState('');
   const [idRol, setIdRol] = useState(0)
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
   const [data, setData] = useState({});
-  const [dataVenta,setDataVenta]=useState({})
-  const [bitacora,setBitacora]=useState({})
+  const [dataVenta, setDataVenta] = useState({})
+  const [bitacora, setBitacora] = useState({})
   const [actualizar, setActualizar] = useState(false);
   const [activo, setActivo] = useState(''); /**Hook usState:
 Mantiene un estado con el que se puede interactuar en distintos componentes,
@@ -145,10 +146,10 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
   const loginPvz = lpv => setLoginpvez(lpv);
-  const registroclientes  = reg => setregistros(reg);
-  const dVenta = venta=>setDataVenta(venta)
-  const idrol = idr=>setIdRol(idr)
-  const bita = bit=>setBitacora(bit)
+  const registroclientes = reg => setregistros(reg);
+  const dVenta = venta => setDataVenta(venta)
+  const idrol = idr => setIdRol(idr)
+  const bita = bit => setBitacora(bit)
 
 
 
@@ -211,22 +212,22 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-          <Route
+        {/*   <Route
             path="/cambiocontrasenia"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
                 <PageFour
-                    loginpvez={loginPvz}
-                    correo={correo}
-                    idUsuario={idUsuario}
-                    autor={usuario}
-                    primeraVez={loginpvez}
+                  loginpvez={loginPvz}
+                  correo={correo}
+                  idUsuario={idUsuario}
+                  autor={usuario}
+                  primeraVez={loginpvez}
                 />
               </div>
               //  </ProtectedRoute>
             }
-          />
+          /> */}
 
           <Route
             path="/marcas/registroPromMarca"
@@ -983,11 +984,43 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaParametros />
+                <ListaParametros
+                  update={update}
+                  data={Data}
+                
+                />
               </div>
               // </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="/config/ActualizarParametros"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <ActualizarParametro
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  Data={Data}
+                />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/config/ListaMarcas"
             element={
@@ -1201,25 +1234,25 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/Administracion/Bitacora"
             element={
 
-             // <ProtectedRoute activo={activo}>
-                <div className="flex">
-                  <BarraLateral
-                    user={user}
-                    rol={rol}
-                    mail={mail}
-                    estado={access}
-                    Rol={Rol}
-                    obj={cObjeto}
-                    idUsuario={idUsuario}
-                    idRol={idRol}
-                  />
-                  <BarraHorizontal user={usuario} />
-                  <Bitacora
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <Bitacora
                   bitacora={bitacora}
                   bita={bita}
-                  />
-                </div>
-             // </ProtectedRoute>
+                />
+              </div>
+              // </ProtectedRoute>
 
             }
           ></Route>

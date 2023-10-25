@@ -133,6 +133,7 @@ const handleGenerarReporte = () => {
     { field: 'ciudad', headerName: 'Ciudad', width: 250 },
     { field: 'direccion', headerName: 'Dirección', width: 250 },
     { field: 'telefono', headerName: 'Teléfono', width: 250 },
+    { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
       field: 'borrar',
