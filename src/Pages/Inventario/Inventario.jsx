@@ -99,7 +99,7 @@ export const Inventario = props => {
     // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/004/430/976/non_2x/health-list-with-a-yellow-color-free-vector.jpg',
-      titulo: 'Lista de Proveedores',
+      titulo: 'Proveedores',
       vinculo: '/menuInventario/ListaProveedores',
     },
   ];

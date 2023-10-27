@@ -78,6 +78,7 @@ import { ListaProveedores } from './Pages/Inventario/ListaProveedores.jsx';
 import { ListaPromocion } from './Pages/Ventas/ListaPromocion.jsx';
 import { RegistroPromocion } from './Pages/Ventas/RegistroPromocion.jsx';
 import { ListaParametros } from './Pages/Configuracion/ListaParametros.jsx';
+import { ActualizarParametro } from './Pages/Configuracion/ActualizarParametro.jsx';
 import { InventarioDisponible } from './Pages/Inventario/InventarioDisponible.jsx';
 import { Kardex } from './Pages/Inventario/Kardex.jsx';
 import { Bitacora } from './Pages/Configuracion/Bitacora.jsx';
@@ -116,9 +117,13 @@ import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
-import { PageFour } from './Components/Preguntas/PageFour/PageFour.js';
+
+//import { PageFour } from './Components/Preguntas/PageFour/PageFour.js';
+import { CambioContraseniaPV } from './Pages/Login/CambioContraseniaPV.jsx';
+
 import { ListaPreguntasDeSeguridad } from './Pages/Configuracion/ListaPreguntasDeSeguridad.jsx';
 import { RegistroPreguntaDeSeguridad } from './Pages/Configuracion/RegistroPreguntaDeSeguridad.jsx';
+
 
 
 function App() {
@@ -213,12 +218,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-          <Route
+           <Route
             path="/cambiocontrasenia"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
-                <PageFour
+                <CambioContraseniaPV
                   loginpvez={loginPvz}
                   correo={correo}
                   idUsuario={idUsuario}
@@ -228,7 +233,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               //  </ProtectedRoute>
             }
-          />
+          /> 
 
           <Route
             path="/marcas/registroPromMarca"
@@ -985,11 +990,43 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaParametros />
+                <ListaParametros
+                  update={update}
+                  data={Data}
+                
+                />
               </div>
               // </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="/config/ActualizarParametros"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <ActualizarParametro
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  Data={Data}
+                />
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
           <Route
             path="/config/ListaMarcas"
             element={
