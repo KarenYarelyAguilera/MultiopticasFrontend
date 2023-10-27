@@ -95,7 +95,7 @@ export const LoginxPrimeraVez = props => {
     try {
       const response = await axios.get(urlParametro);
       setParametro(response.data);
-      console.log(response.data);
+      console.log("Este es el valor de P: "+(response.data));
 
       const cantidadRegistros = filteredData.length;
       console.log(cantidadRegistros);
