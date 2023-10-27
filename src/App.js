@@ -117,8 +117,13 @@ import { ListaPagos } from './Pages/Ventas/ListaPagos.jsx';
 import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
+
 //import { PageFour } from './Components/Preguntas/PageFour/PageFour.js';
 import { CambioContraseniaPV } from './Pages/Login/CambioContraseniaPV.jsx';
+
+import { ListaPreguntasDeSeguridad } from './Pages/Configuracion/ListaPreguntasDeSeguridad.jsx';
+import { RegistroPreguntaDeSeguridad } from './Pages/Configuracion/RegistroPreguntaDeSeguridad.jsx';
+
 
 
 function App() {
@@ -2311,6 +2316,50 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
+          <Route
+            path="/config/PreguntasSeguridad"
+            element={
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <ListaPreguntasDeSeguridad update={update} data={Data} idRol={idRol} />
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+
+          <Route
+            path="/config/AgregarPreguntas"
+            element={
+              //<ProtectedRoute activo={activo}>
+              <div className="flex">
+
+                <RegistroPreguntaDeSeguridad
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  idUsuario={idUsuario}
+                  infoPerfil={infoPerfil}
+                  user={usuario}
+                  Data={Data}
+                //data={data}
+
+                ></RegistroPreguntaDeSeguridad>
+              </div>
+              //</ProtectedRoute>
+            }
+          ></Route>
 
 
 

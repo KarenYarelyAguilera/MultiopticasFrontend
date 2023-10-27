@@ -93,17 +93,18 @@ export const PageOne = ({ correo, onButtonClick }) => {
           </div>
         </div>
         <div className='divSubmitRecuperacion'>
-          <input
-            className="btnSubmit"
-            type="button"
-            value="Siguiente"
-            onClick={handleClick}
-          />
+          
           <input
             className="btnSubmit"
             type="button"
             value="Cancelar"
             onClick={()=> {navegate('/config/perfil')}}
+          />
+          <input
+            className="btnSubmit"
+            type="button"
+            value="Siguiente"
+            onClick={handleClick}
           />
 
 
