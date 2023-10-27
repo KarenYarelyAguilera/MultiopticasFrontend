@@ -64,7 +64,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
         if (response.data === false) {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
-           axios.put(urlEstadoA, dataId).then(response=>{ //Mantiene el estado del usuario en Nuevo
+           axios.put(urlEstadoA, dataId).then(response=>{ //Cambia el estado del usuario a Activo
             loginpvez(0)
             swal("Contraseña actualizada", "", "success").then(() => navegate("/"))
           });
