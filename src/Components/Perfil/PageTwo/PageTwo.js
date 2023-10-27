@@ -72,7 +72,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
           <div className='divInfoRecuperacion'>
             <TextCustom text="Nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+              <FilledInput
 
                 onChange={(e) => {
                   setContra1(e.target.value);
@@ -97,7 +97,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 minLength={8}
                 inputRef={refContrasenia}
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra1"
                 endAdornment={
                   <InputAdornment position="end">
@@ -112,7 +112,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+              ></FilledInput>
               <p className='error'>{msj}</p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
             <TextCustom text="" className="titleInput" />
             <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+            <FilledInput
                 onChange={(e) => {
                   setContra2(e.target.value);
                   if (contra2 === "") {
@@ -135,11 +135,11 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 }
                 placeholder='Contraseña'
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20}}
+                inputProps={{ maxLength: 20 }}
                 minLength={8}
                 inputRef={refContrasenia}
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra2"
                 endAdornment={
                   <InputAdornment position="end">
@@ -154,7 +154,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+                ></FilledInput>
               <p className='error'>{advertencia}</p>
             </div>
           </div>
