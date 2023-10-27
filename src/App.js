@@ -118,12 +118,13 @@ import { RegistroLente } from './Pages/Inventario/RegistroLente.jsx';
 import { ListaLentes } from './Pages/Inventario/ListaLentes.jsx';
 import { MenuSeguridad } from './Pages/Seguridad/MenuSeguridad.jsx';
 //import { PageFour } from './Components/Preguntas/PageFour/PageFour.js';
+import { CambioContraseniaPV } from './Pages/Login/CambioContraseniaPV.jsx';
 
 
 function App() {
   const [registros, setregistros] = useState({});
   const [obj, setobj] = useState(0);
-  //const [loginpvez, setLoginpvez] = useState(0);
+  const [loginpvez, setLoginpvez] = useState(0);
   const [Rol, setRol] = useState('');
   const [idRol, setIdRol] = useState(0)
   const [correo, setCorreo] = useState('');
@@ -212,12 +213,12 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-        {/*   <Route
+           <Route
             path="/cambiocontrasenia"
             element={
               // <ProtectedRoute activo={activo}>
               <div className="flex">
-                <PageFour
+                <CambioContraseniaPV
                   loginpvez={loginPvz}
                   correo={correo}
                   idUsuario={idUsuario}
@@ -227,7 +228,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               //  </ProtectedRoute>
             }
-          /> */}
+          /> 
 
           <Route
             path="/marcas/registroPromMarca"
@@ -295,7 +296,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               <Progress
                 estado={activo}
                 id={idUsuario}
-              //loginpvez={loginpvez}
+                loginpvez={loginpvez}
               // activo={activo}
               // user={usuario}
               // mail={correo}
