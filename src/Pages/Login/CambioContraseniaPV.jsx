@@ -64,7 +64,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
         if (response.data === false) {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
-           axios.put(urlEstadoA, dataId).then(response=>{ //Mantiene el estado del usuario en Nuevo
+           axios.put(urlEstadoA, dataId).then(response=>{ //Cambia el estado del usuario a Activo
             loginpvez(0)
             swal("Contraseña actualizada", "", "success").then(() => navegate("/"))
           });
@@ -88,7 +88,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
 
             <TextCustom text="Nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+            <FilledInput
                 onKeyDown={(e) => {
                   setContra1(e.target.value);
                   if (clave1 === "") {
@@ -111,7 +111,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
                 //inputRef={refContrasenia}
                 minLength="8"
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra1"
                 endAdornment={
                   <InputAdornment position="end">
@@ -126,7 +126,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+                ></FilledInput>
             </div>
             <p className='error'>{msj}</p>
           </div>
@@ -134,7 +134,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
           <div className='divInfoRecuperacion'>
             <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+            <FilledInput
                 onKeyDown={(e) => {
                   setContra2(e.target.value);
                   if (clave2 === "") {
@@ -160,7 +160,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
                 minLength="8"
                 //inputRef={refContrasenia}
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra2"
                 endAdornment={
                   <InputAdornment position="end">
@@ -175,7 +175,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez,id,pri
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+                ></FilledInput>
             </div>
             <p className='error'>{advertencia}</p>
           </div>
