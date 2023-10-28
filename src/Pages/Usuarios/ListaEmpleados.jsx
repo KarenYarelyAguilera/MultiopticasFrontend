@@ -113,7 +113,7 @@ export const ListaEmpleados = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdEmpleado', headerName: 'ID', width: 190, headerAlign: 'center' },
+    { field: 'IdEmpleado', headerName: 'ID', width: 100, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
     { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190, headerAlign: 'center' },

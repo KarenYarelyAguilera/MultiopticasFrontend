@@ -23,15 +23,28 @@ export const PreguntasPerfil = props => {
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
   const urlBPreguntaslAgg = 'http://localhost:3000/api/bitacora/nuevaPregunta';
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
 
 
   const [Resp, setResp] = useState(props.data.Respuesta || '');
   const [errorResp, setErrorResp] = useState(false);
   const [Msj, setMsj] = useState('');
+  const [NumPreg, setNumPreg] = useState(0);
+  const [Contador, setContador] = useState(0);
 
 
-  
-  //  console.log(dataId);
+  //para el parametro
+  useEffect(() => {
+    axios.get(urlParametro).then(response => {
+      setNumPreg(response.data);
+      //console.log(NumPreg);
+      if (response.data===Contador) {
+        swal("Preguntas configuradas", "", "success");
+        navigate('/config/perfil')
+      }
+    }).catch(error => console.log(error))
+  }, []);
+
 
   //para las preguntas
   useEffect(() => {
@@ -41,45 +54,59 @@ export const PreguntasPerfil = props => {
   }, []);
 
   const handleBack = () => {
-    swal({
-      title: 'Advertencia',
-      text: 'Hay un proceso de creación de una nueva pregunta de seguridad ¿Estás seguro que deseas salir?',
-      icon: 'warning',
-      buttons: ['Cancelar', 'Salir'],
-      dangerMode: true,
-    }).then((confirmExit) => {
-      if (confirmExit) {
-        navigate('/Preguntas/lista');
-      }
-    });
+    /*  swal({
+       title: 'Advertencia',
+       text: 'Hay un proceso de creación de una nueva pregunta de seguridad ¿Estás seguro que deseas salir?',
+       icon: 'warning',
+       buttons: ['Cancelar', 'Salir'],
+       dangerMode: true,
+     }).then((confirmExit) => {
+       if (confirmExit) {
+         navigate('/Preguntas/lista');
+       }
+     }); */
+    navigate('/config/perfil');
   };
 
   const handleClick = async () => {
- 
+    try {
       const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
       const respuestap = Resp;
 
-  
-        const data = {
-          idPregunta: Id_Pregunta,
-          respuesta: respuestap.toUpperCase(),
-          idUser: props.idUsuario,
-          creadoPor: props.infoPerfil.nombre.toUpperCase(),
-          fechaCrea: new Date(),
-        };
 
-        const dataId = {
-          Id: props.idUsuario,
-        };
-        console.log(dataId);
+      const data = {
+        idPregunta: Id_Pregunta,
+        respuesta: respuestap.toUpperCase(),
+        idUser: props.idUsuario,
+        creadoPor: props.infoPerfil.nombre.toUpperCase(),
+        fechaCrea: new Date(),
+      };
 
-        await axios.post(urlRespuestas, data).then(response => {
-          axios.post(urlBPreguntaslAgg, dataId)
-          swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/Preguntas/lista'))
-        }).catch(error => {
-          swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error") })
-  
-   
+      const dataId = {
+        Id: props.idUsuario,
+      };
+      console.log(dataId);
+
+      setContador(Contador + 1); // Incremento
+
+      if (Contador < NumPreg) {
+        setResp('');// Limpiar la respuesta
+
+      await axios.post(urlRespuestas, data).then(response => {
+        axios.post(urlBPreguntaslAgg, dataId)
+        swal("Pregunta registrada correctamente", "", "success")
+      }).catch(error => {
+        setContador(Contador - 1);// Decrementar el contador en caso de error
+        swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error")
+      });
+    }else {
+      swal("Finalizado", "", "success");
+      navigate('/config/perfil');
+    }
+    } catch (error) {
+
+    }
+
   };
 
   return (
@@ -169,7 +196,7 @@ export const PreguntasPerfil = props => {
                 } else if (/(.)\1{2,}/.test(respuestap)) {
                   setErrorResp(true);
                   swal('El campo nombre no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
-                }else{
+                } else {
                   handleClick()
                 }
 
@@ -177,12 +204,12 @@ export const PreguntasPerfil = props => {
 
             />
             <br />
-            <input
+           {/*  <input
               className="btnSubmitPreguntas"
               type="button"
               value="Cancelar"
               onClick={handleBack}
-            />
+            /> */}
           </div>
         </form>
       </div>
