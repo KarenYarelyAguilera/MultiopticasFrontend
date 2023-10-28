@@ -73,58 +73,58 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
     try {
       const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
       const respuestap = document.getElementById('respuestap').value;
-  
+
       const response = await axios.get(urlIntentos).then((response) => {
-       // console.log(response.data[0]);
+        // console.log(response.data[0]);
         let intentos = parseInt(response.data[0]);
-        console.log("Los intentos permitidos son "+intentos)
+        console.log("Los intentos permitidos son " + intentos)
       })
-      .catch((error) => {
-        console.error('Error al obtener datos de la API:', error);
-      });
-      
+        .catch((error) => {
+          console.error('Error al obtener datos de la API:', error);
+        });
+
 
       let data = {
         correo: correo,
         Id_Pregunta: Id_Pregunta,
         Respuesta: respuestap,
         Id_Usuario: id,
-  
+
       };
-  
-  
+
+
       //console.log(data);
-  
+
       await axios.post(urlRespuestas, data).then(response => {
-  
-        let dataId = {
+
+       /*  let dataId = {
           correo: correo,
         }
-  
+
         if (response.data == false) {
-  
+
           axios.put(urlBloquearUsu, dataId).then(response => {
             console.log(response.dataId);
           });
           navegate('/')
-  
+
           swal(
             '¡Usuario Bloqueado! comuniquese con el administrador.',
             '',
             'warning',
           )
-        } else {
+        } else { */
           onButtonClick('pagefour')
-  
-        }
+
+      /*   } */
       });
-  
+
       return pasar;
     } catch (error) {
       console.error("Error al procesar la solicitud:", error);
     }
 
-  
+
   };
 
 
@@ -137,9 +137,9 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
     <main>
       <form className="measure">
         <div className="contPrincipalRecu">
-          <div className='divInfoQuestionResp'>
-            <TextCustom text="Preguntas:" className="titleInput" />
-            <div className="contInput">
+         
+            <div className="contInput" style={{ fontSize: "17px" }}>
+              <TextCustom text="Preguntas:" className="titleInput" />
               <select id="Id_preguntas" className="inputCustomPreguntas">
                 {Preguntas.length ? (
                   Preguntas.map(pre => (
@@ -155,12 +155,8 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
               </select>
             </div>
 
-          </div>
-
-          <div className='divInfoQuestionResp'>
-
-            <TextCustom text="Respuesta:" className="titleInput" />
-            <div className="contInput">
+            <div className="contInput" style={{ fontSize: "17px" }}>
+              <TextCustom text="Respuesta:" className="titleInput" />
               <input
                 maxLength="20"
                 type="text"
@@ -170,7 +166,7 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
                 id='respuestap'
               />
             </div>
-          </div>
+        
         </div>
         <div className='divSubmitQuestion'>
           <input
