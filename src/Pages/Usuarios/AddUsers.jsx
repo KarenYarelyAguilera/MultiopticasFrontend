@@ -250,7 +250,7 @@ export const AddUsers = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Nombre de Usuario"
+              <TextCustom text="Usuario"
                 className="titleInput" />
               <input
                  onKeyDown={(e) => {
@@ -288,7 +288,6 @@ export const AddUsers = (props) => {
               <p className='error'>{mensaje}</p>
             </div>
 
-                {props.update? <></>:<>
                 <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
@@ -374,7 +373,7 @@ export const AddUsers = (props) => {
                 }
               ></FilledInput>
               <p className='error'>{advertencia}</p>
-            </div></>}
+            </div>
             
 
             <div className="contInput">
@@ -412,7 +411,7 @@ export const AddUsers = (props) => {
               error={errorCorreo}
               helperText={texto}
               value={correo}
-              maxLength={30}
+              maxLength={150}
             />               
             <p className='error'>{texto}</p>
             </div>
