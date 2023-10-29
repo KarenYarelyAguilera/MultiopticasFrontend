@@ -22,7 +22,7 @@ export const PreguntasLoginxPV = props => {
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
-  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas'; //Trae el numero de preguntas
 
 
   const [Resp, setResp] = useState(props.data.Respuesta || '');
