@@ -35,18 +35,18 @@ export const RegistroPreguntaDeSeguridad = props => {
         user: props.user,
     };
 
-/*     const dataPreg={
-
-        Pregunta:props.data
-    }
-     console.log(dataPreg);
- */
-/*     //para las preguntas
-    useEffect(() => {
-        axios.get(urlPreguntas).then(response => {
-            setPreguntas(response.data);
-        }).catch(error => console.log(error))
-    }, [cambio]); */
+    /*     const dataPreg={
+    
+            Pregunta:props.data
+        }
+         console.log(dataPreg);
+     */
+    /*     //para las preguntas
+        useEffect(() => {
+            axios.get(urlPreguntas).then(response => {
+                setPreguntas(response.data);
+            }).catch(error => console.log(error))
+        }, [cambio]); */
 
     const handleBack = () => {
         swal({
@@ -85,18 +85,18 @@ export const RegistroPreguntaDeSeguridad = props => {
     const actualizar = async () => {
         try {
             const respuestap = Resp;
-    
+
             const data = {
                 pregunta: respuestap,
                 modificado_por: props.infoPerfil.nombre,
                 fecha_modificacion: new Date(),
                 Id_Pregunta: props.data.Id_Pregunta,
             };
-    
+
             console.log(data);
-    
+
             await axios.put(urlPutPreguntas, data);
-    
+
             swal("Pregunta Actualizada Correctamente", "", "success").then(() => {
                 navigate('/config/PreguntasSeguridad');
             });
@@ -105,7 +105,7 @@ export const RegistroPreguntaDeSeguridad = props => {
             swal('¡Error al Actualizar! Verifique si la pregunta ya existe.', '', 'error');
         }
     };
-    
+
 
     return (
         <div className="divSection">
@@ -188,7 +188,14 @@ export const RegistroPreguntaDeSeguridad = props => {
 
                     </div> */}
 
-                    <div className='divSubmitQuestion'>
+                    <div className='divSubmitRecuperacion'>
+                        <input
+                            className="btnSubmitPreguntas"
+                            type="button"
+                            value="Cancelar"
+                            onClick={handleBack}
+                        />
+
                         <input
                             className="btnSubmitPreguntas"
                             type="button"
@@ -209,16 +216,6 @@ export const RegistroPreguntaDeSeguridad = props => {
                                     props.actualizar ? actualizar() : handleClick();
                                 }
                             }}
-                        />
-                        <br />
-
-
-
-                        <input
-                            className="btnSubmitPreguntas"
-                            type="button"
-                            value="Cancelar"
-                            onClick={handleBack}
                         />
                     </div>
 

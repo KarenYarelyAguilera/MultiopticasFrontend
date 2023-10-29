@@ -23,6 +23,7 @@ export const Perfil = (props) => {
   const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/salirperfil';
   const urlUpUsuario = 'http://localhost:3000/api/actualizarPerfil';
   const urlBPerflUpdt = 'http://localhost:3000/api/bitacora/cambioPerfil';
+  const urlDelAllPreguntas = 'http://localhost:3000/api/eliminarPregConfig';
 
 
 
@@ -62,8 +63,20 @@ export const Perfil = (props) => {
     navegate("/perfilStepper");
   };
 
-  const handlePreguntas = () => {
-    navegate("/Preguntas/lista");
+  const handlePreguntas = async() => {
+    const dataId = {
+      Id_Usuario: props.idUsuario,
+    };
+    console.log(dataId);
+
+    //NO ME FUNCIONA, DICE QUE SE EJECUTA PERO NO ME FUNCIONA
+    await axios.post(urlDelAllPreguntas,dataId).then(response => {
+/*       swal("Configuración de preguntas", "", "success"); */
+      navegate('/preguntasPerfil')
+    }).catch(error => {
+      console.log('error');
+      swal("¡Error al configurar las preguntas de seguridad!", "", "error");
+    });
   };
 
   const handleBack = () => {
@@ -115,11 +128,11 @@ export const Perfil = (props) => {
           <ArrowBackIcon className="iconBack" />
         </Button>
 
-        <div className="titleAddUser"  align="center">
+        <div className="titleAddUser" align="center">
           <h2>Mi Perfil</h2>
         </div>
 
-        <div className="infoAddUser"  align="left" >
+        <div className="infoAddUser" align="left" >
           <section className='section2'>
             <div className="contInput">
               <TextCustom text="Usuario: " className="titleInput" />
@@ -135,6 +148,7 @@ export const Perfil = (props) => {
               />
             </div>
             <br />
+
             <div className="contInput">
               <TextCustom text="Nombre: " className="titleInput" />
               <input
@@ -168,8 +182,9 @@ export const Perfil = (props) => {
                 id="nombre"
                 value={nombre}
                 error={errorNombre}
+                disabled
               />
-              <p className="error">{Msj}</p>
+              {/* <p className="error">{Msj}</p> */}
             </div>
             <br />
             <div className="contInput">
@@ -205,12 +220,15 @@ export const Perfil = (props) => {
                 id="apellido"
                 value={apellido}
                 error={errorApellido}
+                disabled
               />
-              <p className="error">{aviso}</p>
+              {/* <p className="error">{aviso}</p> */}
+              <br />
             </div>
           </section>
 
           <section className='section2' >
+            <br /> <br /><br /><br /> <br /> <br /> <br />
             <div className="contInput">
               <TextCustom text="Identidad: " className="titleInput" />
               <input
@@ -257,11 +275,12 @@ export const Perfil = (props) => {
                 id="correo"
                 value={Correo_Electronico}
                 error={errorcorreoelec}
+                disabled
               />
               {<p className="error">{advertencia}</p>}
             </div>
             <br />
-            <div className="contInput">
+            {/* <div className="contInput">
               <TextCustom text="Cargo:  " className="titleInput" />
               <input
                 type="text"
@@ -273,12 +292,26 @@ export const Perfil = (props) => {
                 value={props.infoPerfil.Rol}
                 disabled
               />
-            </div>
+            </div> */}
+
+            {/*  <div className="contInput">
+              <TextCustom text="Teléfono:  " className="titleInput" />
+              <input
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Rol"
+                id="teléfono"
+                value={props.infoPerfil.telefonoEmpleado}
+                disabled
+              />
+            </div> */}
           </section>
 
 
           <section className='section2'>
-            <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/*  <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <button
                 className="btnUpdatePassword"
                 type='submit'
@@ -311,39 +344,18 @@ export const Perfil = (props) => {
               //onClick={handleActualizarDatos}
               // onClick={handleActualizarDatos}
               >Actualizar Datos</button>
-            </div>
-            <br />
+            </div> */}
             <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <TextCustom text="" className="titleInput" />
-              {/* <FilledInput
-              id="filled-adornment-password"
-              placeholder=' '
-              className="inputCustomUpdatePassword"
-              // value={'******************'}
-              disabled
-              type={showPassword ? 'text' : 'password'}
-              inputProps={{ maxLength: 20, minLenght: 8 }}
-              inputRef={refContrasenia}
-            ></FilledInput> */}
               <button
                 className="btnUpdatePassword"
                 type='submit'
                 onClick={handlePreguntas}
               >Modificar Preguntas</button>
             </div>
-            <br />
+          </section>
+
+          <section className='section2'>
             <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <TextCustom text="" className="titleInput" />
-              {/* <FilledInput
-              id="filled-adornment-password"
-              // placeholder='******************'
-              value={props.infoPerfil.Contrasenia}
-              className="inputCustomUpdatePassword"
-              type={showPassword ? 'text' : 'password'}
-              inputProps={{ maxLength: 20, minLenght: 8 }}
-              inputRef={refContrasenia}
-              disabled
-            ></FilledInput> */}
               <button
                 className="btnUpdatePassword"
                 type='submit'

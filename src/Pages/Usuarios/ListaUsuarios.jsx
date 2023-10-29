@@ -116,7 +116,8 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
-    { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
     { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     {
@@ -310,7 +311,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -323,7 +324,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -342,7 +343,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
             <Button
-              className="btnCreate"
+              className="btnInactivo"
               onClick={() => {
                 setInactivo(inactivo===false?true:false)
                 
