@@ -136,6 +136,7 @@ export const AddUsers = (props) => {
     let data = {
       idUsuario: props.data.id_Usuario,
       usuario: nombre.toUpperCase(),
+      clave:refContrasenia.current.value,
       nombreUsuario: nombre.toUpperCase(),
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,
