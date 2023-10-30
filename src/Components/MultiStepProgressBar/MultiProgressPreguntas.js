@@ -4,9 +4,7 @@ import { ProgressBar, Step } from "react-step-progress-bar";
 
 export const MultiProgressPreguntas = ({ page, onPageNumberClick }) => {
   var stepPercentage = 0;
-  /* if (page === "pageone") {
-    stepPercentage = 16;
-  } else */ if (page === "pagetwo") {
+  if (page === "pagetwo") {
     stepPercentage = 49.5;
   } else if (page === "pagethree") {
     stepPercentage = 82.5;
