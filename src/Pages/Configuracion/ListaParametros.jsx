@@ -1,20 +1,32 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
-
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
+import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+
+//GENERADOR DE PDF
+import { generatePDF } from '../../Components/generatePDF';
 
 
 export const ListaParametros = ({props,data,update}) => {
@@ -45,12 +57,12 @@ export const ListaParametros = ({props,data,update}) => {
 
   const columns = [
     { field: 'Id_Parametro', headerName: 'ID Parametro', width: 140 },
-    { field: 'Parametro', headerName: 'Parametro', width: 250 },
-    { field: 'Valor', headerName: 'Valor', width: 200 },
-    { field: 'creado_por', headerName: 'Creado Por', width: 200 },
+    { field: 'Parametro', headerName: 'Parametro', width: 450 },
+    { field: 'Valor', headerName: 'Valor', width: 700 },
+   /*  { field: 'creado_por', headerName: 'Creado Por', width: 200 },
     { field: 'fecha_creacion', headerName: 'Fecha de Creacion', width: 200 },
     { field: 'modificado_por', headerName: 'Modificado por', width: 200 },
-    { field: 'fecha_modificacion', headerName: 'Fecha de Modificacion', width: 200 },
+    { field: 'fecha_modificacion', headerName: 'Fecha de Modificacion', width: 200 }, */
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -60,7 +72,7 @@ export const ListaParametros = ({props,data,update}) => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleButtonClick(params)}
+            onClick={() => handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -69,6 +81,34 @@ export const ListaParametros = ({props,data,update}) => {
       ),
     },
   ];
+
+   //FUNCION DE ACTUALIZAR 
+   function handleUpdt(id) {
+    /* if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion","","error")
+    } else { */
+      swal({
+        buttons: {
+          update: 'Actualizar',
+          cancel: 'Cancelar',
+        },
+        content: (
+          <div className="logoModal">
+            ¿Desea actualizar el parametro: {id.Parametro}?
+          </div>
+        ),
+      }).then((op) => {
+        switch (op) {
+            case 'update':
+            data(id)
+            update(true)
+        navegate('/config/ActualizarParametros')
+        break;
+        default:
+        break;
+        }
+      });   
+  };
 
 
   function handleButtonClick(param) {

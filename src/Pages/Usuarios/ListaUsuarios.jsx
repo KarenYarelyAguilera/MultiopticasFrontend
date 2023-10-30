@@ -41,17 +41,22 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
 
+    const urlUserBlock="http://localhost:3000/api/usuarios/inactivos"
+
   //  const urlBitacoraDelUsuario=
   //    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataBlock, setTableDataBlock] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo]=useState(false)
 
   useEffect(() => {
     axios.get(urlUsers).then(response => setTableData(response.data))
-  }, [cambio]);
+    axios.get(urlUserBlock).then(response => setTableDataBlock(response.data))
+  }, [cambio,inactivo]);
 
 
   //IMPRIMIR PDF
@@ -96,37 +101,29 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
-  );
+  ) 
+
+  const filteredDataBlock=
+  tableDataBlock.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  ) 
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
-    { field: 'Nombre_Usuario', headerName: 'Nombre de Usuario', width: 150, headerAlign: 'center' },
-    { field: 'rol', headerName: 'Rol', width: 130, headerAlign: 'center' },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
-    {
-      field: 'Contrasenia', headerName: 'Contraseña', width: 130, headerAlign: 'center',
-      valueGetter: (params) => {
-        // Obtener la respuesta original
-        const originalRespuesta = params.row.Contrasenia;
-        // Crear un string de asteriscos con la misma longitud que la respuesta original
-        const asterisks = '*'.repeat(originalRespuesta.length);
-        return asterisks;
-      },
+    {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'},
+    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 180, headerAlign: 'center',valueGetter: (params) => {
+      const date = new Date(params.row.Fecha_Vencimiento);
+      return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
     },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 150, headerAlign: 'center'
-    },
-    {
-      field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 150, headerAlign: 'center',
-      valueGetter: (params) => {
-        const date = new Date(params.row.Fecha_Vencimiento);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
+  },
+  { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -136,7 +133,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row)}
+            onClick={()=>handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -253,7 +250,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -266,7 +263,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -282,6 +279,14 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
               Nuevo
             </Button>
 
+
+
+            <Button className="btnInactivo" onClick={() => {setInactivo(inactivo===false?true:false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo===false?"Inactivos":"Activos"}
+            </Button>
+
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
@@ -294,7 +299,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
-          rows={filteredData}
+          rows={inactivo===false?filteredData:filteredDataBlock}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

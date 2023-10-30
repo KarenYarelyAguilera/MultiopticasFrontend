@@ -28,23 +28,23 @@ export const PageOne = ({ correo, onButtonClick }) => {
     navegate('/dashboard');
   };
 
-  const handleClick = ()=>{
+  const handleClick = () => {
     const urlCompararContra = "http://localhost:3000/api/login/compare"
     const contra1 = document.getElementById("contra1").value
     //const contra2 = document.getElementById("contra2").value
 
-    const data ={
-      correo:correo,
-      clave:contra1,
+    const data = {
+      correo: correo,
+      clave: contra1,
     }
 
-    axios.post(urlCompararContra,data).then(response=>{
+    axios.post(urlCompararContra, data).then(response => {
       console.log(response.data);
-      if (response.data.result===false) {
-        swal("La contraseña no es correcta","","error")
-      }else{
+      if (response.data.result === false) {
+        swal("La contraseña no es correcta", "", "error")
+      } else {
         onButtonClick('pagetwo')
-      } 
+      }
 
     })
   }
@@ -56,23 +56,23 @@ export const PageOne = ({ correo, onButtonClick }) => {
         <div className="contPrincipalRecuperacion">
           <div className='divInfoRecuperacion'>
 
-          <TextCustom text="Contraseña actual:" className="titleInput" />
-          <div className="contInput">
-          <FilledInput
+            <TextCustom text="Contraseña actual:" className="titleInput" />
+            <div className="contInput">
+              <FilledInput
                 onChange={(e) => {
                   setContra2(e.target.value);
                   if (contra2 === "") {
                     setErrorContra2(true);
                     setadvertencia("Los campos no deben estar vacíos");
                   }
-                  }
+                }
                 }
                 id="contra1"
-               //placeholder='******************'
+                //placeholder='******************'
                 //value={props.infoPerfil.Contrasenia} 
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20, minLenght:8 }}
+                inputProps={{ maxLength: 20, minLenght: 8 }}
                 inputRef={refContrasenia}
                 endAdornment={
 
@@ -89,21 +89,22 @@ export const PageOne = ({ correo, onButtonClick }) => {
                   </InputAdornment>
                 }
               ></FilledInput>
-          </div>
+            </div>
           </div>
         </div>
         <div className='divSubmitRecuperacion'>
+
+          <input
+            className="btnSubmit"
+            type="button"
+            value="Cancelar"
+            onClick={() => { navegate('/config/perfil') }}
+          />
           <input
             className="btnSubmit"
             type="button"
             value="Siguiente"
             onClick={handleClick}
-          />
-          <input
-            className="btnSubmit"
-            type="button"
-            value="Cancelar"
-            onClick={()=> {navegate('/config/perfil')}}
           />
 
 

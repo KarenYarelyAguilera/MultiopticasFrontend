@@ -16,48 +16,52 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
 
   //const [email,setEmail]=useState('');
-  const [pasar, setPasar]=useState(false)
+  const [pasar, setPasar] = useState(false)
 
-  const data={
+  /* const data={
     correo:correo1
   }
   console.log(data);
-  
-    const handleClick = async () => {
-      const respuesta = document.getElementById('respuesta').value;
-      if (correo1 === respuesta) {
-        
-        await axios.post(urlUserExist,data).then(response=>{
-          
-          id(response.data[0].Id_Usuario)
-          autor(response.data[0].Nombre_Usuario)
-          
-          if (response.data) {
-  
-            const data2 = {
-              "correo": correo1,
-              "id": response.data[0].Id_Usuario,
-            };
-            console.log(data2);
-    
-            axios.post(urlUserExist, data2).then(()=> onButtonClick('pagethree')).catch(() => {
-              swal("Ocurrió un error al realizar la segunda petición POST");
-            });
+   */
+  const handleClick = async () => {
+    const respuesta = document.getElementById('respuesta').value;
+    /*  if (correo1 === respuesta) { */
+    const crr = {
+      correo: respuesta,
+    }
+    console.log(crr);
 
-          }else{
-            swal("El correo que ingreso es erroneo o no esta registrado", "", "error")
-          }
-  
-         
-        
-        }).catch(() => {
-          swal("Verifique si el correo que ingreso es correcto", "", "error");
+    await axios.post(urlUserExist, crr).then(response => {
+
+      id(response.data[0].Id_Usuario)
+      autor(response.data[0].Nombre_Usuario)
+
+      if (response.data) {
+
+        const data2 = {
+          "correo": respuesta,
+          "id": response.data[0].Id_Usuario,
+        };
+        console.log(data2);
+
+        axios.post(urlUserExist, data2).then(() => onButtonClick('pagethree')).catch(() => {
+          swal("Ocurrió un error al realizar la segunda petición POST");
         });
-        
+
       } else {
-        swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+        swal("El correo que ingreso es erroneo o no esta registrado", "", "error")
       }
-    };
+
+
+
+    }).catch(() => {
+      swal("Verifique si el correo que ingreso es correcto", "", "error");
+    });
+
+    /* } else {
+      swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+    } */
+  };
 
 
 
@@ -65,15 +69,15 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
   return (
     <main>
-      
-    
+
+
       <form className="measure">
         <div className="contPrincipalRecuperacion">
-          <div className='divInfoRecuperacion'>
-            
-          <TextCustom text="Confirme su correo electrónico:" className="titleInput" />
-          <div className="contInput">
-            <input
+          <div className='divInfoRecuperacion' style={{ fontSize: "17px" }}>
+
+            <TextCustom text="Ingrese su correo electrónico:" className="titleInput" />
+            <div className="contInput">
+              <input
 
                 onKeyDown={(e) => {
                   setCorreo(e.target.value)
@@ -104,14 +108,14 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
 
 
-              type="text"
-              name=""
-              className="inputCustom"
-              placeholder="Correo"
-              id='respuesta'
-            />
-          </div>
-          <p className='error'>{textoCorreo}</p>
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Correo"
+                id='respuesta'
+              />
+            </div>
+            <p className='error'>{textoCorreo}</p>
           </div>
         </div>
         <div className='divSubmitRecuperacion'>
