@@ -40,7 +40,6 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
-  const urlUserStateUpdate="http://localhost:3000/api/usuario/estado/seleccionado"
 
     const urlUserBlock="http://localhost:3000/api/usuarios/inactivos"
 
@@ -117,31 +116,14 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
     { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
-    { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
-    {
-      field: 'Contrasenia', headerName: 'Contraseña', width: 130, headerAlign: 'center',
-      valueGetter: (params) => {
-        // Obtener la respuesta original
-        const originalRespuesta = params.row.Contrasenia;
-        // Crear un string de asteriscos con la misma longitud que la respuesta original
-        const asterisks = '*'.repeat(originalRespuesta.length);
-        return asterisks;
-      },
+    {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'},
+    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 180, headerAlign: 'center',valueGetter: (params) => {
+      const date = new Date(params.row.Fecha_Vencimiento);
+      return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
     },
-    {
-      field: 'Fecha_Ultima_Conexion',
-      headerName: 'Ultima Conexion',
-      width: 150, headerAlign: 'center'
-    },
-    {
-      field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 150, headerAlign: 'center',
-      valueGetter: (params) => {
-        const date = new Date(params.row.Fecha_Vencimiento);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
+  },
+  { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -151,10 +133,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={() =>{
-              inactivo==false?  handleUpdt(params.row):actualizarEstado(params.row)
-            
-            }}
+            onClick={()=>handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -172,46 +151,6 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const handleBack = () => {
     navegate('/usuarios');
   };
-
-  function actualizarEstado(id) {
-    swal({
-      buttons:{
-        ok: 'Editar Estado',
-        cancel:'Cancelar',
-      },
-      content:(
-        <div>
-    <h2>Cambio de Estado al usuario {id.Usuario}</h2>
-     
-        <h4>Estado</h4>
-        <select id='Estado'>
-          <option value="Activo">Activo</option>
-          <option value="Inactivo">Inactivo</option>
-          <option value="Bloqueado">Bloqueado</option>
-        </select>
-     
-    </div>
-      )
-    }).then(async (op)=>{
-
-      let estado = document.getElementById("Estado").value
-      let data={
-        id:id.id_Usuario,
-        estado:estado
-      }
-      console.log(data);
-      op=="ok"? await axios.put(urlUserStateUpdate,data).then(()=>{
-        
-          
-      
-        swal("Estado Cambiado Exitosamente","","success").then(()=>{
-          setCambio(cambio+1)
-        })
-      }).catch((e)=>console.log(e))
-      :console.log("qweqew");
-    })
-  }
-
 
   function handleDel(id) {
     if (permisos[0].eliminar === "n") {
@@ -342,13 +281,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
 
-            <Button
-              className="btnInactivo"
-              onClick={() => {
-                setInactivo(inactivo===false?true:false)
-                
-              }}
-            >
+            <Button className="btnInactivo" onClick={() => {setInactivo(inactivo===false?true:false) }}>
               <AddIcon style={{ marginRight: '5px' }} />
               {inactivo===false?"Inactivos":"Activos"}
             </Button>
