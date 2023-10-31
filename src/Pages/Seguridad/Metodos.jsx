@@ -17,7 +17,7 @@ export const Metodos = props => {
   const id = idd=>setId(idd)
   const autr= aut=>setAutor(aut)
   
-  const [page, setPage] = useState('pageone');
+  const [page, setPage] = useState('pagetwo');
 
   const nextPage = page => {
     setPage(page);
@@ -48,7 +48,6 @@ export const Metodos = props => {
         <MultiStepProgressBar page={page} onPageNumberClick={nextPageNumber} />
         {
           {
-            pageone: <PageOne correo={crr1}  onButtonClick={nextPage} />,
             pagetwo: <PageTwo correo1={correo1} id={id} autor={autr} onButtonClick={nextPage} />,
             pagethree: <PageThree correo={correo1} id={Id}  onButtonClick={nextPage} />,
             pagefour: <PageFour correo={correo1} id={Id} autor={autor} />,
