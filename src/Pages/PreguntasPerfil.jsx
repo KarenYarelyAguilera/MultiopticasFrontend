@@ -29,8 +29,8 @@ export const PreguntasPerfil = props => {
   const [Resp, setResp] = useState(props.data.Respuesta || '');
   const [errorResp, setErrorResp] = useState(false);
   const [Msj, setMsj] = useState('');
-  const [NumPreg, setNumPreg] = useState(0);
-  const [Contador, setContador] = useState(0);
+  const [NumPreg, setNumPreg] = useState(1);
+  const [Contador, setContador] = useState(1);
 
 
   //para el parametro
@@ -38,7 +38,7 @@ export const PreguntasPerfil = props => {
     axios.get(urlParametro).then(response => {
       setNumPreg(response.data);
       //console.log(NumPreg);
-      if (response.data===Contador) {
+      if (response.data === Contador) {
         swal("Preguntas configuradas", "", "success");
         navigate('/config/perfil')
       }
@@ -88,23 +88,36 @@ export const PreguntasPerfil = props => {
       console.log(dataId);
 
       setContador(Contador + 1); // Incremento
+      console.log(Contador);
 
       if (Contador < NumPreg) {
         setResp('');// Limpiar la respuesta
+        console.log(Contador);
 
-      await axios.post(urlRespuestas, data).then(response => {
-        axios.post(urlBPreguntaslAgg, dataId)
-        swal("Pregunta registrada correctamente", "", "success")
-      }).catch(error => {
-        setContador(Contador - 1);// Decrementar el contador en caso de error
-        swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error")
-      });
-    }else {
-      swal("Finalizado", "", "success");
-      navigate('/config/perfil');
-    }
+        await axios.post(urlRespuestas, data).then(response => {
+          //axios.post(urlBPreguntaslAgg, dataId)
+          console.log(Contador);
+          console.log(NumPreg);
+
+
+          swal("Pregunta registrada correctamente", "", "success")
+         
+          console.log(Contador);
+          console.log(NumPreg); 
+        }).catch(error => {
+          setContador(Contador - 1);// Decrementar el contador en caso de error
+          swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error")
+        });
+        
+        
+      }  else {
+        await axios.post(urlRespuestas, data)
+        swal("Preguntas configuradas correctamente", "", "success");
+        navigate('/config/perfil');
+      } 
+      
     } catch (error) {
-
+      swal("Error al registrar", "", "error")
     }
 
   };
@@ -204,7 +217,7 @@ export const PreguntasPerfil = props => {
 
             />
             <br />
-           {/*  <input
+            {/*  <input
               className="btnSubmitPreguntas"
               type="button"
               value="Cancelar"
