@@ -101,9 +101,22 @@ const actualizarGarantia = async () => {
 
   //BOTON DE RETROCESO 
   const handleBack = () => {
-    navegate('/menuVentas/listaGarantias');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de garantia ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.limpiarData({})
+        props.limpiarUpdate(false)
+        navegate('/menuVentas/listaGarantias');
+      } else {
+      }
+    });
   };
-
+ 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
