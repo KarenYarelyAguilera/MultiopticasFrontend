@@ -33,7 +33,7 @@ export const ListaEmpleados = (props) => {
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
 
-  const urlEmployees = 'http://localhost:3000/api/empleado';
+  const urlEmployees = 'http://localhost:3000/api/empleados';
   const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
 
   //--------------------URL DE BITACORA--------------------
@@ -117,7 +117,7 @@ export const ListaEmpleados = (props) => {
     { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
     { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190, headerAlign: 'center' },
-    { field: 'departamento', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
+    { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
     { field: 'descripcion', headerName: 'Genero', width: 190, headerAlign: 'center' },
     { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190, headerAlign: 'center' },
     {
