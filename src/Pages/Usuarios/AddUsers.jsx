@@ -476,6 +476,7 @@ export const AddUsers = (props) => {
               <select id="estado" className="selectCustom">
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
+                <option value={"Bloqueado"}>Bloqueado</option>
               </select>
             </div> : '' }
 
