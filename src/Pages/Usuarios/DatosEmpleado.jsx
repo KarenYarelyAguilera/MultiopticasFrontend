@@ -65,6 +65,9 @@ export const DatosEmpleado = (props) => {
   const [Telefonoc, setTelefonoc] = useState(0);
 
   const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
+  const [fechaSalida, setFechaSalida] = useState(props.data.fechaSalida || '');
+  const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaCumpleanos || '');
+  
   
 
   const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
@@ -78,6 +81,27 @@ export const DatosEmpleado = (props) => {
     axios.get(urlSucursales).then(response => {
       setSucursales(response.data)
     }).catch(error => console.log(error))
+  }, []);
+
+  useEffect(() => {
+    // Formatear las fechas en el formato 'YYYY-MM-DD' antes de asignarlas a los estados
+    if (props.data.fechaIngreso) {
+      const fechaIngresoDate = new Date(props.data.fechaIngreso);
+      const formattedFechaIngreso = fechaIngresoDate.toISOString().split('T')[0];
+      setFechaIngreso(formattedFechaIngreso);
+    }
+
+    if (props.data.fechaSalida) {
+      const fechaSalidaDate = new Date(props.data.fechaSalida);
+      const formattedFechaSalida = fechaSalidaDate.toISOString().split('T')[0];
+      setFechaSalida(formattedFechaSalida);
+    }
+
+    if (props.data.fechaCumpleanos) {
+      const fechaNacimientoDate = new Date(props.data.fechaCumpleanos);
+      const formattedFechaNacimiento = fechaNacimientoDate.toISOString().split('T')[0];
+      setFechaNacimiento(formattedFechaNacimiento);
+    }
   }, []);
 
   const navegate = useNavigate();
@@ -451,6 +475,8 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de ingreso"
                 id="fechaIngreso"
+                value={fechaIngreso}
+                onChange={(e)=>setFechaIngreso(e.target.value)}
               />
             </div>
 
@@ -464,6 +490,8 @@ export const DatosEmpleado = (props) => {
                 placeholder="Fecha de Salida"
                 id="fechaSalida"
                 defaultValue={"00-00-0000"}
+                value={fechaSalida}
+                onChange={(e)=>setFechaSalida(e.target.value)}
               />
             </div>
 
@@ -476,6 +504,8 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de Nacimiento"
                 id="fechaCumpleanos"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
               />
             </div>
 

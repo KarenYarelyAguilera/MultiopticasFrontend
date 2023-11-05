@@ -55,7 +55,7 @@ export const AddUsers = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [optionsEmpleados, setOptionsEmpelados] = useState([]);
   const [selectedOption, setSelectedOption] = useState(props.data.idEmpleado || null); // Estado para la opción seleccionada
-
+  const [rol,setRolSelect] = useState(props.data.Id_Rol || null)
   
 
   const handleChange = (event) => {
@@ -98,6 +98,7 @@ export const AddUsers = (props) => {
 
   useEffect(() => {
     //-------------------------------De aqui----------------------------------------------
+    console.log(props.data);
     axios.get(urlEmployees).then((response) => {
       const employeeOptions = response.data.map((pre) => ({
         value: pre.IdEmpleado,
@@ -444,7 +445,9 @@ export const AddUsers = (props) => {
 
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom" value={props.data.Id_Rol} >//El value debe ser el id del valor a obtener
+              <select id="cargo" className="selectCustom" value={rol} onChange={(e)=>{
+                setRolSelect(e.target.value)
+              }} >//El value debe ser el id del valor a obtener
                 {Rol.length ? (
                   Rol.map(pre => (
                     <option key={pre.Id_Rol} value={pre.Id_Rol}>
