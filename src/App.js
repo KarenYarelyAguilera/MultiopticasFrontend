@@ -272,6 +272,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     obj={cObjeto}
                     idUsuario={idUsuario}
                     idRol={idRol}
+                    bitacora={bita}
                   />
 
                   <BarraHorizontal user={usuario} correo={mail} idUsuario={idUsuario} />
@@ -303,6 +304,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 estado={activo}
                 id={idUsuario}
                 loginpvez={loginpvez}
+                idUsuario={idUsuario}
+                correo={correo}
               // activo={activo}
               // user={usuario}
               // mail={correo}
@@ -352,6 +355,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 // mail={correo}
                 infoPerfil={infoPerfil}
                 idUsuario={idUsuario}
+                activo={bitacora}
+
 
               />
             }
@@ -2152,6 +2157,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idUsuario={idUsuario}
                   update={update}
                   data={data}
+                  activo={bitacora}
 
 
 
@@ -2176,7 +2182,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idUsuario={idUsuario}
                   idRol={idRol}
                 />
-                <BarraHorizontal user={usuario} />
+                <BarraHorizontal user={usuario} activo={bitacora} idUsuario={idUsuario} />
                 <Configuracion></Configuracion>
               </div>
               // </ProtectedRoute>
@@ -2328,6 +2334,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
                     // infoPerfil={infoPerfil}
                     user={usuario}
+                    bitacora={bita}
+
                   ></Recordatorio>
                 </div>
               </ProtectedRoute>
@@ -2346,7 +2354,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                     // infoPerfil={infoPerfil}
                     user={usuario}
-                  //data={data}
+                    //data={data}
+                    bitacora={bita}
 
                   ></RecordatorioCitas>
                 </div>
@@ -2368,6 +2377,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     idUsuario={idUsuario}
                     //infoPerfil={infoPerfil}
                     user={usuario}
+                    bitacora={bita}
                   ></RecordatorioCitasEditar>
                 </div>
               </ProtectedRoute>

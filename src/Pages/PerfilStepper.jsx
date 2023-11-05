@@ -5,6 +5,7 @@ import { PageTwo } from '../Components/Perfil/PageTwo/PageTwo';
 import React, { useState } from 'react';
 import { MultiProgressPerfil } from '../Components/MultiStepProgressBar/MultiProgressPerfil';
 import passwordRecovery from '../IMG/passwordrecovery.png';
+import { Bitacora } from '../Components/bitacora.jsx';
 
 export const PerfilStepper = props => {
   
@@ -18,10 +19,12 @@ export const PerfilStepper = props => {
   const [correo1, setCorreo1] = useState('');
   const [Id,setId] = useState(0);
   const [autor,setAutor]=useState("");
+  const [bitacora,setBitacora]=useState("");
 
   const crr1 = correo=>setCorreo1(correo);
   const id = idd=>setId(idd);
   const autr= aut=>setAutor(aut);
+  const btc= bita=>setBitacora(bita);
 
   const clv = clav=>setClave(clav);
 
@@ -57,7 +60,7 @@ export const PerfilStepper = props => {
         {
           {
             pageone: <PageOne correo={props.infoPerfil.Correo_Electronico}  onButtonClick={nextPage} />,
-            pagetwo: <PageTwo correo={props.infoPerfil.Correo_Electronico}  id={props.infoPerfil.Id_Usuario} autor={props.infoPerfil.Nombre_Usuario}  onButtonClick={nextPage} />,
+            pagetwo: <PageTwo correo={props.infoPerfil.Correo_Electronico}  id={props.infoPerfil.Id_Usuario} autor={props.infoPerfil.Nombre_Usuario} bitacora={props.activo.bitacora} onButtonClick={nextPage} />,
           
 
           }[page]

@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 import MulltiOpticaOjo from '../IMG/MultiopticaOjo.png';
+import { Bitacora } from '../Components/bitacora.jsx';
 
 
 export const BarraHorizontal = (props, { onChange = () => null }) => {
@@ -65,8 +66,16 @@ export const BarraHorizontal = (props, { onChange = () => null }) => {
       Id: props.idUsuario,
     };
     console.log(dataB)
+
+    const bitacora = {
+      urlB:urlBitacoraPerfil,
+      activo:props.activo,
+      dataB:dataB
+    };
+
     navigate('/config/perfil');
-    axios.post(urlBitacoraPerfil, dataB)
+    Bitacora(bitacora);
+
     onChange();
   };
 

@@ -27,9 +27,9 @@ export const Progress = props => {
 
   const nextPageNumber = pageNumber => {
     switch (pageNumber) {
-      /* case '1':
+       case '1':
         setPage('pageone');
-        break; */
+        break; 
       case '2':
         setPage('pagetwo');
         break;
