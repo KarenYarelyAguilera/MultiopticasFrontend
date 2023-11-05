@@ -209,22 +209,10 @@ export const AddUsers = (props) => {
   }
 
   const handleBack = () => {
-    swal({
-      title: 'Advertencia',
-      text: 'Hay un proceso de creación de usuario ¿Estás seguro que deseas salir?',
-      icon: 'warning',
-      buttons: ['Cancelar', 'Salir'],
-      dangerMode: true,
-    }).then((confirmExit) => {
-      if (confirmExit) {
         props.limpiarData({})
         props.limpiarUpdate(false)
         axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
         navegate('/usuarios/lista');
-      } else {
-      }
-    });
-    
   }
 
   return (
