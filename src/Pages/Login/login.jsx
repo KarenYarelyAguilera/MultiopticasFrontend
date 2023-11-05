@@ -274,9 +274,9 @@ export const Login = props => {
             Iniciar sesion
           </Button>
 
-          <span className="btnRegistrate">
+          {/* <span className="btnRegistrate">
             ¿No tienes una cuenta? <a href="/registration">Registrate</a>
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="contImgLogin">

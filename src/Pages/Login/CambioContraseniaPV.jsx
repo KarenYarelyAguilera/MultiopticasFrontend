@@ -45,6 +45,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, p
     const dataId = {
       Id_Usuario: idUsuario,
     };
+    console.log(dataId);
 
     const data = {
       correo: correo,

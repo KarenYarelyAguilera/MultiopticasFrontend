@@ -1,6 +1,8 @@
 //GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
 
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -19,6 +21,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
 import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
@@ -51,6 +54,35 @@ const [searchTerm, setSearchTerm] = useState('');
   useEffect(() => {
     axios.get (urlListaDescuentos).then(response=> setTableData(response.data))
   }, [cambio]);
+
+//Imprime el EXCEL 
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = tableData.map((row, index) => ({
+    'N°': row.IdDescuento,
+    'Estado': row.estado,
+    'Descuento del Cliente': row.descPorcent,
+    'Descuento del Empleado': row.descPorcentEmpleado, 
+   // 'Estado': row.estado,
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+  // Formato para el encabezado
+  worksheet['A1'] = { v: 'LISTA DE DESCUENTOS', s: { font: { bold: true } } };
+  worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
+  worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
+  worksheet['B5'] = { v: 'Estado', s: { font: { bold: true }} };
+  worksheet['C5'] = { v: 'Descuento del Cliente', s: { font: { bold: true }} };
+  worksheet['D5'] = { v: 'Descuento del Empleado', s: { font: { bold: true } }};
+ // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Descuentos.xlsx');
+};
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -196,25 +228,6 @@ const [searchTerm, setSearchTerm] = useState('');
     
   };
 
-  //   let descCliente = parseFloat(document.getElementById("descCliente").value)
-  //   let descEmpleado = parseFloat(document.getElementById("descEmpleado").value)
-  //   let estado = parseInt(document.getElementById("estado").value)
-
-  //   let data = {
-  //     estado:estado,
-  //     descPorcent:descCliente,
-  //     descPorcentEmpleado:descEmpleado,
-  //     IdDescuento:fila.row.IdDescuento
-  //   };
-      
-
-  //     if (sendData(urlUpdateDescuento, data)) {
-  //       swal(<h1>Usuario Actualizado Correctamente</h1>);
-  //       setcambio(cambio+1)
-  //     }
-  //   });
-  // };
-
     //BOTON DE RETROCEDER 
   const handleBack = () => {
     navegate('/config');
@@ -263,9 +276,14 @@ const [searchTerm, setSearchTerm] = useState('');
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <BorderAllIcon style={{ marginRight: '3px' }} />
+              Generar excel
+            </Button>
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
-
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>

@@ -64,6 +64,12 @@ export const DatosEmpleado = (props) => {
   const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
+  const [fechaSalida, setFechaSalida] = useState(props.data.fechaSalida || '');
+  const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaCumpleanos || '');
+  
+  
+
   const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
 
   /*   useEffect(() => {
@@ -77,6 +83,27 @@ export const DatosEmpleado = (props) => {
     }).catch(error => console.log(error))
   }, []);
 
+  useEffect(() => {
+    // Formatear las fechas en el formato 'YYYY-MM-DD' antes de asignarlas a los estados
+    if (props.data.fechaIngreso) {
+      const fechaIngresoDate = new Date(props.data.fechaIngreso);
+      const formattedFechaIngreso = fechaIngresoDate.toISOString().split('T')[0];
+      setFechaIngreso(formattedFechaIngreso);
+    }
+
+    if (props.data.fechaSalida) {
+      const fechaSalidaDate = new Date(props.data.fechaSalida);
+      const formattedFechaSalida = fechaSalidaDate.toISOString().split('T')[0];
+      setFechaSalida(formattedFechaSalida);
+    }
+
+    if (props.data.fechaCumpleanos) {
+      const fechaNacimientoDate = new Date(props.data.fechaCumpleanos);
+      const formattedFechaNacimiento = fechaNacimientoDate.toISOString().split('T')[0];
+      setFechaNacimiento(formattedFechaNacimiento);
+    }
+  }, []);
+
   const navegate = useNavigate();
 
   const actualizarEmpleado = async () => {
@@ -86,6 +113,9 @@ export const DatosEmpleado = (props) => {
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
+    let fechaIngreso = document.getElementById('fechaIngreso').value;
+    let fechaSalida = document.getElementById('fechaSalida').value;
+    let fechaCumpleanos = document.getElementById('fechaCumpleanos').value;
 
     const data = {
       nombre: nombres.toUpperCase(),
@@ -94,6 +124,10 @@ export const DatosEmpleado = (props) => {
       idSucursal: sucursal,
       idGenero: genero,
       numId: identidad,
+      fechaIngreso: fechaIngreso,
+      fechaSalida: fechaSalida,
+      fechaCumpleanos: fechaCumpleanos,
+      estado: document.getElementById('estado').value,
       IdEmpleado: props.data.IdEmpleado,
     }
 
@@ -105,7 +139,7 @@ export const DatosEmpleado = (props) => {
 
     axios.put(urlUpdEmpleado, data).then(() => {
       swal("Empleado Actualizado Correctamente", "", "success").then(() => {
-        axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
+        //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
         navegate('/empleados/lista')
       })
     }).catch(error => {
@@ -364,7 +398,7 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
+              <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
               </select>
@@ -412,7 +446,7 @@ export const DatosEmpleado = (props) => {
               {<p className="error">{texto}</p>}
             </div>
 
-            {/*     <div className="contInput">
+            <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
               <select name="" className="selectCustom" id="sucursal" value={props.data.IdSucursal} >
                 {sucursales.length ? (
@@ -428,27 +462,12 @@ export const DatosEmpleado = (props) => {
                 )}
 
               </select>
-            </div> */}
-
-            <div className="contInput">
-              <TextCustom text="Sucursal" className="titleInput" />
-              <select id="" className="selectCustom" value={props.data.IdSucursal} >//El value debe ser el id del valor a obtener
-                {sucursales.length ? (
-                  sucursales.map(pre => (
-                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                      {pre.direccion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
             </div>
 
+
+
             <div className="contInput">
-              <TextCustom text="Fecha de Ingreso" className="titleInput" />
+              <TextCustom text="Fecha de Ingreso" className="titleInput"/>
               <input
                 type="date"
                 name=""
@@ -456,6 +475,8 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de ingreso"
                 id="fechaIngreso"
+                value={fechaIngreso}
+                onChange={(e)=>setFechaIngreso(e.target.value)}
               />
             </div>
 
@@ -468,24 +489,29 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de Salida"
                 id="fechaSalida"
+                defaultValue={"00-00-0000"}
+                value={fechaSalida}
+                onChange={(e)=>setFechaSalida(e.target.value)}
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha de Cumpleaños" className="titleInput" />
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
               <input
                 type="date"
                 name=""
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Fecha de Cumpleaños"
+                placeholder="Fecha de Nacimiento"
                 id="fechaCumpleanos"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
               />
             </div>
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom">
+              <select id="estado" className="selectCustom" value={props.data.estado}>
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
               </select>
@@ -502,8 +528,11 @@ export const DatosEmpleado = (props) => {
                   var telefono = document.getElementById("phone").value;
                   var fechaIngreso = document.getElementById("fechaIngreso").value;
                   var fechaCumpleanos = document.getElementById("fechaCumpleanos").value;
+                  var fechaSalida = document.getElementById("fechaSalida").value;
 
-                  if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "", fechaIngreso === "", fechaCumpleanos === "") {
+                  if (fechaCumpleanos > fechaIngreso) {
+                    swal("Ingrese las fechas correctamente","", "error");
+                  }else if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "", fechaIngreso === "", fechaCumpleanos === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
                     swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");

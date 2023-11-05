@@ -109,7 +109,7 @@ export const NuevaCompra = ({
   };
 
   const handleBack = () => {
-    navegate('/Compras');
+    navegate('/menuInventario/listaCompra');
   };
   const eliminarCompra = (idProducto) => {
     console.log(idProducto);

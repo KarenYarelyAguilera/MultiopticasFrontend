@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import Select from 'react-select';
 
+import { Bitacora } from '../Components/bitacora.jsx';
 
 const locales = {
   es: es,
@@ -158,11 +159,16 @@ export const RecordatorioCitas = (props) => {
       let dataUsuario = {
         Id: props.idUsuario
       }
+      const bitacora = {
+        urlB:urlBitacoraAggCita,
+        activo:props.activo,
+        dataB:dataUsuario,
+      };
 
       //console.log(data);
       axios.post(urlPostCitas, dataC).then(response => {
         swal('Cita agregada con éxito', '', 'success').then(result => {
-          axios.post(urlBitacoraAggCita, dataUsuario)
+          Bitacora(bitacora);
           navegate('/recordatorio');
         });
 
