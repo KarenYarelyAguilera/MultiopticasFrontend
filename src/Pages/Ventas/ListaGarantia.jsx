@@ -1,6 +1,8 @@
 //GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -19,14 +21,16 @@ import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { Button } from '@mui/material';
+import { Button, Icon } from '@mui/material';
+
+import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 //GENERADOR DE PDF
-import { generatePDF } from '../../Components/generatePDF';
+import {generatePDF} from '../../Components/generatePDF';
 
 export const ListaGarantia = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
@@ -54,7 +58,36 @@ export const ListaGarantia = ({idRol,data,update}) => {
       })
       .catch(error => console.log(error));
   }, [cambio]);
-
+ 
+  //Imprime el EXCEL 
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = tableData.map((row, index) => ({
+      'N°': row.IdGarantia,
+      'Descripción': row.descripcion,
+      'Meses de Garantía': row.Meses,
+      'Producto': row.producto,
+      'Estado': row.estado,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+  
+    // Formato para el encabezado
+    worksheet['A1'] = { v: 'LISTA DE GARANTIA', s: { font: { bold: true } } };
+    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
+    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
+    worksheet['B5'] = { v: 'Descripción', s: { font: { bold: true }} };
+    worksheet['C5'] = { v: 'Meses de Garantía', s: { font: { bold: true }} };
+    worksheet['D5'] = { v: 'Producto', s: { font: { bold: true } }};
+    worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Garantia.xlsx');
+  };
+ 
   //IMPRIMIR PDF
 const handleGenerarReporte = () => {
   if (permisos[0].consultar==="n") {
@@ -63,16 +96,16 @@ const handleGenerarReporte = () => {
     const formatDataForPDF = () => {
       const formattedData = tableData.map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                              fechaCre.getFullYear();
-                              return {
-                                'N°':row.IdGarantia,
-                                'Descripción':row.descripcion, 
-                                'Meses de Garantia':row.Meses, 
-                                'Producto':row.producto, 
-                                'Estado':row.estado,                        
-                              };
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+          fechaCre.getFullYear();
+        return {
+          'N°': row.IdGarantia,
+          'Descripción': row.descripcion,
+          'Meses de Garantia': row.Meses,
+          'Producto': row.producto,
+          'Estado': row.estado,
+        };
       });
       return formattedData;
     };
@@ -243,14 +276,20 @@ const handleGenerarReporte = () => {
                 
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+            <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
+            </Button>y
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <BorderAllIcon style={{ marginRight: '3px' }} />
+              Generar excel
             </Button>
-            <Button className="btnReport"
-             onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+
+            <Button className="btnReport" onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
               Generar reporte
             </Button>
+
           </div>
         </div>
         <DataGrid
