@@ -96,13 +96,14 @@ useEffect(() => {
       };
 
 
-      //console.log(data);
+      console.log(data);
 
       await axios.post(urlRespuestas, data).then(response => {
 
          let dataId = {
           correo: correo,
         }
+        console.log(dataId);
         
         //setContador(Contador +1);
 
@@ -124,7 +125,7 @@ useEffect(() => {
             'warning',
           )
           axios.put(urlBloquearUsu, dataId).then(response => {
-            console.log(response.dataId);
+            console.log(response.data);
           });
           navegate('/')
          

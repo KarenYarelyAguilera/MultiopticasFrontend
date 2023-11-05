@@ -33,10 +33,29 @@ export const Backup = props => {
   });
 
   useEffect(() => {
-    axios.get(urlArchivos).then(response => {
-      setArchivos(response.data);
-    }).catch(error => console.log(error))
+    axios.get(urlArchivos)
+      .then(response => {
+        const archivos = response.data;
+  
+        // Ordena las fechas en orden descendente en el cliente
+        const sortedArchivos = archivos.sort((a, b) => {
+          const dateA = new Date(a);
+          const dateB = new Date(b);
+          return dateB - dateA;
+        });
+  
+        setArchivos(sortedArchivos);
+      })
+      .catch(error => console.log(error));
   }, []);
+  
+
+
+
+
+
+
+
 
 
   const navegate = useNavigate();
@@ -70,7 +89,7 @@ export const Backup = props => {
   };
 
 
-   //en evaluzación me debe cerrar sesión xd
+  //en evaluzación me debe cerrar sesión xd
   const handleArchivos = async () => {
     try {
       const archivo = document.getElementById('Restore').value;
@@ -105,7 +124,7 @@ export const Backup = props => {
       </div>
 
       <div className="infoConfigBackup">
-        
+
         <div className="panelConfigBackup">
           <h1>Realizar Backup</h1>
           <button type="submit" className='btnCreateBackUp' onClick={handleClick}>
@@ -134,6 +153,7 @@ export const Backup = props => {
                 <option value="No existe información">No existe información</option>
               )}
             </select>
+
 
             <button type="submit" className='btnRestore' onClick={handleArchivos}>Restaurar</button>
 

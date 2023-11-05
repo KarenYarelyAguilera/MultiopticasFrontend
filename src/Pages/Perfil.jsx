@@ -18,6 +18,7 @@ import { ContentPasteGoOutlined, Visibility, VisibilityOff } from '@mui/icons-ma
 import { TextCustom } from '../Components/TextCustom.jsx';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../Components/bitacora.jsx';
 
 export const Perfil = (props) => {
   const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/salirperfil';
@@ -69,9 +70,8 @@ export const Perfil = (props) => {
     };
     console.log(dataId);
 
-    //NO ME FUNCIONA, DICE QUE SE EJECUTA PERO NO ME FUNCIONA
+   
     await axios.post(urlDelAllPreguntas,dataId).then(response => {
-/*       swal("Configuración de preguntas", "", "success"); */
       navegate('/preguntasPerfil')
     }).catch(error => {
       console.log('error');
@@ -84,8 +84,17 @@ export const Perfil = (props) => {
       Id: props.idUsuario,
     };
 
+    const bitacora = {
+      urlB:urlBitacoraPerfil,
+      activo:props.activo,
+      dataB:dataId
+    };
+
+
+
     navegate('/dashboard');
-    axios.post(urlBitacoraPerfil, dataId)
+   // axios.post(urlBitacoraPerfil, dataId)
+    Bitacora(bitacora);
 
   };
 

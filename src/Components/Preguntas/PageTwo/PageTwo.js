@@ -45,6 +45,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
         console.log(data2);
 
         axios.post(urlUserExist, data2).then(() => onButtonClick('pagethree')).catch(() => {
+          console.log(response.data);
           swal("Ocurrió un error al realizar la segunda petición POST");
         });
 

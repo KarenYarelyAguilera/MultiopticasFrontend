@@ -9,7 +9,10 @@ import { useNavigate } from "react-router";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
-export const PageTwo = ({ correo: password2, id, autor }) => {
+import { Bitacora } from '../../../Components/bitacora.jsx';
+
+
+export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
   const navegate = useNavigate()
 
   const urlUserExist = "http://localhost:3000/api/login"
@@ -46,6 +49,13 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
     const dataId = {
       Id: id,
     };
+    const bitacora = {
+      urlB:urlBitacoraPerfil,
+      activo:bitacora,
+      dataB:dataId
+    };
+
+
     if (contra1 !== contra2) {
       swal("Las contraseñas no coinciden", "", "warning")
     } else {
@@ -56,7 +66,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
           swal("Contraseña actualizada", "", "success").then(() => navegate("/config/perfil"))
-          axios.post(urlBitacoraPerfil, dataId)
+          Bitacora(bitacora);
         }
       })
     }
