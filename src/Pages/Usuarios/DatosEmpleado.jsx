@@ -42,6 +42,7 @@ export const DatosEmpleado = (props) => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
   const [sucursales, setSucursales] = useState([]);
+
   //estas líneas de código establecen y gestionan variables de estado en un componente de React, lo que permite almacenar y modificar valores en la aplicación, y controlar el comportamiento en función de estos estados.
   const [iIdentidad, setiIdentidad] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
@@ -63,10 +64,10 @@ export const DatosEmpleado = (props) => {
   const [Identidad, setIdentidad] = useState(props.data.numeroIdentidad || '');
   const [Telefonoc, setTelefonoc] = useState(0);
 
+  const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
+  
+
   const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
-
-
-
 
   /*   useEffect(() => {
       fetch(urlSucursales).then(response => response.json())
@@ -88,6 +89,9 @@ export const DatosEmpleado = (props) => {
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
+    let fechaIngreso = document.getElementById('fechaIngreso').value;
+    let fechaSalida = document.getElementById('fechaSalida').value;
+    let fechaCumpleanos = document.getElementById('fechaCumpleanos').value;
 
     const data = {
       nombre: nombres.toUpperCase(),
@@ -96,6 +100,10 @@ export const DatosEmpleado = (props) => {
       idSucursal: sucursal,
       idGenero: genero,
       numId: identidad,
+      fechaIngreso: fechaIngreso,
+      fechaSalida: fechaSalida,
+      fechaCumpleanos: fechaCumpleanos,
+      estado: document.getElementById('estado').value,
       IdEmpleado: props.data.IdEmpleado,
     }
 
@@ -107,7 +115,7 @@ export const DatosEmpleado = (props) => {
 
     axios.put(urlUpdEmpleado, data).then(() => {
       swal("Empleado Actualizado Correctamente", "", "success").then(() => {
-        axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
+        //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
         navegate('/empleados/lista')
       })
     }).catch(error => {
@@ -125,6 +133,9 @@ export const DatosEmpleado = (props) => {
     let telefono = document.getElementById('phone').value;
     let genero = parseInt(document.getElementById('genero').value);
     let sucursal = parseInt(document.getElementById('sucursal').value);
+    let fechaIngreso = document.getElementById('fechaIngreso').value;
+    let fechaSalida = document.getElementById('fechaSalida').value;
+    let fechaCumpleanos = document.getElementById('fechaCumpleanos').value;
 
     //tienen que estar igual a las apis del node
     let data = {
@@ -133,6 +144,10 @@ export const DatosEmpleado = (props) => {
       telEmple: telefono,
       idGenero: genero,
       idSucursal: sucursal,
+      fechaIngreso: fechaIngreso,
+      fechasalida: fechaSalida,
+      fechaCumpleanos: fechaCumpleanos,
+      estado: document.getElementById('estado').value,
       numId: identidad,
     };
     /* if (sendData(urlIEmpleado, data)) {
@@ -359,7 +374,7 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom" id="genero">
+              <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
               </select>
@@ -409,7 +424,7 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
-              <select name="" className="selectCustom" id="sucursal">
+              <select name="" className="selectCustom" id="sucursal" value={props.data.IdSucursal} >
                 {sucursales.length ? (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
@@ -421,6 +436,54 @@ export const DatosEmpleado = (props) => {
                     No existe informacion
                   </option>
                 )}
+
+              </select>
+            </div>
+
+
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Ingreso" className="titleInput"/>
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de ingreso"
+                id="fechaIngreso"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Salida" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Salida"
+                id="fechaSalida"
+                defaultValue={"00-00-0000"}
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Nacimiento"
+                id="fechaCumpleanos"
+              />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={props.data.estado}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
               </select>
             </div>
 
@@ -433,8 +496,13 @@ export const DatosEmpleado = (props) => {
                   var nombre = document.getElementById("nombre").value;
                   var apellido = document.getElementById("apellido").value;
                   var telefono = document.getElementById("phone").value;
+                  var fechaIngreso = document.getElementById("fechaIngreso").value;
+                  var fechaCumpleanos = document.getElementById("fechaCumpleanos").value;
+                  var fechaSalida = document.getElementById("fechaSalida").value;
 
-                  if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "") {
+                  if (fechaCumpleanos > fechaIngreso) {
+                    swal("Ingrese las fechas correctamente","", "error");
+                  }else if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "", fechaIngreso === "", fechaCumpleanos === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
                     swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
