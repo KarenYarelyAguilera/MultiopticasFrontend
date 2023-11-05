@@ -4,65 +4,72 @@ import '../../../Styles/RecuperacionPassword.css';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
 
-export const PageTwo = ({ onButtonClick,correo1,id, autor }) => {
-  const urlUserExist = "http://localhost:3000/api/login"
+export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
+  const urlUserExist = 'http://localhost:3000/api/login';
   const urlEnviarCodigo = 'http://localhost:3000/api/token/enviarCodigo';
-
-  const data={
-    correo:correo1
-  }
-  
 
   const handleClick = async () => {
     const respuesta = document.getElementById('respuesta').value;
-    if (correo1 === respuesta) {
-      await axios.post(urlUserExist,data).then(response=>{
-
-        id(response.data[0].Id_Usuario)
-        autor(response.data[0].Nombre_Usuario)
-        if (response.data) {
+    if (respuesta) {
+      const data = {
+        correo: respuesta,
+      };
+      await axios.post(urlUserExist, data).then(response => {
+        console.log(response.data);
+        if (response.data !== false) {
+          console.log(response.data === false)
+          id(response.data[0].Id_Usuario);
+          autor(response.data[0].Nombre_Usuario);
 
           const data2 = {
-            "correo": correo1,
-            "id": response.data[0].Id_Usuario,
+            correo: respuesta,
+            id: response.data[0].Id_Usuario,
           };
-  
-           axios.post(urlEnviarCodigo, data2).then(()=> onButtonClick('pagethree'))
-        }else{
-          swal("El correo que ingreso es erroneo o no esta registrado")
-        }
 
-       
-      
-      })
-      
+          axios
+            .post(urlEnviarCodigo, data2)
+            .then(() => onButtonClick('pagethree'));
+        } else{
+          swal(
+            'El correo que ingreso no coincide con el correo que proporcionó anteriormente.',
+            '',
+            'error',
+          );
+        }
+      });
     } else {
-      swal("El correo que ingreso no coincide con el correo que proporcionó anteriormente.", "", "error")
+      swal(
+        'El correo que ingreso no coincide con el correo que proporcionó anteriormente.',
+        '',
+        'error',
+      );
     }
   };
   return (
     <main>
-     {/*  <div className="titleRecuperacion">
+      {/*  <div className="titleRecuperacion">
           <h2>Codigo de confirmación</h2>
           <h3>Asegurese que la dirección del correo que ingresaste sea la correcta para enviar el codigo de confirmación.</h3>
         </div> */}
       <form className="measure">
         <div className="contPrincipalRecuperacion">
-          <div className='divInfoRecuperacion'>
-          <TextCustom text="Asegurese que la dirección del correo que ingresaste sea la correcta para enviar el codigo de confirmación." className="titleInput" />
-          <TextCustom text="Confirme su correo:" className="titleInput" />
-          <div className="contInput">
-            <input
-              type="text"
-              name=""
-              className="inputCustom"
-              placeholder="Respuesta"
-              id='respuesta'
+          <div className="divInfoRecuperacion">
+            <TextCustom
+              text="Asegurese que la dirección del correo que ingresaste sea la correcta para enviar el codigo de confirmación."
+              className="titleInput"
             />
-          </div>
+            <div className="contInput">
+              <input
+                type="text"
+                name=""
+                className="inputCustom"
+                placeholder="Respuesta"
+                id="respuesta"
+              />
+            </div>
           </div>
         </div>
-        <div className='divSubmitRecuperacion'>
+        <div className="divSubmitRecuperacion">
           <input
             className="btnSubmit"
             type="button"

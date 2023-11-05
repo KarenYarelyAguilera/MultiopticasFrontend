@@ -9,15 +9,20 @@ import axios from 'axios';
 import { toBePartiallyChecked } from '@testing-library/jest-dom/matchers';
 
 
-export const PageThree = ({ onButtonClick, correo, id }) => {
+export const PageThree = ({ onButtonClick, correo, id, props }) => {
 
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/compararR';
   const urlBloquearUsu = "http://localhost:3000/api/usuario/estado"
   // const urlId = 'http://localhost:3000/api/token/id';
-  const urlIntentos = 'http://localhost:3000/api/parametros/AdminIntentos';
-  const [ParamInt, setParamInt] = useState('');
+  const urlIntentos = 'http://localhost:3000/api/parametros/AdminIntentos'; //URL para obtener el valor del parametro
+
+  const [NumInt, setNumInt] = useState(0); 
+  const [Contador, setContador] = useState(1);
+  const [Resp, setResp] = useState('');
+  const [errorResp, setErrorResp] = useState(false);
+  
 
   //
   //const [id, setId] = useState(0);
@@ -25,6 +30,14 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
   //
   const navegate = useNavigate();
 
+
+//para el parametro
+useEffect(() => {
+  axios.get(urlIntentos).then(response => {
+    setNumInt(response.data);
+    //console.log(NumInt);
+  }).catch(error => console.log(error))
+}, []);
 
   //para las preguntas
   useEffect(() => {
@@ -74,16 +87,6 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
       const Id_Pregunta = parseInt(document.getElementById('Id_preguntas').value);
       const respuestap = document.getElementById('respuestap').value;
 
-      const response = await axios.get(urlIntentos).then((response) => {
-        // console.log(response.data[0]);
-        let intentos = parseInt(response.data[0]);
-        console.log("Los intentos permitidos son " + intentos)
-      })
-        .catch((error) => {
-          console.error('Error al obtener datos de la API:', error);
-        });
-
-
       let data = {
         correo: correo,
         Id_Pregunta: Id_Pregunta,
@@ -93,30 +96,40 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
       };
 
 
-      //console.log(data);
+      console.log(data);
 
       await axios.post(urlRespuestas, data).then(response => {
 
-       /*  let dataId = {
+         let dataId = {
           correo: correo,
         }
+        console.log(dataId);
+        
+        //setContador(Contador +1);
 
-        if (response.data == false) {
-
-          axios.put(urlBloquearUsu, dataId).then(response => {
-            console.log(response.dataId);
-          });
-          navegate('/')
-
+        if (response.data == true) {
+          onButtonClick('pagefour')
+        } else if (Contador < NumInt){ 
+          setContador(Contador +1);
+          //console.log("INTENTO NUMERO: "+Contador);
           swal(
-            '¡Usuario Bloqueado! comuniquese con el administrador.',
+            'Respuesta incorrecta.',
+            '',
+            'error',
+          )
+          setResp('');
+         } else {
+          swal(
+            '¡Usuario Bloqueado! Comuniquese con el Administrador.',
             '',
             'warning',
           )
-        } else { */
-          onButtonClick('pagefour')
-
-      /*   } */
+          axios.put(urlBloquearUsu, dataId).then(response => {
+            console.log(response.data);
+          });
+          navegate('/')
+         
+         }
       });
 
       return pasar;
@@ -158,12 +171,23 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
             <div className="contInput" style={{ fontSize: "17px" }}>
               <TextCustom text="Respuesta:" className="titleInput" />
               <input
+                onChange={e => {
+                  const value = e.target.value;
+                  setResp(value);
+
+                  if (value === '') {
+                    setErrorResp(true);
+                    //setMsj('Los campos no deben estar vacíos');
+                    swal("No deje el campo vacio", "","error")
+                  }
+                }}
                 maxLength="20"
                 type="text"
                 name=""
                 className="inputCustom"
                 placeholder="Respuesta"
                 id='respuestap'
+                value={Resp}
               />
             </div>
         

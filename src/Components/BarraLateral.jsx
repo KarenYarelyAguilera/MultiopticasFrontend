@@ -22,6 +22,8 @@ import {
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
+import { Bitacora } from '../Components/bitacora.jsx';
+
 
 //--------------------URL DE BITACORAS----------------------------------
 const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
@@ -34,6 +36,11 @@ export const BarraLateral = props => {
   //Funcion de bitacora
   const dataB = {
     Id: props.idUsuario,
+  };
+  const bitacora = {
+    urlB:urlBIngresoPCita,
+    activo:props.activo,
+    dataB:dataB
   };
 
   const [permisos, setPermisos] = useState([]);
@@ -257,7 +264,8 @@ export const BarraLateral = props => {
 
             <li>
               <Link className="link" to="/recordatorio"   onClick={() => {
-                  axios.post(urlBIngresoPCita, dataB); //Bitacora del modulo de usuario/empleado
+                  //axios.post(urlBIngresoPCita, dataB); 
+                  Bitacora(bitacora);
                   props.obj(2);
                 }}>
                 <FontAwesomeIcon className="iconLi" icon={faCalendar} />

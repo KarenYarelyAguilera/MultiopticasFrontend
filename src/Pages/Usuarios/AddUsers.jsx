@@ -53,8 +53,8 @@ export const AddUsers = (props) => {
   const navegate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
+  const [optionsEmpleados, setOptionsEmpelados] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(props.data.idEmpleado || null); // Estado para la opción seleccionada
 
   
 
@@ -97,7 +97,21 @@ export const AddUsers = (props) => {
   const [Rol, setRol] = useState([]);
 
   useEffect(() => {
-    axios.get(urlEmployees).then(response => setIdEmpleado(response.data))
+    //-------------------------------De aqui----------------------------------------------
+    axios.get(urlEmployees).then((response) => {
+      const employeeOptions = response.data.map((pre) => ({
+        value: pre.IdEmpleado,
+        label: `${pre.numeroIdentidad} - ${pre.nombre} ${pre.apellido}`,
+      }));
+      setOptionsEmpelados(employeeOptions);
+
+      // Ahora, busca la opción correspondiente al props.data.idEmpleado
+      const optionToSelect = employeeOptions.find((option) => option.value === props.data.idEmpleado);
+      setSelectedOption(optionToSelect);
+    })
+
+
+    //----------------- A aquí es relajo del chatgpt pero funciona :) ------------------
     axios.get(urlRoles).then(response => setRol(response.data))
   }, []);
 
@@ -122,6 +136,7 @@ export const AddUsers = (props) => {
     let data = {
       idUsuario: props.data.id_Usuario,
       usuario: nombre.toUpperCase(),
+      clave:refContrasenia.current.value,
       nombreUsuario: nombre.toUpperCase(),
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,
@@ -169,11 +184,17 @@ export const AddUsers = (props) => {
       activo:props.activo,
       dataB:dataB
    }
+   console.log(data);
 
-    await axios.post(urlInsert, data).then(()=>{
+    await axios.post(urlInsert, data).then((res)=>{
       Bitacora(bitacora) //Registro de nuevo usuario bitacora   
-      swal('Usuario creado exitosamente.', '', 'success');
-      navegate('/usuarios/lista');
+     
+      if (!res.data) {
+        swal('¡No puede crear este usuario, es posible que el correo o usuario ya este en uso!.', '', 'error');
+      }else{
+        swal('Usuario creado exitosamente.', '', 'success');
+        navegate('/usuarios/lista');
+      }
     }).catch(()=>{
       swal('!Error al crear Usuario! Ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
     })
@@ -207,6 +228,7 @@ export const AddUsers = (props) => {
   }
 
   return (
+    
     <div className="ContUsuarios">
       <Button
         className='btnBack'
@@ -237,20 +259,36 @@ export const AddUsers = (props) => {
                   </option>
                 )}
               </select> */}
-
-              <Select 
+              {props.update ? <>
+                <Select isDisabled={true} 
+                   styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "300px", // Ajusta el ancho según tus necesidades
+                    }),
+                  }}
                   id="empleado"
-                  options={Empleado.map(pre => ({ value: pre.IdEmpleado, label: `${pre.numeroIdentidad} - ${pre.nombre} ${pre.apellido}` }))}
+                  options={optionsEmpleados}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un empleado"
+                /></>
+                :<> 
+                <Select 
+                  id="empleado"
+                  options={optionsEmpleados}
                   value={selectedOption}
                   onChange={setSelectedOption}
                   placeholder="Seleccione un empleado"
                 />
+                </>}
+              
 
 
             </div>
 
             <div className="contInput">
-              <TextCustom text="Nombre de Usuario"
+              <TextCustom text="Usuario"
                 className="titleInput" />
               <input
                  onKeyDown={(e) => {
@@ -288,7 +326,6 @@ export const AddUsers = (props) => {
               <p className='error'>{mensaje}</p>
             </div>
 
-                {props.update? <></>:<>
                 <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
@@ -374,7 +411,7 @@ export const AddUsers = (props) => {
                 }
               ></FilledInput>
               <p className='error'>{advertencia}</p>
-            </div></>}
+            </div>
             
 
             <div className="contInput">
@@ -412,14 +449,14 @@ export const AddUsers = (props) => {
               error={errorCorreo}
               helperText={texto}
               value={correo}
-              maxLength={30}
+              maxLength={150}
             />               
             <p className='error'>{texto}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom">
+              <select id="cargo" className="selectCustom" value={props.data.Id_Rol} >//El value debe ser el id del valor a obtener
                 {Rol.length ? (
                   Rol.map(pre => (
                     <option key={pre.Id_Rol} value={pre.Id_Rol}>
