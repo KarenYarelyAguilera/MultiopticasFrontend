@@ -55,7 +55,7 @@ export const AddUsers = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [optionsEmpleados, setOptionsEmpelados] = useState([]);
   const [selectedOption, setSelectedOption] = useState(props.data.idEmpleado || null); // Estado para la opción seleccionada
-
+  const [rol,setRolSelect] = useState(props.data.Id_Rol || null)
   
 
   const handleChange = (event) => {
@@ -71,7 +71,7 @@ export const AddUsers = (props) => {
   // const urlBitacoraUsuario =
   //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
-    'http://localhost:3000/api/empleado';
+    'http://localhost:3000/api/empleados';
   const urlRoles =
     'http://localhost:3000/api/Rol';
   const urlInsert =
@@ -98,6 +98,7 @@ export const AddUsers = (props) => {
 
   useEffect(() => {
     //-------------------------------De aqui----------------------------------------------
+    console.log(props.data);
     axios.get(urlEmployees).then((response) => {
       const employeeOptions = response.data.map((pre) => ({
         value: pre.IdEmpleado,
@@ -209,22 +210,10 @@ export const AddUsers = (props) => {
   }
 
   const handleBack = () => {
-    swal({
-      title: 'Advertencia',
-      text: 'Hay un proceso de creación de usuario ¿Estás seguro que deseas salir?',
-      icon: 'warning',
-      buttons: ['Cancelar', 'Salir'],
-      dangerMode: true,
-    }).then((confirmExit) => {
-      if (confirmExit) {
         props.limpiarData({})
         props.limpiarUpdate(false)
         axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
         navegate('/usuarios/lista');
-      } else {
-      }
-    });
-    
   }
 
   return (
@@ -456,7 +445,9 @@ export const AddUsers = (props) => {
 
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom" value={props.data.Id_Rol} >//El value debe ser el id del valor a obtener
+              <select id="cargo" className="selectCustom" value={rol} onChange={(e)=>{
+                setRolSelect(e.target.value)
+              }} >//El value debe ser el id del valor a obtener
                 {Rol.length ? (
                   Rol.map(pre => (
                     <option key={pre.Id_Rol} value={pre.Id_Rol}>
@@ -476,6 +467,7 @@ export const AddUsers = (props) => {
               <select id="estado" className="selectCustom">
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
+                <option value={"Bloqueado"}>Bloqueado</option>
               </select>
             </div> : '' }
 

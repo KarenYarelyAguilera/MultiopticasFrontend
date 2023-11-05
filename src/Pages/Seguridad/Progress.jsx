@@ -55,8 +55,8 @@ export const Progress = props => {
         <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
           {
             {
-              pageone: <PageOne correo={crr1} onButtonClick={nextPage} />, 
-              pagetwo: <PageTwo correo1={correo1} id={id} autor={autr} onButtonClick={nextPage} />,
+              /* pageone: <PageOne correo={crr1} onButtonClick={nextPage} />, */
+              pagetwo: <PageTwo correo={crr1} id={id} autor={autr} onButtonClick={nextPage} />,
               pagethree: <PageThree correo={correo1} id={Id} onButtonClick={nextPage} />,
               pagefour: <PageFour correo={correo1} id={Id} autor={autor} />,
 

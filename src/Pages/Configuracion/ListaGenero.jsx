@@ -1,6 +1,8 @@
 //GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -16,6 +18,7 @@ import fondoPDF from "../../IMG/fondoPDF.jpg";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -54,6 +57,30 @@ export const ListaGenero = ({idRol,data,update}) => {
     axios.get(urlGenero).then(response=>setTableData(response.data))
   }, [cambio]);
 
+  //Imprime el EXCEL 
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = tableData.map((row, index) => ({
+      'N°':row.IdGenero,
+      'Género':row.descripcion, 
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+  
+    // Formato para el encabezado
+    worksheet['A1'] = { v: 'LISTA DE GÉNEROS', s: { font: { bold: true } } };
+    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
+    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
+    worksheet['B5'] = { v: 'Género', s: { font: { bold: true }} };
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Genero.xlsx');
+  };
+  
+
    //IMPRIMIR PDF
  const handleGenerarReporte = () => {
   if (permisos[0].consultar==="n") {
@@ -67,7 +94,7 @@ export const ListaGenero = ({idRol,data,update}) => {
                               fechaCre.getFullYear();
                               return {
                                 'N°':row.IdGenero,
-                                'País':row.descripcion, 
+                                'Género':row.descripcion, 
                               };
       });
       return formattedData;
@@ -94,7 +121,7 @@ export const ListaGenero = ({idRol,data,update}) => {
 
   const columns = [
     { field: 'IdGenero', headerName: 'ID Genero', width: 450 },
-    { field: 'descripcion', headerName: 'Genero', width: 450 },
+    { field: 'descripcion', headerName: 'Género', width: 450 },
 
     {
       field: 'borrar',
@@ -239,6 +266,12 @@ export const ListaGenero = ({idRol,data,update}) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <BorderAllIcon style={{ marginRight: '3px' }} />
+              Generar excel
+            </Button>
+
             <Button className="btnReport"
             onClick={handleGenerarReporte}
             >

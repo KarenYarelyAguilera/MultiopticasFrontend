@@ -19,8 +19,8 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
-export const ListaEmpleados = (props) => {
-  const [permisos, setPermisos] = useState([]);
+export const ListaRoles = (props) => {
+/*   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
@@ -28,21 +28,23 @@ export const ListaEmpleados = (props) => {
   }
   useEffect(() => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
-  }, [])
+  }, []) */
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
 
-  const urlEmployees = 'http://localhost:3000/api/empleados';
-  const urlEmpleadosInactivos = "http://localhost:3000/api/empleados/inactivos"
-  const urlDelEmployees = 'http://localhost:3000/api/empleado/eliminar';
+  const urlRoles ='http://localhost:3000/api/Rol';
+
+  const urlDeteleRol ='http://localhost:3000/api/Rol/RolEliminado';
+
+  const urlRolesInactivos="http://localhost:3000/api/RolesInactivos";
 
   //--------------------URL DE BITACORA--------------------
-  const urlDelBitacora =
+ /*  const urlDelBitacora =
     'http://localhost:3000/api/bitacora/EliminarEmpleado';
 
   const urlBitacoraBotonSalirLE =
-    'http://localhost:3000/api/bitacora/SalirListaEmpleado';
+    'http://localhost:3000/api/bitacora/SalirListaEmpleado'; */
   //--------------------------------------------------------
 
   const [tableData, setTableData] = useState([]);
@@ -50,20 +52,9 @@ export const ListaEmpleados = (props) => {
   const [inactivo, setInactivo] = useState(false)
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [Nombre, setNombre] = useState('');
-  const [errorNombre, setErrorNombre] = useState(false);
-  const [Msj, setMsj] = useState(false);
-
-  const [Apellido, setApellido] = useState('');
-  const [errorApellido, setErrorApellido] = useState(false);
-  const [aviso, setAviso] = useState(false);
-
-  const [errorTelefono, setErrorTelefono] = useState(false);
-  const [texto, setTexto] = useState(false);
-
   useEffect(() => {
-    axios.get(urlEmployees).then(response => { setTableData(response.data); })
-    axios.get(urlEmpleadosInactivos).then(response => setTableDataInactivos(response.data))
+    axios.get(urlRoles).then(response => { setTableData(response.data); })
+    axios.get(urlRolesInactivos).then(response => setTableDataInactivos(response.data))
       .catch(error => console.log(error));
   }, [cambio, inactivo]);
 
@@ -79,9 +70,9 @@ export const ListaEmpleados = (props) => {
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
-    if (permisos[0].consultar === "n") {
+ /*    if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
+    } else { */
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
@@ -106,11 +97,11 @@ export const ListaEmpleados = (props) => {
 
       const orientation = "landscape";
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-    }
+    //}
 
   };
 
-  /////////
+  
 
   const navegate = useNavigate();
 
@@ -132,28 +123,10 @@ export const ListaEmpleados = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdEmpleado', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190, headerAlign: 'center' },
-    { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
-    { field: 'descripcion', headerName: 'Genero', width: 190, headerAlign: 'center' },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190, headerAlign: 'center' },
-    {
-      field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaIngreso);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
-    {
-      field: 'fechaCumpleanos', headerName: 'Fecha Nacimiento', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaCumpleanos);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      }
-    },
-    { field: 'estado', headerName: 'Estado', width: 190, headerAlign: 'center' },
+    { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
+    { field: 'Rol', headerName: 'Rol', width: 390, headerAlign: 'center' },
+    { field: 'Descripcion', headerName: 'Descripcion', width: 690, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 180, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -166,7 +139,7 @@ export const ListaEmpleados = (props) => {
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleDel(params.row.IdEmpleado)}
+            onClick={() => handleDel(params.row.Id_Rol)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -177,14 +150,14 @@ export const ListaEmpleados = (props) => {
 
   //funcion de eliminar
   function handleDel(id) {
-    if (permisos[0].eliminar === "n") {
+    /* if (permisos[0].eliminar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
+    } else { */
       swal({
         content: (
           <div>
 
-            <div className="logoModal">¿Desea Eliminar este empleado?</div>
+            <div className="logoModal">¿Desea Eliminar este Rol?</div>
             <div className="contEditModal">
 
             </div>
@@ -197,7 +170,7 @@ export const ListaEmpleados = (props) => {
           case null:
 
             let data = {
-              IdEmpleado: id,
+              Id_Rol: id,
             };
 
             //Funcion de Bitacora 
@@ -208,15 +181,15 @@ export const ListaEmpleados = (props) => {
             console.log(data);
 
             await axios
-              .delete(urlDelEmployees, { data })
+              .delete(urlDeteleRol, { data })
               .then(response => {
-                axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Empleado eliminado correctamente', '', 'success');
+                //axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                swal('Rol eliminado correctamente', '', 'success');
                 setCambio(cambio + 1);
               })
               .catch(error => {
                 console.log(error);
-                swal('Error al eliminar el empleado', '', 'error');
+                swal('Error al eliminar el Rol', '', 'error');
               });
 
             break;
@@ -225,7 +198,7 @@ export const ListaEmpleados = (props) => {
             break;
         }
       });
-    }
+    //}
 
   }
 
@@ -233,9 +206,9 @@ export const ListaEmpleados = (props) => {
 
   //funcion de actualizar
   function handleUpdt(id) {
-    if (permisos[0].actualizar === "n") {
+   /*  if (permisos[0].actualizar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
+    } else { */
       swal({
         buttons: {
           update: 'ACTUALIZAR',
@@ -243,7 +216,7 @@ export const ListaEmpleados = (props) => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el empleado: {id.nombre} ?
+            ¿Desea actualizar el Rol: {id.Rol} ?
           </div>
         ),
       }).then(op => {
@@ -251,10 +224,10 @@ export const ListaEmpleados = (props) => {
           case 'update':
             props.data(id)
             props.update(true)
-            navegate('/usuarios/crearempleado')
+            navegate('/config/crearRol')
         }
       });
-    }
+    //}
 
 
 
@@ -267,8 +240,8 @@ export const ListaEmpleados = (props) => {
   }
 
   const handleBack = () => {
-    axios.post(urlBitacoraBotonSalirLE, dataB)
-    navegate('/usuarios');
+    //axios.post(urlBitacoraBotonSalirLE, dataB)
+    navegate('/config/roles');
   };
 
   return (
@@ -276,7 +249,7 @@ export const ListaEmpleados = (props) => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Empleados</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Roles</h2>
 
       <div
         style={{
@@ -303,11 +276,11 @@ export const ListaEmpleados = (props) => {
             <Button
               className="btnCreate"
               onClick={() => {
-                if (permisos[0].insertar === "n") {
+               /*  if (permisos[0].insertar === "n") {
                   swal("No cuenta con los permisos para realizar esta accion", "", "error")
-                } else {
-                  navegate('/usuarios/crearempleado');
-                }
+                } else { */
+                  navegate('/config/crearRol');
+                //}
 
               }}
             >
@@ -332,7 +305,7 @@ export const ListaEmpleados = (props) => {
           </div>
         </div>
         <DataGrid
-          getRowId={tableData => tableData.IdEmpleado}
+          getRowId={tableData => tableData.Id_Rol}
           rows={inactivo===false?filteredData:filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
