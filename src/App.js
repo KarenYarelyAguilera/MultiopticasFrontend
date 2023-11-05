@@ -1751,6 +1751,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
+                  activo={bitacora}
                 />
               </div>
               //  </ProtectedRoute>
