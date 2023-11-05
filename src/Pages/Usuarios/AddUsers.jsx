@@ -71,7 +71,7 @@ export const AddUsers = (props) => {
   // const urlBitacoraUsuario =
   //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
-    'http://localhost:3000/api/empleado';
+    'http://localhost:3000/api/empleados';
   const urlRoles =
     'http://localhost:3000/api/Rol';
   const urlInsert =
@@ -476,6 +476,7 @@ export const AddUsers = (props) => {
               <select id="estado" className="selectCustom">
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
+                <option value={"Bloqueado"}>Bloqueado</option>
               </select>
             </div> : '' }
 

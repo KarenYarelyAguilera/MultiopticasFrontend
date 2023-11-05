@@ -32,7 +32,8 @@ import { Metodos1 } from './Pages/Seguridad/Metodos1.jsx';
 import { Configuracion } from './Pages/Configuracion/Config.jsx';
 import { ConfigRol } from './Pages/Seguridad/ConfRol.jsx';
 import { ListaPermisos } from './Pages/Configuracion/ListaPermisos.jsx';
-
+import { ListaRoles } from './Pages/Seguridad/ListaRoles.jsx';
+import { RegistroRoles } from './Pages/Seguridad/RegistroRoles.jsx';
 //Clientes
 import { Clientes } from './Pages/Clientes/Clientes.jsx';
 import { ListaClientes } from './Pages/Clientes/ListaClientes.jsx';
@@ -218,7 +219,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           />
 
-           <Route
+          <Route
             path="/cambiocontrasenia"
             element={
               // <ProtectedRoute activo={activo}>
@@ -233,7 +234,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               //  </ProtectedRoute>
             }
-          /> 
+          />
 
           <Route
             path="/marcas/registroPromMarca"
@@ -993,7 +994,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <ListaParametros
                   update={update}
                   data={Data}
-                
+
                 />
               </div>
               // </ProtectedRoute>
@@ -1664,7 +1665,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-          <Route
+         {/*  <Route
             path="/compras"
             element={
               //<ProtectedRoute activo={activo}>
@@ -1684,7 +1685,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               // </ProtectedRoute>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path="/ventas"
             element={
@@ -1750,6 +1751,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
+                  activo={bitacora}
                 />
               </div>
               //  </ProtectedRoute>
@@ -2196,6 +2200,60 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
 
                 <ConfigRol usuario={usuario} />
+              </div>
+              // </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/config/ListaRoles"
+            element={
+              //<ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <ListaRoles update={update} data={Data} idRol={idRol} />
+
+              </div>
+              //  </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/config/crearRol"
+            element={
+              // <ProtectedRoute activo={activo}>
+
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+
+                <RegistroRoles
+                  actualizar={actualizar}
+                  update={update}
+                  data={data}
+                  Data={Data}
+                  idUsuario={idUsuario}
+                  activo={bitacora}
+                ></RegistroRoles>
               </div>
               // </ProtectedRoute>
             }

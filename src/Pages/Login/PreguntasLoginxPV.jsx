@@ -22,14 +22,14 @@ export const PreguntasLoginxPV = props => {
   const [Preguntas, setPreguntas] = useState([]);
   const urlPreguntas = 'http://localhost:3000/api/preguntas';
   const urlRespuestas = 'http://localhost:3000/api/preguntas/respuestas/agregar';
-  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas'; //Trae el numero de preguntas
 
 
   const [Resp, setResp] = useState(props.data.Respuesta || '');
   const [errorResp, setErrorResp] = useState(false);
   const [Msj, setMsj] = useState('');
-  const [NumPreg, setNumPreg] = useState(0);
-  const [Contador, setContador] = useState(0);
+  const [NumPreg, setNumPreg] = useState(1);
+  const [Contador, setContador] = useState(1);
 
 
   const dataId = {
@@ -85,11 +85,9 @@ export const PreguntasLoginxPV = props => {
             swal("Error al registrar su respuesta, verifique si ya ha agregado esta pregunta", "", "error");
           });
 
-      } /* else if (Contador === NumPreg) {
-        swal("Llegó al límite de preguntas para configurar", "", "success");
-        navegate('/');
-      } */ else {
-        //swal("Llegó al límite de preguntas para configurar", "", "success");
+      }else {
+        await axios.post(urlRespuestas, data)
+        swal("Preguntas configuradas correctamente", "", "success");
         navegate('/cambiocontrasenia');
       }
 
