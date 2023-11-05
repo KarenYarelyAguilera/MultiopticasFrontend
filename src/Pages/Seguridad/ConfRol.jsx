@@ -552,7 +552,7 @@ export const ConfigRol = props => {
             </div>
            
             <div className="contButton">
-              <Button
+           {/*    <Button
                 className="btnEditRol"
                 onClick={() => {
                   setGRol(parseInt(document.getElementById('rol').value));
@@ -561,7 +561,7 @@ export const ConfigRol = props => {
               >
                 <EditIcon style={{ marginRight: '5px' }} />
                 Editar
-              </Button>
+              </Button> */}
               <Button className="btnNewRol"  onClick={() => {
                  navegate('/config/ListaRoles')
                 }}>
@@ -569,10 +569,10 @@ export const ConfigRol = props => {
                 Lista Roles
               </Button>
 
-              <Button className="btnSaveRol" >
+              {/* <Button className="btnSaveRol" >
                 <SaveIcon style={{ marginRight: '5px' }} />
                 Guardar
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="titlePrincipal">

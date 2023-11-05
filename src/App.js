@@ -1665,7 +1665,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             }
           ></Route>
 
-          <Route
+         {/*  <Route
             path="/compras"
             element={
               //<ProtectedRoute activo={activo}>
@@ -1685,7 +1685,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </div>
               // </ProtectedRoute>
             }
-          ></Route>
+          ></Route> */}
           <Route
             path="/ventas"
             element={
