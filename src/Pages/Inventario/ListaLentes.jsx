@@ -83,8 +83,8 @@ export const ListaLentes = ({idRol,data,update}) => {
 
 
   const columns = [
-    { field: 'IdLente', headerName: 'Id Lente', width: 380 },
-    { field: 'lente', headerName: 'Lente', width: 380 },
+    { field: 'IdLente', headerName: 'ID', width: 380 },
+    { field: 'lente', headerName: 'Tipo de lente', width: 380 },
     { field: 'precio', headerName: 'Precio', width: 380 },
    
     

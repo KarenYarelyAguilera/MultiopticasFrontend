@@ -129,8 +129,8 @@ export const ListaMetodosDePago = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdTipoPago', headerName: 'ID Método de Pago', width: 400 },
-    { field: 'descripcion', headerName: 'Método', width: 400 },
+    { field: 'IdTipoPago', headerName: 'ID', width: 500 },
+    { field: 'descripcion', headerName: 'Método', width: 500 },
 
     {
       field: 'borrar',

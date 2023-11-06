@@ -275,15 +275,12 @@ export const DatosEmpleado = (props) => {
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Empleado</h2> : <h2>Registro de Empleado</h2>}
 
-        <h3>
-          Complete todos los puntos para poder registrar los datos del empleado
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Número de identidad" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -312,7 +309,7 @@ export const DatosEmpleado = (props) => {
 
                   }
                 }}
-                placeholder="Identidad"
+                placeholder="Número de identidad"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -397,7 +394,7 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Genero" className="titleInput" />
+              <TextCustom text="Género" className="titleInput" />
               <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
@@ -405,7 +402,7 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Teléfono" className="titleInput" />
               <input
                 onChange={e => setTelefono(e.target.value)}
 
@@ -416,7 +413,7 @@ export const DatosEmpleado = (props) => {
                     setErrorTelefono(true);
                   } else if (Telefono.length !== 8) {
                     setErrorTelefono(true);
-                    setTexto('El número de telefono debe tener exactamente 8 dígitos');
+                    setTexto('El número de teléfono debe tener exactamente 8 dígitos');
                   } else {
                     setErrorTelefono(false);
                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
@@ -439,7 +436,7 @@ export const DatosEmpleado = (props) => {
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 id="phone"
                 value={Telefono}
               />

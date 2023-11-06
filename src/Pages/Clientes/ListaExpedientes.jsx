@@ -103,9 +103,9 @@ export const ListaExpedientes = (props) => {
   }
 
   const columns = [
-    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 300 },
+    { field: 'IdExpediente', headerName: 'Número de expediente', width: 300 },
     { field: 'Cliente', headerName: 'Cliente', width: 300 },
-    { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
+    { field: 'fechaCreacion', headerName: 'Fecha de creación', width: 300},
     { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
     {field: 'TotalRegistros', headerName: 'Total Historial Clinico', width: 300 },
     {

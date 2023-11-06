@@ -114,7 +114,7 @@ export const ListaVenta = (props) => {
   };
 
   const columns = [
-    { field: 'IdVenta', headerName: 'IdVenta', width: 210 },
+    { field: 'IdVenta', headerName: 'ID', width: 210 },
     {
       field: 'fecha', headerName: 'Fecha', width: 310,
       valueGetter: (params) => {
