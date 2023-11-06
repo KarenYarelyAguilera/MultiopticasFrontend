@@ -114,20 +114,20 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
-    { field: 'Usuario', headerName: 'Usuario', width: 130, headerAlign: 'center' },
+    { field: 'Usuario', headerName: 'Usuario', width: 200, headerAlign: 'center' },
     { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
-    { field: 'Correo_Electronico', headerName: 'EMail', width: 200, headerAlign: 'center' },
-    {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'},
-    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 180, headerAlign: 'center',valueGetter: (params) => {
+    { field: 'Correo_Electronico', headerName: 'Correo electrónico', width: 250, headerAlign: 'center' },
+    /* {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'}, */
+    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 200, headerAlign: 'center',valueGetter: (params) => {
       const date = new Date(params.row.Fecha_Vencimiento);
       return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
     },
   },
-  { field: 'Estado_Usuario', headerName: 'Estado', width: 130, headerAlign: 'center' },
+  { field: 'Estado_Usuario', headerName: 'Estado', width: 180, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190, headerAlign: 'center',
+      width: 400, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions">

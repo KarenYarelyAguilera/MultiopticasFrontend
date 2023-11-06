@@ -120,7 +120,7 @@ export const ListaGenero = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdGenero', headerName: 'ID Genero', width: 450 },
+    { field: 'IdGenero', headerName: 'ID', width: 450 },
     { field: 'descripcion', headerName: 'Género', width: 450 },
 
     {

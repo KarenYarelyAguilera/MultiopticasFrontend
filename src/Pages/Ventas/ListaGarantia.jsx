@@ -130,7 +130,7 @@ const handleGenerarReporte = () => {
   );
 
   const columns = [
-    { field: 'IdGarantia', headerName: 'ID Garantia', width: 210 },
+    { field: 'IdGarantia', headerName: 'ID', width: 210 },
     { field: 'descripcion', headerName: 'Descripción', width: 210 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
     { field: 'producto', headerName: 'Producto', width: 210 },

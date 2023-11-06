@@ -126,10 +126,10 @@ const handleGenerarExcel = () => {
   
   //ESTRUCTURA DE LA TABLA 
   const columns = [
-    { field: 'IdDescuento', headerName: 'ID Descuento', width: 210 },
-    { field: 'estado', headerName: 'Estado', width: 210 },
-    { field: 'descPorcent', headerName: 'Descuento del Cliente', width: 210 },
-    { field: 'descPorcentEmpleado', headerName: 'Descuento del Empleado', width: 210 },
+    { field: 'IdDescuento', headerName: 'ID', width: 210 },
+    { field: 'descPorcent', headerName: 'Porcentaje', width: 300 },
+    { field: 'descPorcentEmpleado', headerName: 'Descripción', width: 300 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
     {
       field: 'borrar',
       headerName: 'Acciones',

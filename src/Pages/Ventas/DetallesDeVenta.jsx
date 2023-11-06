@@ -102,9 +102,6 @@ export const DetallesDeVenta = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Detalles de Venta</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los Detalles de Venta.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

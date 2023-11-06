@@ -209,10 +209,10 @@ export const Recordatorio = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdRecordatorio', headerName: 'No.', width: 50, headerAlign: 'center' },
-    { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
+    { field: 'IdRecordatorio', headerName: 'ID', width: 100, headerAlign: 'center' },
+    { field: 'IdCliente', headerName: 'Identidad', width: 200, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 200, headerAlign: 'center' },
     { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
     { 
       field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',

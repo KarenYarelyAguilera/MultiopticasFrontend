@@ -142,14 +142,14 @@ export const ListaClientes = (props) => {
 
 
   const columns = [
-    { field: 'idCliente', headerName: 'ID', width: 165 },
-    { field: 'nombre', headerName: 'Nombre', width: 165 },
-    { field: 'apellido', headerName: 'Apellido', width: 165 },
-    { field: 'genero', headerName: 'Genero', width: 165 },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 },
-    { field: 'direccion', headerName: 'Direccion', width: 165 },
-    { field: 'Telefono', headerName: 'Telefono', width: 165 },
-    { field: 'Email', headerName: 'Correo Electronico', width: 165 },
+    { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 165, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 165,headerAlign: 'center' },
+    { field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
+    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
+    { field: 'direccion', headerName: 'Dirección', width: 165,headerAlign: 'center' },
+    { field: 'Telefono', headerName: 'Teléfono', width: 165,headerAlign: 'center' },
+    { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
 
     {
       field: 'borrar',
