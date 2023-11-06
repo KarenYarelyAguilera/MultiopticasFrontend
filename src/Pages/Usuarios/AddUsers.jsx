@@ -55,7 +55,7 @@ export const AddUsers = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [optionsEmpleados, setOptionsEmpelados] = useState([]);
   const [selectedOption, setSelectedOption] = useState(props.data.idEmpleado || null); // Estado para la opción seleccionada
-
+  const [rol,setRolSelect] = useState(props.data.Id_Rol || null)
   
 
   const handleChange = (event) => {
@@ -98,6 +98,7 @@ export const AddUsers = (props) => {
 
   useEffect(() => {
     //-------------------------------De aqui----------------------------------------------
+    console.log(props.data);
     axios.get(urlEmployees).then((response) => {
       const employeeOptions = response.data.map((pre) => ({
         value: pre.IdEmpleado,
@@ -209,22 +210,10 @@ export const AddUsers = (props) => {
   }
 
   const handleBack = () => {
-    swal({
-      title: 'Advertencia',
-      text: 'Hay un proceso de creación de usuario ¿Estás seguro que deseas salir?',
-      icon: 'warning',
-      buttons: ['Cancelar', 'Salir'],
-      dangerMode: true,
-    }).then((confirmExit) => {
-      if (confirmExit) {
         props.limpiarData({})
         props.limpiarUpdate(false)
         axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
         navegate('/usuarios/lista');
-      } else {
-      }
-    });
-    
   }
 
   return (
@@ -236,9 +225,9 @@ export const AddUsers = (props) => {
         <ArrowBackIcon className='iconBack' />
       </Button>
       <div className="titleAddUser">
-        {props.update ? <h2>Actualizacion de Usuario</h2> : <h2>Registro de Usuario</h2>}
+        {props.update ? <h2>Actualizar Usuario</h2> : <h2>Registro de Usuario</h2>}
         
-        <h3>Complete todos los puntos para poder registrar el usuario</h3>
+    
       </div>
 
       <div className="infoAddUser">
@@ -288,7 +277,7 @@ export const AddUsers = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Usuario"
+              <TextCustom text="Nombre de usuario"
                 className="titleInput" />
               <input
                  onKeyDown={(e) => {
@@ -317,7 +306,7 @@ export const AddUsers = (props) => {
                 name="input1"
                 className="inputCustom"
                 maxLength={15}
-                placeholder="Nombre"
+                placeholder="Nombre de usuario"
                 variant="standard"
                 id="nombre"
                 value={Nombreusuario}
@@ -415,7 +404,7 @@ export const AddUsers = (props) => {
             
 
             <div className="contInput">
-              <TextCustom text="Correo Electronico" className="titleInput" />
+              <TextCustom text="Correo Electrónico" className="titleInput" />
               
               <input
                onKeyDown={(e) => {
@@ -445,7 +434,7 @@ export const AddUsers = (props) => {
               name="input2"
               id="correo"
               className="inputCustom"
-              placeholder="Correo Electronico"
+              placeholder="Correo Electrónico"
               error={errorCorreo}
               helperText={texto}
               value={correo}
@@ -456,7 +445,9 @@ export const AddUsers = (props) => {
 
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom" value={props.data.Id_Rol} >//El value debe ser el id del valor a obtener
+              <select id="cargo" className="selectCustom" value={rol} onChange={(e)=>{
+                setRolSelect(e.target.value)
+              }} >//El value debe ser el id del valor a obtener
                 {Rol.length ? (
                   Rol.map(pre => (
                     <option key={pre.Id_Rol} value={pre.Id_Rol}>

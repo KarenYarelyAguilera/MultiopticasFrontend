@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router';
 
 import axios from 'axios';
 
+import { Bitacora } from '../Components/bitacora.jsx';
 
 const locales = {
     es: es,
@@ -128,11 +129,17 @@ export const RecordatorioCitasEditar = props => {
         let dataUsuario = {
             Id: props.idUsuario
         }
+        const bitacora = {
+            urlB:urlBitacoraUpdCita,
+            activo:props.activo,
+            dataB:dataUsuario,
+          };
 
 
         await axios.put(urlUpdateCitas, data).then(() => {
             swal("Cita Actualizado Correctamente", "", "success").then(() => {
-                axios.post(urlBitacoraUpdCita, dataUsuario)
+
+                Bitacora(bitacora);
                 navegate('/recordatorio')
             })
         }).catch(error => {

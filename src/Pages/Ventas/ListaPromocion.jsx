@@ -77,8 +77,8 @@ export const ListaPromocion = (props) => {
   );
 
   const columns = [
-    { field: 'IdPromocion', headerName: 'ID Promocion', width: 250 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 250 },
+    { field: 'IdPromocion', headerName: 'ID', width: 250 },
+    { field: 'descripcion', headerName: 'Descripción', width: 250 },
     { field: 'descPorcent', headerName: 'Porcentaje', width: 250 },
     { field: 'fechaInicial', headerName: 'Fecha inicial', width: 250 },
     { field: 'fechaFinal', headerName: 'Fecha final', width: 250 },

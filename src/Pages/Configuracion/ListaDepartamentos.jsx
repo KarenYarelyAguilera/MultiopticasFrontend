@@ -118,7 +118,7 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdDepartamento', headerName: 'ID Departamento', width: 600 },
+    { field: 'IdDepartamento', headerName: 'ID', width: 600 },
     { field: 'departamento', headerName: 'Departamento', width: 600 },
 
     {

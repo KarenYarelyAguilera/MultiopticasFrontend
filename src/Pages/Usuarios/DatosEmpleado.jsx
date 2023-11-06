@@ -65,6 +65,9 @@ export const DatosEmpleado = (props) => {
   const [Telefonoc, setTelefonoc] = useState(0);
 
   const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
+  const [fechaSalida, setFechaSalida] = useState(props.data.fechaSalida || '');
+  const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaCumpleanos || '');
+  
   
 
   const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido';
@@ -78,6 +81,27 @@ export const DatosEmpleado = (props) => {
     axios.get(urlSucursales).then(response => {
       setSucursales(response.data)
     }).catch(error => console.log(error))
+  }, []);
+
+  useEffect(() => {
+    // Formatear las fechas en el formato 'YYYY-MM-DD' antes de asignarlas a los estados
+    if (props.data.fechaIngreso) {
+      const fechaIngresoDate = new Date(props.data.fechaIngreso);
+      const formattedFechaIngreso = fechaIngresoDate.toISOString().split('T')[0];
+      setFechaIngreso(formattedFechaIngreso);
+    }
+
+    if (props.data.fechaSalida) {
+      const fechaSalidaDate = new Date(props.data.fechaSalida);
+      const formattedFechaSalida = fechaSalidaDate.toISOString().split('T')[0];
+      setFechaSalida(formattedFechaSalida);
+    }
+
+    if (props.data.fechaCumpleanos) {
+      const fechaNacimientoDate = new Date(props.data.fechaCumpleanos);
+      const formattedFechaNacimiento = fechaNacimientoDate.toISOString().split('T')[0];
+      setFechaNacimiento(formattedFechaNacimiento);
+    }
   }, []);
 
   const navegate = useNavigate();
@@ -251,15 +275,12 @@ export const DatosEmpleado = (props) => {
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Empleado</h2> : <h2>Registro de Empleado</h2>}
 
-        <h3>
-          Complete todos los puntos para poder registrar los datos del empleado
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Número de identidad" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -288,7 +309,7 @@ export const DatosEmpleado = (props) => {
 
                   }
                 }}
-                placeholder="Identidad"
+                placeholder="Número de identidad"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -373,7 +394,7 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Genero" className="titleInput" />
+              <TextCustom text="Género" className="titleInput" />
               <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
@@ -381,7 +402,7 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Teléfono" className="titleInput" />
               <input
                 onChange={e => setTelefono(e.target.value)}
 
@@ -392,7 +413,7 @@ export const DatosEmpleado = (props) => {
                     setErrorTelefono(true);
                   } else if (Telefono.length !== 8) {
                     setErrorTelefono(true);
-                    setTexto('El número de telefono debe tener exactamente 8 dígitos');
+                    setTexto('El número de teléfono debe tener exactamente 8 dígitos');
                   } else {
                     setErrorTelefono(false);
                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
@@ -415,7 +436,7 @@ export const DatosEmpleado = (props) => {
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 id="phone"
                 value={Telefono}
               />
@@ -451,6 +472,8 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de ingreso"
                 id="fechaIngreso"
+                value={fechaIngreso}
+                onChange={(e)=>setFechaIngreso(e.target.value)}
               />
             </div>
 
@@ -464,6 +487,8 @@ export const DatosEmpleado = (props) => {
                 placeholder="Fecha de Salida"
                 id="fechaSalida"
                 defaultValue={"00-00-0000"}
+                value={fechaSalida}
+                onChange={(e)=>setFechaSalida(e.target.value)}
               />
             </div>
 
@@ -476,6 +501,8 @@ export const DatosEmpleado = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de Nacimiento"
                 id="fechaCumpleanos"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
               />
             </div>
 

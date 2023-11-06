@@ -124,9 +124,9 @@ export const ListaRoles = (props) => {
   const columns = [
     //son los de la base no los de node
     { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'Rol', headerName: 'Rol', width: 390, headerAlign: 'center' },
-    { field: 'Descripcion', headerName: 'Descripcion', width: 690, headerAlign: 'center' },
-    { field: 'estado', headerName: 'Estado', width: 180, headerAlign: 'center' },
+    { field: 'Rol', headerName: 'Rol', width: 200, headerAlign: 'center' },
+    { field: 'Descripcion', headerName: 'Descripción', width: 300, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',

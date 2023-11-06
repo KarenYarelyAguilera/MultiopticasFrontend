@@ -140,15 +140,15 @@ export const ListaProveedores = (props) => {
   );
 
   const columns = [
-    { field: 'IdProveedor', headerName: 'ID Proveedor', width: 150 },
-    { field: 'CiaProveedora', headerName: 'Empresa Proveedora', width: 150 },
-    { field: 'encargado', headerName: 'Encargado', width: 150 },
-    { field: 'Pais', headerName: 'Pais', width: 150 },
-    { field: 'Ciudad', headerName: 'Ciudad', width: 150 },
-    { field: 'Productos', headerName: 'Producto', width: 250 },
-    { field: 'direccion', headerName: 'Direccion', width: 150 },
-    { field: 'telefono', headerName: 'Telefono', width: 150 },
-    { field: 'correoElectronico', headerName: 'Correo Electronico', width: 230 },
+    { field: 'IdProveedor', headerName: 'ID', width: 70, headerAlign: 'center' },
+    { field: 'CiaProveedora', headerName: 'Empresa', width: 150,  headerAlign: 'center' },
+    { field: 'encargado', headerName: 'Encargado', width: 150, headerAlign: 'center' },
+    { field: 'Pais', headerName: 'Pais', width: 150, headerAlign: 'center' },
+    { field: 'Ciudad', headerName: 'Ciudad', width: 150, headerAlign: 'center' },
+    { field: 'Productos', headerName: 'Producto', width: 200, headerAlign: 'center' },
+  /*   { field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' }, */
+    { field: 'telefono', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
+    { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 230, headerAlign: 'center' },
 
 
     {

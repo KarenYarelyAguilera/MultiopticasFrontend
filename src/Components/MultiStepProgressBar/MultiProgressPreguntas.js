@@ -4,10 +4,12 @@ import { ProgressBar, Step } from "react-step-progress-bar";
 
 export const MultiProgressPreguntas = ({ page, onPageNumberClick }) => {
   var stepPercentage = 0;
-  if (page === "pagetwo") {
-    stepPercentage = 49.5;
+  /* if (page === "pageone") {
+    stepPercentage = 16.5;
+  } else */ if (page === "pagetwo") {
+    stepPercentage = 25;
   } else if (page === "pagethree") {
-    stepPercentage = 82.5;
+    stepPercentage = 75;
   } else if (page === "pagefour") {
     stepPercentage = 100;
   } else {
@@ -16,7 +18,7 @@ export const MultiProgressPreguntas = ({ page, onPageNumberClick }) => {
 
   return (
     <ProgressBar percent={stepPercentage}>
-      {/* <Step>
+       {/* <Step>
         {({ accomplished, index }) => (
           <div
             className={`indexedStep ${accomplished ? "accomplished" : null}`}
@@ -25,7 +27,7 @@ export const MultiProgressPreguntas = ({ page, onPageNumberClick }) => {
             {index + 1}
           </div>
         )}
-      </Step> */}
+      </Step>  */}
       <Step>
         {({ accomplished, index }) => (
           <div

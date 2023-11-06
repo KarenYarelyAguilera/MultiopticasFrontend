@@ -50,7 +50,7 @@ export const ListaPromocionMarcas = () => {
 
   const columns = [
     { field: 'IdPromocion', headerName: 'ID', width: 600 },
-    { field: 'Promocion', headerName: 'Promocion', width: 600 },
+    { field: 'Promocion', headerName: 'Promoción', width: 600 },
     { field: 'Marca', headerName: 'Marca', width: 600 },
 
     {

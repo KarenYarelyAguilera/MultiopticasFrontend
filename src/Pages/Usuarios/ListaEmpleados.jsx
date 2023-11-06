@@ -133,12 +133,13 @@ export const ListaEmpleados = (props) => {
   const columns = [
     //son los de la base no los de node
     { field: 'IdEmpleado', headerName: 'ID', width: 100, headerAlign: 'center' },
+    { field: 'numeroIdentidad', headerName: 'Número de identidad', width: 190, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-    { field: 'telefonoEmpleado', headerName: 'Telefono', width: 190, headerAlign: 'center' },
+    { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 190, headerAlign: 'center' },
     { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
-    { field: 'descripcion', headerName: 'Genero', width: 190, headerAlign: 'center' },
-    { field: 'numeroIdentidad', headerName: 'Numero de identidad', width: 190, headerAlign: 'center' },
+    { field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
+    
     {
       field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
       valueGetter: (params) => {

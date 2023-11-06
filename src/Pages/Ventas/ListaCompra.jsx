@@ -25,7 +25,7 @@ export const ListaCompra = (props) => {
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
-    idObj:6
+    idObj:3
   }
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
@@ -81,8 +81,8 @@ export const ListaCompra = (props) => {
 
   const columns = [
     { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
-    { field: 'fechaCompra', headerName: 'Fecha de la compra', width: 380 },
-    { field: 'totalCompra', headerName: 'Total de la compra', width: 380 },
+    { field: 'fechaCompra', headerName: 'Fecha', width: 380 },
+    { field: 'totalCompra', headerName: 'Total', width: 380 },
    
     
     {
@@ -113,7 +113,7 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion","","error")
   }
   const handleBack = () => {
-    navegate('/Compras');
+    navegate('/inventario');
   };
 
   return (
