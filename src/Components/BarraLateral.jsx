@@ -22,6 +22,8 @@ import {
 import { sendData } from '../scripts/sendData';
 import axios from 'axios';
 
+import { Bitacora } from '../Components/bitacora.jsx';
+
 
 //--------------------URL DE BITACORAS----------------------------------
 const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
@@ -34,6 +36,11 @@ export const BarraLateral = props => {
   //Funcion de bitacora
   const dataB = {
     Id: props.idUsuario,
+  };
+  const bitacora = {
+    urlB:urlBIngresoPCita,
+    activo:props.activo,
+    dataB:dataB
   };
 
   const [permisos, setPermisos] = useState([]);
@@ -221,29 +228,6 @@ export const BarraLateral = props => {
               </Link>
             </li>
             </>:<></>}
-            
-            <li>
-              <Link className="link" to="/menuClientes">
-                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
-                <h1>CLIENTES</h1>
-              </Link>
-            </li>
-
-            <li>
-              <Link className="link" to="/inventario">
-                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
-                <h1>INVENTARIO</h1>
-              </Link>
-            </li>
-            <li>
-              <Link className="link" to="/ventas">
-                <FontAwesomeIcon
-                  className="iconLi"
-                  icon={faHandHoldingDollar}
-                />
-                <h1>VENTAS</h1>
-              </Link>
-            </li>
 
             <li>
               <Link className="link" to="/compras">
@@ -256,8 +240,33 @@ export const BarraLateral = props => {
             </li>
 
             <li>
+              <Link className="link" to="/ventas">
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faHandHoldingDollar}
+                />
+                <h1>VENTAS</h1>
+              </Link>
+            </li>
+
+            <li>
+              <Link className="link" to="/inventario">
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
+                <h1>INVENTARIO</h1>
+              </Link>
+            </li>
+
+            <li>
+              <Link className="link" to="/menuClientes">
+                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
+                <h1>CLIENTES</h1>
+              </Link>
+            </li>
+
+            <li>
               <Link className="link" to="/recordatorio"   onClick={() => {
-                  axios.post(urlBIngresoPCita, dataB); //Bitacora del modulo de usuario/empleado
+                  //axios.post(urlBIngresoPCita, dataB); 
+                  Bitacora(bitacora);
                   props.obj(2);
                 }}>
                 <FontAwesomeIcon className="iconLi" icon={faCalendar} />

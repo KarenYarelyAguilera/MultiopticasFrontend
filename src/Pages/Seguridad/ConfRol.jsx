@@ -247,7 +247,7 @@ export const ConfigRol = props => {
 
   }
 
-
+/* 
   const handleNuevoRol = () => {
     swal(
     <div className='logoModal'>Crear un nuevo rol</div>, {
@@ -299,7 +299,7 @@ export const ConfigRol = props => {
           break;
       }
     });
-  };
+  }; */
 
   useEffect(() => {
     fetch(urlRoles)
@@ -550,9 +550,9 @@ export const ConfigRol = props => {
                 )}
               </select>
             </div>
-
+           
             <div className="contButton">
-              <Button
+           {/*    <Button
                 className="btnEditRol"
                 onClick={() => {
                   setGRol(parseInt(document.getElementById('rol').value));
@@ -561,16 +561,18 @@ export const ConfigRol = props => {
               >
                 <EditIcon style={{ marginRight: '5px' }} />
                 Editar
-              </Button>
-              <Button className="btnNewRol" onClick={handleNuevoRol}>
+              </Button> */}
+              <Button className="btnNewRol"  onClick={() => {
+                 navegate('/config/ListaRoles')
+                }}>
                 <AddIcon style={{ marginRight: '5px' }} />
-                Nuevo
+                Lista Roles
               </Button>
 
-              <Button className="btnSaveRol" >
+              {/* <Button className="btnSaveRol" >
                 <SaveIcon style={{ marginRight: '5px' }} />
                 Guardar
-              </Button>
+              </Button> */}
             </div>
           </div>
           <div className="titlePrincipal">

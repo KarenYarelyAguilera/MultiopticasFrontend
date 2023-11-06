@@ -32,7 +32,7 @@ const urlDelSucursal = //BORRAR
 
 export const RegistroSucursal = (props) => {
 
-  const [Departamento, setDepartamento] = useState([]);
+  const [Departamento, setDepartamento] = useState([], props.data.departamento || '');
   const [Ciudad, setCiudad] = useState([]);
 
   const [departamento, setdepartamento] = React.useState(props.data.departamento ||'');
@@ -50,7 +50,7 @@ export const RegistroSucursal = (props) => {
   const [errorTelefono, setErrorTelefono] = React.useState(false);
   const [texto, setTexto] = React.useState(false);
   const [Telefono, setTelefono] = useState(props.data.telefono || '');
-
+  const [selectedOption, setSelectedOption] = useState(null); 
 
   useEffect(() => {
     fetch(urlDepartamentos)
@@ -70,12 +70,14 @@ export const RegistroSucursal = (props) => {
     let ciudad = parseInt(document.getElementById('ciudad').value);
     let direccion = document.getElementById('direccion').value;
     let telefono = document.getElementById('telefono').value;
+    //et estado = document.getElementById('estado').value;
 
     const data = {
       IdDepartamento: departamento,
       IdCiudad: ciudad,
       direccion: direccion,
       telefono: telefono,
+      estado: document.getElementById('estado').value,
       IdSucursal: props.data.IdSucursal, //El dato de IdProducto se obtiene de Producto seleccionado.
     }
 
@@ -104,12 +106,14 @@ export const RegistroSucursal = (props) => {
     let ciudad = parseInt(document.getElementById('ciudad').value);
     let direccion = document.getElementById('direccion').value;
     let telefono = document.getElementById('telefono').value;
+    let estado = document.getElementById('estado').value;
 
     let data = {
       IdDepartamento: departamento,
       IdCiudad: ciudad,
       direccion: direccion,
-      telefono: telefono
+      telefono: telefono,
+      estado: estado
     };
 
     console.log(data)
@@ -163,17 +167,21 @@ export const RegistroSucursal = (props) => {
 
               <TextCustom text="Departamento" className="titleInput" />
               <select name="" className="selectCustom" id="departamento">
+                
                 {Departamento.length ? (
                   Departamento.map(pre => (
                     <option key={pre.IdDepartamento} value={pre.IdDepartamento}>
                       {pre.departamento}
+                      
                     </option>
+                    
                   ))
                 ) : (
                   <option value="No existe informacion">
                     No existe informacion
                   </option>
                 )}
+                onChange={e => setdepartamento(e.target.value)} 
               </select>
 
             </div>
@@ -280,6 +288,14 @@ export const RegistroSucursal = (props) => {
                 value={Telefono}
               />
                {<p className="error">{texto}</p>}
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom">
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
+              </select>
             </div>
 
 

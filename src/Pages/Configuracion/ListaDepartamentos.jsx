@@ -1,6 +1,8 @@
 //GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -19,6 +21,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
 import { Button } from '@mui/material';
 
 import axios from 'axios';
@@ -52,6 +55,29 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
     fetch(urlDepartamento).then(response => response.json()).then(data => setTableData(data));
   }, [cambio]);
 
+  //Imprime el EXCEL 
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = tableData.map((row, index) => ({
+      'N°':row.IdDepartamento,
+       'Departamento':row.departamento, 
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+  
+    // Formato para el encabezado
+    worksheet['A1'] = { v: 'LISTA DE DEPARTAMENTOS', s: { font: { bold: true } } };
+    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
+    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
+    worksheet['B5'] = { v: 'Departamento', s: { font: { bold: true }} };
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Departamentos.xlsx');
+  };
+  
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     if (permisos[0].consultar ==="n") {
@@ -237,6 +263,11 @@ function handleDel(id) {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
+            </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <BorderAllIcon style={{ marginRight: '3px' }} />
+              Generar excel
             </Button>
 
             <Button className="btnReport"

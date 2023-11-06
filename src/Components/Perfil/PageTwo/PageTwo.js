@@ -9,7 +9,10 @@ import { useNavigate } from "react-router";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FilledInput, IconButton, InputAdornment } from '@mui/material';
 
-export const PageTwo = ({ correo: password2, id, autor }) => {
+import { Bitacora } from '../../../Components/bitacora.jsx';
+
+
+export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
   const navegate = useNavigate()
 
   const urlUserExist = "http://localhost:3000/api/login"
@@ -46,6 +49,13 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
     const dataId = {
       Id: id,
     };
+    const bitacora = {
+      urlB:urlBitacoraPerfil,
+      activo:bitacora,
+      dataB:dataId
+    };
+
+
     if (contra1 !== contra2) {
       swal("Las contraseñas no coinciden", "", "warning")
     } else {
@@ -56,7 +66,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
           swal("Contraseña actualizada", "", "success").then(() => navegate("/config/perfil"))
-          axios.post(urlBitacoraPerfil, dataId)
+          Bitacora(bitacora);
         }
       })
     }
@@ -72,7 +82,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
           <div className='divInfoRecuperacion'>
             <TextCustom text="Nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+              <FilledInput
 
                 onChange={(e) => {
                   setContra1(e.target.value);
@@ -97,7 +107,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 minLength={8}
                 inputRef={refContrasenia}
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra1"
                 endAdornment={
                   <InputAdornment position="end">
@@ -112,7 +122,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+              ></FilledInput>
               <p className='error'>{msj}</p>
             </div>
           </div>
@@ -121,7 +131,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
             <TextCustom text="" className="titleInput" />
             <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
             <div className="contInput">
-              <input
+            <FilledInput
                 onChange={(e) => {
                   setContra2(e.target.value);
                   if (contra2 === "") {
@@ -135,11 +145,11 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                 }
                 placeholder='Contraseña'
                 type={showPassword ? 'text' : 'password'}
-                inputProps={{ maxLength: 20}}
+                inputProps={{ maxLength: 20 }}
                 minLength={8}
                 inputRef={refContrasenia}
                 name=""
-                className="inputCustom"
+                className="inputCustomPass"
                 id="contra2"
                 endAdornment={
                   <InputAdornment position="end">
@@ -154,7 +164,7 @@ export const PageTwo = ({ correo: password2, id, autor }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-              />
+                ></FilledInput>
               <p className='error'>{advertencia}</p>
             </div>
           </div>

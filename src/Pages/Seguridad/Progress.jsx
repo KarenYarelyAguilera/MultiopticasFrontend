@@ -19,7 +19,7 @@ export const Progress = props => {
   const autr = aut => setAutor(aut);
 
 
-  const [page, setPage] = useState('pageone');
+  const [page, setPage] = useState('pagetwo');
 
   const nextPage = page => {
     setPage(page);
@@ -27,9 +27,9 @@ export const Progress = props => {
 
   const nextPageNumber = pageNumber => {
     switch (pageNumber) {
-      case '1':
+       case '1':
         setPage('pageone');
-        break;
+        break; 
       case '2':
         setPage('pagetwo');
         break;
@@ -49,14 +49,14 @@ export const Progress = props => {
       <div className="divInfoQuestion">
         <div className="titleRecuPassword">
           <h2>Preguntas de Seguridad</h2>
-            <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
+           {/*  <h3>Contesta cada paso, para poder autenticar tu usuario.</h3> */}
 
         </div>
         <MultiProgressPreguntas page={page} onPageNumberClick={nextPageNumber} />
           {
             {
-              pageone: <PageOne correo={crr1} onButtonClick={nextPage} />,
-              pagetwo: <PageTwo correo1={correo1} id={id} autor={autr} onButtonClick={nextPage} />,
+              /* pageone: <PageOne correo={crr1} onButtonClick={nextPage} />, */
+              pagetwo: <PageTwo correo={crr1} id={id} autor={autr} onButtonClick={nextPage} />,
               pagethree: <PageThree correo={correo1} id={Id} onButtonClick={nextPage} />,
               pagefour: <PageFour correo={correo1} id={Id} autor={autor} />,
 

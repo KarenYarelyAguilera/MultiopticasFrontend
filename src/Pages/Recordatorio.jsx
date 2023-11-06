@@ -35,6 +35,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 
+import { Bitacora } from '../Components/bitacora.jsx';
 
 const locales = {
   es: es,
@@ -109,9 +110,17 @@ export const Recordatorio = (props) => {
   let dataUsuario={
     Id:props.idUsuario
   }
+  const bitacora = {
+    urlB:urlBSalirPantalla,
+    activo:props.activo,
+    dataB:dataUsuario,
+  };
+
+
   const handleBack = () => {
     //axios.post (urlBitacoraBotonSalirLE,dataB)
-    axios.post(urlBSalirPantalla,dataUsuario)
+    //axios.post(urlBSalirPantalla,dataUsuario)
+    Bitacora(bitacora);
     navegate('/dashboard');
   };
 
@@ -249,12 +258,18 @@ export const Recordatorio = (props) => {
   
             let dataUsuario = {
               Id: props.idUsuario
-            }
-  
+            };
+
+            const bitacora = {
+              urlB:urlBitacoraDelCita,
+              activo:props.activo,
+              dataB:dataUsuario,
+            };
   
             await axios.delete(urlDelCita, { data }).then(response => {
               swal('Cita eliminada correctamente', '', 'success');
-              axios.post(urlBitacoraDelCita, dataUsuario)
+              Bitacora(bitacora);
+
               setCambio(cambio + 1);
             })
               .catch(error => {

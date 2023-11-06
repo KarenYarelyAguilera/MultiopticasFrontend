@@ -86,7 +86,7 @@ export const RegistroLente = (props) => {
 
   //BOTON DE RETROCESO 
   const handleBack = () => {
-    swal({
+/*     swal({
       title: 'Advertencia',
       text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
       icon: 'warning',
@@ -96,10 +96,11 @@ export const RegistroLente = (props) => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/MenuInventario/ListaLentes');
+        
       } else {
       }
-    });
+    }); */
+    navegate('/MenuInventario/ListaLentes');
   };
   return (
     <div className="ContUsuarios">
@@ -117,22 +118,6 @@ export const RegistroLente = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contInput">
-              <TextCustom text="Precio" className="titleInput" />
-              <input
-                onChange={e => setPrecio(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error={errorPrecio}
-
-                helperText={avisoP}
-                type="text"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Precio"
-                id="precio"
-                value={precio}
-              />
-            </div>
             <p className="error">{avisoP}</p>
             <div className="contInput">
               <TextCustom text="Lente" className="titleInput" />
@@ -153,6 +138,22 @@ export const RegistroLente = (props) => {
             </div>
             <p className="error">{avisoL}</p>
 
+            <div className="contInput">
+              <TextCustom text="Precio" className="titleInput" />
+              <input
+                onChange={e => setPrecio(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorPrecio}
+
+                helperText={avisoP}
+                type="text"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Precio"
+                id="precio"
+                value={precio}
+              />
+            </div>
 
 
             <div className="contBtnStepper">
@@ -162,12 +163,12 @@ export const RegistroLente = (props) => {
                 onClick={() => {
                   var lente = document.getElementById("lente").value;
                   var precio = parseFloat(document.getElementById("precio").value);
-                  if (lente === "" || precio=== "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  }else if (precio <= 0) {
-                    swal("El campo precio no acepta valores negativos.", "", "error");
-                  }else {
 
+                  if (precio <= 0) {
+                    swal("El campo precio no acepta valores negativos.", "", "error");
+                  } else if(lente === "" || precio=== ""){
+                    swal("No deje campos vacíos.", "", "error");
+                  }else{        
                     props.actualizar ? actualizarLente() : handleNext();
                   }
                 }

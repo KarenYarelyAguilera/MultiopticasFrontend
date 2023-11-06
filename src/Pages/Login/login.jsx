@@ -99,7 +99,8 @@ export const Login = props => {
         props.idUsuario(respJsonUsr.data[0].Id_Usuario);
         props.user(respJsonUsr.data[0].Nombre_Usuario);
         props.access(respJsonUsr.data[0].Estado_Usuario)
-        navegate('/loginPrimeraVez'); //configuracion de preguntas//
+        swal("Comenzando configuración", "", "success");
+        navegate('/preguntasLoginxPV'); //configuracion de preguntas//
       }
       if (
         respJsonPss.data.result &&
@@ -273,9 +274,9 @@ export const Login = props => {
             Iniciar sesion
           </Button>
 
-          <span className="btnRegistrate">
+          {/* <span className="btnRegistrate">
             ¿No tienes una cuenta? <a href="/registration">Registrate</a>
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="contImgLogin">

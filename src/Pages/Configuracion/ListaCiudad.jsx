@@ -2,6 +2,8 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
+import * as XLSX from 'xlsx'
+
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from "../../IMG/fondoPDF.jpg";
 
@@ -21,6 +23,9 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+
+import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
+
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -53,6 +58,16 @@ export const ListaCiudad = ({idRol,data,update}) => {
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
   }, [cambio]);
+
+  //Genera el archivo Excel 
+  const handleGenerarExcel = () => {
+    const sortedData = [...tableData].sort((a, b) => a.IdCiudad - b.IdCiudad);
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(sortedData);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Ciudad');   // Agrega la hoja de cálculo al libro de trabajo
+    XLSX.writeFile(wb, 'Lista_de_Ciudad.xlsx'); // Genera el archivo de Excel
+  };
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -240,12 +255,20 @@ function handleUpdt(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            <Button className="btnExcel"
+             onClick={handleGenerarExcel}>
+               <BorderAllIcon style={{ marginRight: '5px' }} />
+              Generar excel
+            </Button>
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
+            
           </div>
         </div>
         <DataGrid
