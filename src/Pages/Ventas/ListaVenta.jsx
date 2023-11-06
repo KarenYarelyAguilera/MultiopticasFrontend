@@ -96,7 +96,7 @@ export const ListaVenta = (props) => {
             fechaCre.getFullYear();
           return {
             'IdVenta': row.IdVenta,
-            'Fecha': row.fecha,
+            //'Fecha': row.fecha,
             'Cliente': row.Cliente,
             'ValorVenta': row.ValorVenta,
 
@@ -165,7 +165,7 @@ export const ListaVenta = (props) => {
       const documento = new jsPDF();
       documento.text(`---------------------MULTIOPTICAS, S.DE R.L. DE C.V.---------------------`, 20, 10);
 
-      documento.text(`Fecha: ${informacionventa.data[0].fecha}`, 20, 20);
+      //documento.text(`Fecha: ${informacionventa.data[0].fecha}`, 20, 20);
       documento.text(`RTN:  08011998014780`, 20, 30);
       documento.text(`NumeroCAI: ${informacionventa.data[0].NumeroCAI}`, 20, 40);
       documento.text(`Direccion: ${informacionventa.data[0].direccion}`, 20, 50);

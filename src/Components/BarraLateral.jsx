@@ -228,20 +228,17 @@ export const BarraLateral = props => {
               </Link>
             </li>
             </>:<></>}
-            
+
             <li>
-              <Link className="link" to="/menuClientes">
-                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
-                <h1>CLIENTES</h1>
+              <Link className="link" to="/compras">
+                <FontAwesomeIcon
+                  className="iconLi"
+                  icon={faCartShopping}
+                />
+                <h1>COMPRAS</h1>
               </Link>
             </li>
 
-            <li>
-              <Link className="link" to="/inventario">
-                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
-                <h1>INVENTARIO</h1>
-              </Link>
-            </li>
             <li>
               <Link className="link" to="/ventas">
                 <FontAwesomeIcon
@@ -253,12 +250,16 @@ export const BarraLateral = props => {
             </li>
 
             <li>
-              <Link className="link" to="/compras">
-                <FontAwesomeIcon
-                  className="iconLi"
-                  icon={faCartShopping}
-                />
-                <h1>COMPRAS</h1>
+              <Link className="link" to="/inventario">
+                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
+                <h1>INVENTARIO</h1>
+              </Link>
+            </li>
+
+            <li>
+              <Link className="link" to="/menuClientes">
+                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
+                <h1>CLIENTES</h1>
               </Link>
             </li>
 

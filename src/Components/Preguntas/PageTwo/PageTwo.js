@@ -6,7 +6,7 @@ import swal from '@sweetalert/with-react';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
+export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
 
   const [email, setCorreo] = useState("");
   const [textoCorreo, setTextoCorreo] = useState("");
@@ -35,6 +35,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
 
       id(response.data[0].Id_Usuario)
       autor(response.data[0].Nombre_Usuario)
+      correo(respuesta)
 
       if (response.data) {
 
