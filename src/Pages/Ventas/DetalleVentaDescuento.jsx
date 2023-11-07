@@ -95,9 +95,7 @@ export const DetalleVentaDescuento= ({
       </Button>
       <div className="titleAddUser">
         <h2>Detalle de Venta </h2>
-        <h3>
-          Complete todos los puntos para poder registrar los datos de Detalles de Venta.
-        </h3>
+       
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

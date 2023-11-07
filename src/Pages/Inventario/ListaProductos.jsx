@@ -112,13 +112,13 @@ export const ListaProductos = (props) => {
 
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
-    { field: 'IdProducto', headerName: 'ID Producto', width: 190 },
+    { field: 'IdProducto', headerName: 'ID', width: 190 },
     { field: 'Modelo', headerName: 'Modelo', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 190 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 190 },
+    { field: 'descripcion', headerName: 'Descripción', width: 190 },
     { field: 'precio', headerName: 'Precio', width: 190 },
-    { field: 'cantidadMin', headerName: 'Cantidad Minima', width: 190 },
-    { field: 'cantidadMax', headerName: 'Cantidad Maxima', width: 190 },
+    { field: 'cantidadMin', headerName: 'Cantidad minima', width: 190 },
+    { field: 'cantidadMax', headerName: 'Cantidad máxima', width: 190 },
 
     {
       field: 'borrar',

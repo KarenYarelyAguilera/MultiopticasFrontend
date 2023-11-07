@@ -118,7 +118,7 @@ export const ListaPais = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdPais', headerName: 'ID País', width: 600 },
+    { field: 'IdPais', headerName: 'ID', width: 600 },
     { field: 'Pais', headerName: 'País', width: 600 },
 
     {

@@ -120,7 +120,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID Marca', width: 500 },
+    { field: 'IdMarca', headerName: 'ID', width: 500 },
     { field: 'descripcion', headerName: 'Marca', width: 500 },
 
     {

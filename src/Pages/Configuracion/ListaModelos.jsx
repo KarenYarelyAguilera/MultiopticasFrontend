@@ -134,15 +134,15 @@ const handleGenerarExcel = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
-    { field: 'Marca', headerName: 'Marca', width: 200 },
-    { field: 'Modelo', headerName: 'Modelo', width: 190},
-    { field: 'anio', headerName: 'Año', width: 190 },
+    { field: 'IdModelo', headerName: 'ID ', width: 190 },
+    { field: 'Marca', headerName: 'Marca', width: 300 },
+    { field: 'Modelo', headerName: 'Modelo', width: 300},
+    { field: 'anio', headerName: 'Año', width: 300 },
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 260,
 
       renderCell: params => (
         <div className="contActions">

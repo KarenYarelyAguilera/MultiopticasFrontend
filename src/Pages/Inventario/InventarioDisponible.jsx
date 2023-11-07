@@ -89,11 +89,11 @@ export const InventarioDisponible = (props) => {
 
   };
   const columns = [
-    { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
-    { field: 'IdProducto', headerName: 'IdProducto', width: 100 },
-    { field: 'descripcion', headerName: 'Marca', width: 400 },
-    { field: 'detalle', headerName: 'Producto', width: 400 },
-    { field: 'cantidad', headerName: 'Cantidad', width: 400 },
+    { field: 'IdInventario', headerName: 'Número de inventario', width: 200, headerAlign: 'center' },
+    { field: 'IdProducto', headerName: 'ID Producto', width: 100, headerAlign: 'center' },
+    { field: 'descripcion', headerName: 'Marca', width: 200, headerAlign: 'center' },
+    { field: 'detalle', headerName: 'Producto', width: 200, headerAlign: 'center' },
+    { field: 'cantidad', headerName: 'Cantidad', width: 200, headerAlign: 'center' },
 
 
 

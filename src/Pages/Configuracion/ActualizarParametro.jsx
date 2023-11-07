@@ -57,7 +57,7 @@ const handleUpdate = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Actualizacion de Parametro</h2>
+        <h2>Actualización de Parámetro</h2>
       </div>
 
       <div className="infoAddUser">
@@ -126,18 +126,22 @@ const handleUpdate = async () => {
               variant="contained"
               className="btnStepper"
 
-               onClick={() => {
-                 //Validaciones previo a ejecutar el boton
-                var Valor  = document.getElementById ("Valor").value;
-                
-                if ( Valor ===""){
-                  swal ("No deje campos vacios.","","error");
-                }else{
+              onClick={() => {
+                // Validaciones previo a ejecutar el botón
+                var Valor = parseFloat(document.getElementById("Valor").value);
+                if (isNaN(Valor)) {
+                  swal("Ingrese un valor numérico válido.", "", "error");
+                } else if (Valor <= 0) {
+                  swal("El valor debe ser mayor que 0.", "", "error");
+                } else {
                   handleUpdate();
                 }
+              }
+              
                   
                 }
-                }
+                
+        
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
