@@ -222,7 +222,7 @@ export const BarraLateral = props => {
             </li>
             </>:<></>}
 
-            <li>
+          {/*   <li>
               <Link className="link" to="/compras">
                 <FontAwesomeIcon
                   className="iconLi"
@@ -230,7 +230,7 @@ export const BarraLateral = props => {
                 />
                 <h1>COMPRAS</h1>
               </Link>
-            </li>
+            </li> */}
 
             <li>
               <Link className="link" to="/ventas">
