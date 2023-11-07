@@ -20,6 +20,7 @@ export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
           console.log(response.data === false)
           id(response.data[0].Id_Usuario);
           autor(response.data[0].Nombre_Usuario);
+          correo1(respuesta)
 
           const data2 = {
             correo: respuesta,
