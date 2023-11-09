@@ -218,39 +218,6 @@ export const RegistroProducto2 = (props) => {
               <p class="error">{aviso}</p>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Cantidad Maxima" className="titleInput" />
-
-              <input
-                onKeyDown={e => {
-                  setcantidadmax(e.target.value);
-                  if (cantidadmax === '') {
-                    setErrorcantidadmax(true);
-                    setmensaje('Los campos no deben estar vacios');
-                  } else {
-                    setErrorcantidadmax(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(cantidadmax)) {
-                      setErrorcantidadmax(true);
-                      setmensaje('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorcantidadmax(false);
-                      setmensaje('');
-                    }
-                  }
-                }}
-                onChange={e => setcantidadmax(e.target.value)}
-                error={errorcantidadmax}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Cantidad Maxima"
-                id="cantidadMax"
-                value={cantidadmax}
-              />
-              <p class="error">{mensaje}</p>
-            </div>
 
             <div className="contInput">
               <TextCustom text="Cantidad Minima" className="titleInput" />
@@ -285,6 +252,41 @@ export const RegistroProducto2 = (props) => {
               />
               <p class="error">{advertencia}</p>
             </div>
+            <div className="contInput">
+              <TextCustom text="Cantidad Maxima" className="titleInput" />
+
+              <input
+                onKeyDown={e => {
+                  setcantidadmax(e.target.value);
+                  if (cantidadmax === '') {
+                    setErrorcantidadmax(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcantidadmax(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cantidadmax)) {
+                      setErrorcantidadmax(true);
+                      setmensaje('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcantidadmax(false);
+                      setmensaje('');
+                    }
+                  }
+                }}
+                onChange={e => setcantidadmax(e.target.value)}
+                error={errorcantidadmax}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Cantidad Maxima"
+                id="cantidadMax"
+                value={cantidadmax}
+              />
+              <p class="error">{mensaje}</p>
+            </div>
+
+           
 
             <div className="contInput">
               <TextCustom

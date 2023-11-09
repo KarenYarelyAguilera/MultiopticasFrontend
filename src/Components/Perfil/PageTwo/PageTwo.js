@@ -49,7 +49,7 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
     const dataId = {
       Id: id,
     };
-    const bitacora = {
+    const bitacoraa = {
       urlB:urlBitacoraPerfil,
       activo:bitacora,
       dataB:dataId
@@ -66,7 +66,7 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
           swal("La contraseña no puede ser igual que la anterior", "", "error")
         } else {
           swal("Contraseña actualizada", "", "success").then(() => navegate("/config/perfil"))
-          Bitacora(bitacora);
+          Bitacora(bitacoraa);
         }
       })
     }
