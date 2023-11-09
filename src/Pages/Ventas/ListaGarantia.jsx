@@ -23,6 +23,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Icon } from '@mui/material';
 
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+
 import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
 
 import '../../Styles/Usuarios.css';
@@ -251,7 +253,7 @@ const handleGenerarReporte = () => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -264,7 +266,7 @@ const handleGenerarReporte = () => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -278,10 +280,10 @@ const handleGenerarReporte = () => {
             >
             <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
-            </Button>y
+            </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
             </Button>
 
