@@ -38,6 +38,8 @@ export const RegistroLente = (props) => {
   const [avisoP, setavisoP] = React.useState('');
   const [errorPrecio, setErrorPrecio] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
+
   const navegate = useNavigate();
 
   //INSERTAR LENTE
@@ -47,8 +49,9 @@ export const RegistroLente = (props) => {
     let precio = parseFloat(document.getElementById("precio").value);
 
     let data = {
-      lente: lente,
+      lente: lente.toUpperCase(),
       precio: precio,
+      estado: document.getElementById('estado').value
     }
 
     if (await axios.post(urlInsertLente, data)) {
@@ -67,8 +70,9 @@ export const RegistroLente = (props) => {
 
     const data = {
 
-      lente: lente,
+      lente: lente.toUpperCase(),
       precio: precio,
+      estado: document.getElementById('estado').value,
       IdLente: props.data.IdLente,//El dato de IdProducto se obtiene de Producto seleccionado.
     }
 
@@ -86,7 +90,7 @@ export const RegistroLente = (props) => {
 
   //BOTON DE RETROCESO 
   const handleBack = () => {
-/*     swal({
+     swal({
       title: 'Advertencia',
       text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
       icon: 'warning',
@@ -99,7 +103,7 @@ export const RegistroLente = (props) => {
         
       } else {
       }
-    }); */
+    }); 
     navegate('/MenuInventario/ListaLentes');
   };
   return (
@@ -153,6 +157,16 @@ export const RegistroLente = (props) => {
                 id="precio"
                 value={precio}
               />
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
+                setEstado(e.target.value)
+              }}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
+              </select>
             </div>
 
 
