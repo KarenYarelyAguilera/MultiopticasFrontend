@@ -47,14 +47,18 @@ export const ListaDescuento = ({idRol,data,update}) => {
 
 //URL DE DESCUENTO
 const urlListaDescuentos = 'http://localhost:3000/api/Descuento';
+const urlListaDescuentosInactivos = 'http://localhost:3000/api/DescuentosInactivos';
 const urlDelDescuento = 'http://localhost:3000/api/Descuento/BorrarDescuento';
 
 const [tableData, setTableData] = useState([]);
+const [tableDataInactivos, setTableDataInactivos] = useState([]);
 const [searchTerm, setSearchTerm] = useState('');
+const [inactivo, setInactivo] = useState(false)
  
   useEffect(() => {
     axios.get (urlListaDescuentos).then(response=> setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaDescuentosInactivos).then(response=> setTableDataInactivos(response.data))
+  }, [cambio, inactivo]);
 
 //Imprime el EXCEL 
 const handleGenerarExcel = () => {
@@ -124,12 +128,19 @@ const handleGenerarExcel = () => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
   
   //ESTRUCTURA DE LA TABLA 
   const columns = [
     { field: 'IdDescuento', headerName: 'ID', width: 210 },
-    { field: 'descPorcent', headerName: 'Porcentaje', width: 300 },
-    { field: 'descPorcentEmpleado', headerName: 'Descripción', width: 300 },
+    { field: 'descPorcent', headerName: 'Descuento', width: 300 },
     { field: 'estado', headerName: 'Estado', width: 300 },
     {
       field: 'borrar',
@@ -278,6 +289,11 @@ const handleGenerarExcel = () => {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
@@ -293,7 +309,7 @@ const handleGenerarExcel = () => {
 
         <DataGrid
           getRowId={tableData => tableData.IdDescuento}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

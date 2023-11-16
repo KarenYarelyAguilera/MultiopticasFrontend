@@ -32,6 +32,8 @@ export const RegistroGarantia = (props) => {
   const [leyenda, setleyenda] = React.useState('');
   const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
+
 //GET PRODUCTOS
   useEffect(() => {
     axios.get (urlProductos).then (response=>setProductos(response.data))
@@ -44,24 +46,29 @@ export const RegistroGarantia = (props) => {
     
     let IdProducto = parseInt(document.getElementById ("IdProducto").value);
     let mesesGarantia = document.getElementById ("mesesGarantia").value;
-    let estado = parseInt(document.getElementById ("estado").value);
     let descripcion = document.getElementById ("descripcion").value;
 
     let data = {
       IdProducto: IdProducto,
       mesesGarantia: mesesGarantia,
-      estado: estado,
-      descripcion: descripcion,
+      estado: document.getElementById('estado').value,
+      descripcion: descripcion.toUpperCase(),
     };
 
      //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertGarantia, data).then(response => {
-    swal('Garantia creada exitosamente', '', 'success').then(result => {
-      navegate('/menuVentas/listaGarantias');
-    });
+    console.log(response);
+      if (response.data == false) {
+        swal('¡Esta Garantia ya existe!', '', 'error')
+      } else {
+        swal('Garantia creada exitosamente', '', 'success').then(result => {
+          navegate('/menuVentas/listaGarantias');
+        });
+      }
   }).catch(error => {
     console.log(error);
-    swal('Error al crear la garantia , porfavor revise los campos.', '', 'error')
+    swal('¡Esta Garantia ya existe!', '', 'error')
+      
  
   }
   )
@@ -72,7 +79,6 @@ const actualizarGarantia = async () => {
 
   let IdProducto = parseInt(document.getElementById ("IdProducto").value);
   let mesesGarantia = document.getElementById ("mesesGarantia").value;
-  let estado = parseInt(document.getElementById ("estado").value);
   let descripcion = document.getElementById ("descripcion").value;
 
   // let IdProducto = parseInt(document.getElementById("IdProducto").value)
@@ -84,8 +90,8 @@ const actualizarGarantia = async () => {
  const data = {
     IdProducto: IdProducto,
     mesesGarantia: mesesGarantia,
-    estado: estado,
-    descripcion: descripcion,
+    estado: document.getElementById ("estado").value,
+    descripcion: descripcion.toUpperCase(),
     IdGarantia:props.data.IdGarantia,
   };
 
@@ -139,7 +145,7 @@ const actualizarGarantia = async () => {
                 {Productos.length ? (
                   Productos.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.descripcion}
+                      {pre.Modelo}
                     </option>
                   ))
                 ) : (
@@ -148,6 +154,42 @@ const actualizarGarantia = async () => {
                   </option>
                 )}
               </select>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Descripcion" className="titleInput" />
+              <input
+                onKeyDown={e => { setDescripcion(e.target.value);
+                  if (descripcion === "") {
+                    setErrorDescripcion(true);
+                    setleyenda("Los campos no deben de quedar vacíos");
+                  } else {
+                    setErrorDescripcion(false);
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
+                    } else if (/(.)\1{2,}/.test(descripcion)) {
+                      setErrorDescripcion(true);
+                      setleyenda("No se permiten letras consecutivas repetidas");
+                    } else {
+                      setErrorDescripcion(false);
+                      setleyenda("");
+                    }
+                  }
+                }
+                }
+                onChange={e => setDescripcion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error= {errorDescripcion}
+                type="text"
+                name=""
+                maxLength={100}
+                className="inputCustomText"
+                placeholder="Descripcion"
+                id="descripcion"
+                value={descripcion}
+              />
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -189,47 +231,15 @@ const actualizarGarantia = async () => {
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="estado">
-                <option value={1}>Activo</option>
-                <option value={2}>Inactivo</option>
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
               </select>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Descripcion" className="titleInput" />
-              <input
-                onKeyDown={e => { setDescripcion(e.target.value);
-                  if (descripcion === "") {
-                    setErrorDescripcion(true);
-                    setleyenda("Los campos no deben de quedar vacíos");
-                  } else {
-                    setErrorDescripcion(false);
-                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(descripcion)) {
-                      setErrorDescripcion(true);
-                      setleyenda('Solo debe ingresar letras mayúsculas y un espacio entre palabras')
-                    } else if (/(.)\1{2,}/.test(descripcion)) {
-                      setErrorDescripcion(true);
-                      setleyenda("No se permiten letras consecutivas repetidas");
-                    } else {
-                      setErrorDescripcion(false);
-                      setleyenda("");
-                    }
-                  }
-                }
-                }
-                onChange={e => setDescripcion(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error= {errorDescripcion}
-                type="text"
-                name=""
-                maxLength={100}
-                className="inputCustomText"
-                placeholder="Descripcion"
-                id="descripcion"
-                value={descripcion}
-              />
-              <p class="error">{leyenda}</p>
-            </div>
+          
 
 
             <div className="contBtnStepper">

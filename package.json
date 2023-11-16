@@ -24,6 +24,7 @@
     "jspdf-autotable": "^3.5.31",
     "moment": "^2.29.4",
     "mysql2": "^3.6.0",
+    "numeral": "^2.0.6",
     "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
     "react-big-calendar": "^1.6.9",

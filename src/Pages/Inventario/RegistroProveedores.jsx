@@ -54,8 +54,6 @@ export const RegistroProveedores = (props) => {
   const [Paises, setPaises]= useState(props.data.IdCiudad)
   const [errorpais, setErrorpais] = React.useState(false);
 
-  const [advertencia, setadvertencia] = React.useState('');
-  const [errorciudad, setErrorciudad] = React.useState(false);
 
   const [direccion, setdireccion] = React.useState(props.data.direccion ||'');
   const [validacion, setvalidacion] = React.useState('');
