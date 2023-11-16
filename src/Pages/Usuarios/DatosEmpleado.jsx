@@ -67,6 +67,10 @@ export const DatosEmpleado = (props) => {
   const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
   const [fechaSalida, setFechaSalida] = useState(props.data.fechaSalida || '');
   const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaCumpleanos || '');
+
+  const [sucursal, setSucursal] = useState(props.data.IdSucursal || null)
+  const [genero, setGenero] = useState(props.data.IdGenero || null)
+  const [estado, setEstado] = useState(props.data.estado || null)
   
   
 
@@ -228,8 +232,9 @@ export const DatosEmpleado = (props) => {
     }
 
     axios.post(urlIEmpleado, data).then(response => {
+      console.log(response);
       if (response.data == false) {
-        swal('¡Uno de los datos ya existe!', '', 'error')
+        swal('¡Este empleado ya existe!', '', 'error')
       } else {
         swal('Empleado agregado con exito', '', 'success').then(result => {
           Bitacora(bitacora)
@@ -239,7 +244,7 @@ export const DatosEmpleado = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
-      axios.post(urlErrorInsertBitacora, dataB)
+     // axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
@@ -395,7 +400,9 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Género" className="titleInput" />
-              <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
+              <select name="" className="selectCustom" id="genero" value={genero} onChange={(e)=>{
+                setGenero(e.target.value)
+              }}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
               </select>
@@ -445,7 +452,9 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
-              <select name="" className="selectCustom" id="sucursal" value={props.data.IdSucursal} >
+              <select name="" className="selectCustom" id="sucursal" value={sucursal} onChange={(e)=>{
+                setSucursal(e.target.value)
+              }} >
                 {sucursales.length ? (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
@@ -460,7 +469,6 @@ export const DatosEmpleado = (props) => {
 
               </select>
             </div>
-
 
 
             <div className="contInput">
@@ -508,7 +516,9 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom" value={props.data.estado}>
+              <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
+                setEstado(e.target.value)
+              }}>
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
               </select>

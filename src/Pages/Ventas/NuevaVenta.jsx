@@ -20,7 +20,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 
 //URLS
 const urlCliente = 'http://localhost:3000/api/clientes';
-const urlEmployees = 'http://localhost:3000/api/empleado';
+const urlEmployees = 'http://localhost:3000/api/empleados';
 
 
 export const NuevaVenta = (props) => {

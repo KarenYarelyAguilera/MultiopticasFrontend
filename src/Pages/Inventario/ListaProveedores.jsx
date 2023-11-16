@@ -31,6 +31,7 @@ export const ListaProveedores = (props) => {
   },[])
 
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo] = useState(false)
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
@@ -38,9 +39,11 @@ export const ListaProveedores = (props) => {
   
   //URLS
   const urlProveedores = 'http://localhost:3000/api/proveedor';
+  const urlProveedoresInactivos = 'http://localhost:3000/api/ProveedoresInactivos';
   const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const [Pais, setPais] = useState([]);
@@ -87,10 +90,9 @@ export const ListaProveedores = (props) => {
 
   //Pa' cargar los proveedores
   useEffect(() => {
-    fetch(urlProveedores)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-  }, [cambio]);
+    fetch(urlProveedores).then(response => response.json()).then(data => setTableData(data));
+      axios.get(urlProveedoresInactivos).then(response => setTableDataInactivos(response.data))
+  }, [cambio, inactivo]);
 
   //IMPRIMIR PDF
 
@@ -139,6 +141,14 @@ export const ListaProveedores = (props) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
     { field: 'IdProveedor', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'CiaProveedora', headerName: 'Empresa', width: 150,  headerAlign: 'center' },
@@ -149,6 +159,7 @@ export const ListaProveedores = (props) => {
   /*   { field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' }, */
     { field: 'telefono', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
     { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 230, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
 
     {
@@ -309,6 +320,13 @@ export const ListaProveedores = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               NUEVO
             </Button>
+
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnReport"  
             onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
@@ -318,123 +336,11 @@ export const ListaProveedores = (props) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdProveedor}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
           rowsPerPageOptions={[5]}
-
-
-        //----------------ni idea para que es------------
-        // onRowClick={usuario => {
-        //   swal({
-        //     buttons: {
-        //       update: 'Actualizar',
-        //       cancel: 'Cancelar',
-        //     },
-        //     content: (
-        //       <div className="logoModal">
-        //         Que accion desea realizar con el cliente:{' '}
-        //         {usuario.row.Usuario}
-        //       </div>
-        //     ),
-        //   }).then(op => {
-        //     switch (op) {
-        //       case 'update':
-        //         swal(
-        //           <div>
-        //             <div className="logoModal">Datos a actualizar</div>
-        //             <div className="contEditModal">
-        //               <div className="contInput">
-        //                 <TextCustom text="Usuario" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="nombre"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Usuario}
-        //                 />
-        //               </div>
-
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Nombre de Usuario"
-        //                   className="titleInput"
-        //                 />
-        //                 <input
-        //                   type="text"
-        //                   id="nombreUsuario"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Nombre_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Estado" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   className='inputCustom'
-        //                   id="EstadoUsuario"
-        //                   value={usuario.row.Estado_Usuario}
-        //                 />
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom
-        //                   text="Contraseña"
-        //                   className="titleInput"
-        //                 />
-        //                 <input type="text" id="contrasenia" className='inputCustom'/>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Rol" className="titleInput" />
-        //                 <select id="rol" className="selectCustom">
-        //                   {roles.length ? (
-        //                     roles.map(pre => (
-        //                       <option key={pre.Id_Rol} value={pre.Id_Rol}>
-        //                         {pre.Rol}
-        //                       </option>
-        //                     ))
-        //                   ) : (
-        //                     <option value="No existe informacion">
-        //                       No existe informacion
-        //                     </option>
-        //                   )}
-        //                 </select>
-        //               </div>
-        //               <div className="contInput">
-        //                 <TextCustom text="Email" className="titleInput" />
-        //                 <input
-        //                   type="text"
-        //                   id="Email"
-        //                   className='inputCustom'
-        //                   value={usuario.row.Correo_Electronico}
-        //                 />
-        //               </div>
-        //             </div>
-        //           </div>,
-        //         ).then(() => {
-        //           let data = {
-        //             Usuario: document.getElementById('nombre').value,
-        //             Nombre_Usuario:
-        //               document.getElementById('nombreUsuario').value,
-        //             Estado_Usuario:
-        //               document.getElementById('EstadoUsuario').value,
-        //             Contrasenia: document.getElementById('contrasenia').value,
-        //             Id_Rol: document.getElementById('rol').value,
-        //             Correo_Electronico:
-        //               document.getElementById('Email').value,
-        //             Id_usuario: usuario.row.id_Usuario,
-        //           };
-
-        //           if (sendData(urlUpdateUser, data)) {
-        //             swal(<h1>Usuario Actualizado Correctamente</h1>);
-        //           }
-        //         });
-        //         break;
-        //       default:
-        //         break;
-        //     }
-        //   });
-        // }}
-
         />
       </div>
     </div>

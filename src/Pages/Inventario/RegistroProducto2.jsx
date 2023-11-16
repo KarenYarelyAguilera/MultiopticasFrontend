@@ -31,7 +31,9 @@ const urlModelos = //MOSTRAR MODELOS
   const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
 
 export const RegistroProducto2 = (props) => { 
-  const [Modelo, setModelo] = useState([]);
+  const [Modelo, setModelo] = useState([]);  
+  const [modelos, setModelos] = useState(props.data.IdModelo || null);
+  
 
   const [leyenda, setleyenda] = React.useState('');
   const [errorproducto, setErrorproducto] = React.useState(false);
@@ -52,6 +54,8 @@ export const RegistroProducto2 = (props) => {
   const [descrpcion, setdescripcion] = React.useState(props.data.descripcion ||'');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
+
+  const [estado, setEstado] = useState(props.data.estado || null)
 //Se usa para mostrar informacion en un listbox
   useEffect(() => {
     fetch(urlModelos)
@@ -73,7 +77,8 @@ export const RegistroProducto2 = (props) => {
         precio: precio,
         cantidadMin: cantidadMin,
         cantidadMax: cantidadMax,
-        descripcion: descripcion,
+        descripcion: descripcion.toUpperCase(),
+        estado: document.getElementById('estado').value,
         IdProducto: props.data.IdProducto, //El dato de IdProducto se obtiene de Producto seleccionado.
       }
   
@@ -112,7 +117,8 @@ export const RegistroProducto2 = (props) => {
       precio: precio,
       cantidadMin: cantidadMin,
       cantidadMax: cantidadMax,
-      descripcion: descripcion,
+      descripcion: descripcion.toUpperCase(),
+      estado: document.getElementById('estado').value,
     };
 
      //Funcion de bitacora 
@@ -169,7 +175,9 @@ export const RegistroProducto2 = (props) => {
 
             <div className="contInput">
               <TextCustom text="Modelo" className="titleInput" />
-              <select name="" className="selectCustom" id="modelo">
+              <select name="" className="selectCustom" id="modelo" value={modelos} onChange={(e)=>{
+                setModelos(e.target.value)
+              }}>
                 {Modelo.length ? (
                   Modelo.map(pre => (
                     <option key={pre.IdModelo} value={pre.IdModelo}>
@@ -218,39 +226,6 @@ export const RegistroProducto2 = (props) => {
               <p class="error">{aviso}</p>
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Cantidad Maxima" className="titleInput" />
-
-              <input
-                onKeyDown={e => {
-                  setcantidadmax(e.target.value);
-                  if (cantidadmax === '') {
-                    setErrorcantidadmax(true);
-                    setmensaje('Los campos no deben estar vacios');
-                  } else {
-                    setErrorcantidadmax(false);
-                    var preg_match = /^[0-9]+$/;
-                    if (!preg_match.test(cantidadmax)) {
-                      setErrorcantidadmax(true);
-                      setmensaje('Solo deben de ingresar numeros');
-                    } else {
-                      setErrorcantidadmax(false);
-                      setmensaje('');
-                    }
-                  }
-                }}
-                onChange={e => setcantidadmax(e.target.value)}
-                error={errorcantidadmax}
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Cantidad Maxima"
-                id="cantidadMax"
-                value={cantidadmax}
-              />
-              <p class="error">{mensaje}</p>
-            </div>
 
             <div className="contInput">
               <TextCustom text="Cantidad Minima" className="titleInput" />
@@ -285,6 +260,41 @@ export const RegistroProducto2 = (props) => {
               />
               <p class="error">{advertencia}</p>
             </div>
+            <div className="contInput">
+              <TextCustom text="Cantidad Maxima" className="titleInput" />
+
+              <input
+                onKeyDown={e => {
+                  setcantidadmax(e.target.value);
+                  if (cantidadmax === '') {
+                    setErrorcantidadmax(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  } else {
+                    setErrorcantidadmax(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(cantidadmax)) {
+                      setErrorcantidadmax(true);
+                      setmensaje('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorcantidadmax(false);
+                      setmensaje('');
+                    }
+                  }
+                }}
+                onChange={e => setcantidadmax(e.target.value)}
+                error={errorcantidadmax}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Cantidad Maxima"
+                id="cantidadMax"
+                value={cantidadmax}
+              />
+              <p class="error">{mensaje}</p>
+            </div>
+
+           
 
             <div className="contInput">
               <TextCustom
@@ -306,13 +316,23 @@ export const RegistroProducto2 = (props) => {
                 error={errordescripcion}
                 type="text"
                 name=""
-                maxLength={60}
+                maxLength={100}
                 className="inputCustomText"
                 placeholder="Descripcion del Producto"
                 id="descripcion"
                 value={descrpcion}
               />
               <p class="error">{msj}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
+                setEstado(e.target.value)
+              }}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
+              </select>
             </div>
 
             <div className="contBtnStepper">
