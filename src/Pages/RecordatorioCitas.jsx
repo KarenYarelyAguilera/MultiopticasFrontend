@@ -22,6 +22,8 @@ import Select from 'react-select';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
+import '../Styles/Usuarios.css';
+
 const locales = {
   es: es,
 };
@@ -160,9 +162,9 @@ export const RecordatorioCitas = (props) => {
         Id: props.idUsuario
       }
       const bitacora = {
-        urlB:urlBitacoraAggCita,
-        activo:props.activo,
-        dataB:dataUsuario,
+        urlB: urlBitacoraAggCita,
+        activo: props.activo,
+        dataB: dataUsuario,
       };
 
       //console.log(data);
@@ -263,47 +265,52 @@ export const RecordatorioCitas = (props) => {
               <div className="contNewCita">
                 <TextCustom text="Nota" className="titleInput" />
                 <input
-                onKeyDown={e => {
-                  setNotas(e.target.value);
-                  if (Notas === '') {
-                    setErrorNotas(true);
-                    setMsj('Los campos no deben estar vacíos');
-                  } else {
-                    setErrorNotas(false);
-                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                    if (!regex.test(Notas)) {
+                  onKeyDown={e => {
+                    setNotas(e.target.value);
+                    if (Notas === '') {
                       setErrorNotas(true);
-                      setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                    } else if (/(.)\1{2,}/.test(Notas)) {
-                      setErrorNotas(true);
-                      setMsj('No se permiten letras consecutivas repetidas');
+                      setMsj('Los campos no deben estar vacíos');
                     } else {
                       setErrorNotas(false);
-                      setMsj('');
+                      var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                      if (!regex.test(Notas)) {
+                        setErrorNotas(true);
+                        setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                      } else if (/(.)\1{2,}/.test(Notas)) {
+                        setErrorNotas(true);
+                        setMsj('No se permiten letras consecutivas repetidas');
+                      } else {
+                        setErrorNotas(false);
+                        setMsj('');
+                      }
                     }
-                  }
-                }}
+                  }}
 
-                onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                error={errorNotas}
-                type="text"
-                helperText={Msj}
-                name=""
-                maxLength={40}
-                className="inputCustomText"
-                placeholder="Nota"
-                id="nota"
-                value={Notas}
+                  onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                  error={errorNotas}
+                  type="text"
+                  helperText={Msj}
+                  name=""
+                  maxLength={40}
+                  className="inputCustomText"
+                  placeholder="Nota"
+                  id="nota"
+                  value={Notas}
                 />
                 {/*  <p className='error'>{Msj}</p> */}
               </div>
 
 
-              <div className="contNewCitaButtons">
-                 {/*  <button className='btnAgregarCita' onClick={handleClick}>Guardar</button> */}
-              <Button
-                  className='btnAgregarCita'
-                  type="submit"
+              <div className="contBtnStepper">
+
+                <Button
+                  variant="contained"
+                  className='btnStepper'
+                  onClick={() => navegate('/recordatorio')}
+                >Cancelar</Button>
+                <Button
+                  variant="contained"
+                  className='btnStepper'
                   onClick={() => {
 
                     var nota = document.getElementById("nota").value;
@@ -320,7 +327,7 @@ export const RecordatorioCitas = (props) => {
                     }
                   }}
                 >Guardar</Button>
-                <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
+
               </div>
             </div>
           </div>
