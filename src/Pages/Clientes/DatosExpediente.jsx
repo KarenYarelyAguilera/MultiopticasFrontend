@@ -40,7 +40,7 @@ const urlDiagnosticos = 'http://localhost:3000/api/ExpedienteDetalle'
 const urlClientes = 'http://localhost:3000/api/clientes';
 //const urlEmployees='http://localhost:3000/api/empleado'
 const urlEmployees =
-  'http://localhost:3000/api/empleado';
+  'http://localhost:3000/api/empleados';
 
 export const DatosExpediente = (props) => {
 
@@ -316,6 +316,7 @@ export const DatosExpediente = (props) => {
 
     await axios.post(urlNuevoExpediente, data).then(response => {
       let data = { IdExpediente: response.data.id }
+      console.log(response.data.id);
       props.dataa(data)
       //console.log(response.data.id)
       swal('Expediente creado con exito', '', 'success').then(result => {
