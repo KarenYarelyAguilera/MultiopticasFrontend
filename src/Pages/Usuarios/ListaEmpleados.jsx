@@ -139,7 +139,7 @@ export const ListaEmpleados = (props) => {
     { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 190, headerAlign: 'center' },
     { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
     { field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
-    
+
     {
       field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
       valueGetter: (params) => {
@@ -287,7 +287,7 @@ export const ListaEmpleados = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -300,7 +300,7 @@ export const ListaEmpleados = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -317,15 +317,15 @@ export const ListaEmpleados = (props) => {
             </Button>
 
             <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
-                <AddIcon style={{ marginRight: '5px' }} />
-                {inactivo === false ? "Inactivos" : "Activos"}
-              </Button>
-              
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}
 
             >
-              
+
 
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -334,7 +334,7 @@ export const ListaEmpleados = (props) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdEmpleado}
-          rows={inactivo===false?filteredData:filteredDataInactivos}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

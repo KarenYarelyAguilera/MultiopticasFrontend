@@ -40,7 +40,7 @@ const urlDiagnosticos = 'http://localhost:3000/api/ExpedienteDetalle'
 const urlClientes = 'http://localhost:3000/api/clientes';
 //const urlEmployees='http://localhost:3000/api/empleado'
 const urlEmployees =
-  'http://localhost:3000/api/empleado';
+  'http://localhost:3000/api/empleados';
 
 export const DatosExpediente = (props) => {
 
