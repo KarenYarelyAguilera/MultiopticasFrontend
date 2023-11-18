@@ -206,7 +206,7 @@ export const NuevaCompra = ({
                 {producto.length ? (
                   producto.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.descripcion}
+                      {pre.Modelo}
                     </option>
                   ))
                 ) : (

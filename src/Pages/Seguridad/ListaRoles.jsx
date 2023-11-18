@@ -124,9 +124,9 @@ export const ListaRoles = (props) => {
   const columns = [
     //son los de la base no los de node
     { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'Rol', headerName: 'Rol', width: 390, headerAlign: 'center' },
-    { field: 'Descripcion', headerName: 'Descripcion', width: 690, headerAlign: 'center' },
-    { field: 'estado', headerName: 'Estado', width: 180, headerAlign: 'center' },
+    { field: 'Rol', headerName: 'Rol', width: 200, headerAlign: 'center' },
+    { field: 'Descripcion', headerName: 'Descripción', width: 300, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -259,7 +259,7 @@ export const ListaRoles = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -272,7 +272,7 @@ export const ListaRoles = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {

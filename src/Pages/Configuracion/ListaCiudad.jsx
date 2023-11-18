@@ -24,7 +24,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
-import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el excel 
 
 
 import '../../Styles/Usuarios.css';
@@ -227,7 +227,7 @@ function handleUpdt(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -240,7 +240,7 @@ function handleUpdt(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -258,7 +258,7 @@ function handleUpdt(id) {
 
             <Button className="btnExcel"
              onClick={handleGenerarExcel}>
-               <BorderAllIcon style={{ marginRight: '5px' }} />
+               <AnalyticsIcon style={{ marginRight: '5px' }} />
               Generar excel
             </Button>
 

@@ -114,7 +114,7 @@ export const ListaVenta = (props) => {
   };
 
   const columns = [
-    { field: 'IdVenta', headerName: 'IdVenta', width: 210 },
+    { field: 'IdVenta', headerName: 'ID', width: 210 },
     {
       field: 'fecha', headerName: 'Fecha', width: 310,
       valueGetter: (params) => {
@@ -285,7 +285,7 @@ export const ListaVenta = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -298,7 +298,7 @@ export const ListaVenta = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {

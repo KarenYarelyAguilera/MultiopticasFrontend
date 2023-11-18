@@ -81,8 +81,8 @@ export const ListaCompra = (props) => {
 
   const columns = [
     { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
-    { field: 'fechaCompra', headerName: 'Fecha de la compra', width: 380 },
-    { field: 'totalCompra', headerName: 'Total de la compra', width: 380 },
+    { field: 'fechaCompra', headerName: 'Fecha', width: 380 },
+    { field: 'totalCompra', headerName: 'Total', width: 380 },
    
     
     {

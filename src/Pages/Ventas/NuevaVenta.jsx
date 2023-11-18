@@ -20,7 +20,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 
 //URLS
 const urlCliente = 'http://localhost:3000/api/clientes';
-const urlEmployees = 'http://localhost:3000/api/empleado';
+const urlEmployees = 'http://localhost:3000/api/empleados';
 
 
 export const NuevaVenta = (props) => {
@@ -108,9 +108,6 @@ export const NuevaVenta = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los datos de Nueva Venta.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -130,7 +127,7 @@ export const NuevaVenta = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha Actual" className="titleInput" />
+              <TextCustom text="Fecha actual" className="titleInput" />
               <input
                 type="date"
                 name=""
@@ -158,25 +155,25 @@ export const NuevaVenta = (props) => {
 
 
             <div className="contInput">
-              <TextCustom text="Fecha de Entrega" className="titleInput" />
+              <TextCustom text="Fecha de entrega" className="titleInput" />
               <input
                 type="date"
                 name=""
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Fecha de Entrega"
+                placeholder="Fecha de entrega"
                 id="fechaEntrega"
               />
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha Limite de Entrega" className="titleInput" />
+              <TextCustom text="Fecha limite de entrega" className="titleInput" />
               <input
                 type="date"
                 name=""
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Fecha Limite de Entrega"
+                placeholder="Fecha limite de entrega"
                 id="fechaLimiteEntrega"
               />
             </div>

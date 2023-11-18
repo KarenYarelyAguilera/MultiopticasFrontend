@@ -26,7 +26,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
-import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el excel 
+
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -134,15 +135,15 @@ const handleGenerarExcel = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID Modelo', width: 190 },
-    { field: 'Marca', headerName: 'Marca', width: 200 },
-    { field: 'Modelo', headerName: 'Modelo', width: 190},
-    { field: 'anio', headerName: 'Año', width: 190 },
+    { field: 'IdModelo', headerName: 'ID ', width: 190 },
+    { field: 'Marca', headerName: 'Marca', width: 300 },
+    { field: 'Modelo', headerName: 'Modelo', width: 300},
+    { field: 'anio', headerName: 'Año', width: 300 },
 
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 190,
+      width: 260,
 
       renderCell: params => (
         <div className="contActions">
@@ -256,7 +257,7 @@ function handleDel(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -269,7 +270,7 @@ function handleDel(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -286,7 +287,7 @@ function handleDel(id) {
             </Button>
             
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
             </Button>
 

@@ -103,16 +103,27 @@ export const ListaExpedientes = (props) => {
   }
 
   const columns = [
-    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 300 },
-    { field: 'Cliente', headerName: 'Cliente', width: 300 },
-    { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
-    { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
-    {field: 'TotalRegistros', headerName: 'Total Historial Clinico', width: 300 },
+    { field: 'IdExpediente', headerName: 'No.Expediente', width: 150 },
+    { field: 'Cliente', headerName: 'Identidad', width: 200 },
+    { field: 'Nombre', headerName: 'Nombre', width: 300 },
+    { 
+      field: 'fechaCreacion', 
+      headerName: 'Fecha de Creación', 
+      width: 170,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    { field: 'CreadoPor', headerName: 'Creado por', width: 200 },
+    {field: 'TotalRegistros', headerName: 'Historial', width: 100},
     {
 
       field: 'borrar',
       headerName: 'Acciones',
-      width: 400,
+      width: 360,
 
       renderCell: params => (
         <div className="contActions1">

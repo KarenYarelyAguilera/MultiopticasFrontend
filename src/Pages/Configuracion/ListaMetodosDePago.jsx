@@ -25,7 +25,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
-import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -129,8 +129,8 @@ export const ListaMetodosDePago = ({idRol,data,update}) => {
   );
 
   const columns = [
-    { field: 'IdTipoPago', headerName: 'ID Método de Pago', width: 400 },
-    { field: 'descripcion', headerName: 'Método', width: 400 },
+    { field: 'IdTipoPago', headerName: 'ID', width: 500 },
+    { field: 'descripcion', headerName: 'Método', width: 500 },
 
     {
       field: 'borrar',
@@ -249,7 +249,7 @@ function handleDel(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -262,7 +262,7 @@ function handleDel(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -279,7 +279,7 @@ function handleDel(id) {
             </Button>
             
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
             </Button>
 

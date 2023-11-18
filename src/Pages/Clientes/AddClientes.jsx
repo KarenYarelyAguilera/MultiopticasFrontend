@@ -62,11 +62,21 @@ export const AddClientes = (props) => {
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
   const [Genero, setGenero] = useState([])
 
+  const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaNacimiento || '');
 
   const navegate = useNavigate();
 
   useEffect(() => {
     axios.get (urlGenero).then (response=>setGenero(response.data))
+  }, []);
+
+  useEffect(() => {
+    // Formatear las fechas en el formato 'YYYY-MM-DD' antes de asignarlas a los estados
+    if (props.data.fechaNacimiento) {
+      const fechaNacimientoDate = new Date(props.data.fechaNacimiento);
+      const formattedFechaNacimiento = fechaNacimientoDate.toISOString().split('T')[0];
+      setFechaNacimiento(formattedFechaNacimiento);
+    }
   }, []);
 
   //ACTUALIZAR
@@ -450,6 +460,8 @@ export const AddClientes = (props) => {
                 className="inputCustom"
                 placeholder="Fecha de Nacimiento"
                 id="fechaN"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
               />
             </div>
 

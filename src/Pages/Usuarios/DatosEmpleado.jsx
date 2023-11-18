@@ -67,6 +67,10 @@ export const DatosEmpleado = (props) => {
   const [fechaIngreso, setFechaIngreso] = useState(props.data.fechaIngreso || '');
   const [fechaSalida, setFechaSalida] = useState(props.data.fechaSalida || '');
   const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaCumpleanos || '');
+
+  const [sucursal, setSucursal] = useState(props.data.IdSucursal || null)
+  const [genero, setGenero] = useState(props.data.IdGenero || null)
+  const [estado, setEstado] = useState(props.data.estado || null)
   
   
 
@@ -228,8 +232,9 @@ export const DatosEmpleado = (props) => {
     }
 
     axios.post(urlIEmpleado, data).then(response => {
+      console.log(response);
       if (response.data == false) {
-        swal('¡Uno de los datos ya existe!', '', 'error')
+        swal('¡Este empleado ya existe!', '', 'error')
       } else {
         swal('Empleado agregado con exito', '', 'success').then(result => {
           Bitacora(bitacora)
@@ -239,7 +244,7 @@ export const DatosEmpleado = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al crear empleado, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
-      axios.post(urlErrorInsertBitacora, dataB)
+     // axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
@@ -275,15 +280,12 @@ export const DatosEmpleado = (props) => {
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Empleado</h2> : <h2>Registro de Empleado</h2>}
 
-        <h3>
-          Complete todos los puntos para poder registrar los datos del empleado
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Número de identidad" className="titleInput" />
 
               <input
                 error={errorIdentidad}
@@ -312,7 +314,7 @@ export const DatosEmpleado = (props) => {
 
                   }
                 }}
-                placeholder="Identidad"
+                placeholder="Número de identidad"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
@@ -397,15 +399,17 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Genero" className="titleInput" />
-              <select name="" className="selectCustom" id="genero" value={props.data.IdGenero}>
+              <TextCustom text="Género" className="titleInput" />
+              <select name="" className="selectCustom" id="genero" value={genero} onChange={(e)=>{
+                setGenero(e.target.value)
+              }}>
                 <option value={1}>Masculino</option>
                 <option value={2}>Femenino</option>
               </select>
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Teléfono" className="titleInput" />
               <input
                 onChange={e => setTelefono(e.target.value)}
 
@@ -416,7 +420,7 @@ export const DatosEmpleado = (props) => {
                     setErrorTelefono(true);
                   } else if (Telefono.length !== 8) {
                     setErrorTelefono(true);
-                    setTexto('El número de telefono debe tener exactamente 8 dígitos');
+                    setTexto('El número de teléfono debe tener exactamente 8 dígitos');
                   } else {
                     setErrorTelefono(false);
                     var regex = /^[0-9]{8}$/; // Se espera un número de teléfono de 8 dígitos
@@ -439,7 +443,7 @@ export const DatosEmpleado = (props) => {
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 id="phone"
                 value={Telefono}
               />
@@ -448,7 +452,9 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Sucursal" className="titleInput" />
-              <select name="" className="selectCustom" id="sucursal" value={props.data.IdSucursal} >
+              <select name="" className="selectCustom" id="sucursal" value={sucursal} onChange={(e)=>{
+                setSucursal(e.target.value)
+              }} >
                 {sucursales.length ? (
                   sucursales.map(pre => (
                     <option key={pre.IdSucursal} value={pre.IdSucursal}>
@@ -463,7 +469,6 @@ export const DatosEmpleado = (props) => {
 
               </select>
             </div>
-
 
 
             <div className="contInput">
@@ -511,7 +516,9 @@ export const DatosEmpleado = (props) => {
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom" value={props.data.estado}>
+              <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
+                setEstado(e.target.value)
+              }}>
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
               </select>
