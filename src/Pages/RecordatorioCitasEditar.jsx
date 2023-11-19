@@ -21,6 +21,8 @@ import axios from 'axios';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
+import '../Styles/Usuarios.css';
+
 const locales = {
     es: es,
 };
@@ -62,7 +64,7 @@ export const RecordatorioCitasEditar = props => {
 
 
     const [Nota, setNota] = React.useState(props.data.Nota || '');
-    const [fecha, setFecha] = React.useState(props.data.fecha || '');
+    const [fecha, setFecha] = React.useState(new Date(props.data.fecha).toISOString().split('T')[0] || '');
 
     const [errorNotas, setErrorNotas] = React.useState();
     const [Msj, setMsj] = React.useState(false);
@@ -76,6 +78,13 @@ export const RecordatorioCitasEditar = props => {
     };
 
     console.log(data);
+
+    const fechadatos={
+        IdRecordatorio: props.data.IdRecordatorio,
+        Nota:props.data.Nota,
+        fecha: new Date(props.data.fecha).toISOString().split('T')[0], // Formatear la fecha
+    };
+    console.log(fechadatos);
 
 
 
@@ -130,10 +139,10 @@ export const RecordatorioCitasEditar = props => {
             Id: props.idUsuario
         }
         const bitacora = {
-            urlB:urlBitacoraUpdCita,
-            activo:props.activo,
-            dataB:dataUsuario,
-          };
+            urlB: urlBitacoraUpdCita,
+            activo: props.activo,
+            dataB: dataUsuario,
+        };
 
 
         await axios.put(urlUpdateCitas, data).then(() => {
@@ -272,11 +281,16 @@ export const RecordatorioCitasEditar = props => {
 
 
 
-                            <div className="contNewCitaButtons">
-                                {/* <button className='btnAgregarCita' onClick={handleClick}>Guardar</button> */}
+                            <div className="contBtnStepper">
                                 <Button
-                                    className='btnAgregarCita'
-                                    type="submit"
+                                    variant="contained"
+                                    className='btnStepper'
+                                    onClick={() => navegate('/recordatorio')}
+                                >Cancelar</Button>
+
+                                <Button
+                                    variant="contained"
+                                    className='btnStepper'
                                     onClick={() => {
 
                                         var nota = document.getElementById("Nota").value;
@@ -293,15 +307,10 @@ export const RecordatorioCitasEditar = props => {
                                         }
                                     }}
                                 >Guardar</Button>
-
-
-                                <button className='btnCancelar' onClick={handleBack} >Cancelar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     );

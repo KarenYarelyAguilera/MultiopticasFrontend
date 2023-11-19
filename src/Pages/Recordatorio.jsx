@@ -23,7 +23,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 
@@ -36,6 +37,8 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 
 import { Bitacora } from '../Components/bitacora.jsx';
+
+import '../Styles/Usuarios.css';
 
 const locales = {
   es: es,
@@ -71,13 +74,13 @@ const events = [
 export const Recordatorio = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:5
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 5
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [allEvents, setAllEvents] = useState(events);
 
@@ -97,23 +100,49 @@ export const Recordatorio = (props) => {
   const urlGetCita = 'http://localhost:3000/api/recordatorio';
   const urlDelCita = 'http://localhost:3000/api/eliminarCita'
   const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
-  const urlBSalirPantalla='http://localhost:3000/api/bitacora/citasSalir';
+  const urlBSalirPantalla = 'http://localhost:3000/api/bitacora/citasSalir';
 
 
- 
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      
+      'ID': row.IdRecordatorio,
+      'Cliente': row.IdCliente,
+      'Nombre': row.nombre,
+      'Apellido': row.apellido,
+      'Nota': row.Nota,
+      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID','Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
+  };
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
 
   };
 
-  let dataUsuario={
-    Id:props.idUsuario
+  let dataUsuario = {
+    Id: props.idUsuario
   }
   const bitacora = {
-    urlB:urlBSalirPantalla,
-    activo:props.activo,
-    dataB:dataUsuario,
+    urlB: urlBSalirPantalla,
+    activo: props.activo,
+    dataB: dataUsuario,
   };
 
 
@@ -144,8 +173,8 @@ export const Recordatorio = (props) => {
    */
 
   const handleGenerarReporte = () => {
-    if (permisos[0].consultar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
@@ -164,13 +193,13 @@ export const Recordatorio = (props) => {
         });
         return formattedData;
       };
-  
-      const urlPDF = 'Reporte_Recordatorio.pdf';
-      const subTitulo = "LISTA DE RECORDATORIO"
+
+      const urlPDF = 'Reporte_Citas.pdf';
+      const subTitulo = "LISTA DE CITAS"
       const orientation = "landscape";
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
     }
-   
+
   };
 
 
@@ -186,8 +215,14 @@ export const Recordatorio = (props) => {
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
+    ) &&
+    (!startDate || new Date(row.fecha) >= new Date(startDate)) &&
+    (!endDate || new Date(row.fecha) <= new Date(endDate + 'T23:59:59')) // Ajuste aquí
   );
+
+  console.log('startDate:', startDate);
+  console.log('endDate:', endDate);
+  console.log('filteredData:', filteredData);
 
 
   // Función para manejar el cambio en el input de fecha
@@ -214,7 +249,7 @@ export const Recordatorio = (props) => {
     { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 200, headerAlign: 'center' },
     { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
-    { 
+    {
       field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
       valueGetter: (params) => {
         const date = new Date(params.row.fecha);
@@ -235,8 +270,8 @@ export const Recordatorio = (props) => {
 
   //funcion de eliminar
   function handleDel(id) {
-    if (permisos[0].eliminar ==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
         content: (
@@ -249,23 +284,23 @@ export const Recordatorio = (props) => {
       }).then(async op => {
         switch (op) {
           case null:
-  
+
             let data = {
               IdRecordatorio: id,
             };
             console.log(data);
-  
-  
+
+
             let dataUsuario = {
               Id: props.idUsuario
             };
 
             const bitacora = {
-              urlB:urlBitacoraDelCita,
-              activo:props.activo,
-              dataB:dataUsuario,
+              urlB: urlBitacoraDelCita,
+              activo: props.activo,
+              dataB: dataUsuario,
             };
-  
+
             await axios.delete(urlDelCita, { data }).then(response => {
               swal('Cita eliminada correctamente', '', 'success');
               Bitacora(bitacora);
@@ -276,7 +311,7 @@ export const Recordatorio = (props) => {
                 console.log(error);
                 swal('Error al eliminar cita', '', 'error');
               });
-  
+
             break;
           default:
             break;
@@ -288,22 +323,22 @@ export const Recordatorio = (props) => {
 
   //funcion de actualizar
   function handleUpdt(id) {
-    if (permisos[0].actualizar==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       console.log(id);
 
       /* let data = {
         Id_Pregunta:id,
       }; */
-  
+
       props.data({
         IdRecordatorio: id.IdRecordatorio,
         nombre: id.nombre,
         fecha: id.fecha,
         Nota: id.Nota,
       })
-  
+
       swal({
         buttons: {
           update: 'ACTUALIZAR',
@@ -317,30 +352,30 @@ export const Recordatorio = (props) => {
       }).then(op => {
         switch (op) {
           case 'update':
-  
+
             let data = {
               IdRecordatorio: id.IdRecordatorio,
               nombre: id.nombre,
-  
-  
+
+
             };
             console.log(data)
-  
+
             props.data(id)
             props.update(true)
-  
+
             navegate("/recordatorioCitasEditar");
         }
       });
     }
-   
+
   }
 
 
 
   return (
     <div className="ContUsuarios">
-      <Button className="btnBack" onClick={handleBack}><ArrowBackIcon className="iconBack"/> </Button> 
+      <Button className="btnBack" onClick={handleBack}><ArrowBackIcon className="iconBack" /> </Button>
       <h2 style={{ color: 'black', fontSize: '40px' }}>Citas Programadas Anualmente</h2>
 
       <div
@@ -351,7 +386,60 @@ export const Recordatorio = (props) => {
           left: '100px',
         }}>
 
-        <div className="contFilter">
+        {/*  <div>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de inicio"
+           
+          />
+
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de fin"
+           
+          />
+        </div> */}
+
+
+        <div style={{ display: 'flex', alignItems: 'center', fontFamily: 'Arial, sans-serif' }}>
+
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de inicio"
+            style={{ marginRight: '10px', padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px'}}
+          ></input>
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de fin"
+            style={{ padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px' }}
+          ></input>
+
+        </div>
+
+
+
+
+        <div className="contFilter" style={{ padding: '05px' }}>
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -362,27 +450,31 @@ export const Recordatorio = (props) => {
             placeholder="Buscar"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
+
           />
-          {/* </div> */}
+
           <div className="btnActionsNewReport">
             <Button
               className="btnCreate"
               onClick={() => {
-                if (permisos[0].insertar ==="n") {
-                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
                   navegate('/recordatorioCitas');
-                } 
-                
-               }}
+                }
+
+              }}
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
-
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
@@ -390,13 +482,16 @@ export const Recordatorio = (props) => {
         </div>
 
         <DataGrid
+        pagination
+        autoHeight
           getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
 
