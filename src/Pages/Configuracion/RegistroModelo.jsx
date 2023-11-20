@@ -33,6 +33,8 @@ export const RegistroModelo = (props) => {
   const [aviso, setaviso] = React.useState(false);
   const [erroranio, setErroranio] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
+
   const navegate = useNavigate();
 
   //Se usa para mostrar informacion en un listbox en este caso es el de marca.
@@ -45,22 +47,31 @@ export const RegistroModelo = (props) => {
   let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
   let anio = document.getElementById("anio").value;
+  let estado = document.getElementById('estado').value;
+
  
   let data = {
     IdMarca: IdMarca,
     detalle: detalle,
     anio: anio,
+    estado: estado,
+
   };
 
   //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertModelo, data).then(response => {
-    swal('Modelo agregado con exito', '', 'success').then(result => {
+    console.log(response);
+    if (response.data==false)
+    {
+      swal('¡Este modelo ya existe!', '', 'error')
+    } else{
+      swal('Modelo agregado con exito', '', 'success').then(result => {
       navegate('/config/lista');
     });
+    }
   }).catch(error => {
     console.log(error);
-    swal('Error al crear el modelo, por favor revise los campos.', '', 'error')
- 
+    swal('Error al crear el modelo, ingrese los datos correctamente, puede que alguno de estos ya exista.', '', 'error')
   })
 };
 
@@ -69,11 +80,14 @@ const actualizarModelo = async () => {
   let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
   let anio = document.getElementById("anio").value;
+  let estado = document.getElementById('estado').value;
+
 
   const data = {
     IdMarca: IdMarca,
     detalle: detalle,
     anio: anio,
+    estado: estado,
     IdModelo: props.data. IdModelo, 
   }
 
@@ -87,18 +101,7 @@ const actualizarModelo = async () => {
     // axios.post(urlErrorInsertBitacora, dataB)
   })
 };
-  // const handleNext = async() => {
 
-  //   let data = {
-  //     IdModelo:parseInt(document.getElementById("idModelo").value),
-  //     idMarca:parseInt(document.getElementById("marca").value),
-  //     detalle:document.getElementById("modelo").value
-  //   }
-  //   if (sendData(urlModelo,data)) {
-  //     swal("Modelo Registrado con Exito","","success")
-  //     navegate('/menumodelos/lista')
-  //   }
-  // };
 
   //BOTON DE RETROCESO
   const handleBack = () => {
@@ -215,6 +218,16 @@ const actualizarModelo = async () => {
               />
                <p class="error">{aviso}</p> 
             </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
+            </div>
           
             <div className="contBtnStepper">
               <Button
@@ -224,6 +237,7 @@ const actualizarModelo = async () => {
                 {
                   var modelo = document.getElementById("detalle").value;
                   var año = document.getElementById("anio").value;
+                  var estado = document.getElementById('estado').value;
                    if (modelo === "" || año === "") {
                     swal("No deje campos vacíos.", "", "error");
                   }  else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(modelo)) {
