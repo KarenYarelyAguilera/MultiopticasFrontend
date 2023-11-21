@@ -23,6 +23,7 @@ import { TextCustom } from '../../Components/TextCustom';
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlAnularCompra = "http://localhost:3000/api/compra/anular"
   const dataPermiso={
     idRol:props.idRol,
     idObj:3
@@ -34,12 +35,13 @@ export const ListaCompra = (props) => {
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [cambio,setCambio] = useState(0)
 
   useEffect(() => {
     fetch(urlCompras)
       .then(response => response.json())
       .then(data => setTableData(data));
-  }, []);
+  }, [cambio]);
 
   const navegate = useNavigate();
 
@@ -82,9 +84,8 @@ export const ListaCompra = (props) => {
   const columns = [
     { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
     { field: 'fechaCompra', headerName: 'Fecha', width: 380 },
-    { field: 'totalCompra', headerName: 'Total', width: 380 },
-   
-    
+    { field: 'totalCompra', headerName: 'Total', width: 150 },
+    { field: 'Estado', headerName: 'Estado', width: 100 },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -100,7 +101,7 @@ export const ListaCompra = (props) => {
           </Button>
           <Button
             className="btnDelete"
-            onClick={() => handleButtonClick(params.row.id)}
+            onClick={() => handlAnular(params.row.IdCompra)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -111,6 +112,18 @@ export const ListaCompra = (props) => {
 
   function handleButtonClick(id) {
     swal("No es posible realizar esta accion","","error")
+  }
+
+  function handlAnular(id){
+    alert(props.idUsuario)
+    let data = {
+      idUsuario:props.idUsuario,
+      compraId:id
+    }
+    axios.put(urlAnularCompra,data).then(()=>{
+      setCambio(cambio+1)
+      swal("Compra Anulada")
+    })
   }
   const handleBack = () => {
     navegate('/inventario');

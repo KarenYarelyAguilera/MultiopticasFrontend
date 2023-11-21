@@ -51,13 +51,17 @@ export const ListaCiudad = ({idRol,data,update}) => {
 
   const urlCuidad = 'http://localhost:3000/api/ciudades';
   const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
+  const urlListaCiudadesInactivas = 'http://localhost:3000/api/ciudades/ciudadInactiva';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
 
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaCiudadesInactivas).then(response=> setTableDataInactivos(response.data))
+  }, [cambio, inactivo]);
 
   //Genera el archivo Excel 
   const handleGenerarExcel = () => {
@@ -107,9 +111,18 @@ export const ListaCiudad = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdCiudad', headerName: 'ID Ciudad', width: 600 },
-    { field: 'ciudad', headerName: 'Ciudad', width: 600 },
+    { field: 'IdCiudad', headerName: 'ID Ciudad', width: 400 },
+    { field: 'ciudad', headerName: 'Ciudad', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
 
     {
       field: 'borrar',
@@ -256,6 +269,11 @@ function handleUpdt(id) {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel"
              onClick={handleGenerarExcel}>
                <AnalyticsIcon style={{ marginRight: '5px' }} />
@@ -273,7 +291,7 @@ function handleUpdt(id) {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdCiudad}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

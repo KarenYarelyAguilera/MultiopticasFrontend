@@ -48,13 +48,19 @@ export const ListaMarcas = ({idRol,data,update}) => {
 
   const urlMarcas = 'http://localhost:3000/api/marcas';
   const urlDelMarca = 'http://localhost:3000/api/marcas/eliminar';
+  const urlListaMarcasInactivas = 'http://localhost:3000/api/marcas/marcasInactivas';
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
   
   useEffect(() => {
     axios.get(urlMarcas).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaMarcasInactivas).then(response=> setTableDataInactivos(response.data))
+
+  }, [cambio, inactivo]);
 
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
@@ -72,10 +78,8 @@ export const ListaMarcas = ({idRol,data,update}) => {
   
     // Formato para el encabezado
     worksheet['A1'] = { v: 'LISTA DE MARCAS', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
     worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
     worksheet['B5'] = { v: 'Marca', s: { font: { bold: true }} };
-   // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
   
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
     XLSX.writeFile(workbook, 'Lista_de_Marca.xlsx');
@@ -119,9 +123,18 @@ export const ListaMarcas = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
     { field: 'IdMarca', headerName: 'ID', width: 500 },
     { field: 'descripcion', headerName: 'Marca', width: 500 },
+    { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
       field: 'borrar',
@@ -270,6 +283,11 @@ export const ListaMarcas = ({idRol,data,update}) => {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
@@ -285,7 +303,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdMarca}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

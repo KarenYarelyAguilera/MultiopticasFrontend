@@ -175,9 +175,7 @@ export const Diagnostico = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Diagnostico</h2>
-        <h3>
-          Complete todos los datos para el historial del paciente.
-        </h3>
+        
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

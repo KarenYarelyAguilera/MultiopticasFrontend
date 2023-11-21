@@ -98,9 +98,19 @@ export const DatosExpediente = (props) => {
   const navegate = useNavigate();
 
   const columns = [
-    { field: 'fechaConsulta', headerName: 'Fecha de Consulta', width: 250 },
-    { field: 'Optometrista', headerName: 'Optometrista', width: 250 },
-    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250 },
+    { 
+      field: 'fechaConsulta', 
+      headerName: 'Fecha de Consulta', 
+      width: 250,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    { field: 'Optometrista', headerName: 'Optometrista', width: 250,  headerAlign: 'center', },
+    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250,  headerAlign: 'center', },
 
     {
       field: 'borrar',
@@ -143,7 +153,7 @@ export const DatosExpediente = (props) => {
     const imgHeight = 15; // Alto deseado de la imagen
     const imgX = pdfWidth - imgWidth - 10; // Calcular la posición x de la imagen para que esté en el lado derecho
     const imgY = 20; // Posición y deseada de la imagen
-
+   
     // Agregar la imagen de fondo primero
     documento.addImage(fondoPDF, 'JPG', 0, 0, documento.internal.pageSize.getWidth(), documento.internal.pageSize.getHeight());
 
@@ -316,6 +326,7 @@ export const DatosExpediente = (props) => {
 
     await axios.post(urlNuevoExpediente, data).then(response => {
       let data = { IdExpediente: response.data.id }
+      console.log(response.data.id);
       props.dataa(data)
       //console.log(response.data.id)
       swal('Expediente creado con exito', '', 'success').then(result => {
@@ -336,7 +347,6 @@ export const DatosExpediente = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Datos de Expediente</h2>
-        <h3>Complete todos los datos para poder crear el expediente.</h3>
       </div>
       <div className="infoAddCompra">
         <div className="PanelInfo">
@@ -408,12 +418,11 @@ export const DatosExpediente = (props) => {
               <p class="error"></p>
             </div> */}
             <div className="contBtnStepper1">
-              <Button
-                onClick={() => {
-                  navegate('/menuClientes/DetalleExpediente');
-                }}
-                variant="contained" className="btnStepper">
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+            <Button
+                onClick={handleNext} //INSERTA 
+                className="btnCreate1">
+                <AddIcon style={{ marginRight: '5px' }} />
+                Guardar
               </Button>
             </div>
           </div>
@@ -440,11 +449,12 @@ export const DatosExpediente = (props) => {
               onChange={e => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
-              <Button
-                onClick={handleNext} //INSERTA 
-                className="btnCreate1">
-                <AddIcon style={{ marginRight: '5px' }} />
-                Guardar
+            <Button
+                onClick={() => {
+                  navegate('/menuClientes/DetalleExpediente');
+                }}
+                variant="contained" className="btnStepper">
+                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
               <Button className="btnReport1" onClick={() => { }}>
                 Cancelar
