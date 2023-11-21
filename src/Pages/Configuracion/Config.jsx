@@ -25,16 +25,21 @@ export const Configuracion = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/000/659/679/non_2x/check-list-business-document-in-the-clipboard-design-vector.jpg',
       vinculo: "/menuVentas/ListaPromociones", 
     },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/025/143/512/non_2x/invoice-icon-design-free-vector.jpg',
+      titulo: 'Métodos De Pago',
+      vinculo: '/config/ListaMetodosDePago',
+    },
+    {
+      titulo: "Descuentos",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
+      vinculo: "/menuVentas/listaDescuento",
+    },
     // {
     //   titulo: "Registro de Sucursal",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
     //   vinculo: "/config/RegistroSucursal", 
     // },
-    {
-      titulo: "Sucursales",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
-      vinculo: "/config/listaSucursal",
-    },
     // {
     //   titulo: "Parametros",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
@@ -51,6 +56,11 @@ export const Configuracion = () => {
     //   vinculo: '/config/RegistroModelo',
     // },
     {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
+      titulo: 'Marcas',
+      vinculo: '/config/ListaMarcas',
+    },
+    {
       imagen: 'https://static.vecteezy.com/system/resources/previews/001/879/450/non_2x/doctor-checks-patient-eyes-health-with-snellen-chart-glasses-for-eye-disease-eye-clinic-or-optical-eyewear-store-optician-professional-illustration-for-business-card-banner-brochure-flyer-ads-free-vector.jpg',
       titulo: 'Modelos',
       vinculo: '/config/lista',
@@ -61,25 +71,22 @@ export const Configuracion = () => {
     //   vinculo: '/config/RegistroMarcas',
     // },
     {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
-      titulo: 'Marcas',
-      vinculo: '/config/ListaMarcas',
+      titulo: "Sucursales",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/020/745/745/non_2x/isometric-bank-building-with-car-parking-in-front-of-street-yard-view-vector.jpg',
+      vinculo: "/config/listaSucursal",
     },
+    {
+      imagen: 'https://static.vecteezy.com/system/resources/previews/000/144/399/non_2x/dotted-world-map-vector.jpg',
+      titulo: 'Países',
+      vinculo: '/config/ListaPais',
+    },
+   
     // {
-    //   imagen: 'https://static.vecteezy.com/system/resources/previews/008/064/144/non_2x/payment-methods-icon-illustration-for-transaction-payment-machine-credit-card-check-concept-on-financial-finance-marketplace-perfect-for-ui-ux-mobile-app-web-brochure-marketing-vector.jpg',
-    //   titulo: 'Metodos De Pago',
-    //   vinculo: '/config/MetodosDePago',
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/025/143/512/non_2x/invoice-icon-design-free-vector.jpg',
+    //   titulo: 'Métodos De Pago',
+    //   vinculo: '/config/ListaMetodosDePago',
     // },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/025/143/512/non_2x/invoice-icon-design-free-vector.jpg',
-      titulo: 'Métodos De Pago',
-      vinculo: '/config/ListaMetodosDePago',
-    },
-    {
-      titulo: "Descuentos",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
-      vinculo: "/menuVentas/listaDescuento",
-    },
+    
     // {
     //   titulo: "Lista de Descuento",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/331/740/non_2x/successful-task-completion-and-time-management-concept-young-smiling-businessman-cartoon-character-standing-near-tablet-flat-illustration-vector.jpg',
@@ -110,11 +117,7 @@ export const Configuracion = () => {
     //   titulo: 'Registro de Pais',
     //   vinculo: '/config/RegistroPais',
     // },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/000/144/399/non_2x/dotted-world-map-vector.jpg',
-      titulo: 'Países',
-      vinculo: '/config/ListaPais',
-    },
+    
     // {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/020/475/342/non_2x/to-do-list-work-planning-or-schedule-concept-productive-businessman-with-pencil-and-to-do-list-clipboard-modern-flat-illustration-vector.jpg',
     //   titulo: 'Registro de Genero',

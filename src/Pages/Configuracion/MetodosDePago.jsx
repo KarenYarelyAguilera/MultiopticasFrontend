@@ -30,11 +30,16 @@ export const MetodosDePago  = (props) => {
   const [leyenda, setleyenda] = React.useState(false);
   const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
+
 //CREAR
   const handleNext = async () => {
     let descripcion = document.getElementById("descripcion").value
+    let estado = document.getElementById('estado').value;
+
     let data = {
       descripcion: descripcion,
+      estado: estado
     }
     
     if (await axios.post(urlInsertMetodoPago, data)) {
@@ -47,10 +52,13 @@ export const MetodosDePago  = (props) => {
 const actualizarMetodoPago = async () => {
 
   let descripcion = document.getElementById("descripcion").value;
+  let estado = document.getElementById('estado').value;
+
 
   const data = {
 
     descripcion:descripcion,
+    estado: estado,
     IdTipoPago: props.data.IdTipoPago, 
   }
 
@@ -140,6 +148,16 @@ const actualizarMetodoPago = async () => {
                <p class="error">{leyenda}</p>
             </div>
 
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
+            </div>
+
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -147,8 +165,10 @@ const actualizarMetodoPago = async () => {
                 onClick={()=> 
                   {
                     var descripcion = document.getElementById("descripcion").value;
+                    var estado = document.getElementById('estado').value;
 
-                    if (descripcion ==="")
+
+                    if (descripcion ===""|| estado==="")
                     {
                       swal ("No deje campos vacíos.", "", "error");
                     } else 

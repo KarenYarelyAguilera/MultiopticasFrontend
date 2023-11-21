@@ -33,29 +33,46 @@ export const RegistroGenero = (props) => {
   const [leyenda, setleyenda] = React.useState('');
   const [errorgenero, seterrorgenero] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
 
   //INSERTAR DATOS 
   const handleNext = async () => {
     let genero = document.getElementById("Genero").value;
+    let estado = document.getElementById('estado').value;
 
     let data = {
-      descripcion:genero 
+      descripcion:genero,
+      estado: estado,
     }
-    
-    if (await axios.post(urlInsetGenero, data)) {
-      swal('Género creado exitosamente.','', 'success');
-      navegate('/config/ListaGenero');
+    console.log(data)
+
+    axios.post(urlInsetGenero, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este Genero ya existe!', '', 'error')
+      } else {
+      swal('Genero agregado con exito', '', 'success').then(result => {
+        //axios.post(urlInsertBitacora, dataB)
+        navegate('/config/ListaGenero');
+      });
     }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear el Genero', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
   };
 
   //ACTUALIZAR
 const actualizarGenero = async () => {
 
   let genero = document.getElementById("Genero").value;
+  let estado = document.getElementById('estado').value;
 
   const data = {
 
     descripcion:genero,
+    estado: estado,
     IdGenero: props.data.IdGenero, //El dato de IdProducto se obtiene de Producto seleccionado.
   }
 
@@ -144,6 +161,16 @@ const handleBack = () => {
                 value={genero} 
               />
                <p class="error">{leyenda}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
             </div>
 
             <div className="contBtnStepper">
