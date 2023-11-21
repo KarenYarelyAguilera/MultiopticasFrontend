@@ -287,6 +287,10 @@ export const ListaClientes = (props) => {
           position: 'relative',
           left: '130px',
         }}
+
+
+
+        
       >
         <div className="contFilter">
           {/* <div className="buscador"> */}
