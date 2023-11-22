@@ -16,6 +16,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
+import Select from 'react-select';
 
 //APIS DE PRODUCTO
 const urlProducto = //CREAR
@@ -32,7 +33,9 @@ const urlModelos = //MOSTRAR MODELOS
 
 export const RegistroProducto2 = (props) => { 
   const [Modelo, setModelo] = useState([]);  
-  const [modelos, setModelos] = useState(props.data.IdModelo || null);
+  //const [modelos, setModelos] = useState(props.data.IdModelo || null);
+  const [selectedOption, setSelectedOption] = useState(props.data.IdModelo || null);
+  const [optionsModelos, setOptionsModelos] = useState([]);
   
 
   const [leyenda, setleyenda] = React.useState('');
@@ -61,6 +64,23 @@ export const RegistroProducto2 = (props) => {
     fetch(urlModelos)
       .then(response => response.json())
       .then(data => setModelo(data));
+  }, []);
+
+  useEffect(() => {
+    //-------------------------------De aqui----------------------------------------------
+    console.log(props.urlModelos);
+    axios.get(urlModelos).then((response) => {
+      const modelsOptions = response.data.map((pre) => ({
+        value: pre.IdModelo,
+        label: `${pre.Marca} - ${pre.Modelo}`,
+      }));
+      setOptionsModelos(modelsOptions);
+
+      // Ahora, busca la opción correspondiente al props.data.idEmpleado
+      const optionToSelect = modelsOptions.find((option) => option.value === props.data.IdModelo);
+      setSelectedOption(optionToSelect);
+    })  
+    
   }, []);
 
   const navegate = useNavigate();
@@ -104,7 +124,7 @@ export const RegistroProducto2 = (props) => {
   //INSERTAR
   const handleNext = () => {
     //Variables que almacenaran lo que entre en los input
-    let modelo = parseInt(document.getElementById('modelo').value);
+    //let modelo = parseInt(document.getElementById('modelo').value);
     let precio = parseFloat(document.getElementById('precio').value);
     let cantidadMin = parseInt(document.getElementById('cantidadMin').value);
     let cantidadMax = parseInt(document.getElementById('cantidadMax').value);
@@ -113,7 +133,7 @@ export const RegistroProducto2 = (props) => {
 
     let data = {
       //IdProducto: parseInt(document.getElementById('idProducto').value),
-      IdModelo: modelo,
+      IdModelo: selectedOption.value,
       precio: precio,
       cantidadMin: cantidadMin,
       cantidadMax: cantidadMax,
@@ -173,7 +193,50 @@ export const RegistroProducto2 = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contInput">
+          <div className="contInput">
+              <TextCustom text="Modelo" className="titleInput" />
+             {/*  <select id="empleado" className="selectCustom">
+                {Empleado.length ? (
+                  Empleado.map(pre => (
+                    <option key={pre.numeroIdentidad} value={pre.numeroIdentidad}>
+                      {pre.numeroIdentidad}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select> */}
+              {props.actualizar ? <>
+                <Select isDisabled={true} 
+                   styles={{
+                    control: (base) => ({
+                      ...base,
+                      width: "300px", // Ajusta el ancho según tus necesidades
+                    }),
+                  }}
+                  id="modelo"
+                  options={optionsModelos}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un modelo"
+                /></>
+                :<> 
+                <Select 
+                  id="modelo"
+                  options={optionsModelos}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un modelo"
+                />
+                </>}
+              
+
+
+            </div>
+
+           {/*  <div className="contInput">
               <TextCustom text="Modelo" className="titleInput" />
               <select name="" className="selectCustom" id="modelo" value={modelos} onChange={(e)=>{
                 setModelos(e.target.value)
@@ -190,7 +253,7 @@ export const RegistroProducto2 = (props) => {
                   </option>
                 )}
               </select>
-            </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Precio" className="titleInput" />
