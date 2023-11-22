@@ -180,12 +180,12 @@ export const NuevaCompra = ({
           Compra.
         </h3>
       </div>
-      <div className="infoAddCompra">
+      <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
             <div className="contInput">
-              <TextCustom text="Proveedor" className="titleInput" />
+              <TextCustom text="Proveedor" className="titleInput1" />
               <select name="" className="selectCustom" id="proveedor">
                 {proveedor.length ? (
                   proveedor.map(pre => (
@@ -201,7 +201,7 @@ export const NuevaCompra = ({
               </select>
             </div>
             <div className="contInput">
-              <TextCustom text="Producto" className="titleInput" />
+              <TextCustom text="Producto" className="titleInput1" />
               <select name="" className="selectCustom" id="producto">
                 {producto.length ? (
                   producto.map(pre => (
@@ -218,7 +218,7 @@ export const NuevaCompra = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Cantidad" className="titleInput" />
+              <TextCustom text="Cantidad" className="titleInput1" />
 
               <input
                 type="number"
@@ -260,7 +260,7 @@ export const NuevaCompra = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha" className="titleInput" />
+              <TextCustom text="Fecha" className="titleInput1" />
               <input
                 type="date"
                 name=""
@@ -274,7 +274,7 @@ export const NuevaCompra = ({
             </div>
 
             <div className="contInput">
-              <TextCustom text="Costo de la Compra" className="titleInput" />
+              <TextCustom text="Costo de la Compra" className="titleInput1" />
 
               <input
                 type="number"
@@ -315,7 +315,7 @@ export const NuevaCompra = ({
             </div>
 
 
-            <div className="contBtnStepper1">
+            <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
               <Button
                 onClick={() => {
                   var costo = document.getElementById("costo").value;
@@ -350,6 +350,7 @@ export const NuevaCompra = ({
 
         <div
           style={{
+            width: '135%',
             height: 400,
             position: 'relative',
           }}
