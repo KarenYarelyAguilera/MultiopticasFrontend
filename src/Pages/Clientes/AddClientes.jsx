@@ -256,6 +256,22 @@ export const AddClientes = (props) => {
               <p class="error">{leyenda}</p>
             </div>
 
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                helperText={texto}
+                maxLength={50}
+                className="inputCustom"
+                placeholder="Fecha de Nacimiento"
+                id="fechaN"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
+              />
+            </div>
+
             <div className="contInput">
               <TextCustom text="Nombre" />
               <input
@@ -449,21 +465,6 @@ export const AddClientes = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                helperText={texto}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Fecha de Nacimiento"
-                id="fechaN"
-                value={fechaNacimiento}
-                onChange={(e)=>setFechaNacimiento(e.target.value)}
-              />
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
               <select name="" id="genero" className="inputCustomPreguntas">
               {Genero.length ? (
@@ -492,7 +493,7 @@ export const AddClientes = (props) => {
                   var correo = document.getElementById("correo").value;
                   var fechaNacimiento= document.getElementById("fechaN").value;
                   const fechaActual = new Date().toISOString().split('T')[0];
-                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "" || fechaNacimiento==="") {
+                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || fechaNacimiento==="") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(Nidentidad))) {
                     swal("El campo identidad solo acepta números.", "", "error");
@@ -552,9 +553,10 @@ export const AddClientes = (props) => {
                       } else if (fechaNacimiento > fechaActual) {
                         swal("La fecha de nacimiento no puede ser en el futuro.", "", "error");
                       }
-                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                      else if (correo !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                         swal("El campo correo debe contener un correo válido.", "", "error");
-                      } else {
+                      }
+                       else {
                         props.actualizar ? actualizarCliente() : handleNext();
                       }
                     }
