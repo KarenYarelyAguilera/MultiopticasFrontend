@@ -1810,7 +1810,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <NuevaVenta venta={dVenta}
                   update={update}
-                  data={data} garanr
+                  data={data} 
                   Data={Data} />
               </div>
               // </ProtectedRoute>
