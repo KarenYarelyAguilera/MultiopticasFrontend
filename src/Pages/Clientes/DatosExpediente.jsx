@@ -338,11 +338,11 @@ export const DatosExpediente = (props) => {
         <h2>Datos de Expediente</h2>
         <h3>Complete todos los datos para poder crear el expediente.</h3>
       </div>
-      <div className="infoAddCompra">
+      <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
+              <TextCustom text="Cliente" className="titleInput1" />
               <input
                 type="text"
                 name="input1"
@@ -357,7 +357,7 @@ export const DatosExpediente = (props) => {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Fecha de Creacion" className="titleInput" />
+              <TextCustom text="Fecha de Creacion" className="titleInput1" />
               <input
                 type="date"
                 name=""
@@ -371,7 +371,7 @@ export const DatosExpediente = (props) => {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
+              <TextCustom text="Empleado" className="titleInput1" />
 
               <select id="empleado"
                 value={props.datosclientes.IdEmpleado}
@@ -407,7 +407,7 @@ export const DatosExpediente = (props) => {
               />
               <p class="error"></p>
             </div> */}
-            <div className="contBtnStepper1">
+            <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
               <Button
                 onClick={() => {
                   navegate('/menuClientes/DetalleExpediente');
@@ -420,6 +420,7 @@ export const DatosExpediente = (props) => {
         </div>
         <div
           style={{
+            width: '135%',
             height: 400,
             position: 'relative',
           }}
