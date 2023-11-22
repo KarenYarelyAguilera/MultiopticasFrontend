@@ -221,85 +221,86 @@ export const DatosExpediente = (props) => {
   // };
 
   //PANTALLA MODAL---------------------------------------------------------------------------
-  function handleUpdt(id) {
-    //setModalData(id);
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">DATOS GENERALES</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Optometrista:{id.Optometrista}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Asesor de venta:{id.AsesorVenta}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Fecha de expiracion:{id.fechaExpiracion}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Antecedentes clinicos:{id.Antecedentes}</b></label>
-          </div>
-          <h3>
-            ----------------DIAGNOSTICO-----------------
-          </h3>
-          <div className="contInput">
-            <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
-          </div>
-
+ // PANTALLA MODAL
+function handleUpdt(id) {
+  // setModalData(id);
+  console.log(id);
+  
+  swal(
+    <div>
+      <div className="logoModal">DATOS GENERALES</div>
+      <div className="contEditModal">
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de consulta: {new Date(id.fechaConsulta).toLocaleDateString('es-ES')}</b></label>
         </div>
-      </div>,
-    ).then(async () => {
-    });
 
-  }
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Optometrista: {id.Optometrista}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Asesor de venta: {id.AsesorVenta}</b></label>
+        </div>
+        <div className="contInput">
+        <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de expiración: {new Date(id.fechaExpiracion).toLocaleDateString('es-ES')}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Antecedentes clinicos: {id.Antecedentes}</b></label>
+        </div>
+
+        <h3>----------------DIAGNOSTICO-----------------</h3>
+        <table className="contTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th><b>OJO DERECHO</b></th>
+              <th><b>OJO IZQUIERDO</b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Esfera</td>
+              <td>{id.ODEsfera}</td>
+              <td>{id.OIEsfera}</td>
+            </tr>
+            <tr>
+              <td>Cilindro</td>
+              <td>{id.ODCilindro}</td>
+              <td>{id.OICilindro}</td>
+            </tr>
+            <tr>
+              <td>Eje</td>
+              <td>{id.ODEje}</td>
+              <td>{id.OIEje}</td>
+            </tr>
+            <tr>
+              <td>Adición</td>
+              <td>{id.ODAdicion}</td>
+              <td>{id.OIAdicion}</td>
+            </tr>
+            <tr>
+              <td>Altura</td>
+              <td>{id.ODAltura}</td>
+              <td>{id.OIAltura}</td>
+            </tr>
+            <tr>
+              <td>Dist. Pupilar</td>
+              <td>{id.ODDistanciaPupilar}</td>
+              <td>{id.OIDistanciaPupilar}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Enfermedad Presentada: {id.diagnostico}</b></label>
+        </div>
+      </div>
+    </div>
+  ).then(async () => {
+    // Puedes agregar lógica adicional aquí si es necesario
+  });
+}
+
 
 
 

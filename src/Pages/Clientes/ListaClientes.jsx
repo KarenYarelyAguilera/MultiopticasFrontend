@@ -174,10 +174,10 @@ export const ListaClientes = (props) => {
 
 
   const columns = [
-    { field: 'COD_CLIENTE', headerName: 'No', width: 115,headerAlign: 'center' },
+    { field: 'COD_CLIENTE', headerName: 'No', width: 80,headerAlign: 'center' },
     { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 165, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 165,headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 200,headerAlign: 'center' },
     
     //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
     { 
@@ -193,9 +193,9 @@ export const ListaClientes = (props) => {
   },
 
     //{ field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
-    { field: 'direccion', headerName: 'Dirección', width: 165,headerAlign: 'center' },
+    { field: 'direccion', headerName: 'Dirección', width: 200,headerAlign: 'center' },
     { field: 'Telefono', headerName: 'Teléfono', width: 165,headerAlign: 'center' },
-    { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
+    // { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
 
 
     {
