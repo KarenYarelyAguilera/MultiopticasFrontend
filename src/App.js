@@ -1498,7 +1498,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaCompra idRol={idRol} />
+                <ListaCompra idRol={idRol} idUsuario={idUsuario} />
               </div>
               // </ProtectedRoute>
             }
@@ -2068,7 +2068,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosExpediente id={data} datosclientes={registros} dataa={Data} datosclientess={registroclientes} />
+                <DatosExpediente id={data} datosclientes={registros} dataa={Data} datosclientess={registroclientes}  idUsuario={idUsuario}  infoPerfil={infoPerfil}/>
               </div>
               // {/* </ProtectedRoute> */}
             }

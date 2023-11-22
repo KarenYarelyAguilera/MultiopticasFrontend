@@ -56,13 +56,18 @@ export const ListaModelos = ({idRol,data,update}) => {
   //URL DE LAS APIS DE MODELO
   const urlModelos ='http://localhost:3000/api/modelos'; //LLama todos los datos de la tabla de modelo.
   const urlDelModelo = 'http://localhost:3000/api/modelo/eliminar'; //Elimina datos de modelo.
+  const urlListaModelosInactivos = 'http://localhost:3000/api/modelosInactivos';
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
 
  useEffect(() => {
   axios.get(urlModelos).then(response=>setTableData(response.data))
-}, [cambio]);
+  axios.get (urlListaModelosInactivos).then(response=> setTableDataInactivos(response.data))
+}, [cambio, inactivo]);
 
 //Imprime el EXCEL 
 const handleGenerarExcel = () => {
@@ -134,11 +139,20 @@ const handleGenerarExcel = () => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
     { field: 'IdModelo', headerName: 'ID ', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 300 },
     { field: 'Modelo', headerName: 'Modelo', width: 300},
     { field: 'anio', headerName: 'Año', width: 300 },
+    { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
       field: 'borrar',
@@ -285,6 +299,11 @@ function handleDel(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
             
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '3px' }} />
@@ -301,7 +320,7 @@ function handleDel(id) {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdModelo}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

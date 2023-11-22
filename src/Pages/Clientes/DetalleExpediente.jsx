@@ -129,9 +129,6 @@ export const DetalleExpediente = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Detalle De Expediente</h2>
-        <h3>
-          Complete todos los puntos para completar el Detalle de Expediente.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

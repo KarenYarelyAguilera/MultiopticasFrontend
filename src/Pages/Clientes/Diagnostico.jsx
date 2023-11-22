@@ -26,10 +26,12 @@ const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
 const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
 
+
+
 export const Diagnostico = (props) => {
 
   const navegate = useNavigate();
-  
+
   const [EnfermedadPresentada, setEnfermedadPresentada] = React.useState('');
   const [errorEnfermedadPresentada, setErrorEnfermedadPresentada] = React.useState(false);
   const [Advertencia, setAdvertencia] = React.useState(false);
@@ -68,16 +70,11 @@ export const Diagnostico = (props) => {
     console.log(data);
 
 
-/*     console.log(props.data.idCliente);
-    console.log(props.id.idCliente); */
-     console.log(props.datosclientes.idCliente);
+    /*     console.log(props.data.idCliente);
+        console.log(props.id.idCliente); */
+    console.log(props.datosclientes.idCliente);
 
-    let dataIdCliente = {
-      IdCliente: props.datosclientes.idCliente,
-      Nota: "Reservación de cita - " + EnfermedadPresentada,
-      fecha: new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())
-    }
-    console.log(dataIdCliente);
+
 
     let dataUsuario = {
       Id: props.idUsuario
@@ -85,23 +82,63 @@ export const Diagnostico = (props) => {
     console.log(dataUsuario);
 
 
+    const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
+
     await axios.post(urlNuevoDiagnostico, data).then(response => {
 
-      
+      let dataIdClienteU = {
+        IdCliente: props.datosclientes.idCliente,
+      }
+      console.log(dataIdClienteU, "este es el id del cliente");
 
-      swal('Diagnostico creado con éxito', '', 'success').then(result => {
+      axios.post(urlFechaCita, dataIdClienteU).then(response => {
+        console.log( response.data.fechaExpiracion, "este es LA PRIMERA");
+        const fechaExpiracion = response.data.fechaExpiracion;
+        console.log(fechaExpiracion, "este es LA FEHCHA");
+
+        // Crear un objeto Date con la fechaExpiracion
+        const fechaFormateada = new Date(response.data.fechaExpiracion)
+
+        // Obtener el año, mes y día
+        const year = fechaFormateada.getFullYear();
+        const month = (fechaFormateada.getMonth() + 1).toString().padStart(2, '0'); // Sumar 1 porque los meses son indexados desde 0
+        const day = fechaFormateada.getDate().toString().padStart(2, '0');
+
+        // Formatear la fecha como Año/Mes/Día
+        const fechaFinal = `${year}/${month}/${day}`;
+        console.log(fechaFinal);
+
+
+        let dataIdCliente = {
+          IdCliente: props.datosclientes.idCliente,
+          Nota: "CITA " + EnfermedadPresentada,
+          fecha: fechaFinal
+        }
+        console.log(dataIdCliente);
+
 
         axios.post(urlPostCitas, dataIdCliente).then(response => {
           //swal('Se creo una cita', '', 'success').then(result => {
-          axios.post(urlBitacoraAggCita, dataUsuario);
+          //axios.post(urlBitacoraAggCita, dataUsuario);
           //navegate('/recordatorio');
           // });
-  
+
         }).catch(error => {
-          console.log(error);
-          swal("Error al agregar cita.", "", "error")
-  
+          console.log(error, "Error al agregar cita, es posible que ya exista");
+          //swal("Error al agregar cita.", "", "error")
+
         });
+
+
+      });
+
+
+
+      swal('Diagnostico creado correctamente', '', 'success').then(result => {
+
+
+
+
 
         navegate('/menuClientes/ListaExpedientes');
       });
@@ -138,9 +175,7 @@ export const Diagnostico = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Diagnostico</h2>
-        <h3>
-          Complete todos los datos para el historial del paciente.
-        </h3>
+        
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -309,28 +344,28 @@ export const Diagnostico = (props) => {
             <div className="contInput">
               <TextCustom text="Enfermedad Presentada" className="titleInput" />
               <input
-               onKeyDown={e => {
-                setEnfermedadPresentada(e.target.value);
-                if (e.target.value === '') {
-                  setErrorEnfermedadPresentada(true);
-                  setAdvertencia('Los campos no deben estar vacíos');
-                } else {
-                  setErrorEnfermedadPresentada(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if (!regex.test(e.target.value)) {
+                onKeyDown={e => {
+                  setEnfermedadPresentada(e.target.value);
+                  if (e.target.value === '') {
                     setErrorEnfermedadPresentada(true);
-                    setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(e.target.value)) {
-                    setErrorEnfermedadPresentada(true);
-                    setAdvertencia('No se permiten letras consecutivas repetidas');
+                    setAdvertencia('Los campos no deben estar vacíos');
                   } else {
                     setErrorEnfermedadPresentada(false);
-                    setAdvertencia('');
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(e.target.value)) {
+                      setErrorEnfermedadPresentada(true);
+                      setAdvertencia('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(e.target.value)) {
+                      setErrorEnfermedadPresentada(true);
+                      setAdvertencia('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorEnfermedadPresentada(false);
+                      setAdvertencia('');
+                    }
                   }
-                }
 
-              }}
-              error={errorEnfermedadPresentada}
+                }}
+                error={errorEnfermedadPresentada}
                 helperText={Advertencia}
                 type="text"
                 name=""
@@ -359,15 +394,15 @@ export const Diagnostico = (props) => {
                     setErrorEnfermedadPresentada(true);
                     swal("El campo enfermedad no acepta menos de 2 carácteres.", "", "error");
                   }
-                   else if (/(.)\1{2,}/.test(EnfermedadPresentada)) {
+                  else if (/(.)\1{2,}/.test(EnfermedadPresentada)) {
                     setErrorEnfermedadPresentada(true);
                     swal("El campo enfermedad no acepta letras consecutivas repetidas.", "", "error");
                   }
                   else {
                     handleNext();
                   }
-                  }}         
-                        // onClick={handleNext}
+                }}
+              // onClick={handleNext}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>

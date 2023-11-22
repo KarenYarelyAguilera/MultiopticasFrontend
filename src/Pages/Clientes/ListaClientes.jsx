@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 //Mui-Material-Icons
@@ -23,6 +25,8 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -47,12 +51,40 @@ export const ListaClientes = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  
 
   useEffect(() => {
     axios.get(urlClientes).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      'Identidad': row.idCliente,
+      'Nombre': row.nombre,
+      'Apellido': row.apellido,
+      'Genero': row.genero,
+      'Fecha Nacimiento': new Date(row.fechaNacimiento).toLocaleDateString('es-ES'), // Formatea la fecha
+      'Direccion': row.direccion,
+      'Telefono': row.Telefono,
+      'Email': row.Email,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['Identidad', 'Nombre', 'Apellido', 'Genero', 'Fecha Nacimiento', 'Direccion', 'Telefono', 'Email'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+  };
+  
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -145,8 +177,20 @@ export const ListaClientes = (props) => {
     { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 165, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 165,headerAlign: 'center' },
-    { field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
+    //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
+    { 
+      field: 'fechaNacimiento', 
+      headerName: 'Fecha de Nacimiento', 
+      width: 170,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+
+    //{ field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
     { field: 'direccion', headerName: 'Dirección', width: 165,headerAlign: 'center' },
     { field: 'Telefono', headerName: 'Teléfono', width: 165,headerAlign: 'center' },
     { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
@@ -243,6 +287,10 @@ export const ListaClientes = (props) => {
           position: 'relative',
           left: '130px',
         }}
+
+
+
+        
       >
         <div className="contFilter">
           {/* <div className="buscador"> */}
@@ -256,6 +304,7 @@ export const ListaClientes = (props) => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
+          
           {/* </div> */}
           <div className="btnActionsNewReport">
             <Button
@@ -272,21 +321,30 @@ export const ListaClientes = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               NUEVO
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+            
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+         pagination 
           getRowId={tableData => tableData.idCliente}
           rows={filteredData}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
