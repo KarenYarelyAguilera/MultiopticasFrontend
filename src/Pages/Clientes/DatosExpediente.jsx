@@ -419,11 +419,10 @@ function handleUpdt(id) {
               <p class="error"></p>
             </div> */}
             <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
-              <Button
-                onClick={() => {
-                  navegate('/menuClientes/DetalleExpediente');
-                }}
-                variant="contained" className="btnStepper">
+            <Button
+                onClick={handleNext} //INSERTA 
+                className="btnStepperAgregar"
+                >  
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
@@ -456,8 +455,9 @@ function handleUpdt(id) {
                 onClick={() => {
                   navegate('/menuClientes/DetalleExpediente');
                 }}
-                variant="contained" className="btnStepper">
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+                className="btnAgregar1">
+                <AddIcon style={{ marginRight: '5px' }} />
+                Agregar
               </Button>
               <Button className="btnReport1" onClick={() => { }}>
                 Cancelar

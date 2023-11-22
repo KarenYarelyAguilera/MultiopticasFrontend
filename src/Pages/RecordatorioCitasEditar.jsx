@@ -21,6 +21,9 @@ import axios from 'axios';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
+import  oftalmologoFondo  from '../IMG/oftalmologofondo.png'
+
+
 import '../Styles/Usuarios.css';
 
 const locales = {
@@ -161,10 +164,11 @@ export const RecordatorioCitasEditar = props => {
 
 
     return (
-        <div className='ContUsuarios'>
-            {/*  <Button className="btnBack" style={{ top: "-50px" }} onClick={handleBack}>
-                <ArrowBackIcon className="iconBack" />
-            </Button> */}
+    <div className="divSection">
+        <div className='divInfoQuestion1'>
+        <Button className="btnBack" onClick={handleBack}>
+         <ArrowBackIcon className="iconBack" />
+       </Button>
             <div className="contRecordatorios">
                 <div className="contRecordCitas">
                     <div  >
@@ -281,16 +285,14 @@ export const RecordatorioCitasEditar = props => {
 
 
 
-                            <div className="contBtnStepper">
+                            <div className="contBtnStepperRecord">
                                 <Button
-                                    variant="contained"
-                                    className='btnStepper'
+                                    className='btnStepperCan'
                                     onClick={() => navegate('/recordatorio')}
                                 >Cancelar</Button>
 
                                 <Button
-                                    variant="contained"
-                                    className='btnStepper'
+                                    className='btnStepperGuardar'
                                     onClick={() => {
 
                                         var nota = document.getElementById("Nota").value;
@@ -313,5 +315,9 @@ export const RecordatorioCitasEditar = props => {
                 </div>
             </div>
         </div>
+        <div className="divImgSection">
+        <img src={oftalmologoFondo} alt="Iamgen no encontrada" />
+      </div>
+    </div>
     );
 };

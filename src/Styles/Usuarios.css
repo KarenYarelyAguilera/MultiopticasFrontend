@@ -448,6 +448,24 @@ body::-webkit-scrollbar-thumb {
 .ContUsuarios .btnBack:hover{
   background-color: #316ee6;
 }
+
+.divInfoQuestion1 .btnBack {
+  width: 10%;
+  padding: 40px;
+  height: 20%;
+  background-color: #316ee6;
+  border-radius: 50px;
+  color: white;
+}
+
+.divInfoQuestion1 .btnBack:hover{
+  background-color: #316ee6;
+}
+
+.divInfoQuestion1 .btnBack .iconBack {
+  font-size: 40px;
+  color: white;
+}
 /* 
 .bntBackList{
   position: absolute;
@@ -851,7 +869,7 @@ body::-webkit-scrollbar-thumb {
 
 .contBtnStepper .btnStepper,
 .contBtnStepper1 .btnStepper,
-.contBtnSventa .btnSVenta {
+.contBtnSventa .btnSVenta{
   margin-top: 25px;
   width: 70%;
   height: 40px;
@@ -869,9 +887,27 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
+.contBtnStepper1 .btnStepperAgregar {
+  margin-top: 25px;
+  width: 70%;
+  height: 40px;
+  border-radius: 25px;
+  background: coral;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contBtnStepper1 .btnStepperAgregar:hover{
+  background-color: coral;
+}
+
 .contBtnStepper .btnStepper h1,
 .contBtnStepper1 .btnStepper h1,
-.contBtnSventa .btnSVenta h1 {
+.contBtnSventa .btnSVenta h1,
+.btnStepperAgregar h1 {
   font-size: 15px;
   color: white;
 }
@@ -899,6 +935,18 @@ button {
 }
 
 /* Buscador - Pantalla Lista [Empleados-Usuarios] */
+
+.contFilte {
+  width: 100%;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 80% 20%;
+
+  justify-content: center;
+  align-items: center;
+}
+
 .contFilter {
   width: 100%;
   height: 70px;
@@ -918,6 +966,25 @@ button {
   grid-template-columns: 60% 40%;
 
   align-items: center;
+}
+
+.contFilter2 {
+  width: 100%;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 40% 60%;
+
+  align-items: center;
+}
+
+.btnAgregar1 {
+  background-color: #3535a2 !important;
+  color: white !important;
+  border-radius: 25px !important;
+  padding: 5px !important;
+  font-weight: bold !important;
+  line-height: 0 !important;
 }
 
 .btnCreate1 {
@@ -959,16 +1026,27 @@ button {
   outline: none;
 }
 
+.btnActionsNewRe {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 20px;
+}
+
 .btnActionsNewReport {
   display: grid;
   grid-template-columns: repeat(2, 2fr);
   grid-gap: 20px;
 }
 
-
 .btnActionsNewReport1 {
   display: grid;
   grid-template-columns: repeat(3, 3fr);
+  grid-gap: 20px;
+}
+
+.btnActionsNewReport2 {
+  display: grid;
+  grid-template-columns: repeat(4, 4fr);
   grid-gap: 20px;
 }
 
@@ -1534,7 +1612,11 @@ button {
   height: 82vh;
   display: grid;
   grid-template-columns: 35% 59%;
-  grid-gap: 100px;
+  /* grid-gap: 100px; */
+  margin-left: 20%;
+  /* margin-top: 53px; */
+  justify-content: center;
+  align-content: center;
 }
 
 .contRecordCitas{
@@ -1668,7 +1750,6 @@ button {
   width: 80%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(2,2fr);
   grid-gap: 10px;
 }
 
@@ -1706,13 +1787,38 @@ button {
 
 .contNewCita .inputCustomText {
   width: 355px;
-  height: 180px;
   padding: 10px;
   border-radius: 10px;
   background-color: rgba(208, 208, 208, 0.349);
   border: 2px solid gray;
   font-weight: bold;
   font-size: 15px;
+}
+
+.contBtnStepperRecord{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnStepperCan{
+  width: 100% !important;
+  border-radius: 25px !important;
+  background: red !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+
+.btnStepperGuardar{
+  width: 100% !important;
+  border-radius: 25px !important;
+  background: coral !important;
+  font-weight: bold !important;
+  color: white !important;
 }
 /*RECORDATORIO*/
 

@@ -117,7 +117,7 @@ export const Kardex = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilte">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -130,7 +130,7 @@ export const Kardex = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewRe">
             <Button className="btnReport"
             onClick={handleGenerarReporte}
             >
