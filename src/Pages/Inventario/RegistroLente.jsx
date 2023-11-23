@@ -129,6 +129,16 @@ export const RegistroLente = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
+          <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
+              </select>
+            </div>
+
             <p className="error">{aviso}</p>
             <div className="contInput">
               <TextCustom text="Lente" className="titleInput" />
@@ -183,18 +193,6 @@ export const RegistroLente = (props) => {
               />
               <p class="error">{aviso}</p>
             </div>
-
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
-                setEstado(e.target.value)
-              }}>
-                <option value={"Activo"}>Activo</option>
-                <option value={"Inactivo"}>Inactivo</option>
-              </select>
-            </div>
-
-
 
             <div className="contBtnStepper">
               <Button
