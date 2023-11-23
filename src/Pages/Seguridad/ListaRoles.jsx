@@ -35,7 +35,7 @@ export const ListaRoles = (props) => {
 
   const urlRoles ='http://localhost:3000/api/Rol';
 
-  const urlDeteleRol ='http://localhost:3000/api/Rol/RolEliminado';
+ // const urlDeteleRol ='http://localhost:3000/api/Rol/RolEliminado';
 
   const urlRolesInactivos="http://localhost:3000/api/RolesInactivos";
 
@@ -124,8 +124,8 @@ export const ListaRoles = (props) => {
   const columns = [
     //son los de la base no los de node
     { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'Rol', headerName: 'Rol', width: 200, headerAlign: 'center' },
-    { field: 'Descripcion', headerName: 'Descripción', width: 300, headerAlign: 'center' },
+    { field: 'Rol', headerName: 'Rol', width: 500, headerAlign: 'center' },
+    { field: 'Descripcion', headerName: 'Descripción', width: 550, headerAlign: 'center' },
     { field: 'estado', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
@@ -164,33 +164,25 @@ export const ListaRoles = (props) => {
 
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete:'Eliminar',cancel: 'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
 
-            let data = {
+          /*   let data = {
               Id_Rol: id,
-            };
+            }; */
 
             //Funcion de Bitacora 
             let dataB = {
               Id: props.idUsuario
             }
 
-            console.log(data);
+            //console.log(data);
 
-            await axios
-              .delete(urlDeteleRol, { data })
-              .then(response => {
-                //axios.post(urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Rol eliminado correctamente', '', 'success');
-                setCambio(cambio + 1);
-              })
-              .catch(error => {
-                console.log(error);
-                swal('Error al eliminar el Rol', '', 'error');
-              });
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
+         
 
             break;
 

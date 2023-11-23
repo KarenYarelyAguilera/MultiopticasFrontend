@@ -42,7 +42,7 @@ export const RegistroLente = (props) => {
 
   const handleNext = async () => {
     let lente = document.getElementById("lente").value;
-    let precio = parseFloat(document.getElementById("precio").value);
+    let precio = parseFloat(document.getElementById('precio').value);
 
     let data = {
       lente: lente.toUpperCase(),
@@ -154,6 +154,23 @@ export const RegistroLente = (props) => {
               <TextCustom text="Precio" className="titleInput" />
 
               <input
+                onKeyDown={e => {
+                  setprecio(e.target.value);
+                  if (precio === '') {
+                    setErrorprecio(true);
+                    setaviso('Los campos no deben estar vacios');
+                  } else {
+                    setErrorprecio(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(precio)) {
+                      setErrorprecio(true);
+                      setaviso('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorprecio(false);
+                      setaviso('');
+                    }
+                  }
+                }}
                 onChange={e => setprecio(e.target.value)}
                 error={errorprecio}
                 type="text"
@@ -192,9 +209,9 @@ export const RegistroLente = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   }else if (precio <= 0 ) {
                     swal("El campo precio no acepta valores negativos.", "", "error");
-                 
-                    
-                  } else {
+                  } else if(isNaN(parseFloat(precio))) {
+                    swal("El campo precio solo acepta números.", "", "error");  
+                  }else {
                     props.actualizar ? actualizarLente() : handleNext();
                   }
                 }

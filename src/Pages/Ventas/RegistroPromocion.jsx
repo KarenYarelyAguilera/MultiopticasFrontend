@@ -272,14 +272,11 @@ export const RegistroPromocion = (props) => {
                                               
                   if (descPorcent === "" || fechaInicial === "" || fechaFinal === "" || estado === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
-                    /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                       swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
                   } else if(fechaInicial > fechaFinal){
                     swal("Ingrese correctamente las fechas.", "", "error");
-                  /* }else if(fechaActual > fechaInicial) {
-                    console.log('No puede ingresar fechas pasadas')
-                    swal("No puede ingresar fechas pasadas","","error") */
-                  }else {
+                  }else if(isNaN(descPorcent)){
+                    swal("El campo porcentaje descuento solo acepta numeros.","","error");
+                  }else{
                     props.actualizar ? actualizarPromocion() : handleNext();
                   }
                     

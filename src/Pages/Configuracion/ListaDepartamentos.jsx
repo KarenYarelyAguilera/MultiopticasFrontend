@@ -181,14 +181,14 @@ function handleDel(id) {
       ),
       
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
-          let data = {
+        case 'delete':
+         /*  let data = {
             IdDepartamento:id
           }; 
           console.log(data);
@@ -199,8 +199,11 @@ function handleDel(id) {
             }).catch(error => {
               console.log(error);
               swal('Error al eliminar el departamneto', '', 'error');
-            });
+            }); */
   
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
+
           break;
           default:
           break;

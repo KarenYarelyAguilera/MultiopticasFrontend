@@ -41,7 +41,7 @@ export const RegistroGenero = (props) => {
     let estado = document.getElementById('estado').value;
 
     let data = {
-      descripcion:genero,
+      descripcion:genero.toUpperCase(),
       estado: estado,
     }
     console.log(data)
@@ -71,7 +71,7 @@ const actualizarGenero = async () => {
 
   const data = {
 
-    descripcion:genero,
+    descripcion:genero.toUpperCase(),
     estado: estado,
     IdGenero: props.data.IdGenero, //El dato de IdProducto se obtiene de Producto seleccionado.
   }
