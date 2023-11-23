@@ -124,7 +124,7 @@ import { CambioContraseniaPV } from './Pages/Login/CambioContraseniaPV.jsx';
 
 import { ListaPreguntasDeSeguridad } from './Pages/Configuracion/ListaPreguntasDeSeguridad.jsx';
 import { RegistroPreguntaDeSeguridad } from './Pages/Configuracion/RegistroPreguntaDeSeguridad.jsx';
-
+import { Kardex2 } from './Pages/Inventario/Kardex2.jsx';
 
 
 function App() {
@@ -1244,6 +1244,34 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
               </ProtectedRoute>
             }
           ></Route>
+
+<Route
+            path="/menuInventario/Kardex2"
+            element={
+
+              // <ProtectedRoute activo={activo}>
+              <div className="flex">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
+                <BarraHorizontal user={usuario} />
+                <Kardex2
+                  bitacora={bitacora}
+                  bita={bita}
+                />
+              </div>
+              // </ProtectedRoute>
+
+            }
+          ></Route>
+
 
           <Route
             path="/Administracion/Bitacora"

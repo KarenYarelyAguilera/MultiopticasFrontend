@@ -193,43 +193,6 @@ export const RegistroPromocion = (props) => {
 
 
             <div className="contInput">
-              <TextCustom text="Descripcion" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setdescripcion(e.target.value);
-                  if (descripcion === '') {
-                    setErrordescripcion(true);
-                    setmensaje('Los campos no deben estar vacios');
-                  }
-
-                }}
-                type="text"
-                name=""
-                maxLength={50}
-                className="inputCustomText"
-                placeholder="Descripcion"
-                id="descripcion"
-                value={descripcion}
-                onChange={e => setdescripcion(e.target.value)}
-              />
-            </div>
-            <div className="contInput">
-              <TextCustom text="Fecha de Inicio" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                // helperText={texto}
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Inicio"
-                id="fechaInicial"
-                value={fechaInicial}
-                onChange={(e)=>setfechaInicial(e.target.value)}
-              />
-
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Fecha Final" className="titleInput" />
               <input
                 type="date"
@@ -253,6 +216,28 @@ export const RegistroPromocion = (props) => {
                 <option value={'Activo'}>Activo</option>
                 <option value={'Inactivo'}>Inactivo</option>
               </select>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Descripcion" className="titleInput" />
+              <input
+                onKeyDown={e => {
+                  setdescripcion(e.target.value);
+                  if (descripcion === '') {
+                    setErrordescripcion(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  }
+
+                }}
+                type="text"
+                name=""
+                maxLength={50}
+                className="inputCustomText"
+                placeholder="Descripcion"
+                id="descripcion"
+                value={descripcion}
+                onChange={e => setdescripcion(e.target.value)}
+              />
             </div>
 
             
