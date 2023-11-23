@@ -98,9 +98,19 @@ export const DatosExpediente = (props) => {
   const navegate = useNavigate();
 
   const columns = [
-    { field: 'fechaConsulta', headerName: 'Fecha de Consulta', width: 250 },
-    { field: 'Optometrista', headerName: 'Optometrista', width: 250 },
-    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250 },
+    { 
+      field: 'fechaConsulta', 
+      headerName: 'Fecha de Consulta', 
+      width: 250,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    { field: 'Optometrista', headerName: 'Optometrista', width: 250,  headerAlign: 'center', },
+    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250,  headerAlign: 'center', },
 
     {
       field: 'borrar',
@@ -143,7 +153,7 @@ export const DatosExpediente = (props) => {
     const imgHeight = 15; // Alto deseado de la imagen
     const imgX = pdfWidth - imgWidth - 10; // Calcular la posición x de la imagen para que esté en el lado derecho
     const imgY = 20; // Posición y deseada de la imagen
-
+   
     // Agregar la imagen de fondo primero
     documento.addImage(fondoPDF, 'JPG', 0, 0, documento.internal.pageSize.getWidth(), documento.internal.pageSize.getHeight());
 
@@ -211,85 +221,86 @@ export const DatosExpediente = (props) => {
   // };
 
   //PANTALLA MODAL---------------------------------------------------------------------------
-  function handleUpdt(id) {
-    //setModalData(id);
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">DATOS GENERALES</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Optometrista:{id.Optometrista}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Asesor de venta:{id.AsesorVenta}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Fecha de expiracion:{id.fechaExpiracion}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Antecedentes clinicos:{id.Antecedentes}</b></label>
-          </div>
-          <h3>
-            ----------------DIAGNOSTICO-----------------
-          </h3>
-          <div className="contInput">
-            <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
-          </div>
-
+ // PANTALLA MODAL
+function handleUpdt(id) {
+  // setModalData(id);
+  console.log(id);
+  
+  swal(
+    <div>
+      <div className="logoModal">DATOS GENERALES</div>
+      <div className="contEditModal">
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de consulta: {new Date(id.fechaConsulta).toLocaleDateString('es-ES')}</b></label>
         </div>
-      </div>,
-    ).then(async () => {
-    });
 
-  }
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Optometrista: {id.Optometrista}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Asesor de venta: {id.AsesorVenta}</b></label>
+        </div>
+        <div className="contInput">
+        <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de expiración: {new Date(id.fechaExpiracion).toLocaleDateString('es-ES')}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Antecedentes clinicos: {id.Antecedentes}</b></label>
+        </div>
+
+        <h3>----------------DIAGNOSTICO-----------------</h3>
+        <table className="contTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th><b>OJO DERECHO</b></th>
+              <th><b>OJO IZQUIERDO</b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Esfera</td>
+              <td>{id.ODEsfera}</td>
+              <td>{id.OIEsfera}</td>
+            </tr>
+            <tr>
+              <td>Cilindro</td>
+              <td>{id.ODCilindro}</td>
+              <td>{id.OICilindro}</td>
+            </tr>
+            <tr>
+              <td>Eje</td>
+              <td>{id.ODEje}</td>
+              <td>{id.OIEje}</td>
+            </tr>
+            <tr>
+              <td>Adición</td>
+              <td>{id.ODAdicion}</td>
+              <td>{id.OIAdicion}</td>
+            </tr>
+            <tr>
+              <td>Altura</td>
+              <td>{id.ODAltura}</td>
+              <td>{id.OIAltura}</td>
+            </tr>
+            <tr>
+              <td>Dist. Pupilar</td>
+              <td>{id.ODDistanciaPupilar}</td>
+              <td>{id.OIDistanciaPupilar}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Enfermedad Presentada: {id.diagnostico}</b></label>
+        </div>
+      </div>
+    </div>
+  ).then(async () => {
+    // Puedes agregar lógica adicional aquí si es necesario
+  });
+}
+
 
 
 
@@ -316,6 +327,7 @@ export const DatosExpediente = (props) => {
 
     await axios.post(urlNuevoExpediente, data).then(response => {
       let data = { IdExpediente: response.data.id }
+      console.log(response.data.id);
       props.dataa(data)
       //console.log(response.data.id)
       swal('Expediente creado con exito', '', 'success').then(result => {
@@ -336,13 +348,12 @@ export const DatosExpediente = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Datos de Expediente</h2>
-        <h3>Complete todos los datos para poder crear el expediente.</h3>
       </div>
-      <div className="infoAddCompra">
+      <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
+              <TextCustom text="Cliente" className="titleInput1" />
               <input
                 type="text"
                 name="input1"
@@ -357,7 +368,7 @@ export const DatosExpediente = (props) => {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Fecha de Creacion" className="titleInput" />
+              <TextCustom text="Fecha de Creacion" className="titleInput1" />
               <input
                 type="date"
                 name=""
@@ -371,7 +382,7 @@ export const DatosExpediente = (props) => {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
+              <TextCustom text="Empleado" className="titleInput1" />
 
               <select id="empleado"
                 value={props.datosclientes.IdEmpleado}
@@ -407,12 +418,11 @@ export const DatosExpediente = (props) => {
               />
               <p class="error"></p>
             </div> */}
-            <div className="contBtnStepper1">
-              <Button
-                onClick={() => {
-                  navegate('/menuClientes/DetalleExpediente');
-                }}
-                variant="contained" className="btnStepper">
+            <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
+            <Button
+                onClick={handleNext} //INSERTA 
+                className="btnStepperAgregar"
+                >  
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
@@ -420,6 +430,7 @@ export const DatosExpediente = (props) => {
         </div>
         <div
           style={{
+            width: '135%',
             height: 400,
             position: 'relative',
           }}
@@ -440,11 +451,13 @@ export const DatosExpediente = (props) => {
               onChange={e => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
-              <Button
-                onClick={handleNext} //INSERTA 
-                className="btnCreate1">
+            <Button
+                onClick={() => {
+                  navegate('/menuClientes/DetalleExpediente');
+                }}
+                className="btnAgregar1">
                 <AddIcon style={{ marginRight: '5px' }} />
-                Guardar
+                Agregar
               </Button>
               <Button className="btnReport1" onClick={() => { }}>
                 Cancelar

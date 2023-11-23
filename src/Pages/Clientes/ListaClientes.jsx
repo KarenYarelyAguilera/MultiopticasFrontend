@@ -174,9 +174,11 @@ export const ListaClientes = (props) => {
 
 
   const columns = [
+    { field: 'COD_CLIENTE', headerName: 'No', width: 80,headerAlign: 'center' },
     { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 165, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 165,headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 200,headerAlign: 'center' },
+    
     //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
     { 
       field: 'fechaNacimiento', 
@@ -191,9 +193,10 @@ export const ListaClientes = (props) => {
   },
 
     //{ field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
-    { field: 'direccion', headerName: 'Dirección', width: 165,headerAlign: 'center' },
+    { field: 'direccion', headerName: 'Dirección', width: 200,headerAlign: 'center' },
     { field: 'Telefono', headerName: 'Teléfono', width: 165,headerAlign: 'center' },
-    { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
+    // { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
+
 
     {
       field: 'borrar',
@@ -287,8 +290,12 @@ export const ListaClientes = (props) => {
           position: 'relative',
           left: '130px',
         }}
+
+
+
+        
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -302,7 +309,7 @@ export const ListaClientes = (props) => {
           />
           
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {

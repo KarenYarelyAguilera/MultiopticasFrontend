@@ -47,13 +47,19 @@ export const ListaPais = ({idRol,data,update}) => {
 
   const urlPais = 'http://localhost:3000/api/paises';
   const urlDelPais = 'http://localhost:3000/api/pais/eliminar';
+  const urlListaPaisesInactivos = 'http://localhost:3000/api/pais/paisInactivo';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
+
   useEffect(() => {
     axios.get(urlPais).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaPaisesInactivos).then(response=> setTableDataInactivos(response.data))
+
+  }, [cambio, inactivo]);
 
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
@@ -118,9 +124,19 @@ export const ListaPais = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdPais', headerName: 'ID', width: 600 },
-    { field: 'Pais', headerName: 'País', width: 600 },
+    { field: 'IdPais', headerName: 'ID', width: 400 },
+    { field: 'Pais', headerName: 'País', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
+
 
     {
       field: 'borrar',
@@ -235,7 +251,7 @@ export const ListaPais = ({idRol,data,update}) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -248,7 +264,7 @@ export const ListaPais = ({idRol,data,update}) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -262,6 +278,11 @@ export const ListaPais = ({idRol,data,update}) => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
+            </Button>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
@@ -279,7 +300,7 @@ export const ListaPais = ({idRol,data,update}) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdPais}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

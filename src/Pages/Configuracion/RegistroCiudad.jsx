@@ -31,32 +31,45 @@ export const RegistroCiudad = (props) => {
   const [errorCiudad, setErrorCiudad] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
    
+  const [estado, setEstado] = useState(props.data.estado || null)
+
  
   const handleNext = async () => {
     let ciudad = document.getElementById("ciudad").value;
-   
+    let estado = document.getElementById('estado').value;
+
     let data = {
       ciudad:ciudad,
+      estado:estado,
     }
-
+console.log(data)
     //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertCiudad, data).then(response => {
-    swal('Ciudad agregada con exito', '', 'success').then(result => {
-      navegate('/config/ListaCiudad');
+    console.log(response);
+    if(response.data==false)
+    {
+      swal('¡Esta Ciudad ya existe!', '', 'error')
+    }else{
+      swal('Ciudad agregada con exito', '', 'success').then(result => {
+        navegate('/config/ListaCiudad');
+
     });
+  }
   }).catch(error => {
     console.log(error);
-    swal('Error al crear la ciudad, por favor revise los campos.', '', 'error')
+    swal('Error al crear la Ciudad, por favor revise los campos.', '', 'error')
  
   })
   };
-//ACTUALIZAR 
 
+//ACTUALIZAR 
   const actualizarCiudad = async () => {
     let ciudad = document.getElementById("ciudad").value;
-   
+    let estado = document.getElementById('estado').value;
+
     const data = {
       ciudad:ciudad,
+      estado:estado,
       IdCiudad:props.data.IdCiudad, 
     };
     
@@ -68,7 +81,6 @@ export const RegistroCiudad = (props) => {
   }).catch(error => {
     console.log(error);
     swal('Error al crear la ciudad, porfavor revise los campos.', '', 'error')
- 
   })
   };
 
@@ -151,6 +163,16 @@ const handleBack = () => {
               <p className="error">{aviso}</p>
             </div>
 
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
+            </div>
+
             <div className="contBtnStepper">
               <Button
                 variant="contained"
@@ -158,8 +180,9 @@ const handleBack = () => {
                 onClick={()=>
                   {
                     var ciudad = document.getElementById("ciudad").value;
+                    var estado = document.getElementById('estado').value;
 
-                    if (ciudad ==="")
+                    if (ciudad ==="" || estado==="")
                     {
                       swal ("No deje campos vacíos.", "", "error");
                     }else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(ciudad)) {
