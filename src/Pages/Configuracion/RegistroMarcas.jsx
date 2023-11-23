@@ -47,11 +47,21 @@ export const RegistroMarcas = (props) => {
       descripcion:marca,
       estado: estado
     }
-    
-    if (await axios.post(urlInsertMarca, data)) {
-      swal('Marca creada exitosamente.','', 'success');
-      navegate('/config/ListaMarcas');
+
+    axios.post(urlInsertMarca, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Esta marca ya existe!', '', 'error')
+      } else {
+        swal('Marca creada exitosamente!', '', 'success').then(result => {
+          navegate('/config/ListaMarcas');
+        });
+      }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear marca.', '', 'error')
     }
+    )
 
   };
 

@@ -155,9 +155,9 @@ export const ListaProveedores = (props) => {
     { field: 'encargado', headerName: 'Encargado', width: 150, headerAlign: 'center' },
     { field: 'Pais', headerName: 'Pais', width: 150, headerAlign: 'center' },
     { field: 'Ciudad', headerName: 'Ciudad', width: 150, headerAlign: 'center' },
-    { field: 'Productos', headerName: 'Producto', width: 200, headerAlign: 'center' },
-  /*   { field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' }, */
+    { field: 'Productos', headerName: 'Producto', width: 690, headerAlign: 'center' },
     { field: 'telefono', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
+    //{ field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' },
     { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 230, headerAlign: 'center' },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
@@ -199,10 +199,10 @@ export const ListaProveedores = (props) => {
   
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete: 'Eliminar', cancel:'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               IdProveedor: IdProveedor,

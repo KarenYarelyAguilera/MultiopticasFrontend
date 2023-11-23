@@ -61,11 +61,11 @@ const urlSalirListaBitacora=
   );
 
   const columns = [
-    { field: 'IdBitacora', headerName: 'ID Bitacora', width: 170 },
-    { field: 'Id_Usuario', headerName: 'Usuario', width: 170 },
-    { field: 'Id_Objeto', headerName: 'Pantalla', width: 170 },
+    { field: 'IdBitacora', headerName: 'ID', width: 170 },
+    { field: 'Usuario', headerName: 'Usuario', width: 170 },
+    { field: 'Objeto', headerName: 'Modulo', width: 170 },
     { field: 'accion', headerName: 'Acción', width: 180 },
-    { field: 'descripcion', headerName: 'Descripción', width: 320 },
+    { field: 'descripcion', headerName: 'Descripción', width: 470 },
     { field: 'fecha', headerName: 'Fecha', width: 260 },
 
   ];
