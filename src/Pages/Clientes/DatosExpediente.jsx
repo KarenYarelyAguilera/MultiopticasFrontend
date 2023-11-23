@@ -349,11 +349,11 @@ function handleUpdt(id) {
       <div className="titleAddUser">
         <h2>Datos de Expediente</h2>
       </div>
-      <div className="infoAddCompra">
+      <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
+              <TextCustom text="Cliente" className="titleInput1" />
               <input
                 type="text"
                 name="input1"
@@ -368,7 +368,7 @@ function handleUpdt(id) {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Fecha de Creacion" className="titleInput" />
+              <TextCustom text="Fecha de Creacion" className="titleInput1" />
               <input
                 type="date"
                 name=""
@@ -382,7 +382,7 @@ function handleUpdt(id) {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
+              <TextCustom text="Empleado" className="titleInput1" />
 
               <select id="empleado"
                 value={props.datosclientes.IdEmpleado}
@@ -418,18 +418,19 @@ function handleUpdt(id) {
               />
               <p class="error"></p>
             </div> */}
-            <div className="contBtnStepper1">
+            <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
             <Button
                 onClick={handleNext} //INSERTA 
-                className="btnCreate1">
-                <AddIcon style={{ marginRight: '5px' }} />
-                Guardar
+                className="btnStepperAgregar"
+                >  
+                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
           </div>
         </div>
         <div
           style={{
+            width: '135%',
             height: 400,
             position: 'relative',
           }}
@@ -454,8 +455,9 @@ function handleUpdt(id) {
                 onClick={() => {
                   navegate('/menuClientes/DetalleExpediente');
                 }}
-                variant="contained" className="btnStepper">
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+                className="btnAgregar1">
+                <AddIcon style={{ marginRight: '5px' }} />
+                Agregar
               </Button>
               <Button className="btnReport1" onClick={() => { }}>
                 Cancelar
