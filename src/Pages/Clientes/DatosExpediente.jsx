@@ -308,7 +308,6 @@ function handleUpdt(id) {
 
   const handleNext = async () => {
     let Cliente = document.getElementById('cliente').value;
-    let Empleado = document.getElementById('empleado').value;
     let fechaCreacion = document.getElementById('fecha').value;
 
     let fecha = new Date(fechaCreacion)
@@ -322,7 +321,7 @@ function handleUpdt(id) {
     let data = {
       IdCliente: Cliente,
       fechaCreacion: fechaFormateada,
-      IdEmpleado: Empleado,
+      IdEmpleado: props.idEmpleado,
     }
 
     await axios.post(urlNuevoExpediente, data).then(response => {
@@ -381,28 +380,7 @@ function handleUpdt(id) {
                 disabled
               />
             </div>
-            <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput1" />
-
-              <select id="empleado"
-                value={props.datosclientes.IdEmpleado}
-                className="selectCustom">
-
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.nombre}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
-
-            </div>
+            
             {/* <div className="contInput">
               <TextCustom text="Creado Por" className="titleInput" />
               <input
