@@ -1498,7 +1498,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaCompra idRol={idRol} />
+                <ListaCompra idRol={idRol} idUsuario={idUsuario} />
               </div>
               // </ProtectedRoute>
             }

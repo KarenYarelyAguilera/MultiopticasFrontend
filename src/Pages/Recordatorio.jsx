@@ -381,7 +381,7 @@ export const Recordatorio = (props) => {
       <div
         style={{
           height: 400,
-          width: '80%',
+          width: '91%',
           position: 'relative',
           left: '100px',
         }}>
@@ -409,7 +409,7 @@ export const Recordatorio = (props) => {
         </div> */}
 
 
-        <div style={{ display: 'flex', alignItems: 'center', fontFamily: 'Arial, sans-serif' }}>
+        <div className='contDateDH'>
 
           <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
           <input
@@ -420,7 +420,7 @@ export const Recordatorio = (props) => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Fecha de inicio"
-            style={{ marginRight: '10px', padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px'}}
+            className='inputCustomF'
           ></input>
           <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
           <input
@@ -431,7 +431,7 @@ export const Recordatorio = (props) => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Fecha de fin"
-            style={{ padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px' }}
+            className='inputCustomF'
           ></input>
 
         </div>
@@ -439,7 +439,7 @@ export const Recordatorio = (props) => {
 
 
 
-        <div className="contFilter" style={{ padding: '05px' }}>
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -453,7 +453,7 @@ export const Recordatorio = (props) => {
 
           />
 
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {

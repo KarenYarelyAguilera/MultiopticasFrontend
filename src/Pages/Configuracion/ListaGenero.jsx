@@ -50,13 +50,18 @@ export const ListaGenero = ({idRol,data,update}) => {
   //API DE GENERO
  const urlGenero = 'http://localhost:3000/api/Genero';
  const urlDeleteGenero = 'http://localhost:3000/api/Genero/borrar';
- 
+ const urlListaGeneroInactivos = 'http://localhost:3000/api/Genero/GeneroInactivo';
+
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
+
   useEffect(() => {
     axios.get(urlGenero).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaGeneroInactivos).then(response=> setTableDataInactivos(response.data))
+  }, [cambio, inactivo]);
 
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
@@ -120,9 +125,18 @@ export const ListaGenero = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdGenero', headerName: 'ID', width: 450 },
-    { field: 'descripcion', headerName: 'Género', width: 450 },
+    { field: 'IdGenero', headerName: 'ID', width: 400 },
+    { field: 'descripcion', headerName: 'Género', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
 
     {
       field: 'borrar',
@@ -239,7 +253,7 @@ export const ListaGenero = ({idRol,data,update}) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -252,7 +266,7 @@ export const ListaGenero = ({idRol,data,update}) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -266,6 +280,11 @@ export const ListaGenero = ({idRol,data,update}) => {
             >
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
+            </Button>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
@@ -283,7 +302,7 @@ export const ListaGenero = ({idRol,data,update}) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdGenero}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

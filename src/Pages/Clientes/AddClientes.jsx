@@ -204,15 +204,13 @@ export const AddClientes = (props) => {
       </Button>
       <div className="titleAddUser">
       {props.actualizar ? <h2>Actualizar Cliente</h2> : <h2>Registro de Cliente</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos del cliente
-        </h3>
+       
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Numero de Identidad" className="titleInput" />
+              <TextCustom text="Número de Identidad" className="titleInput" />
 
               <input
                 onKeyDown={e => {
@@ -256,6 +254,22 @@ export const AddClientes = (props) => {
 
               />
               <p class="error">{leyenda}</p>
+            </div>
+
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                helperText={texto}
+                maxLength={50}
+                className="inputCustom"
+                placeholder="Fecha de Nacimiento"
+                id="fechaN"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
+              />
             </div>
 
             <div className="contInput">
@@ -337,7 +351,7 @@ export const AddClientes = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Direccion" className="titleInput" />
+              <TextCustom text="Dirección" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setdireccion(e.target.value);
@@ -366,7 +380,7 @@ export const AddClientes = (props) => {
                 helperText={mensaje}
                 maxLength={100}
                 className="inputCustom"
-                placeholder="Direccion"
+                placeholder="Dirección"
                 id="direccion"
                 value={direccion}
               />
@@ -374,7 +388,7 @@ export const AddClientes = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Teléfono" className="titleInput" />
               <input
                onChange={e => setTelefono(e.target.value)}
 
@@ -408,7 +422,7 @@ export const AddClientes = (props) => {
                 helperText={texto}
                 maxLength={8}
                 className="inputCustom"
-                placeholder="Telefono"
+                placeholder="Teléfono"
                 id="phone"
                 value={Telefono}
               />
@@ -416,7 +430,7 @@ export const AddClientes = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Correo Electronico" className="titleInput" />
+              <TextCustom text="Correo Electrónico" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setcorreoelec(e.target.value);
@@ -443,26 +457,11 @@ export const AddClientes = (props) => {
                 helperText={texto}
                 maxLength={50}
                 className="inputCustom"
-                placeholder="Correo Electronico"
+                placeholder="Opcional"
                 id="correo"
                 value={correoelec}
               />
               {<p className="error">{advertencia}</p>}
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                helperText={texto}
-                maxLength={50}
-                className="inputCustom"
-                placeholder="Fecha de Nacimiento"
-                id="fechaN"
-                value={fechaNacimiento}
-                onChange={(e)=>setFechaNacimiento(e.target.value)}
-              />
             </div>
 
             <div className="contInput">
@@ -493,7 +492,8 @@ export const AddClientes = (props) => {
                   var phone = document.getElementById("phone").value;
                   var correo = document.getElementById("correo").value;
                   var fechaNacimiento= document.getElementById("fechaN").value;
-                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || correo === "" || fechaNacimiento==="") {
+                  const fechaActual = new Date().toISOString().split('T')[0];
+                  if (Nidentidad === "" || nombre === "" || apellido === "" || direccion === "" || phone === "" || fechaNacimiento==="") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(Nidentidad))) {
                     swal("El campo identidad solo acepta números.", "", "error");
@@ -548,10 +548,15 @@ export const AddClientes = (props) => {
                         swal("El campo teléfono debe tener el formato correcto.", "", "error");
                       }else if (/(.)\1{2,}/.test(phone)) {
                         swal("El numero de telefono ingresado es invalido.", "", "error");
+                      }if (fechaNacimiento === "") {
+                        swal("La fecha de nacimiento no puede estar vacía.", "", "error");
+                      } else if (fechaNacimiento > fechaActual) {
+                        swal("La fecha de nacimiento no puede ser en el futuro.", "", "error");
                       }
-                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                      else if (correo !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                         swal("El campo correo debe contener un correo válido.", "", "error");
-                      } else {
+                      }
+                       else {
                         props.actualizar ? actualizarCliente() : handleNext();
                       }
                     }

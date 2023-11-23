@@ -48,36 +48,50 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
 
   const urlDepartamento = 'http://localhost:3000/api/departamentos';
   const urlDeleteDepartamento = 'http://localhost:3000/api/departamento/eliminar';
+  const urlListaDepartamentoInactivos = 'http://localhost:3000/api/departamentos/departamentoInactivo';
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
+
+
+ 
 
   useEffect(() => {
     fetch(urlDepartamento).then(response => response.json()).then(data => setTableData(data));
-  }, [cambio]);
-
-  //Imprime el EXCEL 
+    axios.get (urlListaDepartamentoInactivos).then(response=> setTableDataInactivos(response.data))
+  }, [cambio, inactivo]);
+ 
+  //GENERAR DE EXCEL
   const handleGenerarExcel = () => {
     const workbook = XLSX.utils.book_new();
     const currentDateTime = new Date().toLocaleString();
   
     // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row, index) => ({
-      'N°':row.IdDepartamento,
-       'Departamento':row.departamento, 
+    const dataForExcel = filteredData.map((row, index) => ({
+      'No': row.IdDepartamento,
+      'Departamento': row.departamento,
     }));
+    
+    const sortedDataForExcel = dataForExcel.sort((a, b) => a.No - b.No);
   
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE DEPARTAMENTOS', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Departamento', s: { font: { bold: true }} };
+    const worksheet = XLSX.utils.json_to_sheet(sortedDataForExcel, { header: ['No', 'Departamento'] });
   
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
     XLSX.writeFile(workbook, 'Lista_de_Departamentos.xlsx');
   };
+  
+
+  // const handleGenerarExcel = () => {
+  //   const sortedData = [...tableData].sort((a, b) => a.IdDepartamento - b.IdDepartamento);
+  //   const wb = XLSX.utils.book_new();
+  //   const ws = XLSX.utils.json_to_sheet(sortedData);
+
+  //   XLSX.utils.book_append_sheet(wb, ws, 'Departamento');   // Agrega la hoja de cálculo al libro de trabajo
+  //   XLSX.writeFile(wb, 'Lista_de_Departamentos.xlsx'); // Genera el archivo de Excel
+  // };
   
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -118,9 +132,18 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdDepartamento', headerName: 'ID', width: 600 },
-    { field: 'departamento', headerName: 'Departamento', width: 600 },
+    { field: 'IdDepartamento', headerName: 'ID', width: 400 },
+    { field: 'departamento', headerName: 'Departamento', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
 
     {
       field: 'borrar',
@@ -237,7 +260,7 @@ function handleDel(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -250,7 +273,7 @@ function handleDel(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -266,6 +289,11 @@ function handleDel(id) {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
@@ -279,9 +307,10 @@ function handleDel(id) {
             </Button>
           </div>
         </div>
+
         <DataGrid
           getRowId={tableData => tableData.IdDepartamento}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

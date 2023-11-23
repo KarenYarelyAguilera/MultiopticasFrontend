@@ -34,14 +34,18 @@ export const RegistroMarcas = (props) => {
   const [marca, setmarca] = React.useState(props.data.descripcion||'');
   const [aviso, setaviso] = React.useState('');
   const [errormarca, setErrormarca] = React.useState(false);
+
+  const [estado, setEstado] = useState(props.data.estado || null)
   
   //INSERTAR MARCA 
 
   const handleNext = async () => {
     let marca = document.getElementById("Marca").value;
+    let estado = document.getElementById('estado').value;
 
     let data = {
-      descripcion:marca 
+      descripcion:marca,
+      estado: estado
     }
     
     if (await axios.post(urlInsertMarca, data)) {
@@ -55,10 +59,12 @@ export const RegistroMarcas = (props) => {
 const actualizarMarca = async () => {
 
   let marca = document.getElementById("Marca").value;
+  let estado = document.getElementById('estado').value;
 
   const data = {
 
     descripcion:marca,
+    estado: estado,
     IdMarca: props.data.IdMarca, //El dato de IdProducto se obtiene de Producto seleccionado.
   }
 
@@ -151,13 +157,26 @@ const handleBack = () => {
             </div>
             <p className="error">{aviso}</p>
 
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
+            </div>
+
+
             <div className="contBtnStepper">
               <Button
                 variant="contained"
                 className="btnStepper"
                 onClick={()=> {
                   var Marca = document.getElementById("Marca").value;
-                  if (Marca ==="")
+                  var estado = document.getElementById('estado').value;
+                  if (Marca ==="" || estado==="")
                   {
                     swal ("No deje campos vacíos.", "", "error");
                   }   else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Marca)) {
