@@ -56,16 +56,16 @@ export const ListaParametros = ({props,data,update}) => {
   );
 
   const columns = [
-    { field: 'Id_Parametro', headerName: 'ID Parametro', width: 140 },
+    { field: 'Id_Parametro', headerName: 'ID', width: 140 },
     { field: 'Parametro', headerName: 'Parametro', width: 450 },
-    { field: 'Valor', headerName: 'Valor', width: 700 },
+    { field: 'Valor', headerName: 'Valor', width: 675 },
    /*  { field: 'creado_por', headerName: 'Creado Por', width: 200 },
     { field: 'fecha_creacion', headerName: 'Fecha de Creacion', width: 200 },
     { field: 'modificado_por', headerName: 'Modificado por', width: 200 },
     { field: 'fecha_modificacion', headerName: 'Fecha de Modificacion', width: 200 }, */
     {
       field: 'borrar',
-      headerName: 'Acciones',
+      headerName: 'Accion',
       width: 200,
 
       renderCell: params => (

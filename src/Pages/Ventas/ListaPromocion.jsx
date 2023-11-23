@@ -92,11 +92,11 @@ export const ListaPromocion = (props) => {
 
   const columns = [
     { field: 'IdPromocion', headerName: 'ID', width: 80 },
-    { field: 'descripcion', headerName: 'Descripción', width: 450 },
+    { field: 'descripcion', headerName: 'Descripción', width: 590 },
     { field: 'descPorcent', headerName: 'Porcentaje', width: 120 },
     { field: 'fechaInicialF', headerName: 'Fecha inicial', width: 120 },
     { field: 'fechaFinalF', headerName: 'Fecha final', width: 120 },
-    { field: 'estado', headerName: 'Estado', width: 150 },
+    { field: 'estado', headerName: 'Estado', width: 140 },
    
     {
       field: 'borrar',
@@ -135,10 +135,10 @@ export const ListaPromocion = (props) => {
   
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete:'Eliminar',cancel: 'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               IdPromocion: IdPromocion,

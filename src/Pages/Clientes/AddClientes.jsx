@@ -100,11 +100,11 @@ export const AddClientes = (props) => {
     let fechaFormateada = anio + "/" + mes + "/" + dia;
 
     const data = {
-      nombre: nombres,
-      apellido: apellidos,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
       idGenero: genero,
       fechaNacimiento: fechaFormateada,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       correo: correo,
       idCliente: props.data.idCliente, //El dato de IdCliente se obtiene de Cliente seleccionado.
@@ -153,22 +153,28 @@ export const AddClientes = (props) => {
 
     let data = {
       idCliente: identidad,
-      nombre: nombres,
-      apellido: apellidos,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
       idGenero: genero,
       fechaNacimiento: fechaFormateada,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       correo: correo
     };
 
     axios.post(urlInsertCliente, data).then(response => {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/lista');
-      });
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Cliente ya éxiste!', '', 'error')
+      }else{
+        swal('¡Cliente agregado con éxito!', '', 'success').then(result => {
+          //axios.post(urlInsertBitacora, dataB)
+          navegate('/menuClientes/lista');
+        });
+      }
     }).catch(error => {
       console.log(error);
-      swal('Error al crear el cliente, por favor revise los campos.', '', 'error')
+      swal('Error al crear el Cliente', '', 'error')
    
     })
 

@@ -151,7 +151,7 @@ const handleGenerarExcel = () => {
     { field: 'IdModelo', headerName: 'ID ', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 300 },
     { field: 'Modelo', headerName: 'Modelo', width: 300},
-    { field: 'anio', headerName: 'Año', width: 300 },
+    { field: 'anio', headerName: 'Año', width: 260 },
     { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
@@ -191,13 +191,13 @@ function handleDel(id) {
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdModelo:id
           }; 
@@ -232,7 +232,7 @@ function handleDel(id) {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar este modelo: {id.Marca}?
+            ¿Desea actualizar este modelo: {id.Modelo}?
           </div>
         ),
       }).then((op)  => {

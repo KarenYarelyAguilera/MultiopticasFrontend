@@ -172,21 +172,21 @@ const handleGenerarExcel = () => {
         content: (
           <div>
             <div className="logoModal">
-            ¿Desea Elimiar este Descuento?</div>
+            ¿Desea Eliminar este Descuento?</div>
             <div className="contEditModal">
             </div>
           </div>
         ),
   
         buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
         },
        
       }).then(async(op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               IdDescuento: id
@@ -222,7 +222,7 @@ const handleGenerarExcel = () => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el descuento ?: {id.descuento}?
+            ¿Desea actualizar el descuento ?: {id.descPorcent}?
           </div>
         ),
       }).then((op) => {

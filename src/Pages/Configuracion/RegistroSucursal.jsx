@@ -35,11 +35,11 @@ export const RegistroSucursal = (props) => {
   const [Departamento, setDepartamento] = useState([], props.data.departamento || '');
   const [Ciudad, setCiudad] = useState([]);
 
-  const [departamento, setdepartamento] = React.useState(props.data.departamento ||'');
+  const [departamento, setdepartamento] = React.useState(props.data.IdDepartamento ||null);
   const [errordepartamento, setErrordepartamento] = React.useState(false);
   const [aviso, setaviso] = React.useState(false);
 
-  const [ciudad, setciudad] = React.useState(props.data.ciudad ||'');
+  const [ciudad, setciudad] = React.useState(props.data.IdCiudad || null);
  // const [mensaje, setmensaje] = React.useState('');
   const [errorciudad, setErrorciudad] = React.useState(false);
 
@@ -51,6 +51,8 @@ export const RegistroSucursal = (props) => {
   const [texto, setTexto] = React.useState(false);
   const [Telefono, setTelefono] = useState(props.data.telefono || '');
   const [selectedOption, setSelectedOption] = useState(null); 
+
+  const[estado, setEstado] = React.useState(props.data.estado || null)
 
   useEffect(() => {
     fetch(urlDepartamentos)
@@ -75,7 +77,7 @@ export const RegistroSucursal = (props) => {
     const data = {
       IdDepartamento: departamento,
       IdCiudad: ciudad,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       estado: document.getElementById('estado').value,
       IdSucursal: props.data.IdSucursal, //El dato de IdProducto se obtiene de Producto seleccionado.
@@ -111,7 +113,7 @@ export const RegistroSucursal = (props) => {
     let data = {
       IdDepartamento: departamento,
       IdCiudad: ciudad,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       estado: estado
     };
@@ -119,15 +121,19 @@ export const RegistroSucursal = (props) => {
     console.log(data)
 
     axios.post(urlSucursal, data).then(response => {
-      swal('Sucursal agregada con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
-        navegate('/config/listaSucursal');
-      });
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Esta Sucursal ya existe!', '', 'error')
+      } else {
+        swal('Sucursal creada exitosamente!', '', 'success').then(result => {
+          navegate('/config/listaSucursal');
+        });
+      }
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Sucursal, los lugar deben ser unico como tu.', '', 'error')
-      // axios.post(urlErrorInsertBitacora, dataB)
-    })
+      swal('Error al crear sucursal.', '', 'error')
+    }
+    )
 
   };
 
@@ -166,7 +172,9 @@ export const RegistroSucursal = (props) => {
             <div className="contInput">
 
               <TextCustom text="Departamento" className="titleInput" />
-              <select name="" className="selectCustom" id="departamento">
+              <select name="" className="selectCustom" id="departamento" value={departamento} onChange={(e)=>{
+                setdepartamento(e.target.value)
+              }}>
                 
                 {Departamento.length ? (
                   Departamento.map(pre => (
@@ -188,7 +196,9 @@ export const RegistroSucursal = (props) => {
 
             <div className="contInput">
               <TextCustom text="Ciudad" className="titleInput" />
-              <select name="" className="selectCustom" id="ciudad">
+              <select name="" id="ciudad" className="selectCustom" value={ciudad} onChange={(e)=>{
+                setCiudad(e.target.value)
+              }}>
                 {Ciudad.length ? (
                   Ciudad.map(pre => (
                     <option key={pre.IdCiudad} value={pre.IdCiudad}>
@@ -238,7 +248,7 @@ export const RegistroSucursal = (props) => {
                 type="text"
                 name=""
                 helperText={mensaje}
-                maxLength={50}
+                maxLength={100}
                 className="inputCustom"
                 placeholder="direccion"
                 id="direccion"
@@ -292,7 +302,9 @@ export const RegistroSucursal = (props) => {
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom">
+              <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
+                setEstado(e.target.value)
+              }}>
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
               </select>

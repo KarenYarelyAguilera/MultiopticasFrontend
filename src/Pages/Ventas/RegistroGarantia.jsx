@@ -45,7 +45,7 @@ export const RegistroGarantia = (props) => {
   const handleNext = async () => {
     
     let IdProducto = parseInt(document.getElementById ("IdProducto").value);
-    let mesesGarantia = document.getElementById ("mesesGarantia").value;
+    let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
     let descripcion = document.getElementById ("descripcion").value;
 
     let data = {
@@ -78,7 +78,7 @@ export const RegistroGarantia = (props) => {
 const actualizarGarantia = async () => {
 
   let IdProducto = parseInt(document.getElementById ("IdProducto").value);
-  let mesesGarantia = document.getElementById ("mesesGarantia").value;
+  let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
   let descripcion = document.getElementById ("descripcion").value;
 
   // let IdProducto = parseInt(document.getElementById("IdProducto").value)
@@ -101,7 +101,7 @@ const actualizarGarantia = async () => {
     })
   }).catch(error => {
     console.log(error);
-    swal('Error al Actualizar Garantia! , porfavor revise todos los campos.', '', 'error')
+    swal('Error al Actualizar Garantia.', '', 'error')
   })
 };
 
@@ -250,19 +250,19 @@ const actualizarGarantia = async () => {
                onClick={() => {
                  //Validaciones previo a ejecutar el boton
                 var descripcion  = document.getElementById ("descripcion").value;
-                var mesesGarantia = document.getElementById ("mesesGarantia").value;
+                var mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
                 
                 if ( descripcion ==="" || mesesGarantia ==="" ){
                   swal ("No deje campos vacios.","","error");
-                } else if (/^[A-Z]+(?: [A-Z]+)*$/.test(descripcion)){
-                  setErrorDescripcion(true);
-                  swal("El campo de descripcion solo acepta letras mayusculas.","","error");
-                }else if (isNaN(parseInt(mesesGarantia))){
+                }else if (isNaN(parseFloat(mesesGarantia))){
                   seterrormesesGarantia(true)
                   swal("El campo meses solo acepta numeros.","","error");
+                }else if(parseFloat(mesesGarantia) < 0 || parseFloat(mesesGarantia) >12){
+                  swal("Valor de mes invalido.","","error");
                 }else{
-                }
                   props.actualizar ? actualizarGarantia() : handleNext();
+                }
+                 
                 }
                 }
               >
