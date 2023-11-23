@@ -84,7 +84,7 @@ export const Kardex = (props) => {
   };
 
   const columns = [
-    { field: 'IdKardex', headerName: 'ID Kardex', width: 240 },
+    { field: 'IdKardex', headerName: 'ID', width: 240 },
     { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 260 },
     { field: 'Producto', headerName: 'Producto', width: 260 },
     { field: 'cantidad', headerName: 'Cantidad', width: 260 },
@@ -117,7 +117,7 @@ export const Kardex = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilte">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -130,7 +130,7 @@ export const Kardex = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewRe">
             <Button className="btnReport"
             onClick={handleGenerarReporte}
             >

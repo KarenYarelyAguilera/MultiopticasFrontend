@@ -136,6 +136,7 @@ function App() {
   const [correo, setCorreo] = useState('');
   const [usuario, setUsuario] = useState('');
   const [idUsuario, setIdUsuario] = useState(0);
+  const [idEmpleado,setIdEmpleado]= useState(0);
   const [data, setData] = useState({});
   const [dataVenta, setDataVenta] = useState({})
   const [bitacora, setBitacora] = useState({})
@@ -150,6 +151,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
   const rol = rl => setRol(rl);
   const cObjeto = obb => setobj(obb);
   const id = idd => setIdUsuario(idd);
+  const idE = idEE =>setIdEmpleado(idEE);
   const Data = ddata => setData(ddata);
   const update = upd => setActualizar(upd);
   const loginPvz = lpv => setLoginpvez(lpv);
@@ -191,6 +193,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 idRol={idrol}
                 mail={mail}
                 idUsuario={id}
+                idEmpleado={idE}
                 vPerfil={perfil}
                 bitacora={bita}
               />
@@ -1498,7 +1501,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaCompra idRol={idRol} />
+                <ListaCompra idRol={idRol} idUsuario={idUsuario} />
               </div>
               // </ProtectedRoute>
             }
@@ -1810,7 +1813,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <NuevaVenta venta={dVenta}
                   update={update}
-                  data={data} garanr
+                  data={data} 
                   Data={Data} />
               </div>
               // </ProtectedRoute>
@@ -2068,7 +2071,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <DatosExpediente id={data} datosclientes={registros} dataa={Data} datosclientess={registroclientes} />
+                <DatosExpediente id={data} datosclientes={registros} dataa={Data} datosclientess={registroclientes}  idUsuario={idUsuario}  idEmpleado={idEmpleado}/>
               </div>
               // {/* </ProtectedRoute> */}
             }

@@ -28,12 +28,15 @@ export const ListaPromocion = (props) => {
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
   const [cambio, setcambio] = useState(0)
+  const [inactivo, setInactivo] = useState(false)
   const [marcah, setMarcah] = useState()
 
   const urlPromociones ='http://localhost:3000/api/promociones';
+  const urlPromocionesInactivas ='http://localhost:3000/api/promocionesInactivas';
   const urlDelPromocion = 'http://localhost:3000/api/promociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   //COLOCAR APIS DE BITACORA AQUI---
@@ -64,7 +67,10 @@ export const ListaPromocion = (props) => {
     fetch(urlPromociones)
       .then(response => response.json())
       .then(data => setTableData(data));
-  }, [cambio]);
+      fetch(urlPromocionesInactivas)
+      .then(response => response.json())
+      .then(data => setTableDataInactivos(data));
+  }, [cambio, inactivo]);
 
   const navegate = useNavigate();
 
@@ -76,13 +82,21 @@ export const ListaPromocion = (props) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdPromocion', headerName: 'ID Promocion', width: 250 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 250 },
-    { field: 'descPorcent', headerName: 'Porcentaje', width: 250 },
-    { field: 'fechaInicial', headerName: 'Fecha inicial', width: 250 },
-    { field: 'fechaFinal', headerName: 'Fecha final', width: 250 },
-    { field: 'estado', headerName: 'Estado', width: 250 },
+    { field: 'IdPromocion', headerName: 'ID', width: 80 },
+    { field: 'descripcion', headerName: 'Descripción', width: 450 },
+    { field: 'descPorcent', headerName: 'Porcentaje', width: 120 },
+    { field: 'fechaInicialF', headerName: 'Fecha inicial', width: 120 },
+    { field: 'fechaFinalF', headerName: 'Fecha final', width: 120 },
+    { field: 'estado', headerName: 'Estado', width: 150 },
    
     {
       field: 'borrar',
@@ -213,7 +227,7 @@ let dataB = {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -226,7 +240,7 @@ let dataB = {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -241,6 +255,12 @@ let dataB = {
               <AddIcon style={{ marginRight: '5px' }} />
               Nueva
             </Button>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -249,7 +269,7 @@ let dataB = {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdPromocion}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

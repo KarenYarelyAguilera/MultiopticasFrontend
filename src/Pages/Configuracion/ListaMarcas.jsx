@@ -23,7 +23,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
-import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -48,13 +48,19 @@ export const ListaMarcas = ({idRol,data,update}) => {
 
   const urlMarcas = 'http://localhost:3000/api/marcas';
   const urlDelMarca = 'http://localhost:3000/api/marcas/eliminar';
+  const urlListaMarcasInactivas = 'http://localhost:3000/api/marcas/marcasInactivas';
+
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
   
   useEffect(() => {
     axios.get(urlMarcas).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaMarcasInactivas).then(response=> setTableDataInactivos(response.data))
+
+  }, [cambio, inactivo]);
 
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
@@ -72,10 +78,8 @@ export const ListaMarcas = ({idRol,data,update}) => {
   
     // Formato para el encabezado
     worksheet['A1'] = { v: 'LISTA DE MARCAS', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
     worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
     worksheet['B5'] = { v: 'Marca', s: { font: { bold: true }} };
-   // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
   
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
     XLSX.writeFile(workbook, 'Lista_de_Marca.xlsx');
@@ -119,9 +123,18 @@ export const ListaMarcas = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdMarca', headerName: 'ID Marca', width: 500 },
+    { field: 'IdMarca', headerName: 'ID', width: 500 },
     { field: 'descripcion', headerName: 'Marca', width: 500 },
+    { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
       field: 'borrar',
@@ -241,7 +254,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -254,7 +267,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -270,8 +283,13 @@ export const ListaMarcas = ({idRol,data,update}) => {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
             </Button>
 
@@ -285,7 +303,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdMarca}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

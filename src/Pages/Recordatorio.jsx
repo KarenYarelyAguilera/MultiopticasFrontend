@@ -23,7 +23,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 
@@ -104,7 +105,31 @@ export const Recordatorio = (props) => {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      
+      'ID': row.IdRecordatorio,
+      'Cliente': row.IdCliente,
+      'Nombre': row.nombre,
+      'Apellido': row.apellido,
+      'Nota': row.Nota,
+      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID','Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
+  };
 
   const handleAddEvent = () => {
     navegate("/recordatorioCitas");
@@ -169,8 +194,8 @@ export const Recordatorio = (props) => {
         return formattedData;
       };
 
-      const urlPDF = 'Reporte_Recordatorio.pdf';
-      const subTitulo = "LISTA DE RECORDATORIO"
+      const urlPDF = 'Reporte_Citas.pdf';
+      const subTitulo = "LISTA DE CITAS"
       const orientation = "landscape";
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
     }
@@ -219,10 +244,10 @@ export const Recordatorio = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdRecordatorio', headerName: 'No.', width: 50, headerAlign: 'center' },
-    { field: 'IdCliente', headerName: 'Identidad', width: 120, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 100, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 100, headerAlign: 'center' },
+    { field: 'IdRecordatorio', headerName: 'ID', width: 100, headerAlign: 'center' },
+    { field: 'IdCliente', headerName: 'Identidad', width: 200, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 200, headerAlign: 'center' },
     { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
     {
       field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
@@ -356,7 +381,7 @@ export const Recordatorio = (props) => {
       <div
         style={{
           height: 400,
-          width: '80%',
+          width: '91%',
           position: 'relative',
           left: '100px',
         }}>
@@ -384,7 +409,7 @@ export const Recordatorio = (props) => {
         </div> */}
 
 
-        <div style={{ display: 'flex', alignItems: 'center', fontFamily: 'Arial, sans-serif' }}>
+        <div className='contDateDH'>
 
           <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
           <input
@@ -395,7 +420,7 @@ export const Recordatorio = (props) => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Fecha de inicio"
-            style={{ marginRight: '10px', padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px'}}
+            className='inputCustomF'
           ></input>
           <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
           <input
@@ -406,7 +431,7 @@ export const Recordatorio = (props) => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Fecha de fin"
-            style={{ padding: '5px', fontFamily: 'inherit', backgroundColor: '#316ee6', color: 'white', fontWeight: 'bold',   fontSize: '11px' }}
+            className='inputCustomF'
           ></input>
 
         </div>
@@ -414,7 +439,7 @@ export const Recordatorio = (props) => {
 
 
 
-        <div className="contFilter" style={{ padding: '05px' }}>
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -428,7 +453,7 @@ export const Recordatorio = (props) => {
 
           />
 
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -443,10 +468,13 @@ export const Recordatorio = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
-
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
@@ -454,13 +482,16 @@ export const Recordatorio = (props) => {
         </div>
 
         <DataGrid
+        pagination
+        autoHeight
           getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
 

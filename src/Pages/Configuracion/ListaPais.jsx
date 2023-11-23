@@ -17,7 +17,8 @@ import { sendData } from '../../scripts/sendData';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el boton de excel 
+
+import AnalyticsIcon from '@mui/icons-material/Analytics';  //para el boton de excel 
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,13 +47,19 @@ export const ListaPais = ({idRol,data,update}) => {
 
   const urlPais = 'http://localhost:3000/api/paises';
   const urlDelPais = 'http://localhost:3000/api/pais/eliminar';
+  const urlListaPaisesInactivos = 'http://localhost:3000/api/pais/paisInactivo';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
+  const [inactivo, setInactivo] = useState(false)
+
   useEffect(() => {
     axios.get(urlPais).then(response=>setTableData(response.data))
-  }, [cambio]);
+    axios.get (urlListaPaisesInactivos).then(response=> setTableDataInactivos(response.data))
+
+  }, [cambio, inactivo]);
 
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
@@ -117,9 +124,19 @@ export const ListaPais = ({idRol,data,update}) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdPais', headerName: 'ID País', width: 600 },
-    { field: 'Pais', headerName: 'País', width: 600 },
+    { field: 'IdPais', headerName: 'ID', width: 400 },
+    { field: 'Pais', headerName: 'País', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 300 },
+
 
     {
       field: 'borrar',
@@ -234,7 +251,7 @@ export const ListaPais = ({idRol,data,update}) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -247,7 +264,7 @@ export const ListaPais = ({idRol,data,update}) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -263,8 +280,13 @@ export const ListaPais = ({idRol,data,update}) => {
               Nuevo
             </Button>
 
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
             </Button>
 
@@ -278,7 +300,7 @@ export const ListaPais = ({idRol,data,update}) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdPais}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
