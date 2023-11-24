@@ -24,15 +24,14 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 
 //URLS
 const urlCliente = 'http://localhost:3000/api/clientes';
-const urlEmployees = 'http://localhost:3000/api/empleados';
 const urlProducto = 'http://localhost:3000/api/productos';
 const urlLente = 'http://localhost:3000/api/Lentes';
 const urlDescuento = 'http://localhost:3000/api/Descuento';
-const urlDescuentoLente = 'http://localhost:3000/api/DescuentosLentes';
 const urlPromocion = 'http://localhost:3000/api/promociones';
 const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
-const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVenta';
+const urlTotalAPagar = "http://localhost:3000/api/Ventas/totalAPagar"
+const urlVenta = 'http://localhost:3000/api/Ventas/nuevaVenta';
 
 
 export const NuevaVenta = (props) => {
@@ -42,7 +41,6 @@ export const NuevaVenta = (props) => {
   const [ventas, setVentas] = useState([])
   const [Cliente, setCliente] = useState([]);
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
-  const [Empleado, setIdEmpleado] = useState([]);
   const [fechaEntrega, setfechaEntrega] = React.useState('');
   const [fechaLimiteEntrega, setfechaLimiteEntrega] = React.useState('');
   //const [Rtn, setRtn] = React.useState('');
@@ -76,7 +74,6 @@ export const NuevaVenta = (props) => {
 
   useEffect(() => {
     fetch(urlCliente).then(response => response.json()).then(data => setCliente(data))
-    fetch(urlEmployees).then(response => response.json()).then(data => setIdEmpleado(data))
     fetch(urlProducto).then(response => response.json()).then(data => setProducto(data))
     fetch(urlDescuento).then(response => response.json()).then(data => setDescuento(data))
     fetch(urlPromocion).then(response => response.json()).then(data => setPromocion(data))
@@ -88,33 +85,40 @@ export const NuevaVenta = (props) => {
     setTableData(ventas)
   }, [cambio])
 
-  useEffect(() => {
-    setTotal(cantidad * costo);
-  }, [cantidad, costo]); //Si no da, poner total en lugar de costo
+
 
   const navegate = useNavigate();
 
  const AggDataGrid = () => {
-    const productoId = parseInt(document.getElementById("producto").value);
-    const cantidad = parseInt(document.getElementById("cantidad").value);
-    const costo = parseFloat(document.getElementById("costo").value);
+   
+    const cantidad = parseInt(document.getElementById("Cantidad").value);
   
-    const existingIndex = ventas.findIndex(item => item.idProducto === productoId);
+    const existingIndex = ventas.findIndex(item => item.IdProducto === selectedAros.value);
     console.log(existingIndex);
     if (existingIndex !== -1) {
       const updatedVentas = [...ventas];
       updatedVentas[existingIndex].cantidad += cantidad;
-      updatedVentas[existingIndex].costo += costo;
       setVentas(updatedVentas);
     } else {
       const dataGrid = {
-        //idUsuario: idUsuario,
-        idProducto: productoId,
-        //idProveedor: parseInt(document.getElementById("proveedor").value),
-        cantidad: cantidad,
-        //fechaYHora: fechaActual,
-        costo: costo,
+        IdEmpleado:props.idUsuario,
+        IdProducto: selectedAros.value,
+        Aro: selectedAros.label,
+        IdLente:selectedLente.value,
+        Lente:selectedLente.label,
+        PrecioAro:selectedAros.precio,
+        fechaEntrega:2023-26-11,
+        fechaLimiteEntrega:2023-1-12,
+        IdCliente: selectedOption.value,
+        RTN: document.getElementById("RTN".value) || " ",
+        IdGarantia: selectedGarantia.value,
+        IdPromocion: selectedPromocion.value,
+        IdDescuento: selectedDescuento.value,
+        Descuento:  selectedDescuento.label,
+        Promocion: selectedPromocion.label,
+        cantidad: cantidad
       };
+      console.log(dataGrid);
       setVentas([...ventas, dataGrid]);
       setCambio(cambio + 1);
     }  
@@ -122,29 +126,28 @@ export const NuevaVenta = (props) => {
 
   const eliminarVenta = (idProducto) => {
     console.log(idProducto);
-    const nuevasVentas = ventas.filter(ventas => ventas.idProducto !== idProducto);
+    const nuevasVentas = ventas.filter(ventas => ventas.IdProducto !== idProducto);
     console.log(nuevasVentas);
     setVentas(nuevasVentas);
     setCambio(cambio+1)
   };
 
   const columns = [
-    { field: 'Aro', headerName: 'Aro', width: 145 },
-    { field: 'Lente', headerName: 'Lente', width: 145 },
+    { field: 'Aro', headerName: 'Aro', width: 250},
+    { field: 'Lente', headerName: 'Lente', width: 250 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
-    { field: 'PrecioAro', headerName: 'PrecioAro', width: 145 },
-    { field: 'precioLente', headerName: 'PrecioLente', width: 145 },
-    { field: 'subtotal', headerName: 'SubTotal', width: 145 },
+    { field: 'Descuento', headerName: 'Descuento', width: 145 },
+    { field: 'Promocion', headerName: 'Promocion', width: 145 },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260,
+      width: 150,
 
       renderCell: params => (
         <div className="contActions1">
           <Button
             className="btnDelete"
-            onClick={() => eliminarVenta(params.row.idProducto)}
+            onClick={() => eliminarVenta(params.row.IdProducto)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -160,52 +163,50 @@ export const NuevaVenta = (props) => {
   };
 
   const GuardarVenta = async () => {
-    let data = {
-      "arrVentas": ventas
-    }
-  };
-  const handleNext = async () => {
-
-    let fechaEntrega = document.getElementById('fechaEntrega').value;
-    let fechaLimiteEntrega = document.getElementById('fechaLimiteEntrega').value;
-    let Cliente = selectedOption ? selectedOption.value : null;
-    let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
-    let RTN = document.getElementById('RTN').value;
-    let producto = selectedAros ? selectedAros.value : null;
-    let Descuento = selectedDescuento ? selectedDescuento.value : null;
-    let Promocion = selectedPromocion ? selectedPromocion.value : null;
-    let Garantia = selectedGarantia ? selectedGarantia.value : null;
-    let cantidad = parseInt(document.getElementById("Cantidad").value)
-    let lente = selectedLente ? selectedLente.value : null;
-
-
-
-
-    let data = {
-      fechaEntrega: fechaEntrega,
-      fechaLimiteEntrega: fechaLimiteEntrega,
-      IdCliente: Cliente,
-      idEmpleado: Empleado,
-      RTN: RTN,
-      IdGarantia: Garantia,
-      IdDescuento: Descuento,
-      IdPromocion: Promocion,
-      IdProducto: producto,
-      cantidad: cantidad,
-      IdLente: lente,
-      idUsuario: props.idUsuario
-
-    }
-
-    props.venta(data)
-    data = { ...props.venta, ...data }
-    await axios.post(urlVenta, data).then((response) => {
-      const dataActualizada = { ...data, ...response.data }
-      props.dataVenta(dataActualizada)
+  let data = {
+    arrVentas:ventas
+  }
+    await axios.post(urlTotalAPagar, data).then((response) => {
+      swal({
+        title: "Confirme la venta",
+        content: {
+          element: "div",
+          attributes: {
+            innerHTML: `
+              <h1>Confirme la venta</h1>
+              <h3>Subtotal ${response.data.subtotal}</h3>
+              <h3>Rebajas ${response.data.rebajas}</h3>
+              <h3>Total a Pagar ${response.data.total}</h3>
+            `,
+          },
+        },
+        buttons: {
+          cancel: {
+            text: "Cancelar",
+            value: false,
+            visible: true,
+            closeModal: true,
+          },
+          confirm: {
+            text: "Confirmar",
+            value: true,
+            visible: true,
+            closeModal: true,
+          },
+        },
+      }).then((value) => {
+          if (value) {
+            axios.post(urlVenta,data).then(()=>{
+              swal("¡Venta confirmada!", "", "success");   
+            }).catch(()=>{
+              swal("Venta cancelada", "", "error");
+            })
+          } else {
+            // Lógica en caso de cancelación
+            swal("Venta cancelada", "", "error");
+          }
+        });
     })
-    //navegate('/menuVentas/DetallesDeVenta');
-    navegate('/menuVentas/Calculosdeventa')
-
   };
 
   
@@ -236,7 +237,7 @@ export const NuevaVenta = (props) => {
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
       </div>
-      <div className="infoAddUser">
+      <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
@@ -283,20 +284,6 @@ export const NuevaVenta = (props) => {
                 disabled
               />
             </div>
-
-            <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-              <div className="contInput">
-                <Select
-                  id="empleado"
-                  options={Empleado.map(pre => ({ value: pre.idEmpleado, label: `${pre.nombre} ${pre.apellido}` }))}
-                  value={selectedEmpleado}
-                  onChange={setSelectedEmpleado}
-                  placeholder="Seleccione un Empleado"
-                />
-              </div>
-            </div>
-
 
             <div className="contInput">
               <TextCustom text="Fecha de entrega" className="titleInput" />
@@ -361,7 +348,7 @@ export const NuevaVenta = (props) => {
                 <Select
                   id="promocion"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
@@ -421,9 +408,8 @@ export const NuevaVenta = (props) => {
               </div>
             </div>
 
-            <div className="contBtnStepper">
+            <div className="contBtnStepper2">
               <Button
-                variant="contained"
                 className="btnStepper"
 
                 onClick={() => {
@@ -467,16 +453,18 @@ export const NuevaVenta = (props) => {
             height: 400,
             position: 'relative',
           }}
-        ></div>
+        >
 
-<div className="contFilter1">
+
+
+        <div className="contFilter1">
             <SearchIcon
               style={{
                 position: 'absolute',
                 color: 'gray',
                 paddingLeft: '10px',
               }}
-            />
+              />
             <input
               type="text"
               className="inputSearch"
@@ -488,7 +476,7 @@ export const NuevaVenta = (props) => {
               <Button
                 className="btnCreate1"
                 onClick={GuardarVenta}
-
+                
 
 
               >
@@ -508,7 +496,7 @@ export const NuevaVenta = (props) => {
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />
+            />
 
         {/* <img
           src={
@@ -517,6 +505,7 @@ export const NuevaVenta = (props) => {
           className='imgCont'
           alt="No se encuentro la imagen"
         /> */}
+        </div>
       </div>
     </div>
   );

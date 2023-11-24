@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 import { generatePDF } from '../../Components/generatePDF';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -104,7 +106,7 @@ export const ListaCompra = (props) => {
       const subTitulo = "LISTA DE COMPRAS"
   
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -164,7 +166,6 @@ export const ListaCompra = (props) => {
   }
 
   function handlAnular(id){
-    alert(props.idUsuario)
     let data = {
       idUsuario:props.idUsuario,
       compraId:id

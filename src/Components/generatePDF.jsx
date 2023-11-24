@@ -3,21 +3,21 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import logoImg  from "../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../IMG/fondoPDF.jpg";
 
-
-export const generatePDF = (formatDataForPDF, urlPDF, subTitulo, orientation) => {
+export const generatePDF = (formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF) => {
 
     const dataForPDF = formatDataForPDF();
     const documento = new jsPDF(`${orientation}`);
     const columns = Object.keys(dataForPDF[0]);
     const rows = dataForPDF.map((row) => Object.values(row));
+
+    documento.addFont("Rubik-SemiBold.ttf", "Rubik", "bold");
     
     // Definir estilos para la tabla
     const styles = {
       cellPadding: 2,
       fontSize: 10,
-      // fillColor: [38, 103, 177],
+      // fillColor: [98, 98, 98],
       fontStyle: 'bold',
       lineWidth: 0.1,
       valign: 'middle', // Alineación vertical de las celdas
@@ -32,8 +32,8 @@ export const generatePDF = (formatDataForPDF, urlPDF, subTitulo, orientation) =>
     documento.autoTable({
       head: [columns],
       body: rows,
-      startY: 45,
-      theme: 'striped',
+      startY: 80,
+      theme: 'plain',
       tableWidth: 'auto', // Ancho de la tabla ajustado al contenido
       styles,
       didDrawCell: (data) => {
@@ -58,16 +58,14 @@ export const generatePDF = (formatDataForPDF, urlPDF, subTitulo, orientation) =>
     const imgX = pdfWidth - imgWidth - 10; // Calcular la posición x de la imagen para que esté en el lado derecho
     const imgY = 20; // Posición y deseada de la imagen
     
-    documento.setFont('helvetica', "bold");
-    documento.setFontSize(20);
-    documento.text("MultiOpticas", 125, 20);
-    documento.setFontSize(10);
-    documento.setFont('helvetica', "bold");
-    documento.text(`${subTitulo}`, 125, 30);
-    documento.setFontSize(10);
-    documento.setFont('helvetica', "bold");
-    documento.text(`Fecha: ${fechaSinSlash}`, 10, 30);
-    documento.addImage(logoImg, 'PNG', imgX, imgY, imgWidth, imgHeight); // Ajusta las coordenadas y el tamaño según tus necesidades
+    documento.setFontSize(30);
+    documento.setTextColor(98,98,98);
+    documento.setFont('Rubik', "bold");
+    documento.text(`${subTitulo}`, 92, 66);
+    documento.setFontSize(16);
+    documento.setFont('Rubik', "bold");
+    documento.setTextColor(255,255,255);
+    documento.text(`${fechaSinSlash}`, 243, 44);
 
     documento.save(urlPDF);
   };
