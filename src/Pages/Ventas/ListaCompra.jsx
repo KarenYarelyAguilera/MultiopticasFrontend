@@ -166,7 +166,6 @@ export const ListaCompra = (props) => {
   }
 
   function handlAnular(id){
-    alert(props.idUsuario)
     let data = {
       idUsuario:props.idUsuario,
       compraId:id
