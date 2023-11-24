@@ -17,11 +17,15 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
 const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
+
+const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/insertMetodopago';
+
 export const MetodosDePago = (props) => {
 
   const navegate = useNavigate();
@@ -42,12 +46,22 @@ export const MetodosDePago = (props) => {
       estado: estado
     }
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsert,
+      activo: props.activo,
+      dataB: dataB
+    }
+
     axios.post(urlInsertMetodoPago, data).then(response => {
       console.log(response);
       if (response.data == false) {
         swal('¡Este método ya existe!', '', 'error')
       } else {
         swal('¡Método de pago creado exitosamente!', '', 'success').then(result => {
+          Bitacora(bitacora)
           navegate('/config/ListaMetodosDePago');
         });
       }
@@ -80,10 +94,11 @@ export const MetodosDePago = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')
-      // axios.post(urlErrorInsertBitacora, dataB)
     })
 
   };
+
+  
 
   //BOTON DE RETROCESO
   const handleBack = () => {

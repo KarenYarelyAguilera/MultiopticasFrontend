@@ -117,7 +117,7 @@ export const Kardex = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilte">
+         <div className="contFilter">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -130,9 +130,23 @@ export const Kardex = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewRe">
+          <div className="btnActionsNewReport">
+            <Button
+              className="btnCreate"
+              onClick={() => {
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuInventario/Kardex2');
+                }
+                
+              }}
+            >
+              <AddIcon style={{ marginRight: '5px' }} />
+              Nuevo
+            </Button>
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
