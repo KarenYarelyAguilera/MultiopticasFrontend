@@ -16,9 +16,12 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
@@ -37,6 +40,9 @@ export const ListaCompra = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cambio,setCambio] = useState(0)
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  
+
   useEffect(() => {
     fetch(urlCompras)
       .then(response => response.json())
@@ -52,6 +58,29 @@ export const ListaCompra = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+            'ID':row.IdCompra,
+            'Fecha': new Date(row.fechaCompra).toLocaleDateString('es-ES'),
+            //'Fecha':fechaCompra,
+            'Total compra': row.totalCompra,
+           
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID','Fecha', 'Total compra', ] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Compras.xlsx');
+  };
+
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
@@ -82,9 +111,20 @@ export const ListaCompra = (props) => {
 
 
   const columns = [
-    { field: 'IdCompra', headerName: 'ID Compra', width: 380 },
-    { field: 'fechaCompra', headerName: 'Fecha', width: 380 },
-    { field: 'totalCompra', headerName: 'Total', width: 150 },
+    { field: 'IdCompra', headerName: 'ID Compra', width: 100 },
+    { 
+      field: 'fechaCompra', 
+      headerName: 'Fecha de Compra', 
+      width: 200,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    //{ field: 'fechaCompra', headerName: 'Fecha', width: 380 },
+    { field: 'totalCompra', headerName: 'Total', width: 200 },
     { field: 'Estado', headerName: 'Estado', width: 100 },
     {
       field: 'borrar',
@@ -92,7 +132,7 @@ export const ListaCompra = (props) => {
       width: 380,
 
       renderCell: params => (
-        <div className="contActions">
+        <div className="contActions1">
           <Button
             className="btnEdit"
             onClick={() => handleButtonClick(params.row.id)}
@@ -105,6 +145,15 @@ export const ListaCompra = (props) => {
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
+
+          <Button
+            className="btnAddExpe"
+            //onClick={() => handleNewExpediente(params.row)}
+          >
+             <Visibility></Visibility>
+          </Button>
+
+
         </div>
       ),
     },
@@ -175,18 +224,28 @@ export const ListaCompra = (props) => {
             <Button className="btnReport"
              onClick={handleGenerarReporte}
             >
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
+
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+              pagination 
           getRowId={tableData => tableData.IdCompra}
           rows={filteredData}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
