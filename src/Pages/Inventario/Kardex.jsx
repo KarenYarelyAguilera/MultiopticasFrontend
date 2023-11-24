@@ -91,6 +91,8 @@ export const Kardex = (props) => {
     { field: 'Producto', headerName: 'Producto', width: 260 },
     { field: 'cantidad', headerName: 'Cantidad', width: 260 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 260 },
+    { field: 'descripcion', headerName: 'Descripcion', width: 260 },
+
   ];
 
   function handleUpdt(param) {
