@@ -205,13 +205,13 @@ export const ListaGenero = ({idRol,data,update}) => {
           </div>
         ),
           buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
+          cancel: 'Cancelar',
+          delete: 'Eliminar',
         },
       }).then(async(op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
             
             let data = {
               IdGenero: id

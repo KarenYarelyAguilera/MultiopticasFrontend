@@ -203,13 +203,13 @@ export const ListaPais = ({idRol,data,update}) => {
           </div>
         ),
           buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
+          cancel: 'Cancelar',
+          delete: 'Eliminar',
         },
       }).then(async(op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
             
             let data = {
               IdPais: id

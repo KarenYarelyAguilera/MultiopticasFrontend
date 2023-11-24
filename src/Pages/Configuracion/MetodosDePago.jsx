@@ -17,65 +17,91 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
 const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
-export const MetodosDePago  = (props) => {
+
+const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/insertMetodopago';
+
+export const MetodosDePago = (props) => {
 
   const navegate = useNavigate();
 
-  const [descripcion, setDescripcion] = React.useState(props.data.descripcion ||'');
+  const [descripcion, setDescripcion] = React.useState(props.data.descripcion || '');
   const [leyenda, setleyenda] = React.useState(false);
   const [errorDescripcion, setErrorDescripcion] = React.useState(false);
 
   const [estado, setEstado] = useState(props.data.estado || null)
 
-//CREAR
+  //CREAR
   const handleNext = async () => {
     let descripcion = document.getElementById("descripcion").value
     let estado = document.getElementById('estado').value;
 
     let data = {
-      descripcion: descripcion,
+      descripcion: descripcion.toUpperCase(),
       estado: estado
     }
-    
-    if (await axios.post(urlInsertMetodoPago, data)) {
-      swal('Metodo de pago creado exitosamente.','', 'success');
-      navegate('/config/ListaMetodosDePago');
+
+    let dataB = {
+      Id: props.idUsuario
     }
+    const bitacora = {
+      urlB: urlBitacoraInsert,
+      activo: props.activo,
+      dataB: dataB
+    }
+
+    axios.post(urlInsertMetodoPago, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este método ya existe!', '', 'error')
+      } else {
+        swal('¡Método de pago creado exitosamente!', '', 'success').then(result => {
+          Bitacora(bitacora)
+          navegate('/config/ListaMetodosDePago');
+        });
+      }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear método de pago.', '', 'error')
+    }
+    )
+
   };
 
-//ACTUALIZAR
-const actualizarMetodoPago = async () => {
+  //ACTUALIZAR
+  const actualizarMetodoPago = async () => {
 
-  let descripcion = document.getElementById("descripcion").value;
-  let estado = document.getElementById('estado').value;
+    let descripcion = document.getElementById("descripcion").value;
+    let estado = document.getElementById('estado').value;
 
 
-  const data = {
+    const data = {
 
-    descripcion:descripcion,
-    estado: estado,
-    IdTipoPago: props.data.IdTipoPago, 
-  }
+      descripcion: descripcion.toUpperCase(),
+      estado: estado,
+      IdTipoPago: props.data.IdTipoPago,
+    }
 
-  axios.put(urlUpdateMetodoPago, data).then(() => {
-    swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
-      navegate('/config/ListaMetodosDePago');
+    axios.put(urlUpdateMetodoPago, data).then(() => {
+      swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
+        navegate('/config/ListaMetodosDePago');
+      })
+    }).catch(error => {
+      console.log(error);
+      swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')
     })
-  }).catch(error => {
-    console.log(error);
-    swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')
-    // axios.post(urlErrorInsertBitacora, dataB)
-  })
 
-};
+  };
 
-   //BOTON DE RETROCESO
-   const handleBack = () => {
+  
+
+  //BOTON DE RETROCESO
+  const handleBack = () => {
     swal({
       title: 'Advertencia',
       text: 'Hay un proceso de creación de métodos de pago ¿Estás seguro que deseas salir?',
@@ -98,21 +124,21 @@ const actualizarMetodoPago = async () => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizacion de Método de Pago</h2> : <h2>Registro de Método de Pago</h2>}        <h3>
+        {props.actualizar ? <h2>Actualizacion de Método de Pago</h2> : <h2>Registro de Método de Pago</h2>}        <h3>
           Complete todos los puntos para poder actualizar los Métodos de Pago.
         </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            
+
 
             <div className="contInput">
 
-              <TextCustom text="Tipo de Pago" className="titleInput" />
+              <TextCustom text="Método de Pago" className="titleInput" />
 
               <input
-            
+
                 onKeyDown={e => {
                   setDescripcion(e.target.value);
                   if (descripcion === '') {
@@ -139,13 +165,13 @@ const actualizarMetodoPago = async () => {
                 helperText={leyenda}
                 type="text"
                 name=""
-                maxLength={40}
+                maxLength={30}
                 className="inputCustom"
-                placeholder="Tipo de Pago"
+                placeholder="Método de Pago"
                 id="descripcion"
                 value={descripcion}
               />
-               <p class="error">{leyenda}</p>
+              <p class="error">{leyenda}</p>
             </div>
 
             <div className="contInput">
@@ -162,27 +188,24 @@ const actualizarMetodoPago = async () => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={()=> 
-                  {
-                    var descripcion = document.getElementById("descripcion").value;
-                    var estado = document.getElementById('estado').value;
+                onClick={() => {
+                  var descripcion = document.getElementById("descripcion").value;
+                  var estado = document.getElementById('estado').value;
 
 
-                    if (descripcion ===""|| estado==="")
-                    {
-                      swal ("No deje campos vacíos.", "", "error");
-                    } else 
-                    {
-                      props.actualizar ? actualizarMetodoPago() : handleNext();
+                  if (descripcion === "" || estado === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else {
+                    props.actualizar ? actualizarMetodoPago() : handleNext();
 
-                    }
                   }
-                
+                }
+
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
-                  </Button>
-             
+                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+              </Button>
+
             </div>
           </div>
         </div>
