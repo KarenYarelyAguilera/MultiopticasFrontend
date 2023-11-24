@@ -184,6 +184,18 @@ export const Diagnostico = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
+          <div className="contInput">
+              <TextCustom text="Esfera OI" className="titleInput" />
+
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Esfera OI"
+                id="OIEsfera"
+              />
+            </div>
             <div className="contInput">
               <TextCustom text="Esfera OD" className="titleInput" />
               <input
@@ -197,17 +209,17 @@ export const Diagnostico = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Esfera OI" className="titleInput" />
-
+              <TextCustom text="Cilindro OI" className="titleInput" />
               <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Esfera OI"
-                id="OIEsfera"
+                placeholder="Cilindro OI"
+                id="OICilindro"
               />
             </div>
+           
 
             <div className="contInput">
               <TextCustom text="Cilindro OD" className="titleInput" />
@@ -219,32 +231,6 @@ export const Diagnostico = (props) => {
                 className="inputCustom"
                 placeholder="Cilindro OD"
                 id="ODCilindro"
-              />
-            </div>
-
-
-            <div className="contInput">
-              <TextCustom text="Cilindro OI" className="titleInput" />
-              <input
-                type="number"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Cilindro OI"
-                id="OICilindro"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Eje OD" className="titleInput" />
-
-              <input
-                type="number"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Eje OD"
-                id="ODEje"
               />
             </div>
 
@@ -260,19 +246,19 @@ export const Diagnostico = (props) => {
                 id="OIEje"
               />
             </div>
+           
 
             <div className="contInput">
-              <TextCustom text="Adicion OD" className="titleInput" />
-              <input
+              <TextCustom text="Eje OD" className="titleInput" />
 
+              <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Adicion OD"
-                id="AdicionOD"
+                placeholder="Eje OD"
+                id="ODEje"
               />
-
             </div>
 
             <div className="contInput">
@@ -288,18 +274,20 @@ export const Diagnostico = (props) => {
                 id="AdicionOI"
               />
             </div>
+          
 
             <div className="contInput">
-              <TextCustom text="Altura OD" className="titleInput" />
-
+              <TextCustom text="Adicion OD" className="titleInput" />
               <input
+
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Altura OD"
-                id="AlturaOD"
+                placeholder="Adicion OD"
+                id="AdicionOD"
               />
+
             </div>
 
             <div className="contInput">
@@ -317,15 +305,15 @@ export const Diagnostico = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="DP OD" className="titleInput" />
+              <TextCustom text="Altura OD" className="titleInput" />
 
               <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="DP OD"
-                id="DistanciapupilarOD"
+                placeholder="Altura OD"
+                id="AlturaOD"
               />
             </div>
 
@@ -343,6 +331,20 @@ export const Diagnostico = (props) => {
               />
 
             </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OD" className="titleInput" />
+
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OD"
+                id="DistanciapupilarOD"
+              />
+            </div>
+
 
             <div className="contInput">
               <TextCustom text="Enfermedad Presentada" className="titleInput" />
