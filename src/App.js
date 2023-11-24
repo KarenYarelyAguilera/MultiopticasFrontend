@@ -1294,6 +1294,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <Kardex2
                   bitacora={bitacora}
+                  idUsuario={idUsuario}
                   bita={bita}
                 />
               </div>
