@@ -703,7 +703,17 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
-.infoAddUser .PanelInfo {
+.infoAddUser1{
+  width: 100%;
+  height: auto;
+  padding-left: 2%;
+  display: grid;
+  grid-template-columns: 45% 78%;
+  margin-bottom: 5%;
+}
+
+.infoAddUser .PanelInfo,
+.infoAddUser1 .PanelInfo {
   width: 100%;
   height: auto;
 
@@ -711,7 +721,8 @@ body::-webkit-scrollbar-thumb {
   justify-content: center;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal {
+.infoAddUser .PanelInfo .InputContPrincipal
+.infoAddUser1 .PanelInfo .InputContPrincipal {
   width: 100%;
   height: auto;
   display: grid;
@@ -720,7 +731,7 @@ body::-webkit-scrollbar-thumb {
   /* padding: 40px; */
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal1 {
+.infoAddUser .PanelInfo .InputContPrincipal1{
   width: 100%;
   height: auto;
   display: grid;
@@ -729,7 +740,17 @@ body::-webkit-scrollbar-thumb {
   /* padding: 40px; */
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .btnCard {
+.infoAddUser1 .PanelInfo .InputContPrincipal1 {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 30px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard,
+.infoAddUser1 .PanelInfo .InputContPrincipal .btnCard  {
   position: relative;
   left: 60%;
   width: 80%;
@@ -748,12 +769,14 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .btnCard h1 {
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard h1,
+.infoAddUser1 .PanelInfo .InputContPrincipal .btnCard h1 {
   font-size: 16px;
   color: white;
 }
 
-.infoAddUser .PanelInfo .contInput {
+.infoAddUser .PanelInfo .contInput,
+.infoAddUser1 .PanelInfo .contInput {
   width: 50%;
   height: auto;
 
@@ -763,7 +786,8 @@ body::-webkit-scrollbar-thumb {
   position: relative;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustom {
+.infoAddUser .PanelInfo .contInput .inputCustom,
+.infoAddUser1 .PanelInfo .contInput .inputCustom {
   width: 300px;
   height: 20px;
   padding: 10px;
@@ -774,7 +798,8 @@ body::-webkit-scrollbar-thumb {
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustomText {
+.infoAddUser .PanelInfo .contInput .inputCustomText,
+.infoAddUser1 .PanelInfo .contInput .inputCustomText {
   width: 300px;
   height: 180px;
   padding: 10px;
@@ -785,7 +810,8 @@ body::-webkit-scrollbar-thumb {
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustomPass {
+.infoAddUser .PanelInfo .contInput .inputCustomPass,
+.infoAddUser1 .PanelInfo .contInput .inputCustomPass {
   width: 320px !important;
   height: 40px;
   border-radius: 10px !important;
@@ -803,7 +829,8 @@ body::-webkit-scrollbar-thumb {
 .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
   padding-top: 10px !important;
 }
-.infoAddUser .PanelInfo .contInput .inputCustomPass:before {
+.infoAddUser .PanelInfo .contInput .inputCustomPass:before,
+.infoAddUser1 .PanelInfo .contInput .inputCustomPass:before {
   border-bottom: none !important;
 }
 
@@ -811,7 +838,8 @@ body::-webkit-scrollbar-thumb {
   border-bottom: none !important;
 }
 
-.infoAddUser .PanelInfo .contInput .selectCustom {
+.infoAddUser .PanelInfo .contInput .selectCustom,
+.infoAddUser1 .PanelInfo .contInput .selectCustom {
   width: 325px;
   height: 45px;
   padding: 10px;
@@ -822,11 +850,13 @@ body::-webkit-scrollbar-thumb {
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustom:focus-visible {
+.infoAddUser .PanelInfo .contInput .inputCustom:focus-visible,
+.infoAddUser1 .PanelInfo .contInput .inputCustom:focus-visible {
   outline: none;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .contInput .titleInput {
+.infoAddUser .PanelInfo .InputContPrincipal .contInput .titleInput,
+.infoAddUser1 .PanelInfo .InputContPrincipal .contInput .titleInput {
   color: gray;
   font-weight: bold;
   margin-left: 5px;
@@ -859,6 +889,15 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
+.contBtnStepper2{
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+  padding-left: 55%;
+}
+
 .contBtnSventa {
   width: 100%;
   height: auto;
@@ -869,6 +908,7 @@ body::-webkit-scrollbar-thumb {
 
 .contBtnStepper .btnStepper,
 .contBtnStepper1 .btnStepper,
+.contBtnStepper2 .btnStepper,
 .contBtnSventa .btnSVenta{
   margin-top: 25px;
   width: 70%;
@@ -887,7 +927,8 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
-.contBtnStepper1 .btnStepperAgregar {
+.contBtnStepper1 .btnStepperAgregar,
+.contBtnStepper2 .btnStepperAgregar {
   margin-top: 25px;
   width: 70%;
   height: 40px;
@@ -900,12 +941,14 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
-.contBtnStepper1 .btnStepperAgregar:hover{
+.contBtnStepper1 .btnStepperAgregar:hover,
+.contBtnStepper2 .btnStepperAgregar:hover{
   background-color: coral;
 }
 
 .contBtnStepper .btnStepper h1,
 .contBtnStepper1 .btnStepper h1,
+.contBtnStepper2 .btnStepper h1,
 .contBtnSventa .btnSVenta h1,
 .btnStepperAgregar h1 {
   font-size: 15px;

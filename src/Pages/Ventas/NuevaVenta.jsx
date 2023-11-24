@@ -236,7 +236,7 @@ export const NuevaVenta = (props) => {
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
       </div>
-      <div className="infoAddUser">
+      <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
@@ -421,9 +421,8 @@ export const NuevaVenta = (props) => {
               </div>
             </div>
 
-            <div className="contBtnStepper">
+            <div className="contBtnStepper2">
               <Button
-                variant="contained"
                 className="btnStepper"
 
                 onClick={() => {
@@ -467,16 +466,18 @@ export const NuevaVenta = (props) => {
             height: 400,
             position: 'relative',
           }}
-        ></div>
+        >
 
-<div className="contFilter1">
+
+
+        <div className="contFilter1">
             <SearchIcon
               style={{
                 position: 'absolute',
                 color: 'gray',
                 paddingLeft: '10px',
               }}
-            />
+              />
             <input
               type="text"
               className="inputSearch"
@@ -488,7 +489,7 @@ export const NuevaVenta = (props) => {
               <Button
                 className="btnCreate1"
                 onClick={GuardarVenta}
-
+                
 
 
               >
@@ -508,7 +509,7 @@ export const NuevaVenta = (props) => {
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />
+            />
 
         {/* <img
           src={
@@ -517,6 +518,7 @@ export const NuevaVenta = (props) => {
           className='imgCont'
           alt="No se encuentro la imagen"
         /> */}
+        </div>
       </div>
     </div>
   );
