@@ -15,6 +15,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
@@ -125,7 +127,7 @@ export const ListaProveedores = (props) => {
       const subTitulo = "LISTA DE PROVEEDORES"
       const orientation = "landscape";
 
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };

@@ -19,6 +19,10 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+
+//FondoPDF
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 import { generatePDF } from '../../Components/generatePDF';
 
 export const ListUsuarios = ({ idRol, data, update, }) => {
@@ -71,12 +75,12 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'ID': row.id_Usuario,
+            '#': row.id_Usuario,
             'Usuario': row.Usuario,
-            'Nombre Usuario': row.Nombre_Usuario,
+            'Usuario': row.Nombre_Usuario,
             'Rol': row.rol,
             'Estado': row.Estado_Usuario,
-            'Correo electronico': row.Correo_Electronico,
+            'Email': row.Correo_Electronico,
 
           };
         });
@@ -87,7 +91,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
       const subTitulo = "LISTA DE USUARIOS"
 
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     };
   }
 
