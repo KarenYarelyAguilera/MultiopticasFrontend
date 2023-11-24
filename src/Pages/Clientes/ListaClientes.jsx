@@ -23,6 +23,8 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
+
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
 import Select from '@mui/material/Select';
@@ -39,6 +41,8 @@ export const ListaClientes = (props) => {
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
+
+  const urlSalirListaClientes = 'http://localhost:3000/api/bitacora/SalirListacliente';
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -274,10 +278,19 @@ export const ListaClientes = (props) => {
       });
     }
    
-
+  }
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  }
+  const bitacora = {
+    urlB: urlSalirListaClientes,
+    activo: props.activo,
+    dataB: dataB
   }
 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/menuClientes');
   };
 

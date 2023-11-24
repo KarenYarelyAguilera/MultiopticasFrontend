@@ -57,6 +57,8 @@ export const ListaCiudad = ({idRol,data,update}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
+ 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
@@ -294,8 +296,9 @@ function handleUpdt(id) {
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
