@@ -21,6 +21,7 @@ import { Button } from '@mui/material';
 import * as XLSX from 'xlsx'
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
+import { Bitacora } from '../../Components/bitacora';
 
 
 import '../../Styles/Usuarios.css';
@@ -42,6 +43,7 @@ export const ListaExpedientes = (props) => {
   },[])
 
   const [cambio, setCambio] = useState(0);
+  const urlSalirListaExpediente = 'http://localhost:3000/api/bitacora/SalirListaExpediente';
   const urlExpedientes = 'http://localhost:3000/api/Expediente';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -198,8 +200,17 @@ const handleGenerarExcel = () => {
     }
     
   }
-
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  }
+  const bitacora = {
+    urlB: urlSalirListaExpediente,
+    activo: props.activo,
+    dataB: dataB
+  }
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/menuClientes');
   };
 

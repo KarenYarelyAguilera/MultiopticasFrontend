@@ -27,6 +27,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import '../../Styles/Usuarios.css';
 
 //Components
+import { Bitacora } from '../../Components/bitacora';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { generatePDF } from '../../Components/generatePDF';
@@ -41,6 +42,9 @@ const urlClientes = 'http://localhost:3000/api/clientes';
 //const urlEmployees='http://localhost:3000/api/empleado'
 const urlEmployees =
   'http://localhost:3000/api/empleados';
+
+const urlBitacoraInsertExpe = 'http://localhost:3000/api/bitacora/expediente';
+
 
 export const DatosExpediente = (props) => {
 
@@ -323,6 +327,15 @@ function handleUpdt(id) {
       fechaCreacion: fechaFormateada,
       IdEmpleado: props.idEmpleado,
     }
+    //Bitacora
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertExpe,
+      activo: props.activo,
+      dataB: dataB
+    }
 
     await axios.post(urlNuevoExpediente, data).then(response => {
       let data = { IdExpediente: response.data.id }
@@ -330,6 +343,7 @@ function handleUpdt(id) {
       props.dataa(data)
       //console.log(response.data.id)
       swal('Expediente creado con exito', '', 'success').then(result => {
+       Bitacora(bitacora)
         navegate('/menuClientes/DetalleExpediente');
       });
 

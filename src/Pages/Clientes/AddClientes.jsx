@@ -14,6 +14,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 
 const urlGenero = 
@@ -26,6 +27,7 @@ const urlClienteActualizar =
   'http://localhost:3000/api/clientes/actualizar';
 //actualizar usuario
 
+const urlBitacoraInsertC = 'http://localhost:3000/api/bitacora/Nuevacliente';
 
 export const AddClientes = (props) => {
   const [procesoEnCurso, setProcesoEnCurso] = useState(true)
@@ -162,13 +164,22 @@ export const AddClientes = (props) => {
       correo: correo
     };
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertC,
+      activo: props.activo,
+      dataB: dataB
+    }
+
     axios.post(urlInsertCliente, data).then(response => {
       console.log(response);
       if(response.data == false){
         swal('¡Este Cliente ya éxiste!', '', 'error')
       }else{
         swal('¡Cliente agregado con éxito!', '', 'success').then(result => {
-          //axios.post(urlInsertBitacora, dataB)
+          Bitacora(bitacora)
           navegate('/menuClientes/lista');
         });
       }
