@@ -7,6 +7,8 @@ import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 
 //Mui-Material-Icons
@@ -78,7 +80,7 @@ export const Kardex = (props) => {
       const subTitulo = "LISTA DE KARDEX"
   
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
   
   };
