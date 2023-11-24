@@ -182,13 +182,13 @@ function handleDel(id) {
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdTipoPago:id
           }; 

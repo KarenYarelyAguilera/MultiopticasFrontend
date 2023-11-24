@@ -38,7 +38,7 @@ export const RegistroPais = (props) => {
     let estado = document.getElementById('estado').value;
 
     let data = {
-      pais: pais,
+      pais: pais.toUpperCase(),
       estado:estado,
     };
     axios.post(urlInsertPais, data).then(response => {
@@ -64,7 +64,7 @@ export const RegistroPais = (props) => {
     let estado = document.getElementById('estado').value;
 
     const data = {
-      pais: pais,
+      pais: pais.toUpperCase(),
       estado: estado,
       IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
     }
@@ -140,7 +140,7 @@ export const RegistroPais = (props) => {
                 helperText={aviso}
                 type="text"
                 name=""
-                maxLength={40}
+                maxLength={30}
                 className="inputCustom"
                 placeholder="Pais"
                 id="pais"

@@ -7,8 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
-
-
+import { Bitacora } from '../../Components/bitacora';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -25,7 +24,7 @@ const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoEx
 const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
 const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
-
+const urlBitacoraInsertDiagnostico = 'http://localhost:3000/api/bitacora/Diagnostico';
 
 
 export const Diagnostico = (props) => {
@@ -74,7 +73,15 @@ export const Diagnostico = (props) => {
         console.log(props.id.idCliente); */
     console.log(props.datosclientes.idCliente);
 
-
+    //Bitacora
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertDiagnostico,
+      activo: props.activo,
+      dataB: dataB
+    }
 
     let dataUsuario = {
       Id: props.idUsuario
@@ -135,11 +142,7 @@ export const Diagnostico = (props) => {
 
 
       swal('Diagnostico creado correctamente', '', 'success').then(result => {
-
-
-
-
-
+        Bitacora(bitacora)
         navegate('/menuClientes/ListaExpedientes');
       });
 

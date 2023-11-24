@@ -579,7 +579,7 @@ export const ConfigRol = props => {
             <TextCustom text="Modulos" />
 
             <div className="inputCheck">
-              <TextCustom text="Leer" />
+              <TextCustom text="Consulta" />
             </div>
 
             <div className="inputCheck">
@@ -621,7 +621,7 @@ export const ConfigRol = props => {
             </div> */}
 
             <div className="conTitleRoles">
-              <TextCustom text="Usuarios" className="titleInput" />
+              <TextCustom text="Administración" className="titleInput" />
               <TextCustom text="Ventas " className="titleInput" />
               <TextCustom text="Inventario" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />

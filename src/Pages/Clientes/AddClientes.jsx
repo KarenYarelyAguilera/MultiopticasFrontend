@@ -14,6 +14,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 
 const urlGenero = 
@@ -26,6 +27,7 @@ const urlClienteActualizar =
   'http://localhost:3000/api/clientes/actualizar';
 //actualizar usuario
 
+const urlBitacoraInsertC = 'http://localhost:3000/api/bitacora/Nuevacliente';
 
 export const AddClientes = (props) => {
   const [procesoEnCurso, setProcesoEnCurso] = useState(true)
@@ -100,11 +102,11 @@ export const AddClientes = (props) => {
     let fechaFormateada = anio + "/" + mes + "/" + dia;
 
     const data = {
-      nombre: nombres,
-      apellido: apellidos,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
       idGenero: genero,
       fechaNacimiento: fechaFormateada,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       correo: correo,
       idCliente: props.data.idCliente, //El dato de IdCliente se obtiene de Cliente seleccionado.
@@ -153,22 +155,37 @@ export const AddClientes = (props) => {
 
     let data = {
       idCliente: identidad,
-      nombre: nombres,
-      apellido: apellidos,
+      nombre: nombres.toUpperCase(),
+      apellido: apellidos.toUpperCase(),
       idGenero: genero,
       fechaNacimiento: fechaFormateada,
-      direccion: direccion,
+      direccion: direccion.toUpperCase(),
       telefono: telefono,
       correo: correo
     };
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertC,
+      activo: props.activo,
+      dataB: dataB
+    }
+
     axios.post(urlInsertCliente, data).then(response => {
-      swal('Cliente agregado con exito', '', 'success').then(result => {
-        navegate('/menuClientes/lista');
-      });
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Cliente ya éxiste!', '', 'error')
+      }else{
+        swal('¡Cliente agregado con éxito!', '', 'success').then(result => {
+          Bitacora(bitacora)
+          navegate('/menuClientes/lista');
+        });
+      }
     }).catch(error => {
       console.log(error);
-      swal('Error al crear el cliente, por favor revise los campos.', '', 'error')
+      swal('Error al crear el Cliente', '', 'error')
    
     })
 

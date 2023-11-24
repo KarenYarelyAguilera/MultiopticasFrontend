@@ -42,7 +42,7 @@ export const RegistroLente = (props) => {
 
   const handleNext = async () => {
     let lente = document.getElementById("lente").value;
-    let precio = parseFloat(document.getElementById("precio").value);
+    let precio = parseFloat(document.getElementById('precio').value);
 
     let data = {
       lente: lente.toUpperCase(),
@@ -129,6 +129,16 @@ export const RegistroLente = (props) => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
+          <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={"Activo"}>Activo</option>
+                <option value={"Inactivo"}>Inactivo</option>
+              </select>
+            </div>
+
             <p className="error">{aviso}</p>
             <div className="contInput">
               <TextCustom text="Lente" className="titleInput" />
@@ -154,6 +164,23 @@ export const RegistroLente = (props) => {
               <TextCustom text="Precio" className="titleInput" />
 
               <input
+                onKeyDown={e => {
+                  setprecio(e.target.value);
+                  if (precio === '') {
+                    setErrorprecio(true);
+                    setaviso('Los campos no deben estar vacios');
+                  } else {
+                    setErrorprecio(false);
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(precio)) {
+                      setErrorprecio(true);
+                      setaviso('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorprecio(false);
+                      setaviso('');
+                    }
+                  }
+                }}
                 onChange={e => setprecio(e.target.value)}
                 error={errorprecio}
                 type="text"
@@ -166,18 +193,6 @@ export const RegistroLente = (props) => {
               />
               <p class="error">{aviso}</p>
             </div>
-
-            <div className="contInput">
-              <TextCustom text="Estado" className="titleInput" />
-              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
-                setEstado(e.target.value)
-              }}>
-                <option value={"Activo"}>Activo</option>
-                <option value={"Inactivo"}>Inactivo</option>
-              </select>
-            </div>
-
-
 
             <div className="contBtnStepper">
               <Button
@@ -192,9 +207,9 @@ export const RegistroLente = (props) => {
                     swal("No deje campos vacíos.", "", "error");
                   }else if (precio <= 0 ) {
                     swal("El campo precio no acepta valores negativos.", "", "error");
-                 
-                    
-                  } else {
+                  } else if(isNaN(parseFloat(precio))) {
+                    swal("El campo precio solo acepta números.", "", "error");  
+                  }else {
                     props.actualizar ? actualizarLente() : handleNext();
                   }
                 }

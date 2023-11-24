@@ -193,43 +193,6 @@ export const RegistroPromocion = (props) => {
 
 
             <div className="contInput">
-              <TextCustom text="Descripcion" className="titleInput" />
-              <input
-                onKeyDown={e => {
-                  setdescripcion(e.target.value);
-                  if (descripcion === '') {
-                    setErrordescripcion(true);
-                    setmensaje('Los campos no deben estar vacios');
-                  }
-
-                }}
-                type="text"
-                name=""
-                maxLength={50}
-                className="inputCustomText"
-                placeholder="Descripcion"
-                id="descripcion"
-                value={descripcion}
-                onChange={e => setdescripcion(e.target.value)}
-              />
-            </div>
-            <div className="contInput">
-              <TextCustom text="Fecha de Inicio" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                // helperText={texto}
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Inicio"
-                id="fechaInicial"
-                value={fechaInicial}
-                onChange={(e)=>setfechaInicial(e.target.value)}
-              />
-
-            </div>
-
-            <div className="contInput">
               <TextCustom text="Fecha Final" className="titleInput" />
               <input
                 type="date"
@@ -255,6 +218,28 @@ export const RegistroPromocion = (props) => {
               </select>
             </div>
 
+            <div className="contInput">
+              <TextCustom text="Descripcion" className="titleInput" />
+              <input
+                onKeyDown={e => {
+                  setdescripcion(e.target.value);
+                  if (descripcion === '') {
+                    setErrordescripcion(true);
+                    setmensaje('Los campos no deben estar vacios');
+                  }
+
+                }}
+                type="text"
+                name=""
+                maxLength={50}
+                className="inputCustomText"
+                placeholder="Descripcion"
+                id="descripcion"
+                value={descripcion}
+                onChange={e => setdescripcion(e.target.value)}
+              />
+            </div>
+
             
 
             <div className="contBtnStepper">
@@ -272,14 +257,11 @@ export const RegistroPromocion = (props) => {
                                               
                   if (descPorcent === "" || fechaInicial === "" || fechaFinal === "" || estado === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
-                    /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                       swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
                   } else if(fechaInicial > fechaFinal){
                     swal("Ingrese correctamente las fechas.", "", "error");
-                  /* }else if(fechaActual > fechaInicial) {
-                    console.log('No puede ingresar fechas pasadas')
-                    swal("No puede ingresar fechas pasadas","","error") */
-                  }else {
+                  }else if(isNaN(descPorcent)){
+                    swal("El campo porcentaje descuento solo acepta numeros.","","error");
+                  }else{
                     props.actualizar ? actualizarPromocion() : handleNext();
                   }
                     

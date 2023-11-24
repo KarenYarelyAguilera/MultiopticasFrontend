@@ -54,8 +54,8 @@ export const RegistroRoles = (props) => {
 
 
     const data = {
-      Rol: Rol,
-      Descripcion: Descripcion,
+      Rol: Rol.toUpperCase(),
+      Descripcion: Descripcion.toUpperCase(),
       estado: document.getElementById('estado').value,
       Id_Rol: props.data.Id_Rol,
     }
@@ -85,8 +85,8 @@ export const RegistroRoles = (props) => {
     let estado = document.getElementById('estado').value;
 
     let data = {
-      Rol: Rol,
-      Descripcion: Descripcion,
+      Rol: Rol.toUpperCase(),
+      Descripcion: Descripcion.toUpperCase(),
       estado: estado,
     };
     /* if (sendData(urlIEmpleado, data)) {
@@ -144,16 +144,16 @@ export const RegistroRoles = (props) => {
 
     axios.post(urlInsertRol, data).then(response => {
       if (response.data == false) {
-        swal('¡Uno de los datos ya existe!', '', 'error')
+        swal('¡Este Rol ya éxiste!', '', 'error')
       } else {
-        swal('Rol agregado con exito', '', 'success').then(result => {
+        swal('¡Rol agregado con exito!', '', 'success').then(result => {
           Bitacora(bitacora)
           navegate('/config/ListaRoles');
         });
       }
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Rol, ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
+      swal('Error al crear Rol.', '', 'error')
       axios.post(urlErrorInsertBitacora, dataB)
     })
 
