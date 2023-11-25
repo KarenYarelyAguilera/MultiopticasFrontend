@@ -245,26 +245,69 @@ export const RegistroRoles = (props) => {
             </div>
 
             <div className="contBtnStepper">
-              <Button
-                variant="contained"
-                className="btnStepper"
-                onClick={() => {
-                  var Rol = document.getElementById('Rol').value;
-                  var Descripcion = document.getElementById('Descripcion').value;
+            <Button
+  variant="contained"
+  className="btnStepper"
+  onClick={() => {
+    var Rol = document.getElementById('Rol').value;
+    var Descripcion = document.getElementById('Descripcion').value;
 
-                  if (Rol === "" || Descripcion === "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else {
-                    props.actualizar ? actualizarRol() : insertRol();
-                  }
-                }
-                }
+    if (Rol === "" || Descripcion === "") {
+      swal("No deje campos vacíos.", "", "error");
+    } else {
+      if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Rol)) {
+        swal(
+          "El campo rol solo acepta letras mayúsculas y solo un espacio entre palabras.",
+          "",
+          "error"
+        );
+      } else if (Rol.length < 3) {
+        setErrorRol(true);
+        swal(
+          "El campo rol no acepta menos de 3 caracteres.",
+          "",
+          "error"
+        );
+      } else if (/(.)\1{2,}/.test(Rol)) {
+        setErrorRol(true);
+        swal(
+          "El campo rol no acepta letras mayúsculas consecutivas repetidas.",
+          "",
+          "error"
+        );
+      } else {
+        setErrorRol(false);
+        if (!/^[A-Z]+(?: [A-Z]+)*$/.test(Descripcion)) {
+          swal(
+            "El campo descripción solo acepta letras mayúsculas y un espacio entre palabras.",
+            "",
+            "error"
+          );
+        } else if (Descripcion.length < 3) {
+          setErrorDescripcion(true);
+          swal(
+            "El campo descripción no acepta menos de 3 caracteres.",
+            "",
+            "error"
+          );
+        } else if (/(.)\1{2,}/.test(Descripcion)) {
+          setErrorDescripcion(true);
+          swal(
+            "El campo descripción no acepta letras consecutivas repetidas.",
+            "",
+            "error"
+          );
+        } else {
+          props.actualizar ? actualizarRol() : insertRol();
+        }
+      }
+    }
+  }}
+>
+  {/* Corregí la condición dentro del texto del botón */}
+  {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+</Button>;
 
-
-              >
-                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
-
-              </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
               </Button> */}

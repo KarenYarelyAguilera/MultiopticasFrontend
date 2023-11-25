@@ -18,10 +18,14 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
 import { MarkChatReadOutlined } from '@mui/icons-material';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlInsertLente = 'http://localhost:3000/api/Lentes/NuevoLente';
 const urlUpdateLente = 'http://localhost:3000/api/Lentes/ActualizarLente';
+//Bitacora
+const urlBitacoraInsertLentes='http://localhost:3000/api/bitacora/insertolentes';
+const urlBitacoraUpdateLentes='http://localhost:3000/api/bitacora/actualizolentes';
 
 export const RegistroLente = (props) => {
 
@@ -48,7 +52,17 @@ export const RegistroLente = (props) => {
       lente: lente.toUpperCase(),
       precio: precio,
       estado: document.getElementById('estado').value
-    }
+    };
+     //Funcion de Bitacora 
+     let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraInsertLentes,
+      activo: props.activo,
+      dataB: dataB
+    };
+    console.log(data);
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlInsertLente, data).then(response => {
@@ -57,7 +71,7 @@ export const RegistroLente = (props) => {
         swal('¡Este Lente ya existe!', '', 'error')
       } else {
         swal('Lente agregado con exito', '', 'success').then(result => {
-          //axios.post(urlInsertBitacora, dataB)
+          Bitacora(bitacora)
           navegate('/MenuInventario/ListaLentes');
         });
       }
@@ -82,10 +96,21 @@ export const RegistroLente = (props) => {
       precio: precio,
       estado: document.getElementById('estado').value,
       IdLente: props.data.IdLente,//El dato de IdProducto se obtiene de Producto seleccionado.
-    }
+    };
+     //Funcion de Bitacora 
+     let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraUpdateLentes,
+      activo: props.activo,
+      dataB: dataB
+    };
+    console.log(data);
 
     axios.put(urlUpdateLente, data).then(() => {
       swal("Lente Actualizado Correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
         navegate('/MenuInventario/ListaLentes');
       })
     }).catch(error => {
