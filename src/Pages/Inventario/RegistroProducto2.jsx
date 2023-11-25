@@ -18,6 +18,8 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
 import Select from 'react-select';
 
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 //APIS DE PRODUCTO
 const urlProducto = //CREAR
   'http://localhost:3000/api/productos/crear';
@@ -100,17 +102,19 @@ export const RegistroProducto2 = (props) => {
         descripcion: descripcion.toUpperCase(),
         estado: document.getElementById('estado').value,
         IdProducto: props.data.IdProducto, //El dato de IdProducto se obtiene de Producto seleccionado.
-      }
-  
-  
-      //Funcion de bitacora 
-     /*  let dataUsuario={
-        Id:props.idUsuario
-      } */
+      };
+      let dataB = {
+        Id: props.idUsuario
+      };
+      const bitacora = {
+        urlB: urlBitacoraActualizoProducto,
+        activo: props.activo,
+        dataB: dataB
+      };
   
       axios.put(urlUpdProducto, data).then(() => {
         swal("Producto Actualizado Correctamente", "", "success").then(() => {
-          //axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
+          Bitacora(bitacora)
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -140,16 +144,19 @@ export const RegistroProducto2 = (props) => {
       descripcion: descripcion.toUpperCase(),
       estado: document.getElementById('estado').value,
     };
-
-     //Funcion de bitacora 
-     /* let dataUsuario={
-      Id:props.idUsuario
-    } */
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraInsertProducto,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
       swal('Producto agregado con exito', '', 'success').then(result => {
-       // axios.post(urlBitacoraInsertProducto,dataUsuario)
+        Bitacora(bitacora)
         navegate('/menuInventario/ListaProductos');
       });
       

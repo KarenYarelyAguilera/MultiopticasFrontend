@@ -8,7 +8,7 @@ import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
-
+import { Bitacora } from '../../Components/bitacora';
 
 
 //Mui-Material-Icons
@@ -36,6 +36,9 @@ export const Kardex = (props) => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
   }, [])
   const urlKardex ='http://localhost:3000/api/kardex';
+
+  //Bitacora
+  const urlBitacoraSalirListaKardex ='http://localhost:3000/api/bitacora/salirListaKardex';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -102,7 +105,17 @@ export const Kardex = (props) => {
   function handleDel(id) {
 
   }
+   //Funcion de Bitacora 
+   let dataB = {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlBitacoraSalirListaKardex,
+    activo: props.activo,
+    dataB: dataB
+  };
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/inventario');
   };
 
