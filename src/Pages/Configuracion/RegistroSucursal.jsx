@@ -15,6 +15,8 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 import { ContentPasteGoOutlined } from '@mui/icons-material';
 
 //APIS DE SUCURSAL
@@ -29,6 +31,8 @@ const urlDelSucursal = //BORRAR
   const urlCiudades = //MUESTRA CIUDADES
   'http://localhost:3000/api/ciudades';
 
+  const urlInsertBitacora  = 'http://localhost:3000/api/bitacora/insertsucursal';
+  const urlUpdateBitacora  = 'http://localhost:3000/api/bitacora/actualizarsucursal';
 
 export const RegistroSucursal = (props) => {
 
@@ -85,13 +89,21 @@ export const RegistroSucursal = (props) => {
 
 
     //Funcion de bitacora 
-    /*  let dataB={
-       Id: props.idUsuario
-     } */
+    let dataB =
+    {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     axios.put(urlUpdSucursal, data).then(() => {
       swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+       Bitacora(bitacora)
+       props.limpiarData({});
+       props.limpiarUpdate(false)
         navegate('/config/listaSucursal');
       })
     }).catch(error => {
@@ -117,6 +129,16 @@ export const RegistroSucursal = (props) => {
       telefono: telefono,
       estado: estado
     };
+    //Funcion de bitacora 
+    let dataB =
+    {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     console.log(data)
 
@@ -124,6 +146,7 @@ export const RegistroSucursal = (props) => {
       console.log(response);
       if (response.data == false) {
         swal('¡Esta Sucursal ya existe!', '', 'error')
+        Bitacora(bitacora)
       } else {
         swal('Sucursal creada exitosamente!', '', 'success').then(result => {
           navegate('/config/listaSucursal');
@@ -147,6 +170,8 @@ export const RegistroSucursal = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/config/listaSucursal');

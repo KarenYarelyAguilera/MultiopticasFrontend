@@ -31,8 +31,15 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
+
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
+
+
+
 export const ListaVenta = (props) => {
   
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const urlVentas = 'http://localhost:3000/api/Ventas';
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
@@ -85,6 +92,31 @@ export const ListaVenta = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+  const handleGenerarExcel = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      'IdVenta': row.IdVenta,
+      //'Fecha': row.fecha,
+      'Cliente': row.Cliente,
+      'ValorVenta': row.ValorVenta,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdVenta', 'Cliente', 'ValorVenta'] });
+
+
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Ventas.xlsx');
+  }
+  };
+
 
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
@@ -327,17 +359,18 @@ export const ListaVenta = (props) => {
                 } else {
                   navegate('/menuVentas/NuevaVenta');
                 }
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              }}> <AddIcon style={{ marginRight: '3px' }}/>Nuevo
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '5px' }} />  Generar Excel
+            </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}  >
+              <PictureAsPdfIcon style={{ marginRight: '3px' }}/> Generar reporte
             </Button>
+
           </div>
         </div>
         <DataGrid
@@ -345,8 +378,11 @@ export const ListaVenta = (props) => {
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pagination
+          autoHeight
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

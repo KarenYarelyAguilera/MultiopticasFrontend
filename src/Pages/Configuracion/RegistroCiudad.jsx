@@ -17,12 +17,12 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
-
+import { Bitacora } from '../../Components/bitacora';
 
 const urlInsertCiudad = 'http://localhost:3000/api/ciudad/crear';
 const urlUpdateCiudad= 'http://localhost:3000/api/ciudad/actualizar';
-
-
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertCiudad';
+const urlUpdateBitacora ='http://localhost:3000/api/bitacora/actualizarCiudad';
 export const RegistroCiudad = (props) => {
   
   const navegate = useNavigate();
@@ -41,7 +41,18 @@ export const RegistroCiudad = (props) => {
     let data = {
       ciudad:ciudad,
       estado:estado,
-    }
+    };
+
+    let dataB=
+    {
+      Id:props.idUsuario
+    }; 
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
+
 console.log(data)
     //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertCiudad, data).then(response => {
@@ -51,6 +62,7 @@ console.log(data)
       swal('¡Esta Ciudad ya existe!', '', 'error')
     }else{
       swal('Ciudad agregada con exito', '', 'success').then(result => {
+        Bitacora(bitacora)
         navegate('/config/ListaCiudad');
 
     });
@@ -72,10 +84,23 @@ console.log(data)
       estado:estado,
       IdCiudad:props.data.IdCiudad, 
     };
-    
+
+    let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
+
     //Consumo de API y lanzamiento se alerta
   axios.put(urlUpdateCiudad, data).then(response => {
     swal('Ciudad actualizada con exito', '', 'success').then(result => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       navegate('/config/ListaCiudad');
     })
   }).catch(error => {
@@ -94,6 +119,8 @@ const handleBack = () => {
     dangerMode: true,
   }).then((confirmExit) => {
     if (confirmExit) {
+      props.limpiarData({});//para limpiar los datos 
+      props.limpiarUpdate(false)
       props.update(false)
       props.Data({})
       navegate('/config/ListaCiudad');

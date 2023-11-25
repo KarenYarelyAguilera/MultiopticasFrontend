@@ -191,7 +191,7 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
                 swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
               } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
                 swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
-              } else if (contra1 !== contra2) {
+              } else if (password !== password2) {
                 swal("Las contraseñas deben coincidir.", "", "error");
               } else {
                 handleClick()

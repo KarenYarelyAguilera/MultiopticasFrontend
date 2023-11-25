@@ -46,7 +46,7 @@ export const AddUsers = (props) => {
 
 
   const [textoCorreo, setTextoCorreo] = useState("");
-  
+
 
 
   const refContrasenia = useRef(null);
@@ -55,8 +55,8 @@ export const AddUsers = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [optionsEmpleados, setOptionsEmpelados] = useState([]);
   const [selectedOption, setSelectedOption] = useState(props.data.idEmpleado || null); // Estado para la opción seleccionada
-  const [rol,setRolSelect] = useState(props.data.Id_Rol || null)
-  
+  const [rol, setRolSelect] = useState(props.data.Id_Rol || null)
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -82,14 +82,14 @@ export const AddUsers = (props) => {
 
   //------------URL DE BITACORA-----------------------
   const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/InsertUsuario';
-    
-  const urlBitacoraUpdUsuario = 
+
+  const urlBitacoraUpdUsuario =
     'http://localhost:3000/api/bitacora/ActualizacionUsuario';
 
-  const urlBitacoraSalirRU=
-  'http://localhost:3000/api/bitacora/SalirRegistroUsuario'; 
+  const urlBitacoraSalirRU =
+    'http://localhost:3000/api/bitacora/SalirRegistroUsuario';
 
- //---------------------------------------------------------
+  //---------------------------------------------------------
 
 
 
@@ -123,11 +123,11 @@ export const AddUsers = (props) => {
     if (props.data.Correo_Electronico) {
       setCorreo(props.data.Correo_Electronico);
     }
-  }, [props.data.Nombre,props.data.Correo_Electronico]);
+  }, [props.data.Nombre, props.data.Correo_Electronico]);
 
 
   const actualizar = async () => {
-    let usuario =selectedOption
+    let usuario = selectedOption
 
     let user = String(usuario);
     let nombre = document.getElementById('nombre').value;
@@ -137,13 +137,13 @@ export const AddUsers = (props) => {
     let data = {
       idUsuario: props.data.id_Usuario,
       usuario: nombre.toUpperCase(),
-      clave:refContrasenia.current.value,
+      clave: refContrasenia.current.value,
       nombreUsuario: nombre.toUpperCase(),
       estadoUsuario: document.getElementById("estado").value,
       correo: correo,
       idRol: rol,
     };
-   
+
     //Funcion de Update de bitacora Usuario 
     let dataB = {
       Id: props.idU
@@ -151,8 +151,8 @@ export const AddUsers = (props) => {
 
     if (await axios.put(urlUpdateUser, data)) {
       console.log(data);
-      swal(<h1>Usuario Actualizado Correctamente</h1>).then(()=>{
-        axios.post(urlBitacoraUpdUsuario,dataB) //UPDATE DE BITACORA
+      swal(<h1>Usuario Actualizado Correctamente</h1>).then(() => {
+        axios.post(urlBitacoraUpdUsuario, dataB) //UPDATE DE BITACORA
         props.limpiarData({});
         props.limpiarUpdate(false)
       });
@@ -161,7 +161,7 @@ export const AddUsers = (props) => {
   };
 
   const insertar = async () => {
-    
+
 
     let nombre = document.getElementById('nombre').value;
     let correo = document.getElementById('correo').value;
@@ -176,48 +176,48 @@ export const AddUsers = (props) => {
       rol: rol,
     };
 
- //Funcion de bitacora 
+    //Funcion de bitacora 
     let dataB = {
       Id: props.idU
     }
-    const bitacora ={
-      urlB:urlInsert,
-      activo:props.activo,
-      dataB:dataB
-   }
-   console.log(data);
+    const bitacora = {
+      urlB: urlInsert,
+      activo: props.activo,
+      dataB: dataB
+    }
+    console.log(data);
 
-    await axios.post(urlInsert, data).then((res)=>{
+    await axios.post(urlInsert, data).then((res) => {
       Bitacora(bitacora) //Registro de nuevo usuario bitacora   
-     
+
       if (!res.data) {
         swal('¡No puede crear este usuario, es posible que el correo o usuario ya este en uso!.', '', 'error');
-      }else{
+      } else {
         swal('Usuario creado exitosamente.', '', 'success');
         navegate('/usuarios/lista');
       }
-    }).catch(()=>{
+    }).catch(() => {
       swal('!Error al crear Usuario! Ingrese sus datos correctamente, puede que alguno de estos ya exista.', '', 'error')
     })
-      //sendData(urlBitacoraUsuario,dataB)
-   
-    
+
+
+
   };
 
- //Funcion de bitacora 
-  let dataB = { 
+  //Funcion de bitacora 
+  let dataB = {
     Id: props.idU
   }
 
   const handleBack = () => {
-        props.limpiarData({})
-        props.limpiarUpdate(false)
-        axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
-        navegate('/usuarios/lista');
+    props.limpiarData({})
+    props.limpiarUpdate(false)
+    axios.post(urlBitacoraSalirRU, dataB) //BOTON DE RETROCESO API BITACORA 
+    navegate('/usuarios/lista');
   }
 
   return (
-    
+
     <div className="ContUsuarios">
       <Button
         className='btnBack'
@@ -226,16 +226,16 @@ export const AddUsers = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.update ? <h2>Actualizar Usuario</h2> : <h2>Registro de Usuario</h2>}
-        
-    
+
+
       </div>
 
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-             {/*  <select id="empleado" className="selectCustom">
+              <TextCustom text="Empleado" className="titleInput" value={optionsEmpleados} />
+              {/*  <select id="empleado" className="selectCustom">
                 {Empleado.length ? (
                   Empleado.map(pre => (
                     <option key={pre.numeroIdentidad} value={pre.numeroIdentidad}>
@@ -249,8 +249,8 @@ export const AddUsers = (props) => {
                 )}
               </select> */}
               {props.update ? <>
-                <Select isDisabled={true} 
-                   styles={{
+                <Select isDisabled={true}
+                  styles={{
                     control: (base) => ({
                       ...base,
                       width: "300px", // Ajusta el ancho según tus necesidades
@@ -262,16 +262,16 @@ export const AddUsers = (props) => {
                   onChange={setSelectedOption}
                   placeholder="Seleccione un empleado"
                 /></>
-                :<> 
-                <Select 
-                  id="empleado"
-                  options={optionsEmpleados}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
-                  placeholder="Seleccione un empleado"
-                />
+                : <>
+                  <Select
+                    id="empleado"
+                    options={optionsEmpleados}
+                    value={selectedOption}
+                    onChange={setSelectedOption}
+                    placeholder="Seleccione un empleado"
+                  />
                 </>}
-              
+
 
 
             </div>
@@ -280,8 +280,8 @@ export const AddUsers = (props) => {
               <TextCustom text="Nombre de usuario"
                 className="titleInput" />
               <input
-                 onKeyDown={(e) => {
-            
+                onKeyDown={(e) => {
+
                   setNombreusuario(e.target.value);
                   if (Nombreusuario === "") {
                     setErrorNombreusuario(true);
@@ -298,8 +298,8 @@ export const AddUsers = (props) => {
                     }
                   }
                 }}
-          
-                onChange={e=>setNombreusuario(e.target.value)}
+
+                onChange={e => setNombreusuario(e.target.value)}
                 error={errorNombreusuario}
                 type="text"
                 helperText={mensaje}
@@ -315,7 +315,7 @@ export const AddUsers = (props) => {
               <p className='error'>{mensaje}</p>
             </div>
 
-                <div className="contInput">
+            <div className="contInput">
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
                 onChange={(e) => {
@@ -335,14 +335,15 @@ export const AddUsers = (props) => {
                     }
                   }
                 }}
-              
 
-                id="filled-adornment-password"
+
+                id="contra1"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
                 inputProps={{ maxLength: 20 }}
                 inputRef={refContrasenia}
+                value={contra1}
                 endAdornment={
 
                   <InputAdornment position="end">
@@ -365,24 +366,25 @@ export const AddUsers = (props) => {
             <div className="contInput">
               <TextCustom text="Confirme Contraseña" className="titleInput" />
               <FilledInput
-                  onChange={(e) => {
-                    setContra2(e.target.value);
-                    if (contra2 === "") {
-                      setErrorContra2(true);
-                      setadvertencia("Los campos no deben estar vacíos");
-                    }
-                      if (contra2 === contra1) {
-                      } else {
-                      }
-                    }
+                onChange={(e) => {
+                  setContra2(e.target.value);
+                  if (contra2 === "") {
+                    setErrorContra2(true);
+                    setadvertencia("Los campos no deben estar vacíos");
                   }
-              
-                id="filled-adornment-password"
+                  if (contra2 === contra1) {
+                  } else {
+                  }
+                }
+                }
+
+                id="contra2"
                 placeholder='Contraseña'
                 className="inputCustomPass"
                 type={showPassword ? 'text' : 'password'}
                 inputProps={{ maxLength: 20 }}
                 inputRef={refContrasenia}
+                value={contra2}
                 endAdornment={
 
                   <InputAdornment position="end">
@@ -401,51 +403,51 @@ export const AddUsers = (props) => {
               ></FilledInput>
               <p className='error'>{advertencia}</p>
             </div>
-            
+
 
             <div className="contInput">
               <TextCustom text="Correo Electrónico" className="titleInput" />
-              
+
               <input
-               onKeyDown={(e) => {
-                setCorreo(e.target.value)
-                var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!expresion.test(correo)) {
-                  setErrorCorreo(true)
-                  setTextoCorreo("Formato invalido");
-                }
-                else {
-                  setErrorCorreo(false);
-                  setTextoCorreo("");
-                }
-              }}
-              onClick={e => {
-                setCorreo(e.target.value);
-                if (correo === '') {
-                  setErrorCorreo(true);
-                  setTextoCorreo('Los campos no deben estar vacios');
-                } else {
-                  setErrorCorreo(false);
-                  setTextoCorreo('');
-                }
-              }}
-              onChange={e=>setCorreo(e.target.value)}
-              type="text"
-              name="input2"
-              id="correo"
-              className="inputCustom"
-              placeholder="Correo Electrónico"
-              error={errorCorreo}
-              helperText={texto}
-              value={correo}
-              maxLength={150}
-            />               
-            <p className='error'>{texto}</p>
+                onKeyDown={(e) => {
+                  setCorreo(e.target.value)
+                  var expresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                  if (!expresion.test(correo)) {
+                    setErrorCorreo(true)
+                    setTextoCorreo("Formato invalido");
+                  }
+                  else {
+                    setErrorCorreo(false);
+                    setTextoCorreo("");
+                  }
+                }}
+                onClick={e => {
+                  setCorreo(e.target.value);
+                  if (correo === '') {
+                    setErrorCorreo(true);
+                    setTextoCorreo('Los campos no deben estar vacios');
+                  } else {
+                    setErrorCorreo(false);
+                    setTextoCorreo('');
+                  }
+                }}
+                onChange={e => setCorreo(e.target.value)}
+                type="text"
+                name="input2"
+                id="correo"
+                className="inputCustom"
+                placeholder="Correo Electrónico"
+                error={errorCorreo}
+                helperText={texto}
+                value={correo}
+                maxLength={150}
+              />
+              <p className='error'>{texto}</p>
             </div>
 
             <div className="contInput">
               <TextCustom text="Rol" className="titleInput" />
-              <select id="cargo" className="selectCustom" value={rol} onChange={(e)=>{
+              <select id="cargo" className="selectCustom" value={rol} onChange={(e) => {
                 setRolSelect(e.target.value)
               }} >//El value debe ser el id del valor a obtener
                 {Rol.length ? (
@@ -462,34 +464,50 @@ export const AddUsers = (props) => {
               </select>
             </div>
 
-            {props.update ?  <div className="contInput">
+            {props.update ? <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
               <select id="estado" className="selectCustom">
                 <option value={"Activo"}>Activo</option>
                 <option value={"Inactivo"}>Inactivo</option>
                 <option value={"Bloqueado"}>Bloqueado</option>
               </select>
-            </div> : '' }
+            </div> : ''}
 
             <div className="contBtnStepper">
               {props.update ? <Button
                 variant="contained"
                 className="btnStepper"
                 onClick={() => {
-                    var usuario = document.getElementById("nombre").value;
-                    var correo = document.getElementById("correo").value;
-                   
-                    if (usuario === ""  || correo === "") {
-                      swal("No deje campos vacíos.", "", "error");}
-                      else if (!/^[A-Z]+$/.test(usuario)) {
-                        swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
-                        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-                          swal("El campo correo debe contener un correo válido.", "", "error");
-                        }else if (contra1 !== contra2) {
-                          swal("Las contraseñas deben coincidir.", "", "error");
-                        }
-                 
-                  else {
+                  var usuario = document.getElementById("nombre").value;
+                  var correo = document.getElementById("correo").value;
+                  var password = document.getElementById("contra1").value;
+                  var password2 = document.getElementById("contra2").value;
+
+
+                  if (usuario === "" || correo === "" || password === "" || password2 === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (!/^[A-Z]+$/.test(usuario)) {
+                    setErrorNombreusuario(true)
+                    swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios, entre 5 y 10 caracteres.", "", "error");
+                  } else if (usuario.length < 3) {
+                    swal('El usuario debe ser mayor a 3 caracteres.', '', 'error');
+                  }else if (/([A-Z])\1{2,}/.test(usuario)) {
+                    setErrorNombreusuario(true);
+                    swal("El campo Nombre de Usuario no puede tener letras repetidas más de 2 veces seguidas.", "", "error");
+                  }  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                    setErrorCorreo(true)
+                    swal("El campo correo debe contener un correo válido.", "", "error");
+                  } else if (password.length < 8 ) {
+                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
+                  } else if (password2.length < 8 ) {
+                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
+                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
+                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                  }else if (password !== password2) {
+                    swal("Las contraseñas deben coincidir.", "", "error");
+                  } else {
                     actualizar()
                   }
                 }}
@@ -502,18 +520,37 @@ export const AddUsers = (props) => {
                 onClick={() => {
                   var usuario = document.getElementById("nombre").value;
                   var correo = document.getElementById("correo").value;
-                  if (usuario === ""  || correo === "") {
-                    swal("No deje campos vacíos.", "", "error");}
-                    else if (!/^[A-Z]+$/.test(usuario)) {
-                      swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios.", "", "error");}
-                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-                        swal("El campo correo debe contener un correo válido.", "", "error");
-                      } else if (contra1 !== contra2) {
-                        swal("Las contraseñas deben coincidir.", "", "error");
-                      }
-                  else {
-                    insertar()
-                   }
+                  var password = document.getElementById("contra1").value;
+                  var password2 = document.getElementById("contra2").value;
+
+
+
+                  if (usuario === "" || correo === "" || password === "" || password2 === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  } else if (!/^[A-Z]+$/.test(usuario)) {
+                    setErrorNombreusuario(true)
+                    swal("El campo Nombre de Usuario solo acepta letras mayúsculas sin espacios, entre 5 y 10 caracteres.", "", "error");
+                  } else if (usuario.length < 3) {
+                    swal('El usuario debe ser mayor a 3 caracteres.', '', 'error');
+                  }else if (/([A-Z])\1{2,}/.test(usuario)) {
+                    setErrorNombreusuario(true);
+                    swal("El campo Nombre de Usuario no puede tener letras repetidas más de 2 veces seguidas.", "", "error");
+                  }  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                    setErrorCorreo(true)
+                    swal("El campo correo debe contener un correo válido.", "", "error");
+                  } else if (password.length < 8 ) {
+                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
+                  } else if (password2.length < 8 ) {
+                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
+                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
+                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
+                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
+                  }else if (password !== password2) {
+                    swal("Las contraseñas deben coincidir.", "", "error");
+                  } else {
+                    insertar();
+                  }
                 }}
               >
                 <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
