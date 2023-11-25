@@ -14,7 +14,8 @@ import { sendData } from '../../scripts/sendData';
 
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -116,7 +117,7 @@ export const ListaMetodosDePago = ({idRol,data,update}) => {
       const subTitulo = "LISTA DE MÉTODOS DE PAGO"
     
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -182,13 +183,13 @@ function handleDel(id) {
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdTipoPago:id
           }; 

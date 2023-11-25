@@ -5,7 +5,8 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx'
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -57,6 +58,8 @@ export const ListaCiudad = ({idRol,data,update}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
+ 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   useEffect(() => {
     axios.get(urlCuidad).then(response=>setTableData(response.data))
@@ -96,7 +99,7 @@ export const ListaCiudad = ({idRol,data,update}) => {
       const subTitulo = "LISTA DE CIUDADES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -294,8 +297,9 @@ function handleUpdt(id) {
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

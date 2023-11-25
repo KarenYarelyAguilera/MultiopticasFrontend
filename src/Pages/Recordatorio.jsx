@@ -13,6 +13,7 @@ import es from "date-fns/locale/es";
 import { TextCustom } from '../Components/TextCustom';
 import { generatePDF } from '../Components/generatePDF';
 
+import fondoPDF from '../IMG/FondoPDFH.jpg'
 
 
 //Mui-Material-Icons
@@ -229,7 +230,7 @@ export const Recordatorio = (props) => {
       const urlPDF = 'Reporte_Citas.pdf';
       const subTitulo = "LISTA DE CITAS"
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };

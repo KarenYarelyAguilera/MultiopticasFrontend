@@ -11,7 +11,8 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 
 //Mui-Material-Icons
@@ -116,7 +117,7 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
       const subTitulo = "LISTA DE DEPARTAMENTOS"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
     
   };
@@ -181,14 +182,14 @@ function handleDel(id) {
       ),
       
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
-          let data = {
+        case 'delete':
+         /*  let data = {
             IdDepartamento:id
           }; 
           console.log(data);
@@ -199,8 +200,11 @@ function handleDel(id) {
             }).catch(error => {
               console.log(error);
               swal('Error al eliminar el departamneto', '', 'error');
-            });
+            }); */
   
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
+
           break;
           default:
           break;

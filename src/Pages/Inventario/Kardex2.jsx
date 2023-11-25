@@ -17,47 +17,64 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
+import axios from 'axios';
+const urlProducto = "http://localhost:3000/api/productos";
+const urlMovimientos = "http://localhost:3000/api/Tmovimientos";
+const urlMovimientosInsert = "http://localhost:3000/api/Extraordinario";
 
-
-const urlMarca =
-  'http://localhost/APIS-Multioptica/producto/controller/producto.php?op=InsertMarca';
-
-export const Kardex2 = ({
-  msgError = '',
-  success = false,
-  warning = false,
-  props,
-}) => {
+export const Kardex2 = (
+  props
+) => {
   // const [activeStep, setActiveStep] = React.useState(0);
 
   // const handleNext = () => {
   //   setActiveStep(prevActiveStep => prevActiveStep + 1);
   // };
-  
+
 
 
 
   const navegate = useNavigate();
-  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
+  const [selectedOptionP, setSelectedOptionP] = useState(null); // Estado para la opción seleccionada
+  const [selectedOptionM, setSelectedOptionM] = useState(null);
   const [marca, setmarca] = React.useState('');
   const [leyenda, setleyenda] = React.useState('');
   const [errorMarca, setErrorMarca] = React.useState(false);
-  const [tableData, setTableData] = useState([]);
+  const [tableDataP, setTableDataP] = useState([]);
+  const [tableDataM, setTableDataM] = useState([]);
   const [nombremarca, setnombremarca] = React.useState('');
   const [aviso, setaviso] = React.useState('');
   const [errornombremarca, setErrornombremarca] = React.useState(false);
+  useEffect(() => {
+    axios.get(urlProducto).then(response => {
+      setTableDataP(response.data)
+    }).catch(error => console.log(error))
+  }, []);
+  useEffect(() => {
+    axios.get(urlMovimientos).then(response => {
+      setTableDataM(response.data)
+    }).catch(error => console.log(error))
+  }, []);
 
   const handleNext = () => {
-    let id = parseInt(document.getElementById("idMarca").value)
-    let marca = document.getElementById("Marca").value
+    let idTM = parseInt(document.getElementById("idTM").value)
+    let idProducto = parseInt(document.getElementById("idP").value)
+    const fechaActual = new Date();
+    let cantidad = parseInt(document.getElementById("cant").value)
+    const fechaYHora = fechaActual.toISOString();
     let data = {
-      IdMarca: id ,
-      descripcion:marca 
+      idProducto: selectedOptionM.value,
+      idUsuario: props.idUsuario,
+      fechaYHora:fechaYHora,
+      cantidad:cantidad,
+      IdTipoMovimiento: selectedOptionM.value,
+      descripcion:document.getElementById("descripcion").value
     }
-    
-    if (sendData(urlMarca, data)) {
-      swal('Marca agregada con exito', '', 'success').then(result => {
-        navegate('/menuInventario/ListaMarcas');
+    console.log(data);
+
+    if (sendData(urlMovimientosInsert, data)) {
+      swal('Movimiento registrado con exito', '', 'success').then(result => {
+        navegate('/menuInventario/Kardex');
       });
     }
   };
@@ -80,38 +97,11 @@ export const Kardex2 = ({
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-          
-          <div className="contNewCita">
-                <TextCustom text="Tipo de Movimiento" className="titleInput" />
-                <div className="contInput">
-                  {/* <select id="idClientes" className="inputCustomPreguntas">
-                    {tableData.length ? (
-                      tableData.map(pre => (
-                        <option key={pre.idCliente} value={pre.idCliente}>
-                             {`${pre.idCliente} - ${pre.nombre}`}
-                        </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select> */}
-                  <Select
-                    id="idClientes"
-                    // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="Seleccione Tipo de Mpvimiento"
-                  />
-                </div>
-                </div>
 
-                <div className="contNewCita">
-                <TextCustom text="Producto" className="titleInput" />
-                <div className="contInput">
-                  {/* <select id="idClientes" className="inputCustomPreguntas">
+            <div className="contNewCita">
+              <TextCustom text="Tipo de Movimiento" className="titleInput" />
+              <div className="contInput">
+                {/* <select id="idClientes" className="inputCustomPreguntas">
                     {tableData.length ? (
                       tableData.map(pre => (
                         <option key={pre.idCliente} value={pre.idCliente}>
@@ -124,44 +114,72 @@ export const Kardex2 = ({
                       </option>
                     )}
                   </select> */}
-                  <Select
-                    id="idClientes"
-                    // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="Seleccione un Producto"
-                  />
-                </div>
-                </div>
-            
-              
+                <Select
+                  id="idTM"
+                  // className="inputCustomPreguntas"
+                  options={tableDataM.map(pre => ({ value: pre.IdTipoMovimiento, label: `${pre.descripcion}` }))}
+                  value={selectedOptionM}
+                  onChange={setSelectedOptionM}
+                  placeholder="Seleccione un Producto"
+                />
+              </div>
+            </div>
+
+            <div className="contNewCita">
+              <TextCustom text="Producto" className="titleInput" />
+              <div className="contInput">
+                {/* <select id="idClientes" className="inputCustomPreguntas">
+                    {tableData.length ? (
+                      tableData.map(pre => (
+                        <option key={pre.idCliente} value={pre.idCliente}>
+                             {`${pre.idCliente} - ${pre.nombre}`}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="No existe informacion">
+                        No existe informacion
+                      </option>
+                    )}
+                  </select> */}
+
+                <Select
+                  id="idP"
+                  // className="inputCustomPreguntas"
+                  options={tableDataP.map(pre => ({ value: pre.IdProducto, label: `${pre.Marca} - ${pre.Modelo}` }))}
+                  value={selectedOptionP}
+                  onChange={setSelectedOptionP}
+                  placeholder="Seleccione un producto"
+                />
+              </div>
+            </div>
+
+
             <div className="contInput">
-             <TextCustom text="Cantidad" className="titleInput" />
+              <TextCustom text="Cantidad" className="titleInput" />
               <input
-                 onKeyDown={e => {
-                setmarca(e.target.value);
-                if (marca === '') {
-                  setErrorMarca(true);
-                  setleyenda('Los campos no deben estar vacios');
-                } else {
-                  setErrorMarca(false);
-                  var preg_match = /^[0-9]+$/;
-                  if (!preg_match.test(marca)) {
+                onKeyDown={e => {
+                  setmarca(e.target.value);
+                  if (marca === '') {
                     setErrorMarca(true);
-                    setleyenda('Solo deben de ingresar numeros');
+                    setleyenda('Los campos no deben estar vacios');
                   } else {
                     setErrorMarca(false);
-                    setleyenda('');
+                    var preg_match = /^[0-9]+$/;
+                    if (!preg_match.test(marca)) {
+                      setErrorMarca(true);
+                      setleyenda('Solo deben de ingresar numeros');
+                    } else {
+                      setErrorMarca(false);
+                      setleyenda('');
+                    }
                   }
-                }
-              }}
+                }}
                 type="text"
                 name=""
                 maxLength={13}
                 className="inputCustom"
                 placeholder="Cantidad"
-                id="idMarca"
+                id="cant"
               />
               <p class="error">{leyenda}</p>
             </div>

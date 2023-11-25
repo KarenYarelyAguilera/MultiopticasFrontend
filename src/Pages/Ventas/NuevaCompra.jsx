@@ -87,7 +87,6 @@ export const NuevaCompra = ({
     const costo = parseFloat(document.getElementById("costo").value);
   
     const existingIndex = compras.findIndex(item => item.idProducto === productoId);
-    console.log(existingIndex);
     if (existingIndex !== -1) {
       const updatedCompras = [...compras];
       updatedCompras[existingIndex].cantidad += cantidad;
@@ -97,11 +96,14 @@ export const NuevaCompra = ({
       const dataGrid = {
         idUsuario: idUsuario,
         idProducto: productoId,
-        idProveedor: parseInt(document.getElementById("proveedor").value),
+        proveedor: document.getElementById("proveedor").options[document.getElementById("proveedor").selectedIndex].text,
+        idProveedor:parseInt(document.getElementById("proveedor").value),
+        producto:document.getElementById("producto").options[document.getElementById("producto").selectedIndex].text,
         cantidad: cantidad,
         fechaYHora: fechaActual,
         costo: costo,
       };
+      console.log(dataGrid);
       setCompras([...compras, dataGrid]);
       setCambio(cambio + 1);
     }
@@ -112,16 +114,14 @@ export const NuevaCompra = ({
     navegate('/menuInventario/listaCompra');
   };
   const eliminarCompra = (idProducto) => {
-    console.log(idProducto);
     const nuevasCompras = compras.filter(compra => compra.idProducto !== idProducto);
-    console.log(nuevasCompras);
     setCompras(nuevasCompras);
     setCambio(cambio+1)
   };
 
   const columns = [
-    { field: 'idProveedor', headerName: 'Proveedor', width: 145 },
-    { field: 'idProducto', headerName: 'Producto', width: 145 },
+    { field: 'proveedor', headerName: 'Proveedor', width: 145 },
+    { field: 'producto', headerName: 'Producto', width: 145 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 145 },
     { field: 'costo', headerName: 'Costo de la Compra', width: 145 },
@@ -158,15 +158,60 @@ export const NuevaCompra = ({
     // let data2={
     //   Id:props.idUsuario
     // }
+    const total = compras.reduce((acumulador, compra) => {
+      const subtotalPorProducto = compra.cantidad * compra.costo;
+      return acumulador + subtotalPorProducto;
+    }, 0);
 
-    console.log(data);
-    await axios.post(urlCompra, data).then(() => {
-      swal("Compra registrada con exito", "", "success")
-      //axios.post(urlInsertCompraB,data2)
-      navegate('/menuInventario/ListaCompra');
-    })
+    swal({
+      title: "Confirme la Compra",
+      content: {
+        element: "div",
+        attributes: {
+          innerHTML: `
+            
+            <h3>Total a Pagar ${total}</h3>
+          `,
+        },
+      },
+      buttons: {
+        cancel: {
+          text: "Cancelar",
+          value: false,
+          visible: true,
+          closeModal: true,
+        },
+        confirm: {
+          text: "Confirmar",
+          value: true,
+          visible: true,
+          closeModal: true,
+        },
+      },
+    }).then((value) => {
+        if (value) {
+         
+            swal("¡Compra confirmada!", "", "success").then(()=>{
+              console.log(data);
+              axios.post(urlCompra, data).then(() => {
+                navegate('/menuInventario/ListaCompra');
+              })
+            });   
+        
+        } else {
+          // Lógica en caso de cancelación
+          swal("Compra cancelada", "", "error");
+        }
+      });
+
+   
 
   }
+  const handleSelectChange = (event) => {
+    const textoSeleccionado = event.target.options[event.target.selectedIndex].text;
+    console.log('Texto seleccionado:', textoSeleccionado);
+    // Aquí puedes hacer lo que desees con el texto seleccionado
+  };
 
   return (
     <div className="ContUsuarios">
@@ -175,18 +220,26 @@ export const NuevaCompra = ({
       </Button>
       <div className="titleAddUser">
         <h2>Nueva Compra</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los datos de Nueva
-          Compra.
-        </h3>
       </div>
       <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-
+          <div className="contInput">
+              <TextCustom text="Fecha" className="titleInput1" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha"
+                id="fecha"
+                value={fechaActual}
+                disabled
+              />
+            </div>
             <div className="contInput">
               <TextCustom text="Proveedor" className="titleInput1" />
-              <select name="" className="selectCustom" id="proveedor">
+              <select name="" className="selectCustom" id="proveedor" onChange={handleSelectChange}>
                 {proveedor.length ? (
                   proveedor.map(pre => (
                     <option key={pre.IdProveedor} value={pre.IdProveedor}>
@@ -206,7 +259,7 @@ export const NuevaCompra = ({
                 {producto.length ? (
                   producto.map(pre => (
                     <option key={pre.IdProducto} value={pre.IdProducto}>
-                      {pre.Modelo}
+                      {pre.Marca+ "-"+pre.Modelo}
                     </option>
                   ))
                 ) : (
@@ -257,20 +310,6 @@ export const NuevaCompra = ({
 
               />
               <p class="error">{leyenda}</p>
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Fecha" className="titleInput1" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha"
-                id="fecha"
-                value={fechaActual}
-                disabled
-              />
             </div>
 
             <div className="contInput">

@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
 //Mui-Material-Icons
@@ -108,7 +108,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
       const subTitulo = "LISTA DE MARCAS"
   
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -171,21 +171,21 @@ export const ListaMarcas = ({idRol,data,update}) => {
       swal({
         content: (
           <div>
-            <div className="logoModal">¿Desea Elimiar esta marca?</div>
+            <div className="logoModal">¿Desea Eliminar esta marca?</div>
             <div className="contEditModal">
             </div>
           </div>
         ),
         buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
+          cancel: 'Cancel',
+          delete: 'Eliminar',
         },
       }).then(async(op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
   
-            let data = {
+            /* let data = {
               IdMarca: id
             };
       
@@ -196,8 +196,10 @@ export const ListaMarcas = ({idRol,data,update}) => {
               setCambio(cambio+1)
             }).catch(error=>{
               console.log(error);
-              swal("Error al eliminar la marca, asegúrese que no tenga relación con otros datos.","","error")
-            })
+              swal("Error al eliminar marca.","","error")
+            }) */
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
            
           break;
         
@@ -221,7 +223,7 @@ export const ListaMarcas = ({idRol,data,update}) => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar la marca?: {id.marca} ?
+            ¿Desea actualizar la marca?: {id.descripcion} ?
           </div>
         ),
       }).then((op) => {

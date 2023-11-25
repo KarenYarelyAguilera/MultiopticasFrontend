@@ -15,6 +15,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
@@ -125,7 +127,7 @@ export const ListaProveedores = (props) => {
       const subTitulo = "LISTA DE PROVEEDORES"
       const orientation = "landscape";
 
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };
@@ -155,9 +157,9 @@ export const ListaProveedores = (props) => {
     { field: 'encargado', headerName: 'Encargado', width: 150, headerAlign: 'center' },
     { field: 'Pais', headerName: 'Pais', width: 150, headerAlign: 'center' },
     { field: 'Ciudad', headerName: 'Ciudad', width: 150, headerAlign: 'center' },
-    { field: 'Productos', headerName: 'Producto', width: 200, headerAlign: 'center' },
-  /*   { field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' }, */
+    { field: 'Productos', headerName: 'Producto', width: 690, headerAlign: 'center' },
     { field: 'telefono', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
+    //{ field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' },
     { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 230, headerAlign: 'center' },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
@@ -199,10 +201,10 @@ export const ListaProveedores = (props) => {
   
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete: 'Eliminar', cancel:'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               IdProveedor: IdProveedor,

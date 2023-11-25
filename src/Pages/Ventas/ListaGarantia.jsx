@@ -12,7 +12,8 @@ import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
 import logoImg from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -123,7 +124,7 @@ export const ListaGarantia = ({ idRol, data, update }) => {
       const subTitulo = "LISTA DE GARANTIAS"
 
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };
@@ -148,7 +149,7 @@ export const ListaGarantia = ({ idRol, data, update }) => {
 
   const columns = [
     { field: 'IdGarantia', headerName: 'ID', width: 210 },
-    { field: 'descripcion', headerName: 'Descripción', width: 210 },
+    { field: 'descripcion', headerName: 'Descripción', width: 310 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
     { field: 'Modelo', headerName: 'Producto', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
@@ -188,13 +189,13 @@ export const ListaGarantia = ({ idRol, data, update }) => {
           </div>
         ),
         buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
+          cancel: 'Cancelar',
+          delete: 'Eliminar',
         },
       }).then(async (op) => {
 
         switch (op) {
-          case null:
+          case 'delete':
 
             let data = {
               IdGarantia: id,

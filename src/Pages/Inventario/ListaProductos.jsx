@@ -36,7 +36,7 @@ export const ListaProductos = (props) => {
 
   const urlProducto = 'http://localhost:3000/api/productos'; //MUESTA LOS PRODUCTOS EN LA TABLA
   const urlProductosInactivos = 'http://localhost:3000/api/productosInactivos';
-  const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
+  //const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
 
   const urlModelos = 'http://localhost:3000/api/modelos'; //MUESTRA LOA MODELOS
 
@@ -127,13 +127,13 @@ export const ListaProductos = (props) => {
 
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
-    { field: 'IdProducto', headerName: 'ID', width: 190 },
+    { field: 'IdProducto', headerName: 'ID', width: 100 },
     { field: 'Modelo', headerName: 'Modelo', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 190 },
     { field: 'descripcion', headerName: 'Descripción', width: 190 },
     { field: 'precio', headerName: 'Precio', width: 120 },
-    { field: 'cantidadMin', headerName: 'Cantidad minima', width: 80 },
-    { field: 'cantidadMax', headerName: 'Cantidad máxima', width: 80 },
+    { field: 'cantidadMin', headerName: 'Cantidad minima', width: 150 },
+    { field: 'cantidadMax', headerName: 'Cantidad máxima', width: 150 },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
     {
@@ -176,33 +176,30 @@ export const ListaProductos = (props) => {
 
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete:'Eliminar', cancel:'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
 
-            let data = {
+            /* let data = {
               IdProducto: IdProducto,
-            };
+            }; */
 
             //Funcion de Bitacora 
             /*  let dataB = {
                Id:props.idUsuario
              } */
 
-            console.log(data);
+            //console.log(data);
 
-            await axios
-              .delete(urlDelProducto, { data })
-              .then(response => {
+//            await axios
+              //.delete(urlDelProducto, { data })
+              //.then(response => {
                 //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Producto eliminado correctamente', '', 'success');
+                swal('No es posible realizar esta acción ', '', 'error');
                 setCambio(cambio + 1);
-              })
-              .catch(error => {
-                console.log(error);
-                swal('Error al eliminar el Producto', '', 'error');
-              });
+              
+              
 
             break;
 
@@ -227,7 +224,7 @@ export const ListaProductos = (props) => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el producto: {id.descripcion} ?
+            ¿Desea actualizar el producto: {id.Modelo} ?
           </div>
         ),
       }).then(

@@ -23,10 +23,15 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
+
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -39,6 +44,8 @@ export const ListaClientes = (props) => {
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
+
+  const urlSalirListaClientes = 'http://localhost:3000/api/bitacora/SalirListacliente';
 
   const urlClientes =
     'http://localhost:3000/api/clientes';
@@ -98,7 +105,7 @@ export const ListaClientes = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'Identidad': row.idCliente,
+            'DNI': row.idCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
             'Genero': row.genero,
@@ -115,7 +122,7 @@ export const ListaClientes = (props) => {
       const subTitulo = "LISTA DE CLIENTES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
  
   };
@@ -174,10 +181,10 @@ export const ListaClientes = (props) => {
 
 
   const columns = [
-    { field: 'COD_CLIENTE', headerName: 'No', width: 80,headerAlign: 'center' },
+    { field: 'COD_CLIENTE', headerName: 'ID', width: 80,headerAlign: 'center' },
     { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 200,headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 190,headerAlign: 'center' },
     
     //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
     { 
@@ -194,7 +201,7 @@ export const ListaClientes = (props) => {
 
     //{ field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
     { field: 'direccion', headerName: 'Dirección', width: 200,headerAlign: 'center' },
-    { field: 'Telefono', headerName: 'Teléfono', width: 165,headerAlign: 'center' },
+    { field: 'Telefono', headerName: 'Teléfono', width: 135,headerAlign: 'center' },
     // { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
 
 
@@ -234,17 +241,22 @@ export const ListaClientes = (props) => {
       swal({
         content: (
           <div>
-            <div className="logoModal">Desea Elimiar este Cliente?</div>
+           <div className="logoModal">
+            ¿Desea Eliminar este cliente: {id.nombre}?
+          </div>
             <div className="contEditModal">
   
             </div>
           </div>
         ),
-        buttons: ["Eliminar", "Cancelar"]
+        buttons: {
+          cancel: 'Cencelar',
+          delete: 'Eliminar',
+        }
       }).then(async (op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               idCliente: id,
@@ -269,10 +281,19 @@ export const ListaClientes = (props) => {
       });
     }
    
-
+  }
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  }
+  const bitacora = {
+    urlB: urlSalirListaClientes,
+    activo: props.activo,
+    dataB: dataB
   }
 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/menuClientes');
   };
 

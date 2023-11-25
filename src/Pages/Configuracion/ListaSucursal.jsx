@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
 import swal from '@sweetalert/with-react';
@@ -39,8 +39,8 @@ export const ListaSucursal = (props) => {
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
   const [roles, setRoles] = useState([]);
-  const [Departamento, setDepartamento] = useState([]);
-  const [ciudad, setCiudad] = useState([]);
+  const [Departamento, setDepartamento] = useState(props.data.Departamento || null);
+  const [ciudad, setCiudad] = useState(props.data.Ciudad|| null);
   const [cambio, setCambio] = useState(0)
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
@@ -112,7 +112,7 @@ const handleGenerarReporte = () => {
     const subTitulo = "LISTA DE SUCURSALES"
   
     const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
   }
 
 };
@@ -180,20 +180,20 @@ const handleGenerarReporte = () => {
   
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete:'Eliminar',cancel: 'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
+          case 'delete':
   
-            let data = {
+            /* let data = {
               IdSucursal: IdSucursal,
-            };
+            }; */
   
             //Funcion de Bitacora 
             /*  let dataB = {
                Id:props.idUsuario
              } */
-  
+  /* 
             console.log(data);
   
             await axios
@@ -206,7 +206,10 @@ const handleGenerarReporte = () => {
               .catch(error => {
                 console.log(error);
                 swal('Error al eliminar la sucursal', '', 'error');
-              });
+              }); */
+              swal('No es posible realizar esta acción ', '', 'error');
+              setCambio(cambio + 1);
+             
   
             break;
   
@@ -230,7 +233,7 @@ const handleGenerarReporte = () => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar la sucursal: {id.ciudad} ?
+            ¿Desea actualizar la sucursal: {id.direccion} ?
           </div>
         ),
       }).then(

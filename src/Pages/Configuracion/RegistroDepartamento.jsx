@@ -37,7 +37,7 @@ export const RegistroDepartamento = (props) => {
     let estado = document.getElementById('estado').value;
 
     let data = {
-      departamento:departamento,
+      departamento:departamento.toUpperCase(),
       estado:estado,
     }
 
@@ -68,7 +68,7 @@ export const RegistroDepartamento = (props) => {
     let estado = document.getElementById('estado').value;
 
     const data = {
-      departamento:departamento,
+      departamento:departamento.toUpperCase(),
       estado:estado,
       IdDepartamento:props.data.IdDepartamento, 
     };
@@ -155,7 +155,7 @@ export const RegistroDepartamento = (props) => {
                 helperText={aviso}
                 name=""
                 className="inputCustom"
-                maxLength={40}
+                maxLength={30}
                 placeholder="Departamento"
                 id="departamento"
                 value={departamento} 

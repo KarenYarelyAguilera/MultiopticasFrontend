@@ -12,7 +12,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -124,7 +125,7 @@ const handleGenerarExcel = () => {
       const subTitulo = "LISTA DE MODELOS"
   
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
   
   };
@@ -151,7 +152,7 @@ const handleGenerarExcel = () => {
     { field: 'IdModelo', headerName: 'ID ', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 300 },
     { field: 'Modelo', headerName: 'Modelo', width: 300},
-    { field: 'anio', headerName: 'Año', width: 300 },
+    { field: 'anio', headerName: 'Año', width: 260 },
     { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
@@ -191,13 +192,13 @@ function handleDel(id) {
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdModelo:id
           }; 
@@ -232,7 +233,7 @@ function handleDel(id) {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar este modelo: {id.Marca}?
+            ¿Desea actualizar este modelo: {id.Modelo}?
           </div>
         ),
       }).then((op)  => {

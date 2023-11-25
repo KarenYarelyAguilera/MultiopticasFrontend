@@ -17,6 +17,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
+
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
@@ -96,7 +99,7 @@ export const ListaLentes = ({idRol,data,update}) => {
     const subTitulo = "LISTA DE LENTES "
 
     const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
         
 }
   };
@@ -105,7 +108,7 @@ export const ListaLentes = ({idRol,data,update}) => {
   const columns = [
     { field: 'IdLente', headerName: 'ID', width: 380 },
     { field: 'lente', headerName: 'Tipo de lente', width: 380 },
-    { field: 'precio', headerName: 'Precio', width: 380 },
+    { field: 'precio', headerName: 'Precio', width: 280 },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
    
     
@@ -140,31 +143,33 @@ function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea eliminar este Lente?</div>
+          <div className="logoModal">
+              ¿Desea Eliminar este Lente: {id.lente}?
+            </div>
           <div className="contEditModal"> 
           </div>
         </div>
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cencelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdLente:id
           }; 
           console.log(data);
   
           await axios .delete(urlLentesEliminar,{data}) .then(response => {
-              swal('Modelo eliminado correctamente', '', 'success');
+              swal('Lente eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
-              swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
+              swal('Error al eliminar el lente.', '', 'error');
             });
   
           break;

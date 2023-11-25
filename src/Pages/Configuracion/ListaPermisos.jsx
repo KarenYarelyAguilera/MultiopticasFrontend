@@ -19,14 +19,14 @@ export const ListaPermisos = (props) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
-  const urlPermisosvista ='http://localhost:3000/api/permisos';//Lista de permisos
-  
+  const urlPermisosvista = 'http://localhost:3000/api/permisos';//Lista de permisos
+
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   //Llama a toda los datos que estan en permisos 
   useEffect(() => {
-    axios.get (urlPermisosvista).then(response=> setTableData(response.data))
+    axios.get(urlPermisosvista).then(response => setTableData(response.data))
   }, [cambio]);
 
   const navegate = useNavigate();
@@ -41,28 +41,29 @@ export const ListaPermisos = (props) => {
 
 
   const columns = [
-    {field: 'Id_Rol', headerName: 'Rol', width: 130 },
-    {field: 'Rol', headerName: 'Descripcion del modulo', width: 300 },
-    {field: 'Permiso_Insercion', headerName: 'Permiso para Insertar',width: 200,},
-    {field: 'Permiso_Eliminacion',headerName: 'Permiso para Eliminar',width: 200,},
-    {field: 'Permiso_Actualizacion',headerName: 'Permiso para Actualizar',width: 200,},
-    {field: 'Permiso_Consultar', headerName: 'Permiso para Consultar', width: 200,},
+    { field: 'Rol', headerName: 'Rol', width: 130 },
+    { field: 'Objeto', headerName: 'Modulo', width: 200 },
+    { field: 'Permiso_Insercion', headerName: 'Permiso para Insertar', width: 200, },
+    { field: 'Permiso_Eliminacion', headerName: 'Permiso para Eliminar', width: 200, },
+    { field: 'Permiso_Actualizacion', headerName: 'Permiso para Actualizar', width: 200, },
+    { field: 'Permiso_Consultar', headerName: 'Permiso para Consultar', width: 200, },
 
-    {field: 'borrar',
-    headerName: 'Acciones',
-    width: 190,
+    {
+      field: 'borrar',
+      headerName: 'Acciones',
+      width: 190,
 
       renderCell: params => (
         <div className="contActions">
           <Button
             className="btnEdit"
-            // onClick={() => handleButtonClick(params.row.id)}
+          // onClick={() => handleButtonClick(params.row.id)}
           >
             <EditIcon></EditIcon>
           </Button>
           <Button
             className="btnDelete"
-            // onClick={() => handleButtonClick(params.row.id)}
+          // onClick={() => handleButtonClick(params.row.id)}
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
@@ -86,7 +87,7 @@ export const ListaPermisos = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        <h2>Lista de Permisos</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Permisos</h2>
       </div>
       <div className="ContPermisos">
         <div className="contFilter">
@@ -105,16 +106,16 @@ export const ListaPermisos = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           <div className="btnActionsNewReport">
-            <Button
+           {/*  <Button
               className="btnCreate"
               onClick={() => {
                 navegate('/config/roles');
               }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
+            > */}
+             {/*  <AddIcon style={{ marginRight: '5px' }} />
               Guardar
             </Button>
-            <Button className="btnReport">Cancelar</Button>
+            <Button className="btnReport">Cancelar</Button> */}
           </div>
         </div>
         <div style={{ height: 400, width: '100%' }}>
@@ -125,109 +126,8 @@ export const ListaPermisos = (props) => {
             columns={columns}
             pageSize={5}
             onRowClick={usuario => {
-              swal({
-                buttons: {
-                  update: 'Actualizar',
-                  cancel: 'Cancelar',
-                },
-                content: (
-                  <div className="logoModal">
-                    Que accion desea realizar con el cliente:{' '}
-                    {usuario.row.Usuario}
-                  </div>
-                ),
-              }).then(op => {
-                switch (op) {
-                  case 'update':
-                    swal(
-                      <div>
-                        <div className="logoModal">Datos a actualizar</div>
-                        <div className="contEditModal">
-                          <div className="contInput">
-                            <TextCustom
-                              text="Usuario"
-                              className="titleInput"
-                            />
-                            <input
-                              type="text"
-                              id="nombre"
-                              className="inputCustom"
-                              value={usuario.row.Usuario}
-                            />
-                          </div>
-
-                          <div className="contInput">
-                            <TextCustom
-                              text="Nombre de Usuario"
-                              className="titleInput"
-                            />
-                            <input
-                              type="text"
-                              id="nombreUsuario"
-                              className="inputCustom"
-                              value={usuario.row.Nombre_Usuario}
-                            />
-                          </div>
-                          <div className="contInput">
-                            <TextCustom
-                              text="Estado"
-                              className="titleInput"
-                            />
-                            <input
-                              type="text"
-                              className="inputCustom"
-                              id="EstadoUsuario"
-                              value={usuario.row.Estado_Usuario}
-                            />
-                          </div>
-                          <div className="contInput">
-                            <TextCustom
-                              text="Contraseña"
-                              className="titleInput"
-                            />
-                            <input
-                              type="text"
-                              id="contrasenia"
-                              className="inputCustom"
-                            />
-                          </div>
-                          <div className="contInput">
-                            <TextCustom text="Rol" className="titleInput" />
-                            <select id="rol" className="selectCustom">
-                              
-                            </select>
-                          </div>
-                          <div className="contInput">
-                            <TextCustom text="Email" className="titleInput" />
-                            <input
-                              type="text"
-                              id="Email"
-                              className="inputCustom"
-                              value={usuario.row.Correo_Electronico}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ).then(() => {
-                      let data = {
-                        Usuario: document.getElementById('nombre').value,
-                        Nombre_Usuario:
-                          document.getElementById('nombreUsuario').value,
-                        Estado_Usuario:
-                          document.getElementById('EstadoUsuario').value,
-                        Contrasenia:
-                          document.getElementById('contrasenia').value,
-                        Id_Rol: document.getElementById('rol').value,
-                        Correo_Electronico:
-                          document.getElementById('Email').value,
-                        Id_usuario: usuario.row.id_Usuario,
-                      };
-                    });
-                    break;
-                    default:
-                    break;
-                }
-              });
+              swal('No es posible realizar esta acción ', '', 'error');
+              setCambio(cambio + 1);
             }}
           />
         </div>
