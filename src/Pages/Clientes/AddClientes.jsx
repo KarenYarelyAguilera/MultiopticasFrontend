@@ -117,13 +117,18 @@ export const AddClientes = (props) => {
        Id: props.idUsuario
      } */
 
-    axios.put(urlClienteActualizar, data).then(() => {
-      swal("Cliente Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        props.update(false)
-        props.Data({})
-        navegate('/menuClientes/lista');
-      })
+     axios.put(urlClienteActualizar, data).then(response => {
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Cliente ya éxiste!', '', 'error')
+      }else{
+        swal("Cliente Actualizado Correctamente", "", "success").then(() => {
+          //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+          props.update(false)
+          props.Data({})
+          navegate('/menuClientes/lista');
+        });
+      }
     }).catch(error => {
       console.log(error);
      

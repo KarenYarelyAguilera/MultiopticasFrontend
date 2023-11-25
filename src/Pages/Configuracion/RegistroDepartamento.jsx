@@ -20,33 +20,33 @@ import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar 
 import { Bitacora } from '../../Components/bitacora.jsx';
 
 const urlInsertDepartamento = 'http://localhost:3000/api/departamento/crear';
-const urlUpdateDepartamento= 'http://localhost:3000/api/departamento/actualizar';
-const urlInsertBitacora ='http://localhost:3000/api/bitacora/insertDepartamento';
+const urlUpdateDepartamento = 'http://localhost:3000/api/departamento/actualizar';
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertDepartamento';
 const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarDepartamento';
 export const RegistroDepartamento = (props) => {
 
- const navegate = useNavigate();
+  const navegate = useNavigate();
 
- const [departamento, setDepartamento] = React.useState(props.data.departamento ||'');
- const [errorDepartamento, setErrorDepartamento] = React.useState(false);
- const [aviso, setAviso] = React.useState(false);
+  const [departamento, setDepartamento] = React.useState(props.data.departamento || '');
+  const [errorDepartamento, setErrorDepartamento] = React.useState(false);
+  const [aviso, setAviso] = React.useState(false);
 
- const [estado, setEstado] = useState(props.data.estado || null)
+  const [estado, setEstado] = useState(props.data.estado || null)
 
-  
+
   const handleNext = () => {
     let departamento = document.getElementById("departamento").value;
     let estado = document.getElementById('estado').value;
 
     let data = {
-      departamento:departamento.toUpperCase(),
-      estado:estado,
+      departamento: departamento.toUpperCase(),
+      estado: estado,
     };
-    console.log (data)
+    console.log(data)
 
-    let dataB=
+    let dataB =
     {
-      Id:props.idUsuario
+      Id: props.idUsuario
     };
     const bitacora = {
       urlB: urlInsertBitacora,
@@ -56,16 +56,14 @@ export const RegistroDepartamento = (props) => {
 
     axios.post(urlInsertDepartamento, data).then(response => {
       console.log(response)
-      if(response.data==false)
-      {
+      if (response.data == false) {
         swal('¡Este Departamento ya existe!', '', 'error')
-      } else 
-      {
+      } else {
         swal('Departamento agregado con exito', '', 'success').then(result => {
           Bitacora(bitacora)
           navegate('/config/ListaDepartamentos');
-      });
-    }
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al crear el departamento, por favor revise los campos.', '', 'error')
@@ -79,36 +77,42 @@ export const RegistroDepartamento = (props) => {
     let estado = document.getElementById('estado').value;
 
     const data = {
-      departamento:departamento.toUpperCase(),
-      estado:estado,
-      IdDepartamento:props.data.IdDepartamento, 
+      departamento: departamento.toUpperCase(),
+      estado: estado,
+      IdDepartamento: props.data.IdDepartamento,
     };
-    let dataB=
+    let dataB =
     {
-      Id:props.idUsuario
+      Id: props.idUsuario
     };
     const bitacora = {
       urlB: urlUpdateBitacora,
       activo: props.activo,
       dataB: dataB
     };
-    
+
     //Consumo de API y lanzamiento se alerta
-  axios.put(urlUpdateDepartamento, data).then(response => {
-    swal('Departamento actualizado con exito', '', 'success').then(result => {
-      props.limpiarData({});
-      props.limpiarUpdate(false)
-      Bitacora(bitacora)
-      navegate('/config/ListaDepartamentos');
+    axios.put(urlUpdateDepartamento, data).then(response => {
+
+      console.log(response)
+      if (response.data == false) {
+        swal('¡Este Departamento ya existe!', '', 'error')
+      } else {
+        swal('Departamento actualizado con exito', '', 'success').then(result => {
+          props.limpiarData({});
+          props.limpiarUpdate(false)
+          Bitacora(bitacora)
+          navegate('/config/ListaDepartamentos');
+        });
+      }
+    }).catch(error => {
+      console.log(error);
+      swal('Error al crear el departamento, porfavor revise los campos.', '', 'error')
     })
-  }).catch(error => {
-    console.log(error);
-    swal('Error al crear el departamento, porfavor revise los campos.', '', 'error')
-  })
   };
 
-   //BOTON DE RETROCESO
-   const handleBack = () => {
+  //BOTON DE RETROCESO
+  const handleBack = () => {
     swal({
       title: 'Advertencia',
       text: 'Hay un proceso de creación de departamentos ¿Estás seguro que deseas salir?',
@@ -133,47 +137,42 @@ export const RegistroDepartamento = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizar Departamento</h2> : <h2>Registro de Departamento</h2>}
+        {props.actualizar ? <h2>Actualizar Departamento</h2> : <h2>Registro de Departamento</h2>}
         <h3>Complete todos los puntos para poder registrar los departamentos.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            
+
 
             <div className="contInput">
 
               <TextCustom text="Departamento" className="titleInput" />
 
               <input
-              onKeyDown={e=>
-              {
-                setDepartamento(e.target.value);
-                if (departamento ==="")
-                {
-                  setErrorDepartamento(true);
-                  setAviso('Los campos no deben estar vacíos');
-                } else 
-                {
-                  setErrorDepartamento(false);
-                  var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                  if(!regex.test(departamento))
-                  {
+                onKeyDown={e => {
+                  setDepartamento(e.target.value);
+                  if (departamento === "") {
                     setErrorDepartamento(true);
-                    setAviso ('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                  } else if (/(.)\1{2,}/.test(departamento))
-                  {
-                    setErrorDepartamento(true);
-                    setAviso ('No se permiten letras consecutivas repetidas');
-                  } else{
+                    setAviso('Los campos no deben estar vacíos');
+                  } else {
                     setErrorDepartamento(false);
-                    setAviso("");
+                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                    if (!regex.test(departamento)) {
+                      setErrorDepartamento(true);
+                      setAviso('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                    } else if (/(.)\1{2,}/.test(departamento)) {
+                      setErrorDepartamento(true);
+                      setAviso('No se permiten letras consecutivas repetidas');
+                    } else {
+                      setErrorDepartamento(false);
+                      setAviso("");
+                    }
                   }
-                }
-              }}
+                }}
 
 
-              onChange={e => setDepartamento(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                onChange={e => setDepartamento(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
 
                 erro={errorDepartamento}
                 type="text"
@@ -183,9 +182,9 @@ export const RegistroDepartamento = (props) => {
                 maxLength={30}
                 placeholder="Departamento"
                 id="departamento"
-                value={departamento} 
+                value={departamento}
               />
-                 <p className="error">{aviso}</p>
+              <p className="error">{aviso}</p>
             </div>
 
             <div className="contInput">
@@ -202,25 +201,24 @@ export const RegistroDepartamento = (props) => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={()=>
-                  {
-                    var departamento = document.getElementById("departamento").value;
-                    if (departamento==="")
-                    {
-                      swal ("No deje campos vacíos.", "", "error");
-                    }
-                    else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(departamento)) {
-                      swal("El campo departamento solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                onClick={() => {
+                  var departamento = document.getElementById("departamento").value;
+                  if (departamento === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                  }
+                  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(departamento)) {
+                    swal("El campo departamento solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
                   } else if (/(.)\1{2,}/.test(departamento)) {
                     setErrorDepartamento(true);
                     swal("El campo departamento no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                  } else{
-                    props.actualizar ? actualizarDepartamento() : handleNext();}
-
+                  } else {
+                    props.actualizar ? actualizarDepartamento() : handleNext();
                   }
+
+                }
                 }
               >
-                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>

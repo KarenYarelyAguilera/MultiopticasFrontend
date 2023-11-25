@@ -96,13 +96,19 @@ const actualizarGenero = async () => {
       dataB: dataB
     };
 
-  axios.put(urlUpdateGenero, data).then(() => {
-    swal("Género Actualizado Correctamente", "", "success").then(() => {
-      Bitacora(bitacora)
-      props.limpiarData({});
-      props.limpiarUpdate(false)
-      navegate('/config/ListaGenero');
-    })
+    axios.put(urlUpdateGenero, data).then(response => {
+
+    console.log(response);
+    if (response.data == false) {
+      swal('¡Este Genero ya existe!', '', 'error')
+    } else {
+      swal("Género Actualizado Correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+        navegate('/config/ListaGenero');
+    });
+  }
   }).catch(error => {
     console.log(error);
     swal('Error al Actualizar Género , por favor revise todos los campos.', '', 'error')

@@ -117,11 +117,16 @@ export const RegistroProveedores = (props) => {
       dataB: dataB
     };
 
-    axios.put(urlUpdProveedor, data).then(() => {
-      swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
-       Bitacora(bitacora) 
-        navegate('/menuInventario/ListaProveedores');
-      })
+    axios.put(urlUpdProveedor, data).then(response => {
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Proveedor ya existe!', '', 'error')
+      }else{
+        swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora) 
+           navegate('/menuInventario/ListaProveedores');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Proveedor! , porfavor revise todos los campos.', '', 'error')
