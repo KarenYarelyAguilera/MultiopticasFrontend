@@ -13,11 +13,14 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlProductos = 'http://localhost:3000/api/productos'; //API DE PRODUCTO
 const urlUpdateGarantia = 'http://localhost:3000/api/garantias/actualizar';//API DE ACTUALIZAR
 const urlInsertGarantia = 'http://localhost:3000/api/garantias/crear';//CREAR 
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/NuevaGarantia';
+const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/ActualizacionGarantia';
 
 
 export const RegistroGarantia = (props) => {
@@ -54,7 +57,15 @@ export const RegistroGarantia = (props) => {
       estado: document.getElementById('estado').value,
       descripcion: descripcion.toUpperCase(),
     };
-
+    let dataB =
+    {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
      //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertGarantia, data).then(response => {
     console.log(response);
@@ -62,6 +73,7 @@ export const RegistroGarantia = (props) => {
         swal('¡Esta Garantia ya existe!', '', 'error')
       } else {
         swal('Garantia creada exitosamente', '', 'success').then(result => {
+          Bitacora(bitacora)
           navegate('/menuVentas/listaGarantias');
         });
       }
@@ -94,9 +106,21 @@ const actualizarGarantia = async () => {
     descripcion: descripcion.toUpperCase(),
     IdGarantia:props.data.IdGarantia,
   };
+  let dataB =
+  {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlUpdateBitacora,
+    activo: props.activo,
+    dataB: dataB
+  };
 
   axios.put(urlUpdateGarantia,data).then(() => {
     swal("Garantia Actualizada Correctamente", "", "success").then(() => {
+      bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       navegate('/menuVentas/listaGarantias');
     })
   }).catch(error => {

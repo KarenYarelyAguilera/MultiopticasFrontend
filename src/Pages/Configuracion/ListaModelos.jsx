@@ -33,14 +33,15 @@ import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el excel
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+import { Bitacora } from '../../Components/bitacora';
 //GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaModelos = ({idRol,data,update}) => {
+export const ListaModelos = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:8
   }
   useEffect(()=>{
@@ -58,9 +59,12 @@ export const ListaModelos = ({idRol,data,update}) => {
   const urlModelos ='http://localhost:3000/api/modelos'; //LLama todos los datos de la tabla de modelo.
   const urlDelModelo = 'http://localhost:3000/api/modelo/eliminar'; //Elimina datos de modelo.
   const urlListaModelosInactivos = 'http://localhost:3000/api/modelosInactivos';
+  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminarmodelo';
 
-
-  const [tableData, setTableData] = useState([]);
+//Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  
+const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
@@ -70,33 +74,25 @@ export const ListaModelos = ({idRol,data,update}) => {
   axios.get (urlListaModelosInactivos).then(response=> setTableDataInactivos(response.data))
 }, [cambio, inactivo]);
 
-//Imprime el EXCEL 
+//GENERADOR DE EXCEL
 const handleGenerarExcel = () => {
   const workbook = XLSX.utils.book_new();
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = tableData.map((row, index) => ({
+  const dataForExcel = filteredData.map((row, index) => ({
     'N°': row.IdModelo,
     'Marca': row.Marca,
     'Modelo': row.Modelo,
-    'Año': row.anio,
-    //'Estado': row.estado,
+    'Año': row.anio, 
   }));
 
-  const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Marca','Modelo','Año'] });
 
-  // Formato para el encabezado
-  worksheet['A1'] = { v: 'LISTA DE MODELOS', s: { font: { bold: true } } };
-  worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-  worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-  worksheet['B5'] = { v: 'Marca', s: { font: { bold: true }} };
-  worksheet['C5'] = { v: 'Modelo', s: { font: { bold: true }} };
-  worksheet['D5'] = { v: 'Año', s: { font: { bold: true } }};
- // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
+
 
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-  XLSX.writeFile(workbook, 'Lista_de_Garantia.xlsx');
+  XLSX.writeFile(workbook, 'Lista_de_Modelo.xlsx');
 };
 
 
@@ -149,7 +145,7 @@ const handleGenerarExcel = () => {
   );
 
   const columns = [
-    { field: 'IdModelo', headerName: 'ID ', width: 190 },
+    { field: 'IdModelo', headerName: 'ID ', width: 150 },
     { field: 'Marca', headerName: 'Marca', width: 300 },
     { field: 'Modelo', headerName: 'Modelo', width: 300},
     { field: 'anio', headerName: 'Año', width: 260 },
@@ -203,9 +199,20 @@ function handleDel(id) {
             IdModelo:id
           }; 
           console.log(data);
-  
+
+          let dataB =
+          {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlBorrarBitacora,
+            activo: props.activo,
+            dataB: dataB
+          };
+
           await axios .delete(urlDelModelo,{data}) .then(response => {
               swal('Modelo eliminado correctamente', '', 'success');
+              Bitacora(bitacora)
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
@@ -239,8 +246,8 @@ function handleDel(id) {
       }).then((op)  => {
           switch (op) {
             case 'update':
-              data(id)
-              update(true)
+              props.data(id)
+              props.update(true)
               navegate('/config/RegistroModelo')
               break;
               default:
@@ -320,12 +327,15 @@ function handleDel(id) {
           </div>
         </div>
         <DataGrid
+         pagination
           getRowId={tableData => tableData.IdModelo}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
+          autoHeight
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

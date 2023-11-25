@@ -31,15 +31,16 @@ import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 //GENERADOR DE PDF
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaGarantia = ({ idRol, data, update }) => {
+export const ListaGarantia = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
-    idRol: idRol,
+    idRol: props.idRol,
     idObj: 8
   }
   useEffect(() => {
@@ -49,10 +50,13 @@ export const ListaGarantia = ({ idRol, data, update }) => {
   const [cambio, setCambio] = useState(0)
   const [inactivo, setInactivo] = useState(false)
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   //URL DE GARANTIA GET Y DELETE 
   const urlGarantias = 'http://localhost:3000/api/garantias';
   const urlGarantiasInactivas = 'http://localhost:3000/api/garantiasInactivas';
   const urlDelGarantias = 'http://localhost:3000/api/garantias/eliminar';
+  const urlBorrarBitacora= 'http://localhost:3000/api/bitacora/EliminarGarantia';
 
   const [tableData, setTableData] = useState([]);
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
@@ -69,34 +73,24 @@ export const ListaGarantia = ({ idRol, data, update }) => {
       .catch(error => console.log(error));
   }, [cambio, inactivo]);
 
-  //Imprime el EXCEL 
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
+  //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
 
-    // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row, index) => ({
-      'N°': row.IdGarantia,
-      'Descripción': row.descripcion,
-      'Meses de Garantía': row.Meses,
-      'Producto': row.producto,
-      'Estado': row.estado,
-    }));
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°': row.IdGarantia,
+    'Descripción': row.descripcion,
+    'Meses de Garantia': row.Meses,
+    'Producto': row.producto,
+  }));
 
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Meses de Garantia','Producto'] });
 
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE GARANTIA', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Descripción', s: { font: { bold: true } } };
-    worksheet['C5'] = { v: 'Meses de Garantía', s: { font: { bold: true } } };
-    worksheet['D5'] = { v: 'Producto', s: { font: { bold: true } } };
-    worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } } };
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Garantia.xlsx');
-  };
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Garantias.xlsx');
+};
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -114,7 +108,6 @@ export const ListaGarantia = ({ idRol, data, update }) => {
             'Descripción': row.descripcion,
             'Meses de Garantia': row.Meses,
             'Producto': row.producto,
-            'Estado': row.estado,
           };
         });
         return formattedData;
@@ -200,11 +193,21 @@ export const ListaGarantia = ({ idRol, data, update }) => {
             let data = {
               IdGarantia: id,
             };
+            let dataB =
+            {
+              Id: props.idUsuario
+            };
+            const bitacora = {
+              urlB: urlBorrarBitacora,
+              activo: props.activo,
+              dataB: dataB
+            };
 
             console.log(data);
 
             await axios.delete(urlDelGarantias, { data }).then(response => {
               swal("Garantia eliminada correctamente", "", "success")
+              Bitacora(bitacora)
               setCambio(cambio + 1)
             }).catch(error => {
               console.log(error);
@@ -242,8 +245,8 @@ export const ListaGarantia = ({ idRol, data, update }) => {
       }).then((op) => {
         switch (op) {
           case 'update':
-            data(id)
-            update(true)
+            props.data(id)
+           props.update(true)
             navegate('/menuVentas/RegistroGarantia')
             break;
           default:
@@ -317,12 +320,15 @@ export const ListaGarantia = ({ idRol, data, update }) => {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdGarantia}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
