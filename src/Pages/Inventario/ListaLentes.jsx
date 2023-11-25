@@ -17,6 +17,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
+
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
@@ -96,7 +99,7 @@ export const ListaLentes = ({idRol,data,update}) => {
     const subTitulo = "LISTA DE LENTES "
 
     const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
         
 }
   };

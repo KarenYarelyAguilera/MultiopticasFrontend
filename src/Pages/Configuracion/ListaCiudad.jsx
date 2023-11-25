@@ -5,7 +5,8 @@ import 'jspdf-autotable';
 import * as XLSX from 'xlsx'
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
@@ -109,7 +110,7 @@ const handleGenerarExcel = () => {
       const subTitulo = "LISTA DE CIUDADES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };

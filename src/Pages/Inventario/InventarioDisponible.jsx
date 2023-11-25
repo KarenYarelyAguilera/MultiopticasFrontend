@@ -7,6 +7,8 @@ import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -84,7 +86,7 @@ export const InventarioDisponible = (props) => {
       const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
 
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };
