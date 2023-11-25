@@ -36,19 +36,30 @@ export const Backup = props => {
     axios.get(urlArchivos)
       .then(response => {
         const archivos = response.data;
-  
+
         // Ordena las fechas en orden descendente en el cliente
         const sortedArchivos = archivos.sort((a, b) => {
           const dateA = new Date(a);
           const dateB = new Date(b);
           return dateB - dateA;
         });
-  
+
         setArchivos(sortedArchivos);
       })
       .catch(error => console.log(error));
   }, []);
-  
+
+
+  //Par ver que archivo esta mostrando y si es el ultimo agregado
+  useEffect(() => {
+    axios.get(urlArchivos)
+      .then(files => {
+        console.log("Archivos ordenados por la fecha de último acceso:", files);
+      }).catch(err => {
+        console.error("Error:", err);
+      })
+  });
+
 
 
 
@@ -65,11 +76,40 @@ export const Backup = props => {
   }
 
 
+
+
+
+  //para recargar la pantalla
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  useEffect(() => {
+    if (forceUpdate) {
+      // Realiza las operaciones necesarias después de la actualización
+      // Por ejemplo, cargar nuevamente los archivos después de realizar una acción
+      axios.get(urlArchivos)
+        .then(response => {
+          const archivos = response.data;
+          const sortedArchivos = archivos.sort((a, b) => {
+            const dateA = new Date(a);
+            const dateB = new Date(b);
+            return dateB - dateA;
+          });
+          setArchivos(sortedArchivos);
+          // Después de actualizar, establece forceUpdate en falso
+          setForceUpdate(false);
+        })
+        .catch(error => console.log(error));
+    }
+  }, [forceUpdate]);
+
+
   const handleClick = async () => {
     try {
       const response = await axios.get(urlBackup);
       console.log(response.data); // Accede a los datos de la respuesta si es necesario
       swal("Backup creado correctamente", "", "success");
+      // Después de realizar la acción, establece forceUpdate en true
+      setForceUpdate(true);
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un código de estado diferente de 2xx
@@ -101,8 +141,12 @@ export const Backup = props => {
       // Espera a que el mensaje de éxito de Swal se muestre antes de navegar
       await swal("¡Restauración creada con éxito!", "", "success");
 
+      // Después de realizar la acción, establece forceUpdate en true
+      setForceUpdate(true);
+
       // Navega a la página '/' después de que el usuario haya confirmado el éxito
-      navegate('/usuarios');
+      //navegate('/usuarios');
+      
     } catch (error) {
       console.error(error);
       swal("¡Error al crear la restauración", "", "error");
