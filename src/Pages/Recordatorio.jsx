@@ -118,7 +118,7 @@ export const Recordatorio = (props) => {
   const lastDayOfMonthString = lastDayOfMonth.toISOString().split('T')[0];
   const [endDate, setEndDate] = useState(lastDayOfMonthString);
 
-//limpiar filtros de la fecha
+  //limpiar filtros de la fecha
   const handleClearFilter = () => {
     setStartDate(firstDayOfMonthString);
     setEndDate(lastDayOfMonthString);
@@ -139,29 +139,29 @@ export const Recordatorio = (props) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
+      const currentDateTime = new Date().toLocaleString();
 
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
 
-      'ID': row.IdRecordatorio,
-      'Cliente': row.IdCliente,
-      'Nombre': row.nombre,
-      'Apellido': row.apellido,
-      'Nota': row.Nota,
-      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
-    }));
+        'ID': row.IdRecordatorio,
+        'Cliente': row.IdCliente,
+        'Nombre': row.nombre,
+        'Apellido': row.apellido,
+        'Nota': row.Nota,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+      }));
 
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
 
 
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
 
 
     }
-    
+
   };
 
   const handleAddEvent = () => {
@@ -458,7 +458,7 @@ export const Recordatorio = (props) => {
             className='inputCustomF'
           ></input>
 
-          <span style={{marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
+          <span style={{ marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
           <input
             type="date"
             value={endDate}
@@ -471,7 +471,7 @@ export const Recordatorio = (props) => {
           ></input>
 
 
-          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem'}}></HighlightOffTwoToneIcon></Button>
+          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem' }}></HighlightOffTwoToneIcon></Button>
 
         </div>
 

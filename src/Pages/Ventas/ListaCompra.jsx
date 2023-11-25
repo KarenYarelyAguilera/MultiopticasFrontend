@@ -166,9 +166,12 @@ export const ListaCompra = (props) => {
       const urlPDF = 'Reporte_Compras.pdf';
       const subTitulo = "LISTA DE COMPRAS"
 
+
+
+      //generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+
       const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
 
     }
 
@@ -229,8 +232,10 @@ export const ListaCompra = (props) => {
   }
 
 
+
   function handlAnular(id) {
     alert(props.idUsuario)
+
 
     let data = {
       idUsuario: props.idUsuario,
