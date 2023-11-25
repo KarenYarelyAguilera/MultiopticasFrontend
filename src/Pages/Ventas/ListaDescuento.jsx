@@ -46,6 +46,8 @@ export const ListaDescuento = ({idRol,data,update}) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
 //URL DE DESCUENTO
 const urlListaDescuentos = 'http://localhost:3000/api/Descuento';
 const urlListaDescuentosInactivos = 'http://localhost:3000/api/DescuentosInactivos';
@@ -309,12 +311,15 @@ const handleGenerarExcel = () => {
         </div>
 
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdDescuento}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

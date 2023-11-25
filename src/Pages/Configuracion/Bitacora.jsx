@@ -21,6 +21,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const Bitacora = (props) => {
   const [cambio,setCambio] = useState(0)
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
 const urlBitacora=
 "http://localhost:3000/api/bitacora";
@@ -66,7 +67,20 @@ const urlSalirListaBitacora=
     { field: 'Objeto', headerName: 'Modulo', width: 170 },
     { field: 'accion', headerName: 'Acción', width: 180 },
     { field: 'descripcion', headerName: 'Descripción', width: 470 },
-    { field: 'fecha', headerName: 'Fecha', width: 260 },
+    
+    { field: 'fecha',
+     headerName: 'Fecha', 
+     width: 170, 
+     headerAlign: 'center',
+     renderCell: (params) => (
+      <span>
+          {new Date(params.value).toLocaleDateString('es-ES')}
+      </span>
+  ),
+    
+    
+    },
+
 
   ];
 
@@ -152,12 +166,15 @@ const urlSalirListaBitacora=
           
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdBitacora}
           rows={filteredData}
+          autoHeight
           columns={columns}
-          pageSize={5}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

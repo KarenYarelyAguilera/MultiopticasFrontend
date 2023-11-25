@@ -13,11 +13,11 @@ import passwordRecovery from '../../IMG/passwordrecovery.png';
 
 export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, primeraVez }) => {
 
-  const [clave1, setContra1] = useState("");
+  const [contra1, setContra1] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
   const [msj, setMsjs] = useState("");
 
-  const [clave2, setContra2] = useState("");
+  const [contra2, setContra2] = useState("");
   const [errorContra2, setErrorContra2] = useState(false);
   const [advertencia, setadvertencia] = useState(false);
 
@@ -91,13 +91,13 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, p
                   <FilledInput
                     onKeyDown={(e) => {
                       setContra1(e.target.value);
-                      if (clave1 === "") {
+                      if (contra1 === "") {
                         setErrorContra1(true);
                         setMsjs("Los campos no deben estar vacios");
                       } else {
                         setErrorContra1(false)
                         var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
-                        if (!regularExpression.test(clave1)) {
+                        if (!regularExpression.test(contra1)) {
                           setErrorContra1(true)
                           setMsjs("");
                         } else {
@@ -138,14 +138,14 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, p
                   <FilledInput
                     onKeyDown={(e) => {
                       setContra2(e.target.value);
-                      if (clave2 === "") {
+                      if (contra2 === "") {
                         setErrorContra2(true);
                         setadvertencia("Los campos no deben estar vacios");
                       }
                       else {
                         setErrorContra2(false)
                         var regularExpression = /^[a-zA-Z0-9!@#$%^&*]+$/;
-                        if (!regularExpression.test(clave2)) {
+                        if (!regularExpression.test(contra2)) {
                           setErrorContra2(true)
                           setadvertencia("");
                         }
@@ -197,7 +197,7 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, p
                     swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
                   } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
                     swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
-                  } else if (clave1 !== clave2) {
+                  } else if (contra1 !== contra2) {
                     swal("Las contraseñas deben coincidir.", "", "error");
                   } else {
                     handleClick()

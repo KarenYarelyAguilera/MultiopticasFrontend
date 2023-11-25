@@ -33,12 +33,13 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
-export const ListaGenero = ({idRol,data,update}) => {
+export const ListaGenero = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:8
   }
   useEffect(()=>{
@@ -48,44 +49,46 @@ export const ListaGenero = ({idRol,data,update}) => {
   const [cambio, setCambio] = useState(0)
   const [marcah, setMarcah] = useState()
 
+  
+
   //API DE GENERO
  const urlGenero = 'http://localhost:3000/api/Genero';
  const urlDeleteGenero = 'http://localhost:3000/api/Genero/borrar';
  const urlListaGeneroInactivos = 'http://localhost:3000/api/Genero/GeneroInactivo';
+ const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminarGenero';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
+  
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   useEffect(() => {
     axios.get(urlGenero).then(response=>setTableData(response.data))
     axios.get (urlListaGeneroInactivos).then(response=> setTableDataInactivos(response.data))
   }, [cambio, inactivo]);
 
-  //Imprime el EXCEL 
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row, index) => ({
-      'N°':row.IdGenero,
-      'Género':row.descripcion, 
-    }));
-  
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE GÉNEROS', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Género', s: { font: { bold: true }} };
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Genero.xlsx');
-  };
+  //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdGenero,
+    'Género':row.descripcion, 
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Género'] });
+
+
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Género.xlsx');
+};
   
 
    //IMPRIMIR PDF
@@ -180,8 +183,8 @@ export const ListaGenero = ({idRol,data,update}) => {
       }).then((op) => {
         switch (op) {
             case 'update':
-            data(id)
-            update(true)
+            props.data(id)
+            props.update(true)
         navegate('/config/RegistroGenero')
         break;
         default:
@@ -218,9 +221,19 @@ export const ListaGenero = ({idRol,data,update}) => {
               IdGenero: id
             };
             console.log(data);
+             //Bitacora
+            let dataB = {
+              Id: props.idUsuario
+            };
+            const bitacora = {
+              urlB: urlBorrarBitacora,
+              activo: props.activo,
+              dataB: dataB
+            };
       
             await axios .delete(urlDeleteGenero,{data}) .then(response => {
               swal('Género eliminado correctamente', '', 'success');
+              Bitacora(bitacora)
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
@@ -302,12 +315,15 @@ export const ListaGenero = ({idRol,data,update}) => {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdGenero}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
