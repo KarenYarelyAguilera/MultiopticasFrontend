@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 import { generatePDF } from '../../Components/generatePDF';
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -164,8 +166,10 @@ export const ListaCompra = (props) => {
       const urlPDF = 'Reporte_Compras.pdf';
       const subTitulo = "LISTA DE COMPRAS"
 
-      const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+
+      //generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+
+
     }
 
   };
@@ -224,8 +228,12 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion", "", "error")
   }
 
-  function handlAnular(id) {
-    alert(props.idUsuario)
+
+ // function handlAnular(id) {
+   // alert(props.idUsuario)
+
+  function handlAnular(id){
+
     let data = {
       idUsuario: props.idUsuario,
       compraId: id

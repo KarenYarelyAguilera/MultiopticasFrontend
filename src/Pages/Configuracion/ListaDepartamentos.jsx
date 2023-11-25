@@ -11,7 +11,8 @@ import { useNavigate } from 'react-router';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 
 //Mui-Material-Icons
@@ -107,7 +108,7 @@ const handleGenerarExcel = () => {
       const subTitulo = "LISTA DE DEPARTAMENTOS"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
     
   };

@@ -30,6 +30,9 @@ import { generatePDF } from '../../Components/generatePDF';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
+
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
   const [permisos, setPermisos] = useState([]);
@@ -102,7 +105,7 @@ export const ListaClientes = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'Identidad': row.idCliente,
+            'DNI': row.idCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
             'Genero': row.genero,
@@ -119,7 +122,7 @@ export const ListaClientes = (props) => {
       const subTitulo = "LISTA DE CLIENTES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
  
   };

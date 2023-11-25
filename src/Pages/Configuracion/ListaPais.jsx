@@ -8,7 +8,8 @@ import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -106,7 +107,7 @@ const handleGenerarExcel = () => {
     const subTitulo = "LISTA DE PAÍSES"
   
     const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
   }
 
 };

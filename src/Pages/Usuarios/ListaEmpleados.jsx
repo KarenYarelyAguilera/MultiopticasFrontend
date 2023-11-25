@@ -14,6 +14,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 import { generatePDF } from '../../Components/generatePDF';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -105,7 +107,7 @@ export const ListaEmpleados = (props) => {
       const subTitulo = "LISTA DE EMPLEADOS"
 
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };
@@ -136,25 +138,25 @@ export const ListaEmpleados = (props) => {
     { field: 'numeroIdentidad', headerName: 'Número de identidad', width: 190, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-    { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 190, headerAlign: 'center' },
-    { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
-    { field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
+    { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
+    { field: 'direccion', headerName: 'Sucursal', width: 210, headerAlign: 'center' },
+    //{ field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
 
-    {
-      field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaIngreso);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
-    {
-      field: 'fechaCumpleanos', headerName: 'Fecha Nacimiento', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaCumpleanos);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      }
-    },
-    { field: 'estado', headerName: 'Estado', width: 190, headerAlign: 'center' },
+    // {
+    //   field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
+    //   valueGetter: (params) => {
+    //     const date = new Date(params.row.fechaIngreso);
+    //     return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    //   },
+    // },
+    // {
+    //   field: 'fechaCumpleanos', headerName: 'Fecha Nacimiento', width: 190,
+    //   valueGetter: (params) => {
+    //     const date = new Date(params.row.fechaCumpleanos);
+    //     return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    //   }
+    // },
+    { field: 'estado', headerName: 'Estado', width: 150, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
