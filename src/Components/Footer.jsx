@@ -4,7 +4,7 @@ import { TextCustom } from './TextCustom'
 
 export const Footer = () => {
   return (
-    <div  style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <div className='contFooter' style={{ justifyContent: 'center', alignItems: 'center' }}>
       {/*   <div className="sectInfoFoot">
             <img src={logoM} className='logoFoot' alt="Imagen no encontrada" />
             <div className="sectInfoContact">
