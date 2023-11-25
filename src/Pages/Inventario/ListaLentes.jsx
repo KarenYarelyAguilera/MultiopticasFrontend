@@ -22,12 +22,13 @@ import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
-export const ListaLentes = ({idRol,data,update}) => {
+export const ListaLentes = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:3
   }
   useEffect(()=>{
@@ -38,6 +39,12 @@ export const ListaLentes = ({idRol,data,update}) => {
   const urlLentesInactivos ='http://localhost:3000/api/LentesInactivos';
 
   const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
+
+//Bitacora
+const urlBitacoraDeleteLentes='http://localhost:3000/api/bitacora/eliminarlentes';
+const urlBitacoraSalirListaLentes='http://localhost:3000/api/bitacora/saliolistalentes';
+
+
 
 
   const [cambio, setCambio] = useState(0)
@@ -162,10 +169,20 @@ function handleDel(id) {
           let data = {
             IdLente:id
           }; 
+          //Funcion de Bitacora 
+          let dataB = {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlBitacoraDeleteLentes,
+            activo: props.activo,
+            dataB: dataB
+          };
           console.log(data);
   
           await axios .delete(urlLentesEliminar,{data}) .then(response => {
               swal('Lente eliminado correctamente', '', 'success');
+              Bitacora(bitacora)
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
@@ -199,8 +216,8 @@ function handleDel(id) {
         }).then((op)  => {
             switch (op) {
               case 'update':
-                data(id)
-                update(true)
+                props.data(id)
+                props.update(true)
                 navegate('/Inventario/RegistroLente')
                 break;
                 default:
@@ -210,8 +227,18 @@ function handleDel(id) {
       }
      
     };
+    //Funcion de Bitacora 
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraSalirListaLentes,
+      activo: props.activo,
+      dataB: dataB
+    };
 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/inventario');
   };
 
