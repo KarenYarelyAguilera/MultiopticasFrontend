@@ -1308,6 +1308,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <Kardex2
                   bitacora={bitacora}
+                  idUsuario={idUsuario}
                   bita={bita}
                 />
               </div>
@@ -1580,7 +1581,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaCompra idRol={idRol} idUsuario={idUsuario} />
+                <ListaCompra idRol={idRol} idUsuario={idUsuario} id={data} dataa={Data} />
               </div>
               // </ProtectedRoute>
             }
