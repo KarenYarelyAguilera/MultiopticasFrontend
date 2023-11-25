@@ -21,6 +21,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 export const ListaProveedores = (props) => {
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
@@ -51,7 +52,10 @@ export const ListaProveedores = (props) => {
   const [Pais, setPais] = useState([]);
   const [Ciudad, setCiudad] = useState([]);
 
-  //COLOCAR APIS DE BITACORA AQUI---
+  //BITACORAS
+ const urlBitacoraDeleteProveedor='http://localhost:3000/api/bitacora/eliminarproveedores';
+ const urlBitacoraSalirListaProveedor='http://localhost:3000/api/bitacora/saliolistaproveedores';
+
   //-------------------------------------------------------------------
 
   const [proveed, setproveed] = useState('');
@@ -209,18 +213,21 @@ export const ListaProveedores = (props) => {
             let data = {
               IdProveedor: IdProveedor,
             };
-  
             //Funcion de Bitacora 
-            /*  let dataB = {
-               Id:props.idUsuario
-             } */
-  
+            let dataB = {
+              Id: props.idUsuario
+            };
+            const bitacora = {
+              urlB: urlBitacoraDeleteProveedor,
+              activo: props.activo,
+              dataB: dataB
+            };
             console.log(data);
   
             await axios
               .delete(urlDelProveedor, { data })
               .then(response => {
-                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                Bitacora(bitacora)
                 swal('Proveedor eliminado correctamente', '', 'success');
                 setCambio(cambio + 1);
               })
@@ -273,9 +280,14 @@ export const ListaProveedores = (props) => {
   //Funcion de Bitacora 
   let dataB = {
     Id: props.idUsuario
-  }
-
+  };
+  const bitacora = {
+    urlB: urlBitacoraSalirListaProveedor,
+    activo: props.activo,
+    dataB: dataB
+  };
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/inventario');
   };
 

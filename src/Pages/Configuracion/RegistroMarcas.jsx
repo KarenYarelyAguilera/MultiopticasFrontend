@@ -99,13 +99,18 @@ const actualizarMarca = async () => {
     activo: props.activo,
     dataB: dataB
   };
-  axios.put(urlUpdateMarca, data).then(() => {
-    swal("Marca Actualizada Correctamente", "", "success").then(() => {
-      Bitacora(bitacora)
-      props.limpiarData({});
-      props.limpiarUpdate(false)
-      navegate('/config/ListaMarcas');
-    })
+  axios.put(urlUpdateMarca, data).then(response => {
+    console.log(response);
+      if (response.data == false) {
+        swal('¡Esta marca ya existe!', '', 'error')
+      } else {
+        swal("Marca Actualizada Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
+          navegate('/config/ListaMarcas');
+        });
+      }
   }).catch(error => {
     console.log(error);
     swal('Error al Actualizar Marca , porfavor revise todos los campos.', '', 'error')
