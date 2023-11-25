@@ -72,7 +72,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
       const currentDateTime = new Date().toLocaleString();
 
       // Datos para el archivo Excel
-      const dataForExcel = filteredData.map((row, index) => ({
+      const dataForExcel =  (inactivo === false ? filteredData : tableDataBlock).map((row, index)  => ({
         '#': row.id_Usuario,
         'Usuario': row.Usuario,
         'Nombre': row.Nombre_Usuario,
@@ -86,7 +86,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-      XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+      XLSX.writeFile(workbook, 'Lista_de_Usuarios.xlsx');
     };
   };
   //IMPRIMIR PDF
@@ -95,7 +95,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataBlock).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
