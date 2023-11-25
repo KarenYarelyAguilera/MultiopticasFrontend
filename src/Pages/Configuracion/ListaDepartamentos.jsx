@@ -44,7 +44,8 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
 
   const [cambio, setCambio] = useState(0)
   const [marcah, setMarcah] = useState()
-
+  //Filtracion de fechas
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const urlDepartamento = 'http://localhost:3000/api/departamentos';
   const urlDeleteDepartamento = 'http://localhost:3000/api/departamento/eliminar';
@@ -64,34 +65,24 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
     axios.get (urlListaDepartamentoInactivos).then(response=> setTableDataInactivos(response.data))
   }, [cambio, inactivo]);
  
-  //GENERAR DE EXCEL
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
-      'No': row.IdDepartamento,
-      'Departamento': row.departamento,
-    }));
-    
-    const sortedDataForExcel = dataForExcel.sort((a, b) => a.No - b.No);
-  
-    const worksheet = XLSX.utils.json_to_sheet(sortedDataForExcel, { header: ['No', 'Departamento'] });
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Departamentos.xlsx');
-  };
-  
+//GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
 
-  // const handleGenerarExcel = () => {
-  //   const sortedData = [...tableData].sort((a, b) => a.IdDepartamento - b.IdDepartamento);
-  //   const wb = XLSX.utils.book_new();
-  //   const ws = XLSX.utils.json_to_sheet(sortedData);
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdDepartamento,
+    'Departamento':row.departamento, 
+  }));
 
-  //   XLSX.utils.book_append_sheet(wb, ws, 'Departamento');   // Agrega la hoja de cálculo al libro de trabajo
-  //   XLSX.writeFile(wb, 'Lista_de_Departamentos.xlsx'); // Genera el archivo de Excel
-  // };
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Departamento'] });
+
+
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Departamentos.xlsx');
+};
   
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -312,12 +303,15 @@ function handleDel(id) {
         </div>
 
         <DataGrid
+          pagination
           getRowId={tableData => tableData.IdDepartamento}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

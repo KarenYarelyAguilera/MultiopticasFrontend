@@ -31,12 +31,13 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
-export const ListaPais = ({idRol,data,update}) => {
+export const ListaPais = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:8
   }
   useEffect(()=>{
@@ -48,6 +49,7 @@ export const ListaPais = ({idRol,data,update}) => {
   const urlPais = 'http://localhost:3000/api/paises';
   const urlDelPais = 'http://localhost:3000/api/pais/eliminar';
   const urlListaPaisesInactivos = 'http://localhost:3000/api/pais/paisInactivo';
+  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminarPais';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,36 +57,31 @@ export const ListaPais = ({idRol,data,update}) => {
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
 
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   useEffect(() => {
     axios.get(urlPais).then(response=>setTableData(response.data))
     axios.get (urlListaPaisesInactivos).then(response=> setTableDataInactivos(response.data))
 
   }, [cambio, inactivo]);
 
-  //Imprime el EXCEL 
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row, index) => ({
-      'N°':row.IdPais,
-      'País':row.Pais, 
-    }));
-  
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE PAISES' , s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'País', s: { font: { bold: true }} };
-    //worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Países.xlsx');
-  };
-  
+//GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdPais,
+    'País':row.Pais, 
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'País'] });
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Paises.xlsx');
+};
 
  //IMPRIMIR PDF
  const handleGenerarReporte = () => {
@@ -177,8 +174,8 @@ export const ListaPais = ({idRol,data,update}) => {
       }).then((op) => {
         switch (op) {
             case 'update':
-            data(id)
-            update(true)
+            props.data(id)
+            props.update(true)
         navegate('/config/RegistroPais')
         break;
         default:
@@ -214,10 +211,20 @@ export const ListaPais = ({idRol,data,update}) => {
             let data = {
               IdPais: id
             };
+            let dataB =
+          {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlBorrarBitacora,
+            activo: props.activo,
+            dataB: dataB
+          };
             console.log(data);
       
             await axios .delete(urlDelPais,{data}) .then(response => {
               swal('País eliminado correctamente', '', 'success');
+              Bitacora(bitacora)
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
@@ -299,12 +306,15 @@ export const ListaPais = ({idRol,data,update}) => {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdPais}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

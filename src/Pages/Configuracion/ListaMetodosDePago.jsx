@@ -8,11 +8,8 @@ import * as XLSX from 'xlsx'
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
-
-
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from "../../IMG/fondoPDF.jpg";
 
@@ -24,18 +21,18 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
-
 //GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+//import { Bitacora } from './Bitacora';
+import { BiotechTwoTone } from '@mui/icons-material';
 
-export const ListaMetodosDePago = ({idRol,data,update}) => {
+export const ListaMetodosDePago = ({idRol,data,update,props}) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
@@ -57,41 +54,37 @@ export const ListaMetodosDePago = ({idRol,data,update}) => {
     const urlMetodosPago = 'http://localhost:3000/api/tipopago';
     const urlDelMetodosPago = 'http://localhost:3000/api/tipopago/eliminar';
     const urlLisTipoPagoInactivos = 'http://localhost:3000/api/tipopago/PagoInactivo';
+  //const urlBorrarMetodoPagoB = 'http://localhost:3000/api/bitacora/eliminarMetodopago';
     
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
 
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
  useEffect(() => {
   axios.get(urlMetodosPago).then(response=>setTableData(response.data))
   axios.get (urlLisTipoPagoInactivos).then(response=> setTableDataInactivos(response.data))
 }, [cambio, inactivo]);
 
-  //Imprime el EXCEL 
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row) => ({
-      'N°': row.IdTipoPago,
-      'Método':row.descripcion,
-     // 'Estado': row.estado,
-    }));
-  
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE METODO DE PAGO', s: { font: { bold: true } } };
-    worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Método', s: { font: { bold: true }} };
-   // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_MetodoPago.xlsx');
-  };
+   //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdTipoPago,
+    'Método De Pago':row.descripcion,
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Método De Pago'] });
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_MetodoPago.xlsx');
+};
 
    //IMPRIMIR PDF
    const handleGenerarReporte = () => {
@@ -193,7 +186,7 @@ function handleDel(id) {
             IdTipoPago:id
           }; 
           console.log(data);
-  
+      
           await axios .delete(urlDelMetodosPago,{data}) .then(response => {
               swal('Método de Pago eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
@@ -238,9 +231,9 @@ function handleDel(id) {
           }
         });
     }
- 
   };
 
+  
 //Boton de atras 
   const handleBack = () => {
     navegate('/config');
@@ -310,12 +303,15 @@ function handleDel(id) {
           </div>
         </div>
         <DataGrid
+         pagination
           getRowId={tableData => tableData.IdTipoPago}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

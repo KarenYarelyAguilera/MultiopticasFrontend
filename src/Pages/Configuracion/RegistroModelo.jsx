@@ -15,11 +15,14 @@ import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 //APIS DE MODELO 
 const urlMarcas = 'http://localhost:3000/api/marcas'; 
 const urlInsertModelo ='http://localhost:3000/api/modelos/crear';
 const urlUpdateModelo ='http://localhost:3000/api/modelo/actualizar';
+const urlInsertBitacora ='http://localhost:3000/api/bitacora/insertmodelo';
+const urlUpdateBitacora ='http://localhost:3000/api/bitacora/actualizarmodelo';
 
 export const RegistroModelo = (props) => {
 
@@ -55,8 +58,17 @@ export const RegistroModelo = (props) => {
     detalle: detalle,
     anio: anio,
     estado: estado,
-
   };
+   let dataB =
+   {
+     Id: props.idUsuario
+   };
+   const bitacora = {
+     urlB: urlInsertBitacora,
+     activo: props.activo,
+     dataB: dataB
+   }; 
+   console.log(data);
 
   //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertModelo, data).then(response => {
@@ -66,6 +78,7 @@ export const RegistroModelo = (props) => {
       swal('¡Este modelo ya existe!', '', 'error')
     } else{
       swal('Modelo agregado con exito', '', 'success').then(result => {
+      Bitacora(bitacora)
       navegate('/config/lista');
     });
     }
@@ -89,10 +102,23 @@ const actualizarModelo = async () => {
     anio: anio,
     estado: estado,
     IdModelo: props.data. IdModelo, 
-  }
+  };
+  let dataB =
+   {
+     Id: props.idUsuario
+   };
+   const bitacora = {
+     urlB: urlUpdateBitacora,
+     activo: props.activo,
+     dataB: dataB
+   }; 
+   console.log(data);
 
   axios.put(urlUpdateModelo, data).then(() => {
     swal("Modelo actualizado correctamente", "", "success").then(() => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       navegate('/config/lista');
     })
   }).catch(error => {
@@ -113,6 +139,8 @@ const actualizarModelo = async () => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/config/lista');

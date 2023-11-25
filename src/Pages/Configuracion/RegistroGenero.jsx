@@ -18,11 +18,13 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
  //API DE GENERO
  const urlInsetGenero = 'http://localhost:3000/api/Genero/insertar';
  const urlUpdateGenero = 'http://localhost:3000/api/Genero/actualizar';
- 
+ const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertGenero';
+ const urlUpdateBitacora= 'http://localhost:3000/api/bitacora/actualizarGenero';
 
 export const RegistroGenero = (props) => {
 
@@ -43,8 +45,17 @@ export const RegistroGenero = (props) => {
     let data = {
       descripcion:genero.toUpperCase(),
       estado: estado,
-    }
+    };
     console.log(data)
+    let dataB=
+    {
+      Id:props.idUsuario
+    }; 
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     axios.post(urlInsetGenero, data).then(response => {
       console.log(response);
@@ -52,7 +63,7 @@ export const RegistroGenero = (props) => {
         swal('¡Este Genero ya existe!', '', 'error')
       } else {
       swal('Genero agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
+       Bitacora(bitacora)
         navegate('/config/ListaGenero');
       });
     }
@@ -74,10 +85,22 @@ const actualizarGenero = async () => {
     descripcion:genero.toUpperCase(),
     estado: estado,
     IdGenero: props.data.IdGenero, //El dato de IdProducto se obtiene de Producto seleccionado.
-  }
+  };
+  let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
   axios.put(urlUpdateGenero, data).then(() => {
     swal("Género Actualizado Correctamente", "", "success").then(() => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       navegate('/config/ListaGenero');
     })
   }).catch(error => {
@@ -98,6 +121,8 @@ const handleBack = () => {
     dangerMode: true,
   }).then((confirmExit) => {
     if (confirmExit) {
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       props.update(false)
       props.Data({})
       navegate('/config/ListaGenero');
