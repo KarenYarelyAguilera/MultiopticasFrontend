@@ -311,13 +311,27 @@ export const DatosEmpleado = (props) => {
                       setErrorIdentidad(false);
                       setleyenda('');
                     }
-
                   }
                 }}
                 placeholder="Número de identidad"
                 id="Nidentidad"
               />
               <p class="error">{leyenda}</p>
+            </div>
+
+
+            <div className="contInput">
+              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha de Nacimiento"
+                id="fechaCumpleanos"
+                value={fechaNacimiento}
+                onChange={(e)=>setFechaNacimiento(e.target.value)}
+              />
             </div>
 
             <div className="contInput">
@@ -450,25 +464,6 @@ export const DatosEmpleado = (props) => {
               {<p className="error">{texto}</p>}
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Sucursal" className="titleInput" />
-              <select name="" className="selectCustom" id="sucursal" value={sucursal} onChange={(e)=>{
-                setSucursal(e.target.value)
-              }} >
-                {sucursales.length ? (
-                  sucursales.map(pre => (
-                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
-                      {pre.direccion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-
-              </select>
-            </div>
 
 
             <div className="contInput">
@@ -501,17 +496,23 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Fecha de Nacimiento" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Nacimiento"
-                id="fechaCumpleanos"
-                value={fechaNacimiento}
-                onChange={(e)=>setFechaNacimiento(e.target.value)}
-              />
+              <TextCustom text="Sucursal" className="titleInput" />
+              <select name="" className="selectCustom" id="sucursal" value={sucursal} onChange={(e)=>{
+                setSucursal(e.target.value)
+              }} >
+                {sucursales.length ? (
+                  sucursales.map(pre => (
+                    <option key={pre.IdSucursal} value={pre.IdSucursal}>
+                      {pre.direccion}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+
+              </select>
             </div>
 
             <div className="contInput">
@@ -525,67 +526,105 @@ export const DatosEmpleado = (props) => {
             </div>
 
             <div className="contBtnStepper">
-              <Button
-                variant="contained"
-                className="btnStepper"
-                onClick={() => {
-                  var Nidentidad = document.getElementById("Nidentidad").value;
-                  var nombre = document.getElementById("nombre").value;
-                  var apellido = document.getElementById("apellido").value;
-                  var telefono = document.getElementById("phone").value;
-                  var fechaIngreso = document.getElementById("fechaIngreso").value;
-                  var fechaCumpleanos = document.getElementById("fechaCumpleanos").value;
-                  var fechaSalida = document.getElementById("fechaSalida").value;
 
-                  if (fechaCumpleanos > fechaIngreso) {
-                    swal("Ingrese las fechas correctamente","", "error");
-                  }else if (nombre === "" || apellido === "" || Nidentidad === "" || telefono === "", fechaIngreso === "", fechaCumpleanos === "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(nombre)) {
-                    swal("El campo nombre solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (/(.)\1{2,}/.test(nombre)) {
-                    setErrorNombre(true);
-                    swal("El campo nombre no acepta letras consecutivas repetidas.", "", "error");
-                  } else if (!/^[a-zA-Z\s]+$/.test(apellido)) {
-                    swal("El campo apellido solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (/(.)\1{2,}/.test(apellido)) {
-                    setErrorApellido(true);
-                    swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
-                  } else if (isNaN(parseInt(Nidentidad))) {
-                    swal("El campo identidad solo acepta números.", "", "error");
-                  } else {
-                    setErrorIdentidad(false);
-                    var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
-                    if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
-                      setErrorIdentidad(true);
-                      setleyenda('El número de identidad es inválido');
-                      swal("El número de identidad es inválido", "", "error");
+            <Button
+    variant="contained"
+    className="btnStepper"
+    onClick={() => {
+        var Nidentidad = document.getElementById("Nidentidad").value;
+        var fechaCumpleanos = document.getElementById("fechaCumpleanos").value;
+        var nombre = document.getElementById("nombre").value;
+        var apellido = document.getElementById("apellido").value;
+      
+        var telefono = document.getElementById("phone").value;
+        var fechaIngreso = document.getElementById("fechaIngreso").value;
+       
+        var today = new Date();
+        var inputDate = new Date(fechaCumpleanos);
+
+        if (Nidentidad === "" || isNaN(parseInt(Nidentidad)) || fechaCumpleanos === "" || nombre === "" || apellido === "" || telefono === "" || fechaIngreso === "") {
+            swal("No deje campos vacíos.", "", "error");
+        } else {
+            var primeroscuatrodigitos = parseInt(Nidentidad.substring(0, 4));
+            if (primeroscuatrodigitos < 101 || primeroscuatrodigitos > 1811) {
+                swal("El número de identidad es inválido", "", "error");
+            } else {
+                var regex = /^\d{13}$/;
+                if (!regex.test(Nidentidad)) {
+                    swal("El número de identidad debe tener el formato correcto", "", "error");
+                } else if (inputDate > today) {
+                    swal("La fecha de nacimiento es incorrecta", "", "error");
+                } else if (fechaCumpleanos > fechaIngreso) {
+                    swal("Ingrese las fechas correctamente", "", "error");
+                } else if (inputDate > today) {
+                  swal("La fecha de ingreso es incorrecta", "", "error");
+              } else if (fechaIngreso < fechaCumpleanos) {
+                  swal("Ingrese las fechas correctamente", "", "error");
+              }  else {
+                    if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nombre)) {
+                        swal(
+                            "El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.",
+                            "",
+                            "error"
+                        );
+                    } else if (nombre.length < 3) {
+                        setErrorNombre(true);
+                        swal(
+                            "El campo nombre no acepta menos de 3 caracteres.",
+                            "",
+                            "error"
+                        );
+                    } else if (/(.)\1{2,}/.test(nombre)) {
+                        setErrorNombre(true);
+                        swal(
+                            "El campo nombre no acepta letras mayúsculas consecutivas repetidas.",
+                            "",
+                            "error"
+                        );
                     } else {
-                      setErrorIdentidad(false);
-                      var regex = /^\d{13}$/;
-                      if (!regex.test(Nidentidad)) {
-                        setErrorIdentidad(true);
-                        setleyenda('El número de identidad debe tener el formato correcto');
-                        swal("El número de identidad debe tener el formato correcto", "", "error");
-                      } else if (isNaN(parseInt(telefono))) {
-                        swal("El campo teléfono solo acepta números.", "", "error");
-
-                      }
-                      else if (! /^[0-9]+$/.test(telefono)) {
-                        swal("El campo teléfono solo acepta números.", "", "error");
-                      }
-
-                      else {
-                        props.actualizar ? actualizarEmpleado() : insertEmpleado();
-                      }
+                        setErrorNombre(false);
+                        if (!/^[A-Z]+(?: [A-Z]+)*$/.test(apellido)) {
+                            swal(
+                                "El campo apellido solo acepta letras mayúsculas y un espacio entre palabras.",
+                                "",
+                                "error"
+                            );
+                        } else if (apellido.length < 3) {
+                            setErrorApellido(true);
+                            swal(
+                                "El campo apellido no acepta menos de 3 caracteres.",
+                                "",
+                                "error"
+                            );
+                        } else if (/(.)\1{2,}/.test(apellido)) {
+                            setErrorApellido(true);
+                            swal(
+                                "El campo apellido no acepta letras consecutivas repetidas.",
+                                "",
+                                "error"
+                            );
+                        } else {
+                            setErrorApellido(false);
+                            if (isNaN(parseInt(telefono))) {
+                                swal("El campo teléfono solo acepta números.", "", "error");
+                            } else if (!/^[0-9]+$/.test(telefono)) {
+                                swal("El campo teléfono solo acepta números.", "", "error");
+                            } else {
+                                props.actualizar ? actualizarEmpleado() : insertEmpleado();
+                            }
+                        }
                     }
-                  }
                 }
-                }
-              >
-                {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+            }
+        }
+    }}
+>
+    {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
+</Button>
 
-              </Button>
+
+
+
               {/* <Button onClick={handleBack} className="btnStepper">
                 <h1>Back</h1>
               </Button> */}
