@@ -16,6 +16,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 
 //APIS DE PROVEEDOR
@@ -30,6 +31,9 @@ const urlPaises = //Paises
 const urlCiudades = //Ciudades
   'http://localhost:3000/api/ciudades';
 
+ //BITACORAS
+ const urlBitacoraInsertProveedor='http://localhost:3000/api/bitacora/insertoproveedores';
+ const urlBitacoraUpdateProveedor='http://localhost:3000/api/bitacora/actualizoproveedores';
 
 export const RegistroProveedores = (props) => {
 
@@ -103,19 +107,26 @@ export const RegistroProveedores = (props) => {
       correoElectronico: correoElectronico,
       estado: document.getElementById('estado').value,
       IdProveedor: props.data.IdProveedor, //El dato de IdProducto se obtiene de Producto seleccionado.
-    }
+    };
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraUpdateProveedor,
+      activo: props.activo,
+      dataB: dataB
+    };
 
-
-    //Funcion de bitacora 
-    /*  let dataB={
-       Id: props.idUsuario
-     } */
-
-    axios.put(urlUpdProveedor, data).then(() => {
-      swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/menuInventario/ListaProveedores');
-      })
+    axios.put(urlUpdProveedor, data).then(response => {
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Proveedor ya existe!', '', 'error')
+      }else{
+        swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora) 
+           navegate('/menuInventario/ListaProveedores');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Proveedor! , porfavor revise todos los campos.', '', 'error')
@@ -146,6 +157,14 @@ export const RegistroProveedores = (props) => {
       correoElectronico: correoElectronico,
       estado: document.getElementById('estado').value,
     };
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraInsertProveedor,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProveedor, data).then(response => {
@@ -154,7 +173,7 @@ export const RegistroProveedores = (props) => {
         swal('¡Este Proveedor ya existe!', '', 'error')
       }else{
         swal('Proveedor agregado con exito', '', 'success').then(result => {
-          //axios.post(urlInsertBitacora, dataB)
+          Bitacora(bitacora)
           navegate('/menuInventario/ListaProveedores');
         });
       }

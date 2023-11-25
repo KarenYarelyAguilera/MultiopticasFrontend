@@ -99,13 +99,19 @@ export const RegistroSucursal = (props) => {
       dataB: dataB
     };
 
-    axios.put(urlUpdSucursal, data).then(() => {
-      swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
-       Bitacora(bitacora)
-       props.limpiarData({});
-       props.limpiarUpdate(false)
-        navegate('/config/listaSucursal');
-      })
+    axios.put(urlUpdSucursal, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Esta Sucursal ya existe!', '', 'error')
+        Bitacora(bitacora)
+      } else {
+        swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
+           navegate('/config/listaSucursal');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Sucursal! , porfavor revise todos los campos.', '', 'error')
