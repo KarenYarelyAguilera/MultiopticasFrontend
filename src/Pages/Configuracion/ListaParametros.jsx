@@ -39,6 +39,8 @@ export const ListaParametros = ({props,data,update}) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   useEffect(() => {
     axios.get(urlParametros).then(response=>setTableData(response.data))
@@ -165,12 +167,15 @@ export const ListaParametros = ({props,data,update}) => {
 
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.Id_Parametro}
           rows={filteredData}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           // onRowClick={usuario => {
           //   swal({
           //     buttons: {

@@ -55,6 +55,9 @@ export const ListaMarcas = ({idRol,data,update}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [inactivo, setInactivo] = useState(false)
+
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   
   useEffect(() => {
     axios.get(urlMarcas).then(response=>setTableData(response.data))
@@ -62,28 +65,22 @@ export const ListaMarcas = ({idRol,data,update}) => {
 
   }, [cambio, inactivo]);
 
-  //Imprime el EXCEL 
-  const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = tableData.map((row, index) => ({
-      'N°': row.IdMarca,
-      'Marca':row.descripcion, 
-     // 'Estado': row.estado,
-    }));
-  
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
-    // Formato para el encabezado
-    worksheet['A1'] = { v: 'LISTA DE MARCAS', s: { font: { bold: true } } };
-    worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Marca', s: { font: { bold: true }} };
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Marca.xlsx');
-  };
+  //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdMarca,
+    'Marca':row.descripcion, 
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Marca'] });
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Marcas.xlsx');
+};
   
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -304,12 +301,15 @@ export const ListaMarcas = ({idRol,data,update}) => {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdMarca}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

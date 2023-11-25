@@ -17,11 +17,14 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
 import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
 const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
 const urlUpdateMarca = 'http://localhost:3000/api/marcas/actualizar';
+const urlInsertBitacora = 'http://localhost:3000/api//bitacora/insertmarca';
+const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarmarca';
 
 export const RegistroMarcas = (props) => {
   const navegate = useNavigate();
@@ -46,7 +49,16 @@ export const RegistroMarcas = (props) => {
     let data = {
       descripcion:marca,
       estado: estado
-    }
+    };
+     //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlInsertBitacora,
+    activo: props.activo,
+    dataB: dataB
+  };
 
     axios.post(urlInsertMarca, data).then(response => {
       console.log(response);
@@ -54,6 +66,7 @@ export const RegistroMarcas = (props) => {
         swal('¡Esta marca ya existe!', '', 'error')
       } else {
         swal('Marca creada exitosamente!', '', 'success').then(result => {
+          Bitacora(bitacora)
           navegate('/config/ListaMarcas');
         });
       }
@@ -76,10 +89,21 @@ const actualizarMarca = async () => {
     descripcion:marca,
     estado: estado,
     IdMarca: props.data.IdMarca, //El dato de IdProducto se obtiene de Producto seleccionado.
-  }
-
+  };
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlUpdateBitacora,
+    activo: props.activo,
+    dataB: dataB
+  };
   axios.put(urlUpdateMarca, data).then(() => {
     swal("Marca Actualizada Correctamente", "", "success").then(() => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       navegate('/config/ListaMarcas');
     })
   }).catch(error => {
@@ -100,6 +124,8 @@ const handleBack = () => {
     dangerMode: true,
   }).then((confirmExit) => {
     if (confirmExit) {
+      props.limpiarData({});
+      props.limpiarUpdate(false)
       props.update(false)
       props.Data({})
       navegate('/config/ListaMarcas');
