@@ -76,7 +76,7 @@ export const RecordatorioCitas = (props) => {
 
 
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
-  const urlClientes = 'http://localhost:3000/api/clientes';
+  const urlClientes = 'http://localhost:3000/api/clientesEx';
   const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
   const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
@@ -228,7 +228,7 @@ export const RecordatorioCitas = (props) => {
                   <Select
                     id="idClientes"
                     // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
                     value={selectedOption}
                     onChange={setSelectedOption}
                     placeholder="Seleccione un cliente"

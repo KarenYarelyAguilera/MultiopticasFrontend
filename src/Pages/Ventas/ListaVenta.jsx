@@ -38,8 +38,10 @@ export const ListaVenta = (props) => {
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
+  const urlAnularVenta="http://localhost:3000/api/Ventas/anular"
 
   const [permisos, setPermisos] = useState([]);
+  const [cambio,setCambio] = useState(0)
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
@@ -56,7 +58,7 @@ export const ListaVenta = (props) => {
     fetch(urlVentas)
       .then(response => response.json())
       .then(data => setTableData(data));
-  }, []);
+  }, [cambio]);
   //VENTA DETALLE
   useEffect(() => {
     axios.post(urlVentaDetalle, props.id).then(response => {
@@ -124,6 +126,7 @@ export const ListaVenta = (props) => {
     },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
     { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
+    { field: 'estado', headerName: 'Estado', width: 310 },
 
 
     {
@@ -149,6 +152,12 @@ export const ListaVenta = (props) => {
 
             <PictureAsPdfIcon></PictureAsPdfIcon>
           </Button>
+          <Button
+            className="btnDelete"
+            onClick={() => handlAnular(params.row.IdVenta)}
+          >
+            <DeleteForeverIcon></DeleteForeverIcon>
+          </Button>
 
         </div>
       ),
@@ -156,6 +165,17 @@ export const ListaVenta = (props) => {
 
     },
   ];
+
+  function handlAnular(id){
+    let data = {
+      idUsuario:props.idUsuario,
+      ventaId:id
+    }
+    axios.put(urlAnularVenta,data).then(()=>{
+      setCambio(cambio+1)
+      swal("Venta Anulada")
+    })
+  }
 
   const handlePrintModal = async (id) => {
     if (permisos[0].consultar === "n") {

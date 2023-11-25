@@ -228,8 +228,10 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion", "", "error")
   }
 
+
   function handlAnular(id) {
     alert(props.idUsuario)
+
     let data = {
       idUsuario: props.idUsuario,
       compraId: id

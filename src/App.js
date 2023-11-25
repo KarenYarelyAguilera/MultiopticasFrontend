@@ -1600,7 +1600,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   idRol={idRol}
                 />
                 <BarraHorizontal user={usuario} />
-                <ListaVenta datosventa={dVenta} idRol={idRol} />
+                <ListaVenta datosventa={dVenta} idRol={idRol} idUsuario={idUsuario} />
                 <Footer/>
               </div>
               // </ProtectedRoute>
@@ -1956,6 +1956,7 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <NuevaVenta venta={dVenta}
                   update={update}
+                  idUsuario={idEmpleado}
                   data={data} 
                   Data={Data} />
                 <Footer/>

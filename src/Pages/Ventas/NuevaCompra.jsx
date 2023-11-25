@@ -158,13 +158,53 @@ export const NuevaCompra = ({
     // let data2={
     //   Id:props.idUsuario
     // }
+    const total = compras.reduce((acumulador, compra) => {
+      const subtotalPorProducto = compra.cantidad * compra.costo;
+      return acumulador + subtotalPorProducto;
+    }, 0);
 
-    console.log(data);
-    await axios.post(urlCompra, data).then(() => {
-      swal("Compra registrada con exito", "", "success")
-      //axios.post(urlInsertCompraB,data2)
-      navegate('/menuInventario/ListaCompra');
-    })
+    swal({
+      title: "Confirme la Compra",
+      content: {
+        element: "div",
+        attributes: {
+          innerHTML: `
+            
+            <h3>Total a Pagar ${total}</h3>
+          `,
+        },
+      },
+      buttons: {
+        cancel: {
+          text: "Cancelar",
+          value: false,
+          visible: true,
+          closeModal: true,
+        },
+        confirm: {
+          text: "Confirmar",
+          value: true,
+          visible: true,
+          closeModal: true,
+        },
+      },
+    }).then((value) => {
+        if (value) {
+         
+            swal("¡Compra confirmada!", "", "success").then(()=>{
+              console.log(data);
+              axios.post(urlCompra, data).then(() => {
+                navegate('/menuInventario/ListaCompra');
+              })
+            });   
+        
+        } else {
+          // Lógica en caso de cancelación
+          swal("Compra cancelada", "", "error");
+        }
+      });
+
+   
 
   }
   const handleSelectChange = (event) => {
