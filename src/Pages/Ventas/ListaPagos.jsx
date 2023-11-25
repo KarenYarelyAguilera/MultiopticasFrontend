@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
@@ -24,18 +24,27 @@ import { Button } from '@mui/material';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
+
+import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+
 
 export const ListaPagos = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:9
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 9
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
 
   const [cambio, setCambio] = useState(0);
   const urlPagos = 'http://localhost:3000/api/pagos';
@@ -43,28 +52,60 @@ export const ListaPagos = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showPdfDialog, setShowPdfDialog] = useState(false);
   const [pdfData, setPdfData] = useState([]);
-  
+
   let [formatDataForPDF, setFormatDataForPDF] = useState();
   let [urlPDF, seturlPDF] = useState('');
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
+
+
   useEffect(() => {
-    axios.get(urlPagos).then(response =>{
+    axios.get(urlPagos).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
-  
-  
+
+
+  const handleGenerarExcel = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      'IdPago': row.IdPago,
+      'IdVenta': row.IdVenta,
+      'Tipo de Pago': row.MetodoDePago,
+      'Fecha': row.fecha,
+      'Estado': row.estado,
+      'Saldo Abonado': row.saldoAbono,
+      'Saldo Restante': row.saldoRestante,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdPago', 'IdVenta', 'Tipo de Pago', 'Fecha', 'Estado', 'Saldo Abonado', 'Saldo Restante'] });
+
+
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Pagos.xlsx');
+  }
+  };
+
+
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
           const fechaCre = new Date(row.fechaCreacion);
-          const fechaCreacion = String(fechaCre.getDate()).padStart(2,'0')+"/"+
-                                String(fechaCre.getMonth()).padStart(2,'0')+"/"+
-                                fechaCre.getFullYear();
+          const fechaCreacion = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
           return {
             'IdPago': row.IdPago,
             'IdVenta': row.IdVenta,
@@ -77,16 +118,16 @@ export const ListaPagos = (props) => {
         });
         return formattedData;
       };
-  
+
       urlPDF = 'Reporte_Pagos.pdf';
       const subTitulo = "LISTA DE PAGOS"
       const orientation = "landscape";
-  
+
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
-   
+
   };
-  
+
   const navegate = useNavigate();
 
   const filteredData = tableData.filter(row =>
@@ -109,9 +150,9 @@ export const ListaPagos = (props) => {
   const columns = [
     // { field: 'IdPago', headerName: 'ID', width: 100 },
     { field: 'IdVenta', headerName: 'Número de venta', width: 200 },
-    { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200},
+    { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200 },
     { field: 'fecha', headerName: 'Fecha', width: 200 },
-    {field: 'estado', headerName: 'Estado', width: 200 },
+    { field: 'estado', headerName: 'Estado', width: 200 },
     { field: 'saldoAbono', headerName: 'Saldo abonado', width: 200 },
     { field: 'saldoRestante', headerName: 'Saldo restante', width: 200 },
 
@@ -149,37 +190,37 @@ export const ListaPagos = (props) => {
 
   const seguimientoPago = (pago) => {
     if (permisos[0].insertar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const filasOriginales = filteredData; // Supongo que 'filteredData' contiene las filas originales
-  
-    // Verificar si existe alguna fila con estado "Pagado" y mismo idVenta
-    const tienePagadoMismoIdVenta = filasOriginales.some(
-      (fila) => fila.estado === "Pagado" && fila.IdVenta === pago.IdVenta
-    );
 
-    console.log(tienePagadoMismoIdVenta);
-  
-    if (pago.estado === "Pendiente" && tienePagadoMismoIdVenta) {
-      swal("Existe una venta pagada con esta misma ID de Venta", "", "error");
-    } else if (pago.saldoRestante > 0 || pago.estado === "Pendiente") {
-      let data = {
-        id: pago.IdVenta,
-        saldoRestante: pago.saldoRestante
-      };
-  
-      props.data(data);
-      navegate('/menuVentas/PagoDeVenta');
-    } else {
-      swal("Venta Pagada No puede seguir", "", "error");
+      // Verificar si existe alguna fila con estado "Pagado" y mismo idVenta
+      const tienePagadoMismoIdVenta = filasOriginales.some(
+        (fila) => fila.estado === "Pagado" && fila.IdVenta === pago.IdVenta
+      );
+
+      console.log(tienePagadoMismoIdVenta);
+
+      if (pago.estado === "Pendiente" && tienePagadoMismoIdVenta) {
+        swal("Existe una venta pagada con esta misma ID de Venta", "", "error");
+      } else if (pago.saldoRestante > 0 || pago.estado === "Pendiente") {
+        let data = {
+          id: pago.IdVenta,
+          saldoRestante: pago.saldoRestante
+        };
+
+        props.data(data);
+        navegate('/menuVentas/PagoDeVenta');
+      } else {
+        swal("Venta Pagada No puede seguir", "", "error");
+      }
     }
-    }
-    
+
   };
-  
-  
-  
-  
+
+
+
+
 
   const handleBack = () => {
     navegate('/ventas');
@@ -204,8 +245,8 @@ export const ListaPagos = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
-          {/* <div className="buscador"> */}
+        <div className="contFilter1">
+          
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
           />
@@ -217,31 +258,36 @@ export const ListaPagos = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
-                swal("No es posible realizar una accion con este boton","","error")
+                swal("No es posible realizar una accion con este boton", "", "error")
               }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              NUEVO
+            > <AddIcon style={{ marginRight: '3px' }} />  NUEVO
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '5px' }} />  Generar Excel
+            </Button>
+
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}
+            >  <PictureAsPdfIcon style={{ marginRight: '3px' }} />  Generar reporte
             </Button>
+
           </div>
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdPago}
           rows={filteredData}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
