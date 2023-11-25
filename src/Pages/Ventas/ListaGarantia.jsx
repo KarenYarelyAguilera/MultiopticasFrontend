@@ -4,15 +4,16 @@ import 'jspdf-autotable';
 //GENERADOR DE EXCEL 
 import * as XLSX from 'xlsx'
 
-import { DataGrid,esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
-import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import logoImg from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -23,6 +24,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, Icon } from '@mui/material';
 
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+
 import BorderAllIcon from '@mui/icons-material/BorderAll'; //para el excel 
 
 import '../../Styles/Usuarios.css';
@@ -30,40 +33,47 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 //GENERADOR DE PDF
-import {generatePDF} from '../../Components/generatePDF';
+import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaGarantia = ({idRol,data,update}) => {
+export const ListaGarantia = ({ idRol, data, update }) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:idRol,
-    idObj:8
+  const dataPermiso = {
+    idRol: idRol,
+    idObj: 8
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo] = useState(false)
 
   //URL DE GARANTIA GET Y DELETE 
-  const urlGarantias ='http://localhost:3000/api/garantias';
-  const urlDelGarantias ='http://localhost:3000/api/garantias/eliminar';
+  const urlGarantias = 'http://localhost:3000/api/garantias';
+  const urlGarantiasInactivas = 'http://localhost:3000/api/garantiasInactivas';
+  const urlDelGarantias = 'http://localhost:3000/api/garantias/eliminar';
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    axios.get(urlGarantias).then(response => { 
+    axios.get(urlGarantias).then(response => {
       setTableData(response.data);
-      })
+    })
       .catch(error => console.log(error));
-  }, [cambio]);
- 
+    axios.get(urlGarantiasInactivas).then(response => {
+      setTableDataInactivos(response.data);
+    })
+      .catch(error => console.log(error));
+  }, [cambio, inactivo]);
+
   //Imprime el EXCEL 
   const handleGenerarExcel = () => {
     const workbook = XLSX.utils.book_new();
     const currentDateTime = new Date().toLocaleString();
-  
+
     // Datos para el archivo Excel
     const dataForExcel = tableData.map((row, index) => ({
       'N°': row.IdGarantia,
@@ -72,52 +82,52 @@ export const ListaGarantia = ({idRol,data,update}) => {
       'Producto': row.producto,
       'Estado': row.estado,
     }));
-  
+
     const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-  
+
     // Formato para el encabezado
     worksheet['A1'] = { v: 'LISTA DE GARANTIA', s: { font: { bold: true } } };
     worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
     worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-    worksheet['B5'] = { v: 'Descripción', s: { font: { bold: true }} };
-    worksheet['C5'] = { v: 'Meses de Garantía', s: { font: { bold: true }} };
-    worksheet['D5'] = { v: 'Producto', s: { font: { bold: true } }};
-    worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
-  
+    worksheet['B5'] = { v: 'Descripción', s: { font: { bold: true } } };
+    worksheet['C5'] = { v: 'Meses de Garantía', s: { font: { bold: true } } };
+    worksheet['D5'] = { v: 'Producto', s: { font: { bold: true } } };
+    worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } } };
+
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
     XLSX.writeFile(workbook, 'Lista_de_Garantia.xlsx');
   };
- 
-  //IMPRIMIR PDF
-const handleGenerarReporte = () => {
-  if (permisos[0].consultar==="n") {
-    swal("No cuenta con los permisos para realizar esta accion","","error")
-  } else {
-    const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
-        const fechaCre = new Date(row.fechaNacimiento);
-        const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-          String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-          fechaCre.getFullYear();
-        return {
-          'N°': row.IdGarantia,
-          'Descripción': row.descripcion,
-          'Meses de Garantia': row.Meses,
-          'Producto': row.producto,
-          'Estado': row.estado,
-        };
-      });
-      return formattedData;
-    };
-  
-    const urlPDF = 'Report_Garantias.pdf';
-    const subTitulo = "LISTA DE GARANTIAS"
-  
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
-  }
 
-};
+  //IMPRIMIR PDF
+  const handleGenerarReporte = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const formatDataForPDF = () => {
+        const formattedData = tableData.map((row) => {
+          const fechaCre = new Date(row.fechaNacimiento);
+          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+            fechaCre.getFullYear();
+          return {
+            'N°': row.IdGarantia,
+            'Descripción': row.descripcion,
+            'Meses de Garantia': row.Meses,
+            'Producto': row.producto,
+            'Estado': row.estado,
+          };
+        });
+        return formattedData;
+      };
+
+      const urlPDF = 'Report_Garantias.pdf';
+      const subTitulo = "LISTA DE GARANTIAS"
+
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+    }
+
+  };
 
   const navegate = useNavigate();
 
@@ -129,13 +139,21 @@ const handleGenerarReporte = () => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const columns = [
-    { field: 'IdGarantia', headerName: 'ID Garantia', width: 210 },
-    { field: 'descripcion', headerName: 'Descripción', width: 210 },
+    { field: 'IdGarantia', headerName: 'ID', width: 210 },
+    { field: 'descripcion', headerName: 'Descripción', width: 310 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
-    { field: 'producto', headerName: 'Producto', width: 210 },
+    { field: 'Modelo', headerName: 'Producto', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
-    
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -160,7 +178,7 @@ const handleGenerarReporte = () => {
   //FUNCION DE ELIMINAR 
   function handleDel(id) {
     if (permisos[0].eliminar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
         content: (
@@ -171,34 +189,34 @@ const handleGenerarReporte = () => {
           </div>
         ),
         buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
+          cancel: 'Cancelar',
+          delete: 'Eliminar',
         },
-      }).then(async(op) => {
-  
+      }).then(async (op) => {
+
         switch (op) {
-          case null:
-  
+          case 'delete':
+
             let data = {
               IdGarantia: id,
             };
-      
+
             console.log(data);
-      
-            await axios.delete(urlDelGarantias,{data}).then(response=>{
-              swal("Garantia eliminada correctamente","","success")
-              setCambio(cambio+1)
-            }).catch(error=>{
+
+            await axios.delete(urlDelGarantias, { data }).then(response => {
+              swal("Garantia eliminada correctamente", "", "success")
+              setCambio(cambio + 1)
+            }).catch(error => {
               console.log(error);
-              swal("Error al eliminar la garantia","","error")
+              swal("Error al eliminar la garantia", "", "error")
             })
-          break;
+            break;
           default:
-          break;
+            break;
         }
       });
     }
-   
+
   };
 
   //BOTON DE RETROCEDER 
@@ -206,10 +224,10 @@ const handleGenerarReporte = () => {
     navegate('/config');
   };
 
-   //FUNCION DE ACTUALIZAR 
+  //FUNCION DE ACTUALIZAR 
   function handleUpdt(id) {
     if (permisos[0].actualizar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
         buttons: {
@@ -223,17 +241,17 @@ const handleGenerarReporte = () => {
         ),
       }).then((op) => {
         switch (op) {
-            case 'update':
+          case 'update':
             data(id)
             update(true)
-        navegate('/menuVentas/RegistroGarantia')
-        break;
-        default:
-        break;
+            navegate('/menuVentas/RegistroGarantia')
+            break;
+          default:
+            break;
         }
       });
     }
-   
+
   };
 
   return (
@@ -251,7 +269,7 @@ const handleGenerarReporte = () => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -264,25 +282,31 @@ const handleGenerarReporte = () => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
                 if (permisos[0].insertar === "n") {
-                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                  swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
                   navegate('/menuVentas/RegistroGarantia');
                 }
-                
+
               }}
             >
-            <AddIcon style={{ marginRight: '3px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
-            </Button>y
+            </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <BorderAllIcon style={{ marginRight: '3px' }} />
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar excel
+            </Button>
+
+             
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
             <Button className="btnReport" onClick={handleGenerarReporte}>
@@ -294,7 +318,7 @@ const handleGenerarReporte = () => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdGarantia}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

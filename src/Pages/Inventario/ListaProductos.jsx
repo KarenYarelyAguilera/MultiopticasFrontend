@@ -22,26 +22,29 @@ import { TextCustom } from '../../Components/TextCustom';
 export const ListaProductos = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:3
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 3
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo] = useState(false)
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
 
   const urlProducto = 'http://localhost:3000/api/productos'; //MUESTA LOS PRODUCTOS EN LA TABLA
-  const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
+  const urlProductosInactivos = 'http://localhost:3000/api/productosInactivos';
+  //const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
 
   const urlModelos = 'http://localhost:3000/api/modelos'; //MUESTRA LOA MODELOS
 
   const [tableData, setTableData] = useState([]);
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  
-         //COLOCAR APIS DE BITACORA AQUI---
+
+  //COLOCAR APIS DE BITACORA AQUI---
   //-------------------------------------------------------------------
 
   const [precio, setprecio] = useState('');
@@ -64,10 +67,14 @@ export const ListaProductos = (props) => {
     fetch(urlProducto)
       .then(response => response.json())
       .then(data => setTableData(data));
+    fetch(urlProductosInactivos)
+      .then(response => response.json())
+      .then(data => setTableDataInactivos(data));
     fetch(urlModelos)
       .then(response => response.json())
       .then(data => setModelo(data));
-  }, [cambio]);
+
+  }, [cambio, inactivo]);
 
   const navegate = useNavigate();
 
@@ -79,10 +86,18 @@ export const ListaProductos = (props) => {
     ),
   );
 
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   const handleGenerarReporte = () => {
-    if (permisos[0].consultar==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
-    }else{
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
           const fechaCre = new Date(row.fechaYHora);
@@ -90,35 +105,36 @@ export const ListaProductos = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'ID':row.IdProducto,
-            'Modelo':row.Modelo, 
-            'Marca':row.Marca,
+            'ID': row.IdProducto,
+            'Modelo': row.Modelo,
+            'Marca': row.Marca,
             'Descripcion': row.descripcion,
-            'Precio':row.precio,
+            'Precio': row.precio,
             'CantidadMinima': row.cantidadMin,
-            'CantidadMaxima':row.cantidadMax,
+            'CantidadMaxima': row.cantidadMax,
           };
         });
         return formattedData;
       };
-  
+
       const urlPDF = 'Reporte_Productos.pdf';
       const subTitulo = "LISTA DE PRODUCTOS"
-  
+
       generatePDF(formatDataForPDF, urlPDF, subTitulo);
     }
-    
+
   };
 
   const columns = [
     // Field: nombre en que se esta llamando en la consulta SELECT
-    { field: 'IdProducto', headerName: 'ID Producto', width: 190 },
+    { field: 'IdProducto', headerName: 'ID', width: 100 },
     { field: 'Modelo', headerName: 'Modelo', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 190 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 190 },
-    { field: 'precio', headerName: 'Precio', width: 190 },
-    { field: 'cantidadMin', headerName: 'Cantidad Minima', width: 190 },
-    { field: 'cantidadMax', headerName: 'Cantidad Maxima', width: 190 },
+    { field: 'descripcion', headerName: 'Descripción', width: 190 },
+    { field: 'precio', headerName: 'Precio', width: 120 },
+    { field: 'cantidadMin', headerName: 'Cantidad minima', width: 150 },
+    { field: 'cantidadMax', headerName: 'Cantidad máxima', width: 150 },
+    { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
     {
       field: 'borrar',
@@ -146,64 +162,61 @@ export const ListaProductos = (props) => {
 
   //FUNCION DE ELIMINAR 
   function handleDel(IdProducto) {
-    if (permisos[0].eliminar==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
-    }else{
+    if (permisos[0].eliminar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
       swal({
         content: (
           <div>
-  
+
             <div className="logoModal">¿Desea Eliminar este Producto?</div>
             <div className="contEditModal">
-  
+
             </div>
-  
+
           </div>
         ),
-        buttons: ['Eliminar', 'Cancelar'],
+        buttons: {delete:'Eliminar', cancel:'Cancelar'},
       }).then(async op => {
         switch (op) {
-          case null:
-  
-            let data = {
+          case 'delete':
+
+            /* let data = {
               IdProducto: IdProducto,
-            };
-  
+            }; */
+
             //Funcion de Bitacora 
             /*  let dataB = {
                Id:props.idUsuario
              } */
-  
-            console.log(data);
-  
-            await axios
-              .delete(urlDelProducto, { data })
-              .then(response => {
+
+            //console.log(data);
+
+//            await axios
+              //.delete(urlDelProducto, { data })
+              //.then(response => {
                 //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
-                swal('Producto eliminado correctamente', '', 'success');
+                swal('No es posible realizar esta acción ', '', 'error');
                 setCambio(cambio + 1);
-              })
-              .catch(error => {
-                console.log(error);
-                swal('Error al eliminar el Producto', '', 'error');
-              });
-  
+              
+              
+
             break;
-  
+
           default:
             break;
         }
       });
     }
-    
+
   }
 
   //FUNCION DE ACTUALIZAR
   function handleUpdt(id) {
 
-    if (permisos[0].actualizar==="n") {
-      swal("No cuenta con los permisos para realizar esta accion","","error")
-    }else{
+    if (permisos[0].actualizar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
       swal({
         buttons: {
           update: 'ACTUALIZAR',
@@ -211,7 +224,7 @@ export const ListaProductos = (props) => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el producto: {id.descripcion} ?
+            ¿Desea actualizar el producto: {id.Modelo} ?
           </div>
         ),
       }).then(
@@ -228,7 +241,7 @@ export const ListaProductos = (props) => {
         });
     }
 
-    
+
   };
 
   //Funcion de Bitacora 
@@ -255,7 +268,7 @@ export const ListaProductos = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -268,13 +281,13 @@ export const ListaProductos = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
-                if (permisos[0].insertar==="n") {
-                  swal("No tiene permisos para realizar esta acción","","error")
-                }else{
+                if (permisos[0].insertar === "n") {
+                  swal("No tiene permisos para realizar esta acción", "", "error")
+                } else {
                   navegate('/menuInventario/RegistroProducto2');
                 }
               }}
@@ -282,8 +295,14 @@ export const ListaProductos = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
@@ -292,7 +311,7 @@ export const ListaProductos = (props) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdProducto}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           pageSize={5}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

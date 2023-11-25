@@ -6,6 +6,20 @@
   font-family: 'Rubik', sans-serif;
 }
 
+body::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: white;        /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color:#316ee6;    /* color of the scroll thumb */
+  border-radius: 50px;       /* roundness of the scroll thumb */
+  border: 3px solid white;  /* creates padding around scroll thumb */
+}
+
 .error {
   color: rgb(163, 33, 33);
 }
@@ -229,6 +243,7 @@
 
   position: relative;
   left: 3%;
+  padding-bottom: 5%;
 }
 
 .CardUsuarios .contCard {
@@ -347,6 +362,57 @@
 
 /* AddCompra */
 
+/* AddCompra1 */
+.infoAddCompra1 {
+  width: 62%;
+  height: auto;
+  padding-left: 10%;
+
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-gap: 20%;
+
+  align-items: center;
+}
+
+.infoAddCompra1 .PanelInfo {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+}
+
+.infoAddCompra1 .PanelInfo .InputContPrincipal {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 50px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContCalclos {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: repeat(1,8fr);
+  grid-gap: 20px;
+  /* padding: 40px; */
+}
+
+.infoAddCompra1 .PanelInfo .contInput .selectCustom {
+  width: 325px;
+  height: 45px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(208, 208, 208, 0.349);
+  border: 2px solid gray;
+  font-weight: bold;
+  font-size: 15px;
+}
+/* AddCompra1 */
+
 /* Lista Permisos */
 .ContPermisos{
   width: 85%;
@@ -381,6 +447,24 @@
 
 .ContUsuarios .btnBack:hover{
   background-color: #316ee6;
+}
+
+.divInfoQuestion1 .btnBack {
+  width: 10%;
+  padding: 40px;
+  height: 20%;
+  background-color: #316ee6;
+  border-radius: 50px;
+  color: white;
+}
+
+.divInfoQuestion1 .btnBack:hover{
+  background-color: #316ee6;
+}
+
+.divInfoQuestion1 .btnBack .iconBack {
+  font-size: 40px;
+  color: white;
 }
 /* 
 .bntBackList{
@@ -619,7 +703,17 @@
   align-items: center;
 }
 
-.infoAddUser .PanelInfo {
+.infoAddUser1{
+  width: 100%;
+  height: auto;
+  padding-left: 2%;
+  display: grid;
+  grid-template-columns: 45% 78%;
+  margin-bottom: 5%;
+}
+
+.infoAddUser .PanelInfo,
+.infoAddUser1 .PanelInfo {
   width: 100%;
   height: auto;
 
@@ -627,7 +721,8 @@
   justify-content: center;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal {
+.infoAddUser .PanelInfo .InputContPrincipal
+.infoAddUser1 .PanelInfo .InputContPrincipal {
   width: 100%;
   height: auto;
   display: grid;
@@ -636,7 +731,7 @@
   /* padding: 40px; */
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal1 {
+.infoAddUser .PanelInfo .InputContPrincipal1{
   width: 100%;
   height: auto;
   display: grid;
@@ -645,7 +740,17 @@
   /* padding: 40px; */
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .btnCard {
+.infoAddUser1 .PanelInfo .InputContPrincipal1 {
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 30px;
+  /* padding: 40px; */
+}
+
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard,
+.infoAddUser1 .PanelInfo .InputContPrincipal .btnCard  {
   position: relative;
   left: 60%;
   width: 80%;
@@ -664,12 +769,14 @@
   align-items: center;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .btnCard h1 {
+.infoAddUser .PanelInfo .InputContPrincipal .btnCard h1,
+.infoAddUser1 .PanelInfo .InputContPrincipal .btnCard h1 {
   font-size: 16px;
   color: white;
 }
 
-.infoAddUser .PanelInfo .contInput {
+.infoAddUser .PanelInfo .contInput,
+.infoAddUser1 .PanelInfo .contInput {
   width: 50%;
   height: auto;
 
@@ -679,7 +786,8 @@
   position: relative;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustom {
+.infoAddUser .PanelInfo .contInput .inputCustom,
+.infoAddUser1 .PanelInfo .contInput .inputCustom {
   width: 300px;
   height: 20px;
   padding: 10px;
@@ -690,7 +798,8 @@
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustomText {
+.infoAddUser .PanelInfo .contInput .inputCustomText,
+.infoAddUser1 .PanelInfo .contInput .inputCustomText {
   width: 300px;
   height: 180px;
   padding: 10px;
@@ -701,7 +810,8 @@
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustomPass {
+.infoAddUser .PanelInfo .contInput .inputCustomPass,
+.infoAddUser1 .PanelInfo .contInput .inputCustomPass {
   width: 320px !important;
   height: 40px;
   border-radius: 10px !important;
@@ -719,7 +829,8 @@
 .css-1gctnaj-MuiInputBase-input-MuiFilledInput-input {
   padding-top: 10px !important;
 }
-.infoAddUser .PanelInfo .contInput .inputCustomPass:before {
+.infoAddUser .PanelInfo .contInput .inputCustomPass:before,
+.infoAddUser1 .PanelInfo .contInput .inputCustomPass:before {
   border-bottom: none !important;
 }
 
@@ -727,7 +838,8 @@
   border-bottom: none !important;
 }
 
-.infoAddUser .PanelInfo .contInput .selectCustom {
+.infoAddUser .PanelInfo .contInput .selectCustom,
+.infoAddUser1 .PanelInfo .contInput .selectCustom {
   width: 325px;
   height: 45px;
   padding: 10px;
@@ -738,11 +850,13 @@
   font-size: 15px;
 }
 
-.infoAddUser .PanelInfo .contInput .inputCustom:focus-visible {
+.infoAddUser .PanelInfo .contInput .inputCustom:focus-visible,
+.infoAddUser1 .PanelInfo .contInput .inputCustom:focus-visible {
   outline: none;
 }
 
-.infoAddUser .PanelInfo .InputContPrincipal .contInput .titleInput {
+.infoAddUser .PanelInfo .InputContPrincipal .contInput .titleInput,
+.infoAddUser1 .PanelInfo .InputContPrincipal .contInput .titleInput {
   color: gray;
   font-weight: bold;
   margin-left: 5px;
@@ -775,6 +889,15 @@
   align-items: center;
 }
 
+.contBtnStepper2{
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+  padding-left: 55%;
+}
+
 .contBtnSventa {
   width: 100%;
   height: auto;
@@ -785,7 +908,8 @@
 
 .contBtnStepper .btnStepper,
 .contBtnStepper1 .btnStepper,
-.contBtnSventa .btnSVenta {
+.contBtnStepper2 .btnStepper,
+.contBtnSventa .btnSVenta{
   margin-top: 25px;
   width: 70%;
   height: 40px;
@@ -803,9 +927,30 @@
   align-items: center;
 }
 
+.contBtnStepper1 .btnStepperAgregar,
+.contBtnStepper2 .btnStepperAgregar {
+  margin-top: 25px;
+  width: 70%;
+  height: 40px;
+  border-radius: 25px;
+  background: coral;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contBtnStepper1 .btnStepperAgregar:hover,
+.contBtnStepper2 .btnStepperAgregar:hover{
+  background-color: coral;
+}
+
 .contBtnStepper .btnStepper h1,
 .contBtnStepper1 .btnStepper h1,
-.contBtnSventa .btnSVenta h1 {
+.contBtnStepper2 .btnStepper h1,
+.contBtnSventa .btnSVenta h1,
+.btnStepperAgregar h1 {
   font-size: 15px;
   color: white;
 }
@@ -833,6 +978,18 @@ button {
 }
 
 /* Buscador - Pantalla Lista [Empleados-Usuarios] */
+
+.contFilte {
+  width: 100%;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 80% 20%;
+
+  justify-content: center;
+  align-items: center;
+}
+
 .contFilter {
   width: 100%;
   height: 70px;
@@ -852,6 +1009,25 @@ button {
   grid-template-columns: 60% 40%;
 
   align-items: center;
+}
+
+.contFilter2 {
+  width: 100%;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 40% 60%;
+
+  align-items: center;
+}
+
+.btnAgregar1 {
+  background-color: #3535a2 !important;
+  color: white !important;
+  border-radius: 25px !important;
+  padding: 5px !important;
+  font-weight: bold !important;
+  line-height: 0 !important;
 }
 
 .btnCreate1 {
@@ -893,16 +1069,27 @@ button {
   outline: none;
 }
 
+.btnActionsNewRe {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 20px;
+}
+
 .btnActionsNewReport {
   display: grid;
   grid-template-columns: repeat(2, 2fr);
   grid-gap: 20px;
 }
 
-
 .btnActionsNewReport1 {
   display: grid;
   grid-template-columns: repeat(3, 3fr);
+  grid-gap: 20px;
+}
+
+.btnActionsNewReport2 {
+  display: grid;
+  grid-template-columns: repeat(4, 4fr);
   grid-gap: 20px;
 }
 
@@ -927,6 +1114,18 @@ button {
   background-color: rgb(236, 105, 105) !important;
   color: white !important;
   border-radius: 25px !important;
+}
+
+.btnExcel {
+  border: 2px solid rgb(5, 151, 5) !important;
+  color: rgb(5, 151, 5) !important;
+  border-radius: 25px !important;
+  transition: 0.5s ease;
+}
+
+.btnExcel:hover {
+  background-color: green !important;
+  color: white !important;
 }
 
 .btnReport {
@@ -1104,7 +1303,7 @@ button {
   height: auto;
   padding-left: 65px;
   display: grid;
-  grid-template-columns: 25% 5% 6% 6% 6% 8%;
+  grid-template-columns: 24% 5.5% 7% 6% 6% 8%;
   text-transform: uppercase;
   font-weight: bold;
   padding-bottom: 15px;
@@ -1117,10 +1316,11 @@ button {
   display: grid;
   grid-template-columns: 25% 32%;
   padding-left: 65px;
+  margin-bottom: 20px;
 }
 
 .contSelect {
-  width: 90%;
+  width: 100%;
   height: auto;
 
   display: grid;
@@ -1131,6 +1331,8 @@ button {
   width: 0;
   height: auto;
   display: grid;
+  justify-content: center;
+  align-items: center;
 }
 
 .openModal{
@@ -1145,9 +1347,10 @@ button {
   width: 100%;
   height: auto;
   display: grid;
-  grid-template-rows: repeat(8, 62px);
+  grid-template-rows: repeat(7, 62px);
   text-transform: uppercase;
   font-weight: bold;
+  align-items: center;
 }
 
 .infoConfigRol .PanelConfigRol .InputContPrincipal .btnCard {
@@ -1276,9 +1479,21 @@ button {
   border-radius: 25px;
 }
 
+.btnEditPermiso{
+  width: 166% !important;
+  height: 40px;
+  background-color: #3535a2 !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 13px !important;
+  min-width: 100px !important;
+}
+
 .contButton .btnNewRol:hover {
   background-color: orangered !important;
 }
+
+
 
 .contButton .btnSaveRol {
   width: 100%;
@@ -1440,7 +1655,11 @@ button {
   height: 82vh;
   display: grid;
   grid-template-columns: 35% 59%;
-  grid-gap: 100px;
+  /* grid-gap: 100px; */
+  margin-left: 20%;
+  /* margin-top: 53px; */
+  justify-content: center;
+  align-content: center;
 }
 
 .contRecordCitas{
@@ -1574,7 +1793,6 @@ button {
   width: 80%;
   height: auto;
   display: grid;
-  grid-template-columns: repeat(2,2fr);
   grid-gap: 10px;
 }
 
@@ -1612,13 +1830,38 @@ button {
 
 .contNewCita .inputCustomText {
   width: 355px;
-  height: 180px;
   padding: 10px;
   border-radius: 10px;
   background-color: rgba(208, 208, 208, 0.349);
   border: 2px solid gray;
   font-weight: bold;
   font-size: 15px;
+}
+
+.contBtnStepperRecord{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  grid-gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnStepperCan{
+  width: 100% !important;
+  border-radius: 25px !important;
+  background: red !important;
+  font-weight: bold !important;
+  color: white !important;
+}
+
+.btnStepperGuardar{
+  width: 100% !important;
+  border-radius: 25px !important;
+  background: coral !important;
+  font-weight: bold !important;
+  color: white !important;
 }
 /*RECORDATORIO*/
 
@@ -1819,3 +2062,15 @@ button {
   /* padding: 40px; */
 }
 /* Calculos Venta */
+
+
+/* Agrega estilos según tus necesidades */
+.btnClearFilter {
+  margin-left: 10px;
+ 
+}
+
+.contDateDHH{
+  display: flex;
+  align-items: center;
+}

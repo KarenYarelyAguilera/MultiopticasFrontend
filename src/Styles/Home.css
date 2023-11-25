@@ -550,3 +550,80 @@
   display: flex;
   margin: 0 auto; /* Centra horizontalmente utilizando márgenes automáticos */
 }
+
+/*FOOTER*/
+
+.contFooter{
+  position: relative;
+  top: 220px;
+  left: 355px;
+  width: calc(94.5% - 250px);
+  height: 100px;
+  background: rgb(38, 103, 177);
+  background: linear-gradient(
+    90deg,
+    rgb(38, 103, 177) 0%,
+    rgba(49, 110, 230, 1) 100%
+  );
+  transition: 0.5s ease;
+  border-radius: 25px;
+
+  display: grid;
+  grid-template-columns: repeat(2,2fr);
+  padding-left: 15px;
+  align-content: center;
+
+}
+
+.BarraLateral.close ~ .contFooter {
+  left: 140px;
+  width: calc(93% - 20px);
+}
+
+.sectInfoFoot{
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 30% 45%;
+  grid-gap: 20px;
+  align-content: center;
+}
+
+.sectInfoContact{
+  width: 127%;
+  height: auto;
+  display: grid;
+  grid-template-columns: 59% 34%;
+  align-content: center;
+  border-right: 3px solid white;
+}
+
+.infoContact{
+  width: 100%;
+  height: auto;
+
+  display: grid;
+  grid-template-rows: 60% 30%;
+  color: white;
+}
+
+.infoContact .titleFooter{
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.infoContact .infoFooter{
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.logoFoot{
+  width: 100%;
+}
+
+.contFooter h1{
+  font-size: 25px;
+  color: white;
+  position: relative;
+  top: 35%;
+}

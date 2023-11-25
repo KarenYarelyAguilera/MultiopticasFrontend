@@ -16,6 +16,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
+import { Today } from '@mui/icons-material';
 
 
 //APIS DE PROMOCION
@@ -29,25 +30,42 @@ const urlDelPromocion = //BORRAR
 
 export const RegistroPromocion = (props) => {
 
-  const [descripcion, setdescripcion] = React.useState('');
+  const [descripcion, setdescripcion] = React.useState(props.data.descripcion || '');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
 
-  const [porcentaje, setporcentaje] = React.useState('');
+  const [porcentaje, setporcentaje] = React.useState(props.data.descPorcent || '');
   const [errorporcentaje, setErrorporcentaje] = React.useState(false);
   const [aviso, setaviso] = React.useState(false);
 
-  const [fechaInicial, setfechaInicial] = React.useState('');
+  const [fechaInicial, setfechaInicial] = useState(props.data.fechaInicial || '');
   const [mensaje, setmensaje] = React.useState('');
   const [errorfechaInicial, setErrorfechaInicial] = React.useState(false);
 
-  const [fechaFinal, setfechaFinal] = React.useState('');
+  const [fechaFinal, setfechaFinal] = useState(props.data.fechaFinal || '');
   const [mensajeF, setmensajeF] = React.useState('');
   const [errorfechaFinal, setErrorfechaFinal] = React.useState(false);
 
   const [cantidadmin, setcantidadmin] = React.useState('');
   const [advertencia, setadvertencia] = React.useState('');
   const [errorcantidadmin, setErrorcantidadmin] = React.useState(false);
+
+  const [estado, setEstado] = useState(props.data.estado || null)
+
+   useEffect(() => {
+    // Formatear las fechas en el formato 'YYYY-MM-DD' antes de asignarlas a los estados
+    if (props.data.fechaInicial) {
+      const fechaInicialDate = new Date(props.data.fechaInicial);
+      const formattedFechaInicial = fechaInicialDate.toISOString().split('T')[0];
+      setfechaInicial(formattedFechaInicial);
+    }
+    if (props.data.fechaFinal) {
+      const fechaFinalDate = new Date(props.data.fechaFinal);
+      const formattedFechaFinal = fechaFinalDate.toISOString().split('T')[0];
+      setfechaFinal(formattedFechaFinal);
+    }
+  }, []);
+
 
   const navegate = useNavigate();
 
@@ -65,7 +83,7 @@ export const RegistroPromocion = (props) => {
       fechaInicial: fechaInicial,
       fechaFinal: fechaFinal,
       estado: estado,
-      descripcion: descripcion,
+      descripcion: descripcion.toUpperCase(),
       IdPromocion: props.data.IdPromocion,
     }
 
@@ -101,24 +119,44 @@ export const RegistroPromocion = (props) => {
       fechaInicial: fechaInicial,
       fechaFinal: fechaFinal,
       estado: estado,
-      descripcion: descripcion
+      descripcion: descripcion.toUpperCase()
     };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlPromocion, data).then(response => {
-      swal('Promocion agregada con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
-        navegate('/promocion/listaPromocion');
-      });
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Esta promocion ya existe!', '', 'error')
+      } else {
+        swal('Promocion agregada con exito', '', 'success').then(result => {
+          //axios.post(urlInsertBitacora, dataB)
+          navegate('/promocion/listaPromocion');
+        });
+      }
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Promocion, las descripciones deben ser unicas como tu.', '', 'error')
+      swal('¡Esta promocion ya existe!', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
   };
 
+
   const handleBack = () => {
-    navegate('/menuVentas/ListaPromociones');
+    swal({
+      title: 'Advertencia',
+      text: 'Hay un proceso de creación de Lentes ¿Estás seguro que deseas salir?',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Salir'],
+      dangerMode: true,
+    }).then((confirmExit) => {
+      if (confirmExit) {
+        props.update(false)
+        props.Data({})
+        navegate('/menuVentas/ListaPromociones');
+      } else {
+      }
+    });
+   
   };
 
   return (
@@ -144,26 +182,15 @@ export const RegistroPromocion = (props) => {
 
                 type="text"
                 name=""
-                maxLength={13}
+                maxLength={4}
                 className="inputCustom"
                 placeholder="Porcentaje de Descuento"
                 id="descPorcent"
+                value={porcentaje}
+                onChange={e => setporcentaje(e.target.value)}
               />
             </div>
 
-            <div className="contInput">
-              <TextCustom text="Fecha de Inicio" className="titleInput" />
-              <input
-                type="date"
-                name=""
-                // helperText={texto}
-                maxLength={8}
-                className="inputCustom"
-                placeholder="Fecha de Inicio"
-                id="fechaInicial"
-              />
-
-            </div>
 
             <div className="contInput">
               <TextCustom text="Fecha Final" className="titleInput" />
@@ -175,15 +202,19 @@ export const RegistroPromocion = (props) => {
                 className="inputCustom"
                 placeholder="Fecha Final"
                 id="fechaFinal"
+                value={fechaFinal}
+                onChange={(e)=>setfechaFinal(e.target.value)}
               />
 
             </div>
 
             <div className="contInput">
               <TextCustom text="Estado" className="titleInput" />
-              <select name="" className="selectCustom" id="estado">
-                <option value={1}>Activo</option>
-                <option value={2}>Inactivo</option>
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
               </select>
             </div>
 
@@ -204,8 +235,12 @@ export const RegistroPromocion = (props) => {
                 className="inputCustomText"
                 placeholder="Descripcion"
                 id="descripcion"
+                value={descripcion}
+                onChange={e => setdescripcion(e.target.value)}
               />
             </div>
+
+            
 
             <div className="contBtnStepper">
               <Button
@@ -218,13 +253,18 @@ export const RegistroPromocion = (props) => {
                   var fechaFinal = document.getElementById('fechaFinal').value;
                   var estado = document.getElementById('estado').value;
                   var descripcion = document.getElementById('descripcion').value;
-
+                  var fechaActual= Date(Today);              
+                                              
                   if (descPorcent === "" || fechaInicial === "" || fechaFinal === "" || estado === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
-                    /*  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(descripcion)) {
-                       swal("El campo descripcion solo acepta letras y solo un espacio entre palabras.", "", "error"); */
-                  } else
+                  } else if(fechaInicial > fechaFinal){
+                    swal("Ingrese correctamente las fechas.", "", "error");
+                  }else if(isNaN(descPorcent)){
+                    swal("El campo porcentaje descuento solo acepta numeros.","","error");
+                  }else{
                     props.actualizar ? actualizarPromocion() : handleNext();
+                  }
+                    
                 }
                 }
               >

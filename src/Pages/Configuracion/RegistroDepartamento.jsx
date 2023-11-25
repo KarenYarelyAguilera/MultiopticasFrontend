@@ -28,22 +28,36 @@ export const RegistroDepartamento = (props) => {
  const [departamento, setDepartamento] = React.useState(props.data.departamento ||'');
  const [errorDepartamento, setErrorDepartamento] = React.useState(false);
  const [aviso, setAviso] = React.useState(false);
+
+ const [estado, setEstado] = useState(props.data.estado || null)
+
   
   const handleNext = () => {
     let departamento = document.getElementById("departamento").value;
+    let estado = document.getElementById('estado').value;
 
     let data = {
-      departamento:departamento,
+      departamento:departamento.toUpperCase(),
+      estado:estado,
     }
 
+    console.log (data)
+
+
     axios.post(urlInsertDepartamento, data).then(response => {
-      swal('Departamento agregado con exito', '', 'success').then(result => {
-        navegate('/config/ListaDepartamentos');
+      console.log(response)
+      if(response.data==false)
+      {
+        swal('¡Este Departamento ya existe!', '', 'error')
+      } else 
+      {
+        swal('Departamento agregado con exito', '', 'success').then(result => {
+          navegate('/config/ListaDepartamentos');
       });
+    }
     }).catch(error => {
       console.log(error);
       swal('Error al crear el departamento, por favor revise los campos.', '', 'error')
-   
     })
   };
 
@@ -51,9 +65,11 @@ export const RegistroDepartamento = (props) => {
 
   const actualizarDepartamento = async () => {
     let departamento = document.getElementById("departamento").value;
-   
+    let estado = document.getElementById('estado').value;
+
     const data = {
-      departamento:departamento,
+      departamento:departamento.toUpperCase(),
+      estado:estado,
       IdDepartamento:props.data.IdDepartamento, 
     };
     
@@ -65,7 +81,6 @@ export const RegistroDepartamento = (props) => {
   }).catch(error => {
     console.log(error);
     swal('Error al crear el departamento, porfavor revise los campos.', '', 'error')
- 
   })
   };
 
@@ -140,13 +155,22 @@ export const RegistroDepartamento = (props) => {
                 helperText={aviso}
                 name=""
                 className="inputCustom"
-                maxLength={40}
+                maxLength={30}
                 placeholder="Departamento"
                 id="departamento"
                 value={departamento} 
-
               />
                  <p className="error">{aviso}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
             </div>
 
             <div className="contBtnStepper">

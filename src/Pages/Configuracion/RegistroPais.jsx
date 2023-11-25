@@ -30,32 +30,42 @@ export const RegistroPais = (props) => {
   const [errorPais, setErrorPais] = React.useState(false);
   const [aviso, setAviso] = React.useState(false);
 
+  const [estado, setEstado] = useState(props.data.estado || null)
+
   //INSERTAR DATOS
   const handleNext = async () => {
     let pais = document.getElementById("pais").value;
+    let estado = document.getElementById('estado').value;
 
     let data = {
-      pais: pais
+      pais: pais.toUpperCase(),
+      estado:estado,
     };
     axios.post(urlInsertPais, data).then(response => {
-      swal('Pais creado exitosamente', '', 'success').then(result => {
-        navegate('/config/ListaPais');
+      console.log(response);
+      if(response.data==false)
+      {
+        swal('¡Este Pais ya existe!', '', 'error')
+      }else{
+        swal('Pais creado exitosamente', '', 'success').then(result => {
+          navegate('/config/ListaPais');
       });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al crear el pais, por favor revise los campos.', '', 'error')
-
     })
-
   };
 
   //ACTUALIZAR
   const actualizar = async () => {
 
     let pais = document.getElementById("pais").value;
+    let estado = document.getElementById('estado').value;
 
     const data = {
-      pais: pais,
+      pais: pais.toUpperCase(),
+      estado: estado,
       IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
     }
 
@@ -130,13 +140,23 @@ export const RegistroPais = (props) => {
                 helperText={aviso}
                 type="text"
                 name=""
-                maxLength={40}
+                maxLength={30}
                 className="inputCustom"
                 placeholder="Pais"
                 id="pais"
                 value={pais}
               />
               <p className="error">{aviso}</p>
+            </div>
+
+            <div className="contInput">
+              <TextCustom text="Estado" className="titleInput" />
+              <select id="estado" className="selectCustom" value={estado} onChange={(e) => {
+                setEstado(e.target.value)
+              }}>
+                <option value={'Activo'}>Activo</option>
+                <option value={'Inactivo'}>Inactivo</option>
+              </select>
             </div>
 
             <div className="contBtnStepper">

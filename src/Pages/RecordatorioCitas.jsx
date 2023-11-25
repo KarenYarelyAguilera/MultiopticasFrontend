@@ -22,6 +22,8 @@ import Select from 'react-select';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
+import  oftalmologoFondo  from '../IMG/oftalmologofondo.png'
+
 import '../Styles/Usuarios.css';
 
 const locales = {
@@ -74,7 +76,7 @@ export const RecordatorioCitas = (props) => {
 
 
   const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
-  const urlClientes = 'http://localhost:3000/api/clientes';
+  const urlClientes = 'http://localhost:3000/api/clientesEx';
   const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
   const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
@@ -196,13 +198,14 @@ export const RecordatorioCitas = (props) => {
 
 
   return (
-    <div className='ContUsuarios'>
-      {/* <Button className="btnBack" style={{ top: "-50px" }} onClick={handleBack}>
-        <ArrowBackIcon className="iconBack" />
-      </Button> */}
-      <div className="contRecordatorios">
+    <div className="divSection">
+      <div className="divInfoQuestion1">
+        <Button className="btnBack" onClick={handleBack}>
+         <ArrowBackIcon className="iconBack" />
+       </Button>
+       <div className="contRecordatorios">
         <div className="contRecordCitas">
-          <div className="cardCitas">
+          <div >
             <h1>Nueva Cita</h1>
             <hr />
             <div className="contPrincipalNewCita">
@@ -225,7 +228,7 @@ export const RecordatorioCitas = (props) => {
                   <Select
                     id="idClientes"
                     // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}` }))}
+                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
                     value={selectedOption}
                     onChange={setSelectedOption}
                     placeholder="Seleccione un cliente"
@@ -301,16 +304,15 @@ export const RecordatorioCitas = (props) => {
               </div>
 
 
-              <div className="contBtnStepper">
+              <div className="contBtnStepperRecord">
 
                 <Button
-                  variant="contained"
-                  className='btnStepper'
+                  className='btnStepperCan'
                   onClick={() => navegate('/recordatorio')}
                 >Cancelar</Button>
+
                 <Button
-                  variant="contained"
-                  className='btnStepper'
+                  className='btnStepperGuardar'
                   onClick={() => {
 
                     var nota = document.getElementById("nota").value;
@@ -334,6 +336,11 @@ export const RecordatorioCitas = (props) => {
         </div>
 
 
+      </div>
+      </div>
+
+      <div className="divImgSection">
+        <img src={oftalmologoFondo} alt="Iamgen no encontrada" />
       </div>
     </div>
   );

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 //Mui-Material-Icons
@@ -21,8 +23,15 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
+
 import { WorkWeek } from 'react-big-calendar';
 import { generatePDF } from '../../Components/generatePDF';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 export const ListaClientes = (props) => {
   const [cambio, setCambio] = useState(0);
@@ -36,6 +45,8 @@ export const ListaClientes = (props) => {
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
 
+  const urlSalirListaClientes = 'http://localhost:3000/api/bitacora/SalirListacliente';
+
   const urlClientes =
     'http://localhost:3000/api/clientes';
   const urlUpdateCliente =
@@ -47,12 +58,40 @@ export const ListaClientes = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  
 
   useEffect(() => {
     axios.get(urlClientes).then(response => {
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      'Identidad': row.idCliente,
+      'Nombre': row.nombre,
+      'Apellido': row.apellido,
+      'Genero': row.genero,
+      'Fecha Nacimiento': new Date(row.fechaNacimiento).toLocaleDateString('es-ES'), // Formatea la fecha
+      'Direccion': row.direccion,
+      'Telefono': row.Telefono,
+      'Email': row.Email,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['Identidad', 'Nombre', 'Apellido', 'Genero', 'Fecha Nacimiento', 'Direccion', 'Telefono', 'Email'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+  };
+  
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -66,7 +105,7 @@ export const ListaClientes = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'Identidad': row.idCliente,
+            'DNI': row.idCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
             'Genero': row.genero,
@@ -83,7 +122,7 @@ export const ListaClientes = (props) => {
       const subTitulo = "LISTA DE CLIENTES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
  
   };
@@ -142,14 +181,29 @@ export const ListaClientes = (props) => {
 
 
   const columns = [
-    { field: 'idCliente', headerName: 'ID', width: 165 },
-    { field: 'nombre', headerName: 'Nombre', width: 165 },
-    { field: 'apellido', headerName: 'Apellido', width: 165 },
-    { field: 'genero', headerName: 'Genero', width: 165 },
-    { field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 },
-    { field: 'direccion', headerName: 'Direccion', width: 165 },
-    { field: 'Telefono', headerName: 'Telefono', width: 165 },
-    { field: 'Email', headerName: 'Correo Electronico', width: 165 },
+    { field: 'COD_CLIENTE', headerName: 'ID', width: 80,headerAlign: 'center' },
+    { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 190,headerAlign: 'center' },
+    
+    //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
+    { 
+      field: 'fechaNacimiento', 
+      headerName: 'Fecha de Nacimiento', 
+      width: 170,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+
+    //{ field: 'fechaNacimiento', headerName: 'Fecha de Nacimiento', width: 120 ,headerAlign: 'center'},
+    { field: 'direccion', headerName: 'Dirección', width: 200,headerAlign: 'center' },
+    { field: 'Telefono', headerName: 'Teléfono', width: 135,headerAlign: 'center' },
+    // { field: 'Email', headerName: 'Correo Electrónico', width: 165,headerAlign: 'center' },
+
 
     {
       field: 'borrar',
@@ -187,17 +241,22 @@ export const ListaClientes = (props) => {
       swal({
         content: (
           <div>
-            <div className="logoModal">Desea Elimiar este Cliente?</div>
+           <div className="logoModal">
+            ¿Desea Eliminar este cliente: {id.nombre}?
+          </div>
             <div className="contEditModal">
   
             </div>
           </div>
         ),
-        buttons: ["Eliminar", "Cancelar"]
+        buttons: {
+          cancel: 'Cencelar',
+          delete: 'Eliminar',
+        }
       }).then(async (op) => {
   
         switch (op) {
-          case null:
+          case 'delete':
   
             let data = {
               idCliente: id,
@@ -222,10 +281,19 @@ export const ListaClientes = (props) => {
       });
     }
    
-
+  }
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  }
+  const bitacora = {
+    urlB: urlSalirListaClientes,
+    activo: props.activo,
+    dataB: dataB
   }
 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/menuClientes');
   };
 
@@ -243,8 +311,12 @@ export const ListaClientes = (props) => {
           position: 'relative',
           left: '130px',
         }}
+
+
+
+        
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -256,8 +328,9 @@ export const ListaClientes = (props) => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
+          
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -272,21 +345,30 @@ export const ListaClientes = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               NUEVO
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+            
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+         pagination 
           getRowId={tableData => tableData.idCliente}
           rows={filteredData}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

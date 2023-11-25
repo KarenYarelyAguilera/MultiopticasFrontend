@@ -9,6 +9,8 @@ import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
 import fondoPDF from "../../IMG/fondoPDF.jpg";
 import logoImg from "../../IMG/MultiopticaBlanco.png";
+import 'jspdf-autotable';
+
 
 
 import swal from '@sweetalert/with-react';
@@ -27,6 +29,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import '../../Styles/Usuarios.css';
 
 //Components
+import { Bitacora } from '../../Components/bitacora';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { generatePDF } from '../../Components/generatePDF';
@@ -42,6 +45,9 @@ const urlClientes = 'http://localhost:3000/api/clientes';
 const urlEmployees =
   'http://localhost:3000/api/empleados';
 
+const urlBitacoraInsertExpe = 'http://localhost:3000/api/bitacora/expediente';
+
+
 export const DatosExpediente = (props) => {
 
   const [tableData, setTableData] = React.useState([]);
@@ -49,6 +55,9 @@ export const DatosExpediente = (props) => {
   const [fechaActual, setFechaActual] = useState(new Date().toISOString().slice(0, 10));
   const [Empleado, setIdEmpleado] = useState([]);
   const [cambio, setCambio] = useState(0);
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  
+  
 
   useEffect(() => {
     console.log(props.id.idCliente);
@@ -98,9 +107,19 @@ export const DatosExpediente = (props) => {
   const navegate = useNavigate();
 
   const columns = [
-    { field: 'fechaConsulta', headerName: 'Fecha de Consulta', width: 250 },
-    { field: 'Optometrista', headerName: 'Optometrista', width: 250 },
-    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250 },
+    { 
+      field: 'fechaConsulta', 
+      headerName: 'Fecha de Consulta', 
+      width: 250,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    { field: 'Optometrista', headerName: 'Optometrista', width: 250,  headerAlign: 'center', },
+    { field: 'AsesorVenta', headerName: 'Asesor de Ventas', width: 250,  headerAlign: 'center', },
 
     {
       field: 'borrar',
@@ -130,57 +149,80 @@ export const DatosExpediente = (props) => {
 
   const handlePrintModal = (modalData) => {
     const documento = new jsPDF();
-
+  
     const fecha = new Date();
     const año = fecha.getFullYear();
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
     const dia = String(fecha.getDate()).padStart(2, '0');
-
+  
     const fechaSinSlash = dia + "/" + mes + "/" + año;
-
-    const pdfWidth = documento.internal.pageSize.getWidth(); // Obtener el ancho del PDF
-    const imgWidth = 40; // Ancho deseado de la imagen
-    const imgHeight = 15; // Alto deseado de la imagen
-    const imgX = pdfWidth - imgWidth - 10; // Calcular la posición x de la imagen para que esté en el lado derecho
-    const imgY = 20; // Posición y deseada de la imagen
-
-    // Agregar la imagen de fondo primero
+  
+    const pdfWidth = documento.internal.pageSize.getWidth();
+    const imgWidth = 40;
+    const imgHeight = 15;
+    const imgX = pdfWidth - imgWidth - 10;
+    const imgY = 20;
+  
     documento.addImage(fondoPDF, 'JPG', 0, 0, documento.internal.pageSize.getWidth(), documento.internal.pageSize.getHeight());
-
-    documento.setFont('helvetica', "bold");
+  
+    documento.setFont('helvetica', 'bold');
     documento.setFontSize(20);
-    documento.text("MultiOpticas", 80, 25);
+    documento.text('MultiOpticas', 80, 25);
     documento.setFontSize(10);
-    documento.setFont('helvetica', "bold");
+    documento.setFont('helvetica', 'bold');
     documento.text(`HISTORIAL DE EXPEDIENTES`, 80, 30);
     documento.setFontSize(10);
-    documento.setFont('helvetica', "bold");
+    documento.setFont('helvetica', 'bold');
     documento.text(`Fecha: ${fechaSinSlash}`, 10, 30);
-    documento.addImage(logoImg, 'PNG', imgX, imgY, imgWidth, imgHeight); // Ajusta las coordenadas y el tamaño según tus necesidades
+    documento.addImage(logoImg, 'PNG', imgX, imgY, imgWidth, imgHeight);
 
-    documento.text(`Fecha de consulta: ${modalData.fechaConsulta}`, 20, 60);
-    documento.text(`Optometrista: ${modalData.Optometrista}`, 20, 70);
-    documento.text(`Asesor de ventas: ${modalData.AsesorVenta}`, 20, 80);
-    documento.text(`Fecha de expiracion: ${modalData.fechaExpiracion}`, 20, 90);
-    documento.text(`Antecedentes clinicos: ${modalData.Antecedentes}`, 20, 100);
-    documento.text(`Esfera Ojo Derecho: ${modalData.ODEsfera}`, 20, 110);
-    documento.text(`Esfera Ojo Izquierdo: ${modalData.OIEsfera}`, 20, 120);
-    documento.text(`Cilindro Ojo Derecho: ${modalData.ODCilindro}`, 20, 130);
-    documento.text(`Cilindro Ojo Izquierdo: ${modalData.OICilindro}`, 20, 140);
-    documento.text(`Eje Ojo Derecho: ${modalData.ODEje}`, 20, 150);
-    documento.text(`Eje Ojo Izquierdo: ${modalData.OIEje}`, 20, 160);
-    documento.text(`Adicion Ojo Derecho: ${modalData.ODAdicion}`, 20, 170);
-    documento.text(`Adicion Ojo Izquierdo: ${modalData.OIAdicion}`, 20, 180);
-    documento.text(`Altura Ojo Derecho: ${modalData.ODAltura}`, 20, 190);
-    documento.text(`Altura Ojo Izquierdo: ${modalData.OIAltura}`, 20, 200);
-    documento.text(`Distancia Pupilar Ojo Derecho: ${modalData.ODDistanciaPupilar}`, 20, 210);
-    documento.text(`Distancia Pupilar Ojo Izquierdo: ${modalData.OIDistanciaPupilar}`, 20, 220);
-    documento.text(`Enfermedad presentada: ${modalData.diagnostico}`, 20, 230);
-
+    function formatearFecha(fecha) {
+      const opciones = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(fecha).toLocaleDateString('es-ES', opciones);
+  }
+  
+    //Datos de la tabla
+    documento.text(`FECHA DE CONSULTA: ${formatearFecha(modalData.fechaConsulta)}`, 20, 50);
+    documento.text(`OPTOMETRISTA: ${modalData.Optometrista}`, 20, 60);
+    documento.text(`ASESOR DE VENTAS: ${modalData.AsesorVenta}`, 20, 70);
+    documento.text(`FECHA DE EXPIRACIÓN: ${formatearFecha(modalData.fechaExpiracion)}`, 20, 80);
+    documento.text(`ANTECENDENTES CLINICOS: ${modalData.Antecedentes}`, 20, 90);
+  
+    // Tabla de diagnostico xd
+    const tableData = [
+      ['DESCRIPCIÓN', 'OJO IZQUIERDO', 'OJO DERECHO'],
+      ['Esfera', modalData.OIEsfera, modalData.ODEsfera],
+      ['Cilindro', modalData.OICilindro, modalData.ODCilindro],
+      ['Eje', modalData.OIEje, modalData.ODEje],
+      ['Adición', modalData.OIAdicion, modalData.ODAdicion],
+      ['Altura', modalData.OIAltura, modalData.ODAltura],
+      ['Dist. Pupilar', modalData.OIDistanciaPupilar, modalData.ODDistanciaPupilar],
+    
+    ];
+  
+    const startY = 110;
+    const margin = 20;
+    const tableStyles = {
+      startY,
+      margin: { top: margin, right: margin, bottom: margin, left: margin },
+    };
+   
+    //Estilos
+  
+    const tableColumnStyles = {
+      0: { fontStyle: 'bold' }, 
+      1: { fontStyle: 'normal' },
+      2: { fontStyle: 'normal' }, 
+    };
+  
+    
+    documento.autoTable({ head: tableData.slice(0, 1), body: tableData.slice(1), ...tableStyles, columnStyles: tableColumnStyles });
+  
+  
     documento.save('historial_expediente.pdf');
-    //setModalData({})
   };
-
+ 
+  
   // const handleGenerarReporte = (modalData) => {
   //   const formatDataForPDF = () => {
   //     const documento = new jsPDF();
@@ -211,85 +253,87 @@ export const DatosExpediente = (props) => {
   // };
 
   //PANTALLA MODAL---------------------------------------------------------------------------
-  function handleUpdt(id) {
-    //setModalData(id);
-    console.log(id);
-    swal(
-      <div>
-        <div className="logoModal">DATOS GENERALES</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <label><b>Fecha de consulta:{id.fechaConsulta}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Optometrista:{id.Optometrista}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Asesor de venta:{id.AsesorVenta}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Fecha de expiracion:{id.fechaExpiracion}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Antecedentes clinicos:{id.Antecedentes}</b></label>
-          </div>
-          <h3>
-            ----------------DIAGNOSTICO-----------------
-          </h3>
-          <div className="contInput">
-            <label><b>Esfera Ojo Derecho:{id.ODEsfera}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Esfera Ojo Izquierdo:{id.OIEsfera}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Cilindro Ojo Derecho:{id.ODCilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Cilindro Ojo Izquierdo:{id.OICilindro}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Derecho:{id.ODEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Eje Ojo Izquierdo:{id.OIEje}</b></label>
-          </div>
-          <div className="contInput">
-            <label><b>Adicion Ojo Derecho:{id.ODAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Adicion Ojo Izquierdo:{id.OIAdicion}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Derecho:{id.ODAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Altura Ojo Izquierdo:{id.OIAltura}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Derecho:{id.ODDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Distancia Pupilar Ojo Izquierdo:{id.OIDistanciaPupilar}</b></label>
-          </div>
-
-          <div className="contInput">
-            <label><b>Enfermedad Presentada:{id.diagnostico}</b></label>
-          </div>
-
+ // PANTALLA MODAL
+function handleUpdt(id) {
+  // setModalData(id);
+  console.log(id);
+  
+  swal(
+    <div>
+      <div className="logoModal">DATOS GENERALES</div>
+      <div className="contEditModal">
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de consulta: {new Date(id.fechaConsulta).toLocaleDateString('es-ES')}</b></label>
         </div>
-      </div>,
-    ).then(async () => {
-    });
 
-  }
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Optometrista: {id.Optometrista}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Asesor de venta: {id.AsesorVenta}</b></label>
+        </div>
+        <div className="contInput">
+        <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de expiración: {new Date(id.fechaExpiracion).toLocaleDateString('es-ES')}</b></label>
+        </div>
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Antecedentes clinicos: {id.Antecedentes}</b></label>
+        </div>
+
+        <h3>----------------DIAGNOSTICO-----------------</h3>
+        <table className="contTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th><b>OJO IZQUIERDO</b></th>
+              <th><b>OJO DERECHO</b></th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Esfera</td>
+              <td>{id.OIEsfera}</td>
+              <td>{id.ODEsfera}</td>
+            </tr>
+            <tr>
+              <td>Cilindro</td>
+              <td>{id.OICilindro}</td>
+              <td>{id.ODCilindro}</td>
+            </tr>
+            <tr>
+              <td>Eje</td>
+              <td>{id.OIEje}</td>
+              <td>{id.ODEje}</td>
+            </tr>
+            <tr>
+              <td>Adición</td>
+              <td>{id.OIAdicion}</td>
+              <td>{id.ODAdicion}</td>
+            </tr>
+            <tr>
+              <td>Altura</td>
+              <td>{id.OIAltura}</td>
+              <td>{id.ODAltura}</td>
+            </tr>
+            <tr>
+              <td>Dist. Pupilar</td>
+              <td>{id.OIDistanciaPupilar}</td>
+              <td>{id.ODDistanciaPupilar}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <div className="contInput">
+          <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Enfermedad Presentada: {id.diagnostico}</b></label>
+        </div>
+      </div>
+    </div>
+  ).then(async () => {
+    // Puedes agregar lógica adicional aquí si es necesario
+  });
+}
+
 
 
 
@@ -297,7 +341,6 @@ export const DatosExpediente = (props) => {
 
   const handleNext = async () => {
     let Cliente = document.getElementById('cliente').value;
-    let Empleado = document.getElementById('empleado').value;
     let fechaCreacion = document.getElementById('fecha').value;
 
     let fecha = new Date(fechaCreacion)
@@ -311,7 +354,16 @@ export const DatosExpediente = (props) => {
     let data = {
       IdCliente: Cliente,
       fechaCreacion: fechaFormateada,
-      IdEmpleado: Empleado,
+      IdEmpleado: props.idEmpleado,
+    }
+    //Bitacora
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertExpe,
+      activo: props.activo,
+      dataB: dataB
     }
 
     await axios.post(urlNuevoExpediente, data).then(response => {
@@ -320,6 +372,7 @@ export const DatosExpediente = (props) => {
       props.dataa(data)
       //console.log(response.data.id)
       swal('Expediente creado con exito', '', 'success').then(result => {
+       Bitacora(bitacora)
         navegate('/menuClientes/DetalleExpediente');
       });
 
@@ -337,13 +390,12 @@ export const DatosExpediente = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Datos de Expediente</h2>
-        <h3>Complete todos los datos para poder crear el expediente.</h3>
       </div>
-      <div className="infoAddCompra">
+      <div className="infoAddCompra1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
             <div className="contInput">
-              <TextCustom text="Cliente" className="titleInput" />
+              <TextCustom text="Cliente" className="titleInput1" />
               <input
                 type="text"
                 name="input1"
@@ -358,7 +410,7 @@ export const DatosExpediente = (props) => {
               />
             </div>
             <div className="contInput">
-              <TextCustom text="Fecha de Creacion" className="titleInput" />
+              <TextCustom text="Fecha de Creacion" className="titleInput1" />
               <input
                 type="date"
                 name=""
@@ -371,28 +423,7 @@ export const DatosExpediente = (props) => {
                 disabled
               />
             </div>
-            <div className="contInput">
-              <TextCustom text="Empleado" className="titleInput" />
-
-              <select id="empleado"
-                value={props.datosclientes.IdEmpleado}
-                className="selectCustom">
-
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.IdEmpleado} value={pre.IdEmpleado}>
-                      {pre.nombre}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-
-                )}
-              </select>
-
-            </div>
+            
             {/* <div className="contInput">
               <TextCustom text="Creado Por" className="titleInput" />
               <input
@@ -408,19 +439,19 @@ export const DatosExpediente = (props) => {
               />
               <p class="error"></p>
             </div> */}
-            <div className="contBtnStepper1">
-              <Button
-                onClick={() => {
-                  navegate('/menuClientes/DetalleExpediente');
-                }}
-                variant="contained" className="btnStepper">
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+            <div className="contBtnStepper1" style={{paddingLeft: '115px'}}>
+            <Button
+                onClick={handleNext} //INSERTA 
+                className="btnStepperAgregar"
+                >  
+                <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>
               </Button>
             </div>
           </div>
         </div>
         <div
           style={{
+            width: '135%',
             height: 400,
             position: 'relative',
           }}
@@ -441,11 +472,13 @@ export const DatosExpediente = (props) => {
               onChange={e => setSearchTerm(e.target.value)}
             />
             <div className="btnActionsNewReport">
-              <Button
-                onClick={handleNext} //INSERTA 
-                className="btnCreate1">
+            <Button
+                onClick={() => {
+                  navegate('/menuClientes/DetalleExpediente');
+                }}
+                className="btnAgregar1">
                 <AddIcon style={{ marginRight: '5px' }} />
-                Guardar
+                Agregar
               </Button>
               <Button className="btnReport1" onClick={() => { }}>
                 Cancelar
@@ -453,11 +486,14 @@ export const DatosExpediente = (props) => {
             </div>
           </div>
           <DataGrid
-            rows={tableData}
+           pagination 
+            rows={filteredData}
             columns={columns}
+            autoHeight
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 50]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             getRowId={(row) => row.IdExpedienteDetalle}
           />
         </div>

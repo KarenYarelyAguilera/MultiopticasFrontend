@@ -17,6 +17,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
+
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
@@ -32,17 +35,27 @@ export const ListaLentes = ({idRol,data,update}) => {
   },[])
 
   const urlLentes ='http://localhost:3000/api/Lentes';
+  const urlLentesInactivos ='http://localhost:3000/api/LentesInactivos';
+
   const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
 
 
   const [cambio, setCambio] = useState(0)
+  const [inactivo, setInactivo] = useState(false)
   const [tableData, setTableData] = useState([]);
+  const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [Lente, setLente] = useState([]);
 
   useEffect(() => {
-    axios.get(urlLentes).then(response=>setTableData(response.data))
-  }, [cambio]);
+    fetch(urlLentes)
+    .then(response => response.json())
+    .then(data => setTableData(data));
+  fetch(urlLentesInactivos)
+    .then(response => response.json())
+    .then(data => setTableDataInactivos(data));
+
+  }, [cambio, inactivo]);
 
   const navegate = useNavigate();
 
@@ -53,6 +66,16 @@ export const ListaLentes = ({idRol,data,update}) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+  const filteredDataInactivos = tableDataInactivos.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar==="n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
@@ -76,16 +99,17 @@ export const ListaLentes = ({idRol,data,update}) => {
     const subTitulo = "LISTA DE LENTES "
 
     const orientation = "landscape";
-  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
         
 }
   };
 
 
   const columns = [
-    { field: 'IdLente', headerName: 'Id Lente', width: 380 },
-    { field: 'lente', headerName: 'Lente', width: 380 },
-    { field: 'precio', headerName: 'Precio', width: 380 },
+    { field: 'IdLente', headerName: 'ID', width: 380 },
+    { field: 'lente', headerName: 'Tipo de lente', width: 380 },
+    { field: 'precio', headerName: 'Precio', width: 280 },
+    { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
    
     
     {
@@ -119,31 +143,33 @@ function handleDel(id) {
     swal({
       content: (
         <div>
-          <div className="logoModal">¿Desea eliminar este Lente?</div>
+          <div className="logoModal">
+              ¿Desea Eliminar este Lente: {id.lente}?
+            </div>
           <div className="contEditModal"> 
           </div>
         </div>
       ),
   
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cencelar',
+        delete: 'Eliminar',
       },
     }).then(async (op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
           let data = {
             IdLente:id
           }; 
           console.log(data);
   
           await axios .delete(urlLentesEliminar,{data}) .then(response => {
-              swal('Modelo eliminado correctamente', '', 'success');
+              swal('Lente eliminado correctamente', '', 'success');
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
-              swal('Error al eliminar el lente, asegúrese que no tenga relación con otros datos', '', 'error');
+              swal('Error al eliminar el lente.', '', 'error');
             });
   
           break;
@@ -204,7 +230,7 @@ function handleDel(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -217,7 +243,7 @@ function handleDel(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -231,6 +257,13 @@ function handleDel(id) {
               <AddIcon style={{ marginRight: '5px' }} />
               Nuevo
             </Button>
+
+            
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />
+              {inactivo === false ? "Inactivos" : "Activos"}
+            </Button>
+
             <Button className="btnReport"
              onClick={handleGenerarReporte}
             >
@@ -241,7 +274,7 @@ function handleDel(id) {
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdLente}
-          rows={filteredData}
+          rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}

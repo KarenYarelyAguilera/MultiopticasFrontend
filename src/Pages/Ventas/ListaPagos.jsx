@@ -7,7 +7,8 @@ import axios from 'axios';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 
 //Mui-Material-Icons
@@ -81,7 +82,7 @@ export const ListaPagos = (props) => {
       const subTitulo = "LISTA DE PAGOS"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -106,13 +107,13 @@ export const ListaPagos = (props) => {
   }
 
   const columns = [
-    { field: 'IdPago', headerName: 'ID', width: 100 },
-    { field: 'IdVenta', headerName: 'ID Venta', width: 200 },
-    { field: 'MetodoDePago', headerName: 'Tipo de Pago', width: 200},
+    // { field: 'IdPago', headerName: 'ID', width: 100 },
+    { field: 'IdVenta', headerName: 'Número de venta', width: 200 },
+    { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200},
     { field: 'fecha', headerName: 'Fecha', width: 200 },
     {field: 'estado', headerName: 'Estado', width: 200 },
-    { field: 'saldoAbono', headerName: 'Saldo Abonado', width: 200 },
-    { field: 'saldoRestante', headerName: 'Saldo Restante', width: 200 },
+    { field: 'saldoAbono', headerName: 'Saldo abonado', width: 200 },
+    { field: 'saldoRestante', headerName: 'Saldo restante', width: 200 },
 
     {
 

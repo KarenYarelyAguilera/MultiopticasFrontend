@@ -7,6 +7,8 @@ import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -84,16 +86,16 @@ export const InventarioDisponible = (props) => {
       const subTitulo = "LISTA DE INVENTARIO DISPONIBLE"
 
       const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
 
   };
   const columns = [
-    { field: 'IdInventario', headerName: 'IdInventario', width: 100 },
-    { field: 'IdProducto', headerName: 'IdProducto', width: 100 },
-    { field: 'descripcion', headerName: 'Marca', width: 400 },
-    { field: 'detalle', headerName: 'Producto', width: 400 },
-    { field: 'cantidad', headerName: 'Cantidad', width: 400 },
+    { field: 'IdInventario', headerName: 'Número de inventario', width: 200, headerAlign: 'center' },
+    { field: 'IdProducto', headerName: 'ID Producto', width: 100, headerAlign: 'center' },
+    { field: 'descripcion', headerName: 'Marca', width: 200, headerAlign: 'center' },
+    { field: 'detalle', headerName: 'Producto', width: 200, headerAlign: 'center' },
+    { field: 'cantidad', headerName: 'Cantidad', width: 200, headerAlign: 'center' },
 
 
 

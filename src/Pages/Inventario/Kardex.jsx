@@ -7,6 +7,8 @@ import { generatePDF } from '../../Components/generatePDF';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import axios from 'axios';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 
 
 //Mui-Material-Icons
@@ -78,17 +80,19 @@ export const Kardex = (props) => {
       const subTitulo = "LISTA DE KARDEX"
   
       const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
   
   };
 
   const columns = [
-    { field: 'IdKardex', headerName: 'ID Kardex', width: 240 },
+    { field: 'IdKardex', headerName: 'ID', width: 240 },
     { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 260 },
     { field: 'Producto', headerName: 'Producto', width: 260 },
     { field: 'cantidad', headerName: 'Cantidad', width: 260 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 260 },
+    { field: 'descripcion', headerName: 'Descripcion', width: 260 },
+
   ];
 
   function handleUpdt(param) {
@@ -117,7 +121,7 @@ export const Kardex = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+         <div className="contFilter">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -131,8 +135,22 @@ export const Kardex = (props) => {
           />
           {/* </div> */}
           <div className="btnActionsNewReport">
+            <Button
+              className="btnCreate"
+              onClick={() => {
+                if (permisos[0].insertar === "n") {
+                  swal("No cuenta con los permisos para realizar esta accion","","error")
+                } else {
+                  navegate('/menuInventario/Kardex2');
+                }
+                
+              }}
+            >
+              <AddIcon style={{ marginRight: '5px' }} />
+              Nuevo
+            </Button>
             <Button className="btnReport"
-            onClick={handleGenerarReporte}
+              onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte

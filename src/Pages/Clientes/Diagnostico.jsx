@@ -7,8 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
-
-
+import { Bitacora } from '../../Components/bitacora';
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -25,7 +24,7 @@ const urlNuevoDiagnostico = 'http://localhost:3000/api/ExpedienteDetalle/NuevoEx
 const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
 const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
-
+const urlBitacoraInsertDiagnostico = 'http://localhost:3000/api/bitacora/Diagnostico';
 
 
 export const Diagnostico = (props) => {
@@ -74,7 +73,15 @@ export const Diagnostico = (props) => {
         console.log(props.id.idCliente); */
     console.log(props.datosclientes.idCliente);
 
-
+    //Bitacora
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraInsertDiagnostico,
+      activo: props.activo,
+      dataB: dataB
+    }
 
     let dataUsuario = {
       Id: props.idUsuario
@@ -135,11 +142,7 @@ export const Diagnostico = (props) => {
 
 
       swal('Diagnostico creado correctamente', '', 'success').then(result => {
-
-
-
-
-
+        Bitacora(bitacora)
         navegate('/menuClientes/ListaExpedientes');
       });
 
@@ -175,14 +178,24 @@ export const Diagnostico = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Diagnostico</h2>
-        <h3>
-          Complete todos los datos para el historial del paciente.
-        </h3>
+        
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
+          <div className="contInput">
+              <TextCustom text="Esfera OI" className="titleInput" />
+
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="Esfera OI"
+                id="OIEsfera"
+              />
+            </div>
             <div className="contInput">
               <TextCustom text="Esfera OD" className="titleInput" />
               <input
@@ -196,17 +209,17 @@ export const Diagnostico = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Esfera OI" className="titleInput" />
-
+              <TextCustom text="Cilindro OI" className="titleInput" />
               <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Esfera OI"
-                id="OIEsfera"
+                placeholder="Cilindro OI"
+                id="OICilindro"
               />
             </div>
+           
 
             <div className="contInput">
               <TextCustom text="Cilindro OD" className="titleInput" />
@@ -218,32 +231,6 @@ export const Diagnostico = (props) => {
                 className="inputCustom"
                 placeholder="Cilindro OD"
                 id="ODCilindro"
-              />
-            </div>
-
-
-            <div className="contInput">
-              <TextCustom text="Cilindro OI" className="titleInput" />
-              <input
-                type="number"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Cilindro OI"
-                id="OICilindro"
-              />
-            </div>
-
-            <div className="contInput">
-              <TextCustom text="Eje OD" className="titleInput" />
-
-              <input
-                type="number"
-                name=""
-                maxLength={40}
-                className="inputCustom"
-                placeholder="Eje OD"
-                id="ODEje"
               />
             </div>
 
@@ -259,19 +246,19 @@ export const Diagnostico = (props) => {
                 id="OIEje"
               />
             </div>
+           
 
             <div className="contInput">
-              <TextCustom text="Adicion OD" className="titleInput" />
-              <input
+              <TextCustom text="Eje OD" className="titleInput" />
 
+              <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Adicion OD"
-                id="AdicionOD"
+                placeholder="Eje OD"
+                id="ODEje"
               />
-
             </div>
 
             <div className="contInput">
@@ -287,18 +274,20 @@ export const Diagnostico = (props) => {
                 id="AdicionOI"
               />
             </div>
+          
 
             <div className="contInput">
-              <TextCustom text="Altura OD" className="titleInput" />
-
+              <TextCustom text="Adicion OD" className="titleInput" />
               <input
+
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="Altura OD"
-                id="AlturaOD"
+                placeholder="Adicion OD"
+                id="AdicionOD"
               />
+
             </div>
 
             <div className="contInput">
@@ -316,15 +305,15 @@ export const Diagnostico = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="DP OD" className="titleInput" />
+              <TextCustom text="Altura OD" className="titleInput" />
 
               <input
                 type="number"
                 name=""
                 maxLength={40}
                 className="inputCustom"
-                placeholder="DP OD"
-                id="DistanciapupilarOD"
+                placeholder="Altura OD"
+                id="AlturaOD"
               />
             </div>
 
@@ -342,6 +331,20 @@ export const Diagnostico = (props) => {
               />
 
             </div>
+
+            <div className="contInput">
+              <TextCustom text="DP OD" className="titleInput" />
+
+              <input
+                type="number"
+                name=""
+                maxLength={40}
+                className="inputCustom"
+                placeholder="DP OD"
+                id="DistanciapupilarOD"
+              />
+            </div>
+
 
             <div className="contInput">
               <TextCustom text="Enfermedad Presentada" className="titleInput" />

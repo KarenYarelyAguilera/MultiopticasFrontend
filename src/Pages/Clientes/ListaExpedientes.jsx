@@ -7,7 +7,7 @@ import axios from 'axios';
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
-import fondoPDF from "../../IMG/fondoPDF.jpg";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
 //Mui-Material-Icons
@@ -18,12 +18,16 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
+import { Bitacora } from '../../Components/bitacora';
 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
+
 
 export const ListaExpedientes = (props) => {
   const [permisos, setPermisos] = useState([]);
@@ -32,11 +36,14 @@ export const ListaExpedientes = (props) => {
     idRol:props.idRol,
     idObj:4
   }
+
+  
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
 
   const [cambio, setCambio] = useState(0);
+  const urlSalirListaExpediente = 'http://localhost:3000/api/bitacora/SalirListaExpediente';
   const urlExpedientes = 'http://localhost:3000/api/Expediente';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -46,11 +53,33 @@ export const ListaExpedientes = (props) => {
   let [formatDataForPDF, setFormatDataForPDF] = useState();
   let [urlPDF, seturlPDF] = useState('');
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   useEffect(() => {
     axios.get(urlExpedientes).then(response =>{
       setTableData(response.data)
     }).catch(error => console.log(error))
   }, [cambio]);
+  
+const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+      'N°': row.IdExpediente,
+      'Cliente': row.Cliente,
+      'Nombre': row.Nombre,
+      'Fecha de creación':  new Date(row.fechaCreacion).toLocaleDateString('es-ES'), // Formatea la fecha,
+      'Empleado': row.CreadoPor,
+      'Historial':row.TotalRegistros,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Cliente','Nombre', 'Fecha de creación', 'Empleado','Historial'] });
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Expedientes.xlsx');
+  };
   
   
   //IMPRIMIR PDF
@@ -67,8 +96,10 @@ export const ListaExpedientes = (props) => {
           return {
             'N°': row.IdExpediente,
             'Cliente': row.Cliente,
+            'Nombre': row.Nombre,
             'Fecha de creación': fechaCreacion,
             'Empleado': row.CreadoPor,
+            'Historial':row.TotalRegistros,
           };
         });
         return formattedData;
@@ -78,7 +109,7 @@ export const ListaExpedientes = (props) => {
       const subTitulo = "LISTA DE EXPEDIENTES"
       const orientation = "landscape";
   
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
    
   };
@@ -103,16 +134,28 @@ export const ListaExpedientes = (props) => {
   }
 
   const columns = [
-    { field: 'IdExpediente', headerName: 'Numero de expediente', width: 300 },
-    { field: 'Cliente', headerName: 'Cliente', width: 300 },
-    { field: 'fechaCreacion', headerName: 'Fecha de creacion', width: 300},
-    { field: 'CreadoPor', headerName: 'Creado por', width: 300 },
-    {field: 'TotalRegistros', headerName: 'Total Historial Clinico', width: 300 },
+    { field: 'IdExpediente', headerName: 'No.Expediente', width: 150,headerAlign: 'center' },
+    { field: 'Cliente', headerName: 'Identidad', width: 200,headerAlign: 'center' },
+    { field: 'Nombre', headerName: 'Nombre', width: 300,headerAlign: 'center' },
+    { 
+      field: 'fechaCreacion', 
+      headerName: 'Fecha de Creación', 
+      width: 170,
+      headerAlign: 'center',
+      renderCell: (params) => (
+          <span>
+              {new Date(params.value).toLocaleDateString('es-ES')}
+          </span>
+      ),
+  },
+    { field: 'CreadoPor', headerName: 'Creado por', width: 200,headerAlign: 'center' },
+    {field: 'TotalRegistros', headerName: 'Historial', width: 100,headerAlign: 'center'},
     {
 
       field: 'borrar',
       headerName: 'Acciones',
-      width: 400,
+      width: 360,
+      headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions1">
@@ -157,8 +200,17 @@ export const ListaExpedientes = (props) => {
     }
     
   }
-
+  //Bitacora
+  let dataB = {
+    Id: props.idUsuario
+  }
+  const bitacora = {
+    urlB: urlSalirListaExpediente,
+    activo: props.activo,
+    dataB: dataB
+  }
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/menuClientes');
   };
 
@@ -181,7 +233,7 @@ export const ListaExpedientes = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -194,7 +246,7 @@ export const ListaExpedientes = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -209,21 +261,32 @@ export const ListaExpedientes = (props) => {
               <AddIcon style={{ marginRight: '5px' }} />
               NUEVO
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
+
             <Button className="btnReport"
             onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+         pagination
           getRowId={tableData => tableData.IdExpediente}
           rows={filteredData}
+          autoHeight
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          
         />
       </div>
     </div>

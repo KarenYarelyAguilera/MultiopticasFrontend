@@ -579,14 +579,7 @@ export const ConfigRol = props => {
             <TextCustom text="Modulos" />
 
             <div className="inputCheck">
-              <input
-                type="checkbox"
-                id="accion"
-                onClick={(e) =>console.log(e)}
-                // disabled={usuarioLeer || !usuarioLeer}
-              />
-
-              <TextCustom text="Leer" />
+              <TextCustom text="Consulta" />
             </div>
 
             <div className="inputCheck">
@@ -628,7 +621,7 @@ export const ConfigRol = props => {
             </div> */}
 
             <div className="conTitleRoles">
-              <TextCustom text="Usuarios" className="titleInput" />
+              <TextCustom text="Administración" className="titleInput" />
               <TextCustom text="Ventas " className="titleInput" />
               <TextCustom text="Inventario" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />
@@ -921,37 +914,37 @@ export const ConfigRol = props => {
                 ></IOSSwitch>
               </div>
               <div className="contSwitchControl">
-              <Button className="btnNewRol" onClick={updUsuarios} >
+              <Button className="btnEditPermiso" onClick={updUsuarios} >
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updVentas}>
+              <Button className="btnEditPermiso" onClick={updVentas}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updInventario}>
+              <Button className="btnEditPermiso" onClick={updInventario}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updClientes}>
+              <Button className="btnEditPermiso" onClick={updClientes}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updRecordatorios}>
+              <Button className="btnEditPermiso" onClick={updRecordatorios}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updSeguridad}>
+              <Button className="btnEditPermiso" onClick={updSeguridad}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
 
-              <Button className="btnNewRol" onClick={updConfiguracion}>
+              <Button className="btnEditPermiso" onClick={updConfiguracion}>
               <EditIcon style={{ marginRight: '5px' }} />
               Editar Permiso
               </Button>
