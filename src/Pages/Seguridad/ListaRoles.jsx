@@ -15,6 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 import { generatePDF } from '../../Components/generatePDF';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 import '../../Styles/Usuarios.css';
@@ -22,7 +24,7 @@ import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios';
 
 export const ListaRoles = (props) => {
-/*   const [permisos, setPermisos] = useState([]);
+  const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
@@ -30,10 +32,13 @@ export const ListaRoles = (props) => {
   }
   useEffect(() => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
-  }, []) */
+  }, [])
+
   const [cambio, setCambio] = useState(0);
   const [generos, setGeneros] = useState([]);
   const [sucursales, setSucursales] = useState([]);
+
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const urlRoles ='http://localhost:3000/api/Rol';
 
@@ -70,38 +75,54 @@ export const ListaRoles = (props) => {
     return `${año}-${mes}-${dia}`;
   }
 
-  //IMPRIMIR PDF
-  const handleGenerarReporte = () => {
- /*    if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else { */
-      const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fechaNacimiento);
-          const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
-          return {
-            'ID': row.IdEmpleado,
-            'Nombre': row.nombre,
-            'Apellido': row.apellido,
-            'Telefono': row.telefonoEmpleado,
-            'Sucursal': row.direccion,
-            'Descripcion': row.descripcion,
-            'Numero de identidad': row.numeroIdentidad,
-          };
-        });
-        return formattedData;
-      };
 
-      const urlPDF = 'Reporte_Empleados.pdf';
-      const subTitulo = "LISTA DE EMPLEADOS"
 
-      const orientation = "landscape";
-      generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
-    //}
-
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
+            'ID': row.Id_Rol,
+            'Rol': row.Rol,
+            'Descripcion': row.Descripcion,
+            'Estado': row.estado,
+            
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Rol', 'Descripcion', 'Estado'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Roles.xlsx');
   };
+ //PDF
+ const handleGenerarReporte = () => {
+  if (permisos[0].consultar === "n") {
+    swal("No cuenta con los permisos para realizar esta accion", "", "error");
+  } else {
+    const formatDataForPDF = () => {
+      const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
+        return {
+          'ID': row.Id_Rol,
+            'Rol': row.Rol,
+            'Descripcion': row.Descripcion,
+            'Estado': row.estado
+        };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Reporte_Roles.pdf';
+    const subTitulo = "LISTA DE ROLES";
+    const orientation = "landscape";
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+  }
+};
+
+
 
   
 
@@ -126,13 +147,13 @@ export const ListaRoles = (props) => {
   const columns = [
     //son los de la base no los de node
     { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'Rol', headerName: 'Rol', width: 500, headerAlign: 'center' },
-    { field: 'Descripcion', headerName: 'Descripción', width: 550, headerAlign: 'center' },
-    { field: 'estado', headerName: 'Estado', width: 200, headerAlign: 'center' },
+    { field: 'Rol', headerName: 'Rol', width: 300, headerAlign: 'center' },
+    { field: 'Descripcion', headerName: 'Descripción', width: 300, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 300, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 260, headerAlign: 'center',
+      width: 400, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions1">
@@ -253,7 +274,7 @@ export const ListaRoles = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -266,19 +287,19 @@ export const ListaRoles = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
-               /*  if (permisos[0].insertar === "n") {
+                if (permisos[0].insertar === "n") {
                   swal("No cuenta con los permisos para realizar esta accion", "", "error")
-                } else { */
+                } else { 
                   navegate('/config/crearRol');
-                //}
+                }
 
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3' }} />
               Nuevo
             </Button>
 
@@ -286,26 +307,31 @@ export const ListaRoles = (props) => {
                 <AddIcon style={{ marginRight: '5px' }} />
                 {inactivo === false ? "Inactivos" : "Activos"}
               </Button>
+
+              
+              <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
               
             <Button className="btnReport"
               onClick={handleGenerarReporte}
-
             >
-              
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
               Generar reporte
             </Button>
           </div>
         </div>
         <DataGrid
+        paginatio
           getRowId={tableData => tableData.Id_Rol}
           rows={inactivo===false?filteredData:filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          //aqui iba el onrow
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
