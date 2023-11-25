@@ -113,13 +113,13 @@ export const RegistroProducto2 = (props) => {
       };
   
       axios.put(urlUpdProducto, data).then(() => {
-        swal("Producto Actualizado Correctamente", "", "success").then(() => {
+        swal("Aro Actualizado Correctamente", "", "success").then(() => {
           Bitacora(bitacora)
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
         console.log(error);
-        swal('Error al Actualizar Producto! , porfavor revise todos los campos.', '', 'error')
+        swal('Error al Actualizar Aro! , porfavor revise todos los campos.', '', 'error')
         // axios.post(urlErrorInsertBitacora, dataB)
       })
   
@@ -155,14 +155,14 @@ export const RegistroProducto2 = (props) => {
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
-      swal('Producto agregado con exito', '', 'success').then(result => {
+      swal('Aro agregado con exito', '', 'success').then(result => {
         Bitacora(bitacora)
         navegate('/menuInventario/ListaProductos');
       });
       
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Producto, los modelos deben ser únicos.', '', 'error')
+      swal('¡Este Aro ya existe! .', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
@@ -173,7 +173,7 @@ export const RegistroProducto2 = (props) => {
   const handleBack = () => {
     swal({
       title: 'Advertencia',
-      text: 'Hay un proceso de creación de Producto ¿Estás seguro que deseas salir?',
+      text: 'Hay un proceso de creación de Aro ¿Estás seguro que deseas salir?',
       icon: 'warning',
       buttons: ['Cancelar', 'Salir'],
       dangerMode: true,
@@ -193,8 +193,8 @@ export const RegistroProducto2 = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizar Producto</h2> : <h2>Registro de Producto</h2>}
-        <h3>Complete todos los puntos para poder registrar el producto.</h3>
+        {props.actualizar ? <h2>Actualizar Aro</h2> : <h2>Registro de Aro</h2>}
+        <h3>Complete todos los puntos para poder registrar el Aro.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -368,7 +368,7 @@ export const RegistroProducto2 = (props) => {
 
             <div className="contInput">
               <TextCustom
-                text="Descripcion del Producto"
+                text="Descripcion del Aro"
                 className="titleInput"
               />
               <input

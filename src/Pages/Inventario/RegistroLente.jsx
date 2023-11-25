@@ -108,11 +108,16 @@ export const RegistroLente = (props) => {
     };
     console.log(data);
 
-    axios.put(urlUpdateLente, data).then(() => {
-      swal("Lente Actualizado Correctamente", "", "success").then(() => {
-        Bitacora(bitacora)
-        navegate('/MenuInventario/ListaLentes');
-      })
+    axios.put(urlUpdateLente, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este Lente ya existe!', '', 'error')
+      } else {
+        swal("Lente Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
+          navegate('/MenuInventario/ListaLentes');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Lente , porfavor revise todos los campos.', '', 'error')
