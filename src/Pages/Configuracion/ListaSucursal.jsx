@@ -10,8 +10,8 @@ import { useNavigate } from 'react-router';
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
 
-import fondoPDF from '../../IMG/FondoPDFH.jpg'
-
+import fondoPDF from "../../IMG/fondoPDF.jpg";
+import AnalyticsIcon from '@mui/icons-material/Analytics';  //para el boton de excel 
 
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
