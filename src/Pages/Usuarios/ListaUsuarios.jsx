@@ -52,7 +52,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   //  const urlBitacoraDelUsuario=
   //    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
-
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [tableData, setTableData] = useState([]);
   const [tableDataBlock, setTableDataBlock] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -65,25 +65,29 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   }, [cambio, inactivo]);
 
   const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
 
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
-      '#': row.id_Usuario,
-      'Usuario': row.Usuario,
-      'Usuario': row.Nombre_Usuario,
-      'Rol': row.rol,
-      'Estado': row.Estado_Usuario,
-      'Email': row.Correo_Electronico,
-    }));
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+        '#': row.id_Usuario,
+        'Usuario': row.Usuario,
+        'Nombre': row.Nombre_Usuario,
+        'Rol': row.rol,
+        'Estado': row.Estado_Usuario,
+        'Email': row.Correo_Electronico,
+      }));
 
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['Identidad', 'Nombre', 'Apellido', 'Genero', 'Fecha Nacimiento', 'Direccion', 'Telefono', 'Email'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['#', 'Usuario','Nombre', 'Rol', 'Estado', 'Email'] });
 
 
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+    };
   };
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -99,7 +103,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           return {
             '#': row.id_Usuario,
             'Usuario': row.Usuario,
-            'Usuario': row.Nombre_Usuario,
+            'Nombre': row.Nombre_Usuario,
             'Rol': row.rol,
             'Estado': row.Estado_Usuario,
             'Email': row.Correo_Electronico,
@@ -157,19 +161,8 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
       renderCell: params => (
         <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={() => handleUpdt(params.row)}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.id_Usuario)}
-
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}><EditIcon></EditIcon></Button>
+          <Button className="btnDelete" onClick={() => handleDel(params.row.id_Usuario)}><DeleteForeverIcon></DeleteForeverIcon></Button>
         </div>
       ),
     },
@@ -183,23 +176,25 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
-        buttons: {
-          delete: 'Cancelar',
-          cancel: 'Eliminar',
-
-        },
         content: (
+
           <div className="logoModal">
-            ¿Desea eliminar este usuario?
+            ¿Desea Eliminar este cliente: {id.nombre}?
           </div>
+
+
         ),
+        buttons: {
+          cancel: 'Cencelar',
+          delete: 'Eliminar',
+        }
 
       }).then(async (op) => {
 
         switch (op) {
-          case null:
+          case 'delete':
 
-            let data = {
+            /* let data = {
               id: id,
             };
 
@@ -216,7 +211,9 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             }).catch(error => {
               console.log(error);
               swal("Error al eliminar el empleado", "", "error")
-            })
+            }) */
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
 
             break;
 
@@ -238,12 +235,10 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         buttons: {
           cancel: 'Cancelar',
           update: 'Actualizar',
-
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el usuario:{' '}
-            {id.Usuario} ?
+            ¿Desea actualizar este usuario: {id.nombre}?
           </div>
         ),
       }).then(
@@ -290,7 +285,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
-          {/* </div> */}
+
           <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
@@ -300,30 +295,21 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
                 } else {
                   navegate('/usuarios/crearusuario');
                 }
-
-              }}
-            >
-              <AddIcon style={{ marginRight: '3px' }} />
-              Nuevo
+              }}>
+              <AddIcon style={{ marginRight: '3px' }} />Nuevo
             </Button>
 
-
             <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
-              <AddIcon style={{ marginRight: '5px' }} />
-              {inactivo === false ? "Inactivos" : "Activos"}
+              <AddIcon style={{ marginRight: '5px' }} />{inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <AnalyticsIcon style={{ marginRight: '3px' }} />
-              Generar Excel
+              <AnalyticsIcon style={{ marginRight: '3px' }} />Generar Excel
             </Button>
 
-
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
-              Generar PDF
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />Generar PDF
             </Button>
           </div>
 
@@ -333,8 +319,11 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           rows={inactivo === false ? filteredData : filteredDataBlock}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
