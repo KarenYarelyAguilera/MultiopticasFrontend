@@ -17,10 +17,12 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 const urlInsertDepartamento = 'http://localhost:3000/api/departamento/crear';
 const urlUpdateDepartamento= 'http://localhost:3000/api/departamento/actualizar';
-
+const urlInsertBitacora ='http://localhost:3000/api/bitacora/insertDepartamento';
+const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarDepartamento';
 export const RegistroDepartamento = (props) => {
 
  const navegate = useNavigate();
@@ -39,10 +41,18 @@ export const RegistroDepartamento = (props) => {
     let data = {
       departamento:departamento.toUpperCase(),
       estado:estado,
-    }
-
+    };
     console.log (data)
 
+    let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     axios.post(urlInsertDepartamento, data).then(response => {
       console.log(response)
@@ -52,6 +62,7 @@ export const RegistroDepartamento = (props) => {
       } else 
       {
         swal('Departamento agregado con exito', '', 'success').then(result => {
+          Bitacora(bitacora)
           navegate('/config/ListaDepartamentos');
       });
     }
@@ -72,10 +83,22 @@ export const RegistroDepartamento = (props) => {
       estado:estado,
       IdDepartamento:props.data.IdDepartamento, 
     };
+    let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
     
     //Consumo de API y lanzamiento se alerta
   axios.put(urlUpdateDepartamento, data).then(response => {
     swal('Departamento actualizado con exito', '', 'success').then(result => {
+      props.limpiarData({});
+      props.limpiarUpdate(false)
+      Bitacora(bitacora)
       navegate('/config/ListaDepartamentos');
     })
   }).catch(error => {
@@ -94,6 +117,8 @@ export const RegistroDepartamento = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/config/ListaDepartamentos');

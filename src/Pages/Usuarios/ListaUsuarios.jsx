@@ -24,6 +24,8 @@ import axios from 'axios';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import { generatePDF } from '../../Components/generatePDF';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 export const ListUsuarios = ({ idRol, data, update, }) => {
   const [roles, setRoles] = useState([]);
@@ -45,24 +47,48 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
 
-    const urlUserBlock="http://localhost:3000/api/usuarios/inactivos"
+  const urlUserBlock = "http://localhost:3000/api/usuarios/inactivos"
 
   //  const urlBitacoraDelUsuario=
   //    'http://localhost:3000/api/bitacora/EliminarUsuario';
 
-
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [tableData, setTableData] = useState([]);
   const [tableDataBlock, setTableDataBlock] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [cambio, setCambio] = useState(0)
-  const [inactivo, setInactivo]=useState(false)
+  const [inactivo, setInactivo] = useState(false)
 
   useEffect(() => {
     axios.get(urlUsers).then(response => setTableData(response.data))
     axios.get(urlUserBlock).then(response => setTableDataBlock(response.data))
-  }, [cambio,inactivo]);
+  }, [cambio, inactivo]);
+
+  const handleGenerarExcel = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
+
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+        '#': row.id_Usuario,
+        'Usuario': row.Usuario,
+        'Nombre': row.Nombre_Usuario,
+        'Rol': row.rol,
+        'Estado': row.Estado_Usuario,
+        'Email': row.Correo_Electronico,
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['#', 'Usuario','Nombre', 'Rol', 'Estado', 'Email'] });
 
 
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+    };
+  };
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
@@ -77,7 +103,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           return {
             '#': row.id_Usuario,
             'Usuario': row.Usuario,
-            'Usuario': row.Nombre_Usuario,
+            'Nombre': row.Nombre_Usuario,
             'Rol': row.rol,
             'Estado': row.Estado_Usuario,
             'Email': row.Correo_Electronico,
@@ -105,49 +131,38 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
-  ) 
+  )
 
-  const filteredDataBlock=
-  tableDataBlock.filter(row =>
-    Object.values(row).some(
-      value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
-  ) 
+  const filteredDataBlock =
+    tableDataBlock.filter(row =>
+      Object.values(row).some(
+        value =>
+          value &&
+          value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+      ),
+    )
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
-    { field: 'Usuario', headerName: 'Usuario', width: 200, headerAlign: 'center' },
-    { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
-    { field: 'Correo_Electronico', headerName: 'Correo electrónico', width: 250, headerAlign: 'center' },
+    { field: 'Usuario', headerName: 'Usuario', width: 300, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 250, headerAlign: 'center' },
+    { field: 'Correo_Electronico', headerName: 'Correo electrónico', width: 300, headerAlign: 'center' },
     /* {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'}, */
-    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 200, headerAlign: 'center',valueGetter: (params) => {
-      const date = new Date(params.row.Fecha_Vencimiento);
-      return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-    },
-  },
-  { field: 'Estado_Usuario', headerName: 'Estado', width: 180, headerAlign: 'center' },
+    // {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 200, headerAlign: 'center',valueGetter: (params) => {
+    //   const date = new Date(params.row.Fecha_Vencimiento);
+    //   return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    // },
+    // },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 400, headerAlign: 'center',
+      width: 460, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions">
-          <Button
-            className="btnEdit"
-            onClick={()=>handleUpdt(params.row)}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.id_Usuario)}
-
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+          <Button className="btnEdit" onClick={() => handleUpdt(params.row)}><EditIcon></EditIcon></Button>
+          <Button className="btnDelete" onClick={() => handleDel(params.row.id_Usuario)}><DeleteForeverIcon></DeleteForeverIcon></Button>
         </div>
       ),
     },
@@ -161,22 +176,25 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       swal({
-        buttons: {
-          cancel: 'Eliminar',
-          delete: 'Cancelar',
-        },
         content: (
+
           <div className="logoModal">
-            ¿Desea eliminar este usuario?
+            ¿Desea Eliminar este cliente: {id.nombre}?
           </div>
+
+
         ),
+        buttons: {
+          cancel: 'Cencelar',
+          delete: 'Eliminar',
+        }
 
       }).then(async (op) => {
 
         switch (op) {
-          case null:
+          case 'delete':
 
-            let data = {
+            /* let data = {
               id: id,
             };
 
@@ -193,7 +211,9 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             }).catch(error => {
               console.log(error);
               swal("Error al eliminar el empleado", "", "error")
-            })
+            }) */
+            swal('No es posible realizar esta acción ', '', 'error');
+            setCambio(cambio + 1);
 
             break;
 
@@ -213,13 +233,12 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     } else {
       swal({
         buttons: {
-          update: 'Actualizar',
           cancel: 'Cancelar',
+          update: 'Actualizar',
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el usuario:{' '}
-            {id.Usuario} ?
+            ¿Desea actualizar este usuario: {id.nombre}?
           </div>
         ),
       }).then(
@@ -254,7 +273,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -266,48 +285,45 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
-          {/* </div> */}
-          <div className="btnActionsNewReport1">
+
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
                 if (permisos[0].insertar === "n") {
-                  swal("No tiene permisos para realizar esta acción","","error")
+                  swal("No tiene permisos para realizar esta acción", "", "error")
                 } else {
                   navegate('/usuarios/crearusuario');
                 }
-               
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              }}>
+              <AddIcon style={{ marginRight: '3px' }} />Nuevo
             </Button>
 
-
-
-            <Button className="btnInactivo" onClick={() => {setInactivo(inactivo===false?true:false) }}>
-              <AddIcon style={{ marginRight: '5px' }} />
-              {inactivo===false?"Inactivos":"Activos"}
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
+              <AddIcon style={{ marginRight: '5px' }} />{inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />Generar Excel
+            </Button>
 
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />Generar PDF
             </Button>
           </div>
 
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
-          rows={inactivo===false?filteredData:filteredDataBlock}
+          rows={inactivo === false ? filteredData : filteredDataBlock}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

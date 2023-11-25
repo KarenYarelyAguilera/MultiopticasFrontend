@@ -63,7 +63,7 @@ export const AddClientes = (props) => {
   const [advertencia, setadvertencia] = React.useState(false);
   const [errorcorreoelec, setErrorcorreoelec] = React.useState(false);
   const [Genero, setGenero] = useState([])
-
+  const [Generos, setGeneros] = React.useState(props.data.IdGenero || null)
   const [fechaNacimiento, setFechaNacimiento] = useState(props.data.fechaNacimiento || '');
 
   const navegate = useNavigate();
@@ -208,7 +208,7 @@ export const AddClientes = (props) => {
       if (confirmExit) {
         props.update(false)
         props.Data({})
-        navegate('/menuClientes');
+        navegate('/menuClientes/lista');
       } else {
       }
     });
@@ -485,7 +485,9 @@ export const AddClientes = (props) => {
 
             <div className="contInput">
               <TextCustom text="Genero" className="titleInput" />
-              <select name="" id="genero" className="inputCustomPreguntas">
+              <select name="" id="genero" className="inputCustomPreguntas" value={Generos} onChange={(e)=>{
+                setGeneros(e.target.value)
+              }}>
               {Genero.length ? (
                   Genero.map(pre => (
                     <option key={pre.IdGenero} value={pre.IdGenero}>

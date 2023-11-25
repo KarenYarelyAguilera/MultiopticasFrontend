@@ -24,7 +24,9 @@ import { Bitacora } from '../../Components/bitacora';
 const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
 const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
 
-const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/insertMetodopago';
+const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/insertMetodopago'; 
+const urlBitacoraUpdate=  'http://localhost:3000/api/bitacora/actualizarMetodopago'; 
+
 
 export const MetodosDePago = (props) => {
 
@@ -81,14 +83,25 @@ export const MetodosDePago = (props) => {
 
 
     const data = {
-
       descripcion: descripcion.toUpperCase(),
       estado: estado,
       IdTipoPago: props.data.IdTipoPago,
     }
 
+    let dataB = {
+      Id: props.idUsuario
+    }
+    const bitacora = {
+      urlB: urlBitacoraUpdate,
+      activo: props.activo,
+      dataB: dataB
+    }
+
     axios.put(urlUpdateMetodoPago, data).then(() => {
       swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         navegate('/config/ListaMetodosDePago');
       })
     }).catch(error => {
@@ -110,6 +123,8 @@ export const MetodosDePago = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/config/ListaMetodosDePago');
