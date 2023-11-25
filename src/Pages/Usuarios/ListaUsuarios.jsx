@@ -24,6 +24,8 @@ import axios from 'axios';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import { generatePDF } from '../../Components/generatePDF';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 export const ListUsuarios = ({ idRol, data, update, }) => {
   const [roles, setRoles] = useState([]);
@@ -62,7 +64,27 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     axios.get(urlUserBlock).then(response => setTableDataBlock(response.data))
   }, [cambio,inactivo]);
 
-
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = filteredData.map((row, index) => ({
+            '#': row.id_Usuario,
+            'Usuario': row.Usuario,
+            'Usuario': row.Nombre_Usuario,
+            'Rol': row.rol,
+            'Estado': row.Estado_Usuario,
+            'Email': row.Correo_Electronico,
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['Identidad', 'Nombre', 'Apellido', 'Genero', 'Fecha Nacimiento', 'Direccion', 'Telefono', 'Email'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+  };
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
@@ -118,20 +140,20 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
-    { field: 'Usuario', headerName: 'Usuario', width: 200, headerAlign: 'center' },
-    { field: 'rol', headerName: 'Rol', width: 180, headerAlign: 'center' },
-    { field: 'Correo_Electronico', headerName: 'Correo electrónico', width: 250, headerAlign: 'center' },
+    { field: 'Usuario', headerName: 'Usuario', width: 300, headerAlign: 'center' },
+    { field: 'rol', headerName: 'Rol', width: 250, headerAlign: 'center' },
+    { field: 'Correo_Electronico', headerName: 'Correo electrónico', width: 300, headerAlign: 'center' },
     /* {field: 'Fecha_Ultima_Conexion',headerName: 'Ultima Conexion',width: 150, headerAlign: 'center'}, */
-    {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 200, headerAlign: 'center',valueGetter: (params) => {
-      const date = new Date(params.row.Fecha_Vencimiento);
-      return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-    },
-  },
-  { field: 'Estado_Usuario', headerName: 'Estado', width: 180, headerAlign: 'center' },
+    // {field: 'Fecha_Vencimiento', headerName: 'Fecha de vencimiento', width: 200, headerAlign: 'center',valueGetter: (params) => {
+    //   const date = new Date(params.row.Fecha_Vencimiento);
+    //   return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    // },
+ // },
+  { field: 'Estado_Usuario', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
-      width: 400, headerAlign: 'center',
+      width: 460, headerAlign: 'center',
 
       renderCell: params => (
         <div className="contActions">
@@ -254,7 +276,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -267,7 +289,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -279,24 +301,27 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
                
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
-
-
+           
 
             <Button className="btnInactivo" onClick={() => {setInactivo(inactivo===false?true:false) }}>
               <AddIcon style={{ marginRight: '5px' }} />
               {inactivo===false?"Inactivos":"Activos"}
             </Button>
 
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
+              Generar PDF
             </Button>
           </div>
 
