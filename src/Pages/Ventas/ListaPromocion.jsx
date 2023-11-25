@@ -1,3 +1,9 @@
+//GENERADOR DE PFD
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
+
 import { DataGrid,esES } from '@mui/x-data-grid';
 import { useState, useEffect, React } from 'react';
 import { useNavigate } from 'react-router';
@@ -12,7 +18,11 @@ import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import AnalyticsIcon from '@mui/icons-material/Analytics';  //para el boton de excel 
 import { Button } from '@mui/material';
+
+//GENERADOR DE PDF 
+import { generatePDF } from '../../Components/generatePDF';
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -62,6 +72,61 @@ export const ListaPromocion = (props) => {
   const [cantidadmin, setcantidadmin] = useState('');
   const [advertencia, setadvertencia] = useState('');
   const [errorcantidadmin, setErrorcantidadmin] = useState(false);
+  
+  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+
+  //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdPromocion,
+    'Descripción':row.descripcion, 
+    'Porcentaje':row.descPorcent, 
+    'Fecha inicial':row.fechaInicialF, 
+    'Fecha final':row.fechaFinalF, 
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Porcentaje', 'Fecha inicial','Fecha final', ] });
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Promociones.xlsx');
+};
+
+ //IMPRIMIR PDF
+ const handleGenerarReporte = () => {
+  if (permisos[0].consultar ==="n") {
+    swal("No cuenta con los permisos para realizar esta accion","","error")
+  } else {
+    const formatDataForPDF = () => {
+      const formattedData = tableData.map((row) => {
+        const fechaCre = new Date(row.fechaNacimiento);
+        const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
+                              String(fechaCre.getMonth()).padStart(2,'0')+"/"+
+                              fechaCre.getFullYear();
+                              return {
+                                'N°': row.IdPromocion,
+                                'Descripción': row.descripcion,
+                                'Porcentaje': row.descPorcent,
+                                'Fecha inicial': row.fechaInicialF,
+                                'Fecha final': row.fechaFinalF, 
+                              };
+      });
+      return formattedData;
+    };
+
+    const urlPDF = 'Report_Promociones.pdf';
+    const subTitulo = "LISTA DE PROMOCIONES"
+    const orientation = "landscape";
+
+    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+  }
+};
+  //Filtracion de fechas
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   useEffect(() => {
     fetch(urlPromociones)
@@ -227,6 +292,33 @@ let dataB = {
           left: '130px',
         }}
       >
+        <div className='contDateDH'>
+
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de inicio"
+            className='inputCustomF'
+          ></input>
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de fin"
+            className='inputCustomF'
+          ></input>
+
+        </div>
+
         <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
@@ -261,19 +353,27 @@ let dataB = {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
-            <Button className="btnReport">
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar excel
+            </Button>
+
+            <Button className="btnReport" onClick={handleGenerarReporte}> 
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
               Generar reporte
             </Button>
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdPromocion}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           // onRowClick={usuario => {
           //   swal({
           //     buttons: {

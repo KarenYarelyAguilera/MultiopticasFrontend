@@ -644,6 +644,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={data} garanr
                     Data={Data}
+                    limpiarData={Data}
+                    limpiarUpdate={update}
                     idUsuario={idUsuario} 
                     activo={bitacora}
                   />
@@ -776,6 +778,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={data}
                     Data={Data}
+                    limpiarData={Data}
+                    limpiarUpdate={update}
                     idUsuario={idUsuario} 
                     activo={bitacora}
                   />
@@ -805,6 +809,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario}
                   activo={bitacora}
                 />
@@ -834,6 +840,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora}
                 />
@@ -863,6 +871,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora}
                 />
@@ -892,6 +902,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora}
                 />
@@ -921,6 +933,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora} 
                 />
@@ -1858,6 +1872,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora}
                 ></RegistroPromocion>
@@ -2120,6 +2136,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                     update={update}
                     data={data}
                     Data={Data}
+                    limpiarData={Data}
+                    limpiarUpdate={update}
                     idUsuario={idUsuario} 
                     activo={bitacora}
                   />
@@ -2217,6 +2235,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                   update={update}
                   data={data}
                   Data={Data}
+                  limpiarData={Data}
+                  limpiarUpdate={update}
                   idUsuario={idUsuario} 
                   activo={bitacora}
                 ></RegistroSucursal>

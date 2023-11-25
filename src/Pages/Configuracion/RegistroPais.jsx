@@ -17,10 +17,12 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
-
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 const urlInsertPais = 'http://localhost:3000/api/pais/crear';
 const urlUpdatePais = 'http://localhost:3000/api/pais/actualizar';
+const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertPais';
+const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarPais';
 
 export const RegistroPais = (props) => {
 
@@ -39,7 +41,16 @@ export const RegistroPais = (props) => {
 
     let data = {
       pais: pais.toUpperCase(),
-      estado:estado,
+      estado: estado,
+    };
+    let dataB =
+    {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
     };
     axios.post(urlInsertPais, data).then(response => {
       console.log(response);
@@ -48,6 +59,7 @@ export const RegistroPais = (props) => {
         swal('¡Este Pais ya existe!', '', 'error')
       }else{
         swal('Pais creado exitosamente', '', 'success').then(result => {
+          Bitacora(bitacora)
           navegate('/config/ListaPais');
       });
       }
@@ -67,10 +79,22 @@ export const RegistroPais = (props) => {
       pais: pais.toUpperCase(),
       estado: estado,
       IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
-    }
+    };
+    let dataB =
+          {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlUpdateBitacora,
+            activo: props.activo,
+            dataB: dataB
+          };
 
     axios.put(urlUpdatePais, data).then(() => {
       swal("Datos Actualizado Correctamente", "", "success").then(() => {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+        Bitacora(bitacora)
         navegate('/config/ListaPais');
       })
     }).catch(error => {
@@ -91,6 +115,8 @@ export const RegistroPais = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/config/ListaPais');

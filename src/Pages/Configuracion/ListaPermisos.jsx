@@ -24,6 +24,9 @@ export const ListaPermisos = (props) => {
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  //Filtracion de fechas
+const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   //Llama a toda los datos que estan en permisos 
   useEffect(() => {
     axios.get(urlPermisosvista).then(response => setTableData(response.data))
@@ -120,11 +123,15 @@ export const ListaPermisos = (props) => {
         </div>
         <div style={{ height: 400, width: '100%' }}>
           <DataGrid
+          pagination
             getRowId={getRowId}
             rows={filteredData}
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+            autoHeight
             columns={columns}
-            pageSize={5}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 50]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             onRowClick={usuario => {
               swal('No es posible realizar esta acción ', '', 'error');
               setCambio(cambio + 1);

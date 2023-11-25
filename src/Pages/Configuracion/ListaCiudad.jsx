@@ -34,12 +34,13 @@ import { TextCustom } from '../../Components/TextCustom';
 import { generatePDF } from '../../Components/generatePDF';
 
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
-export const ListaCiudad = ({idRol,data,update}) => {
+export const ListaCiudad = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:8
   }
   useEffect(()=>{
@@ -52,6 +53,7 @@ export const ListaCiudad = ({idRol,data,update}) => {
   const urlCuidad = 'http://localhost:3000/api/ciudades';
   const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
   const urlListaCiudadesInactivas = 'http://localhost:3000/api/ciudades/ciudadInactiva';
+  const urlBorrarBitacora= 'http://localhost:3000/api/bitacora/eliminarCiudad';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -65,15 +67,24 @@ export const ListaCiudad = ({idRol,data,update}) => {
     axios.get (urlListaCiudadesInactivas).then(response=> setTableDataInactivos(response.data))
   }, [cambio, inactivo]);
 
-  //Genera el archivo Excel 
-  const handleGenerarExcel = () => {
-    const sortedData = [...tableData].sort((a, b) => a.IdCiudad - b.IdCiudad);
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(sortedData);
+//GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
 
-    XLSX.utils.book_append_sheet(wb, ws, 'Ciudad');   // Agrega la hoja de cálculo al libro de trabajo
-    XLSX.writeFile(wb, 'Lista_de_Ciudad.xlsx'); // Genera el archivo de Excel
-  };
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdCiudad,
+    'Ciudad':row.ciudad, 
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Ciudad'] });
+
+
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Ciudades.xlsx');
+};
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -175,8 +186,19 @@ function handleDel(id) {
           };
           console.log(data);
     
+          let dataB =
+          {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlBorrarBitacora,
+            activo: props.activo,
+            dataB: dataB
+          }
+
           await axios.delete(urlDeleteCuidad,{data}).then(response=>{
             swal("Ciudad eliminada correctamente","","success")
+            Bitacora(bitacora)
             setCambio(cambio+1)
           }).catch(error=>{
             console.log(error);
@@ -211,8 +233,8 @@ function handleUpdt(id) {
     }).then((op) => {
       switch (op) {
           case 'update':
-          data(id)
-          update(true)
+            props.data(id)
+            props.update(true)
       navegate('/config/RegistroCiudad')
       break;
       default:
@@ -292,8 +314,10 @@ function handleUpdt(id) {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdCiudad}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={pageSize}
