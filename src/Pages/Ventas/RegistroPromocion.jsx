@@ -96,6 +96,8 @@ export const RegistroPromocion = (props) => {
     axios.put(urlUpdPromocion, data).then(() => {
       swal("Promocion Actualizada Correctamente", "", "success").then(() => {
         //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         navegate('/promocion/listaPromocion');
       })
     }).catch(error => {
@@ -150,6 +152,8 @@ export const RegistroPromocion = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/menuVentas/ListaPromociones');
@@ -191,6 +195,21 @@ export const RegistroPromocion = (props) => {
               />
             </div>
 
+            <div className="contInput">
+              <TextCustom text="Fecha Inicial" className="titleInput" />
+              <input
+                type="date"
+                name=""
+                // helperText={texto}
+                maxLength={8}
+                className="inputCustom"
+                placeholder="Fecha Inicial"
+                id="fechaInicial"
+                value={fechaInicial}
+                onChange={(e)=>setfechaInicial(e.target.value)}
+              />
+
+            </div>
 
             <div className="contInput">
               <TextCustom text="Fecha Final" className="titleInput" />

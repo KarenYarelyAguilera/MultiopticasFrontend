@@ -1,12 +1,15 @@
 //GENERADOR DE PFD
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+//GENERADOR DE EXCEL 
+import * as XLSX from 'xlsx'
 
 import { DataGrid, esES } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
+
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
@@ -52,6 +55,8 @@ export const ListaSucursal = (props) => {
   const urlDelSucursal = 'http://localhost:3000/api/sucursal/eliminar';
   const urlListaSucursalesInactivas = 'http://localhost:3000/api/sucursalInactivas';
 
+//Filtracion de fechas
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,6 +90,26 @@ export const ListaSucursal = (props) => {
 
     axios.get (urlListaSucursalesInactivas).then(response=> setTableDataInactivos(response.data))
   }, [cambio, inactivo]);
+
+  //GENERADOR DE EXCEL
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
+
+  // Datos para el archivo Excel
+  const dataForExcel = filteredData.map((row, index) => ({
+    'N°':row.IdSucursal,
+    'Departamento':row.departamento, 
+    'Ciudad':row.ciudad, 
+    'Dirección':row.direccion, 
+    'Teléfono':row.telefono,   
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°','Departamento','Ciudad','Dirección','Teléfono'] });
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Sucursales.xlsx');
+};
 
 //IMPRIMIR PDF
 const handleGenerarReporte = () => {
@@ -252,11 +277,7 @@ const handleGenerarReporte = () => {
   
   };
 
-  //Funcion de Bitacora 
-  let dataB = {
-    Id: props.idUsuario
-  }
-
+  
   const handleBack = () => {
     navegate('/config');
   };
@@ -310,7 +331,10 @@ const handleGenerarReporte = () => {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
-
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar excel
+            </Button>
 
             <Button className="btnReport" 
             onClick={handleGenerarReporte}>
@@ -320,13 +344,15 @@ const handleGenerarReporte = () => {
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdSucursal}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-     
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>
