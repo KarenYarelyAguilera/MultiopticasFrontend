@@ -47,7 +47,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const urlDelUser =
     'http://localhost:3000/api/usuario/delete';
 
-    const urlUserBlock="http://localhost:3000/api/usuarios/inactivos"
+  const urlUserBlock = "http://localhost:3000/api/usuarios/inactivos"
 
   //  const urlBitacoraDelUsuario=
   //    'http://localhost:3000/api/bitacora/EliminarUsuario';
@@ -57,31 +57,31 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
   const [tableDataBlock, setTableDataBlock] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [cambio, setCambio] = useState(0)
-  const [inactivo, setInactivo]=useState(false)
+  const [inactivo, setInactivo] = useState(false)
 
   useEffect(() => {
     axios.get(urlUsers).then(response => setTableData(response.data))
     axios.get(urlUserBlock).then(response => setTableDataBlock(response.data))
-  }, [cambio,inactivo]);
+  }, [cambio, inactivo]);
 
   const handleGenerarExcel = () => {
     const workbook = XLSX.utils.book_new();
     const currentDateTime = new Date().toLocaleString();
-  
+
     // Datos para el archivo Excel
     const dataForExcel = filteredData.map((row, index) => ({
-            '#': row.id_Usuario,
-            'Usuario': row.Usuario,
-            'Usuario': row.Nombre_Usuario,
-            'Rol': row.rol,
-            'Estado': row.Estado_Usuario,
-            'Email': row.Correo_Electronico,
+      '#': row.id_Usuario,
+      'Usuario': row.Usuario,
+      'Usuario': row.Nombre_Usuario,
+      'Rol': row.rol,
+      'Estado': row.Estado_Usuario,
+      'Email': row.Correo_Electronico,
     }));
-  
+
     const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['Identidad', 'Nombre', 'Apellido', 'Genero', 'Fecha Nacimiento', 'Direccion', 'Telefono', 'Email'] });
-  
-  
-  
+
+
+
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
     XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
   };
@@ -127,16 +127,16 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
-  ) 
+  )
 
-  const filteredDataBlock=
-  tableDataBlock.filter(row =>
-    Object.values(row).some(
-      value =>
-        value &&
-        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
-  ) 
+  const filteredDataBlock =
+    tableDataBlock.filter(row =>
+      Object.values(row).some(
+        value =>
+          value &&
+          value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+      ),
+    )
 
   const columns = [
     { field: 'id_Usuario', headerName: 'ID', width: 70, headerAlign: 'center' },
@@ -148,8 +148,8 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     //   const date = new Date(params.row.Fecha_Vencimiento);
     //   return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
     // },
- // },
-  { field: 'Estado_Usuario', headerName: 'Estado', width: 200, headerAlign: 'center' },
+    // },
+    { field: 'Estado_Usuario', headerName: 'Estado', width: 200, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -159,7 +159,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         <div className="contActions">
           <Button
             className="btnEdit"
-            onClick={()=>handleUpdt(params.row)}
+            onClick={() => handleUpdt(params.row)}
           >
             <EditIcon></EditIcon>
           </Button>
@@ -184,8 +184,9 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     } else {
       swal({
         buttons: {
-          cancel: 'Eliminar',
           delete: 'Cancelar',
+          cancel: 'Eliminar',
+
         },
         content: (
           <div className="logoModal">
@@ -235,8 +236,9 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     } else {
       swal({
         buttons: {
-          update: 'Actualizar',
           cancel: 'Cancelar',
+          update: 'Actualizar',
+
         },
         content: (
           <div className="logoModal">
@@ -294,21 +296,21 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
               className="btnCreate"
               onClick={() => {
                 if (permisos[0].insertar === "n") {
-                  swal("No tiene permisos para realizar esta acción","","error")
+                  swal("No tiene permisos para realizar esta acción", "", "error")
                 } else {
                   navegate('/usuarios/crearusuario');
                 }
-               
+
               }}
             >
               <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
-           
 
-            <Button className="btnInactivo" onClick={() => {setInactivo(inactivo===false?true:false) }}>
+
+            <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
               <AddIcon style={{ marginRight: '5px' }} />
-              {inactivo===false?"Inactivos":"Activos"}
+              {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
@@ -328,7 +330,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
         </div>
         <DataGrid
           getRowId={tableData => tableData.id_Usuario}
-          rows={inactivo===false?filteredData:filteredDataBlock}
+          rows={inactivo === false ? filteredData : filteredDataBlock}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={5}
