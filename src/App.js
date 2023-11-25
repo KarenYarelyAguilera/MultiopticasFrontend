@@ -1624,9 +1624,9 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 />
                 <BarraHorizontal user={usuario} />
 
-               // <ListaCompra idRol={idRol} idUsuario={idUsuario} id={data} dataa={Data} />
-                  
-                <ListaCompra idRol={idRol} idUsuario={idUsuario} />
+
+                <ListaCompra idRol={idRol} idUsuario={idUsuario} id={data} dataa={Data}/>
+
                 <Footer/>
 
               </div>

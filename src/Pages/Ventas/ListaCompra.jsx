@@ -167,7 +167,10 @@ export const ListaCompra = (props) => {
       const subTitulo = "LISTA DE COMPRAS"
 
 
+
       //generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+
+      const orientation = "landscape";
 
 
     }
@@ -229,10 +232,10 @@ export const ListaCompra = (props) => {
   }
 
 
- // function handlAnular(id) {
-   // alert(props.idUsuario)
 
-  function handlAnular(id){
+  function handlAnular(id) {
+    alert(props.idUsuario)
+
 
     let data = {
       idUsuario: props.idUsuario,
