@@ -169,7 +169,7 @@ export const RecordatorioCitasEditar = props => {
         <Button className="btnBack" onClick={handleBack}>
          <ArrowBackIcon className="iconBack" />
        </Button>
-            <div className="contRecordatorios">
+            <div className="contRecordatorios" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignContent: 'center', marginTop: '200px', fontSize: '15px' }}>
                 <div className="contRecordCitas">
                     <div  >
                         <h1>Actualizar Cita</h1>
@@ -287,11 +287,13 @@ export const RecordatorioCitasEditar = props => {
 
                             <div className="contBtnStepperRecord">
                                 <Button
+                                 style={{ fontSize: '15px' }}
                                     className='btnStepperCan'
                                     onClick={() => navegate('/recordatorio')}
                                 >Cancelar</Button>
 
                                 <Button
+                                 style={{ fontSize: '15px' }}
                                     className='btnStepperGuardar'
                                     onClick={() => {
 
