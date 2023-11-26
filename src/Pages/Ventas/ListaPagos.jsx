@@ -82,7 +82,7 @@ export const ListaPagos = (props) => {
       'IdPago': row.IdPago,
       'IdVenta': row.IdVenta,
       'Tipo de Pago': row.MetodoDePago,
-      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+      'Fecha': row.fecha,
       'Estado': row.estado,
       'Saldo Abonado': row.saldoAbono,
       'Saldo Restante': row.saldoRestante,
@@ -93,7 +93,7 @@ export const ListaPagos = (props) => {
 
 
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Reporte_de_Pagos.xlsx');
+    XLSX.writeFile(workbook, 'Lista_de_Pagos.xlsx');
   }
   };
 
@@ -105,7 +105,7 @@ export const ListaPagos = (props) => {
     } else {
       formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fecha);
+          const fechaCre = new Date(row.fechaCreacion);
           const fechaCreacion = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
@@ -113,7 +113,7 @@ export const ListaPagos = (props) => {
             'IdPago': row.IdPago,
             'IdVenta': row.IdVenta,
             'Tipo de Pago': row.MetodoDePago,
-            'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+            'Fecha': row.fecha,
             'Estado': row.estado,
             'Saldo Abonado': row.saldoAbono,
             'Saldo Restante': row.saldoRestante,
@@ -154,13 +154,7 @@ export const ListaPagos = (props) => {
     // { field: 'IdPago', headerName: 'ID', width: 100 },
     { field: 'IdVenta', headerName: 'Número de venta', width: 200 },
     { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200 },
-    {
-      field: 'fecha', headerName: 'Fecha', width: 200,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fecha);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
+    { field: 'fecha', headerName: 'Fecha', width: 200 },
     { field: 'estado', headerName: 'Estado', width: 200 },
     { field: 'saldoAbono', headerName: 'Saldo abonado', width: 200 },
     { field: 'saldoRestante', headerName: 'Saldo restante', width: 200 },
