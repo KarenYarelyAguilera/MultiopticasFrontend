@@ -120,8 +120,8 @@ export const Recordatorio = (props) => {
 
   //limpiar filtros de la fecha
   const handleClearFilter = () => {
-    setStartDate(firstDayOfMonthString);
-    setEndDate(lastDayOfMonthString);
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
     setSearchTerm(''); // Limpiar el término de búsqueda
     // También puedes agregar lógica adicional para limpiar otros estados si es necesario
 
