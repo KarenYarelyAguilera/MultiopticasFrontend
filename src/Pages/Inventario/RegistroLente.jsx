@@ -115,6 +115,8 @@ export const RegistroLente = (props) => {
       } else {
         swal("Lente Actualizado Correctamente", "", "success").then(() => {
           Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
           navegate('/MenuInventario/ListaLentes');
         });
       }
@@ -136,6 +138,8 @@ export const RegistroLente = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/MenuInventario/ListaLentes');

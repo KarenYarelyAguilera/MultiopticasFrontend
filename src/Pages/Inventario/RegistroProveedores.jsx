@@ -55,7 +55,7 @@ export const RegistroProveedores = (props) => {
   const [errorencargado, setErrorencargado] = React.useState(false);
 
   const [Pais, setPais] = useState([]);
-  const [Paises, setPaises]= useState(props.data.IdCiudad)
+  const [Paises, setPaises]= useState(props.data.IdPais || null)
   const [errorpais, setErrorpais] = React.useState(false);
 
 
@@ -124,6 +124,8 @@ export const RegistroProveedores = (props) => {
       }else{
         swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
           Bitacora(bitacora) 
+          props.limpiarData({});
+          props.limpiarUpdate(false)
            navegate('/menuInventario/ListaProveedores');
         });
       }
@@ -185,6 +187,10 @@ export const RegistroProveedores = (props) => {
   };
 
   const handleBack = () => {
+    props.limpiarData({});
+    props.limpiarUpdate(false)
+    props.update(false)
+    props.Data({})
     navegate('/menuInventario/ListaProveedores');
   };
 
