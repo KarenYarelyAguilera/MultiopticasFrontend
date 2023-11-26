@@ -18,6 +18,8 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
 import Select from 'react-select';
 
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 //APIS DE PRODUCTO
 const urlProducto = //CREAR
   'http://localhost:3000/api/productos/crear';
@@ -100,22 +102,24 @@ export const RegistroProducto2 = (props) => {
         descripcion: descripcion.toUpperCase(),
         estado: document.getElementById('estado').value,
         IdProducto: props.data.IdProducto, //El dato de IdProducto se obtiene de Producto seleccionado.
-      }
-  
-  
-      //Funcion de bitacora 
-     /*  let dataUsuario={
-        Id:props.idUsuario
-      } */
+      };
+      let dataB = {
+        Id: props.idUsuario
+      };
+      const bitacora = {
+        urlB: urlBitacoraActualizoProducto,
+        activo: props.activo,
+        dataB: dataB
+      };
   
       axios.put(urlUpdProducto, data).then(() => {
-        swal("Producto Actualizado Correctamente", "", "success").then(() => {
-          //axios.post(urlBitacoraActualizoProducto,dataUsuario) //UPDATE BITACORA 
+        swal("Aro Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
         console.log(error);
-        swal('Error al Actualizar Producto! , porfavor revise todos los campos.', '', 'error')
+        swal('Error al Actualizar Aro! , porfavor revise todos los campos.', '', 'error')
         // axios.post(urlErrorInsertBitacora, dataB)
       })
   
@@ -140,22 +144,25 @@ export const RegistroProducto2 = (props) => {
       descripcion: descripcion.toUpperCase(),
       estado: document.getElementById('estado').value,
     };
-
-     //Funcion de bitacora 
-     /* let dataUsuario={
-      Id:props.idUsuario
-    } */
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraInsertProducto,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProducto, data).then(response => {
-      swal('Producto agregado con exito', '', 'success').then(result => {
-       // axios.post(urlBitacoraInsertProducto,dataUsuario)
+      swal('Aro agregado con exito', '', 'success').then(result => {
+        Bitacora(bitacora)
         navegate('/menuInventario/ListaProductos');
       });
       
     }).catch(error => {
       console.log(error);
-      swal('Error al crear Producto, los modelos deben ser únicos.', '', 'error')
+      swal('¡Este Aro ya existe! .', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
@@ -166,7 +173,7 @@ export const RegistroProducto2 = (props) => {
   const handleBack = () => {
     swal({
       title: 'Advertencia',
-      text: 'Hay un proceso de creación de Producto ¿Estás seguro que deseas salir?',
+      text: 'Hay un proceso de creación de Aro ¿Estás seguro que deseas salir?',
       icon: 'warning',
       buttons: ['Cancelar', 'Salir'],
       dangerMode: true,
@@ -186,8 +193,8 @@ export const RegistroProducto2 = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizar Producto</h2> : <h2>Registro de Producto</h2>}
-        <h3>Complete todos los puntos para poder registrar el producto.</h3>
+        {props.actualizar ? <h2>Actualizar Aro</h2> : <h2>Registro de Aro</h2>}
+        <h3>Complete todos los puntos para poder registrar el Aro.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -323,6 +330,7 @@ export const RegistroProducto2 = (props) => {
               />
               <p class="error">{advertencia}</p>
             </div>
+            
             <div className="contInput">
               <TextCustom text="Cantidad Maxima" className="titleInput" />
 
@@ -360,11 +368,10 @@ export const RegistroProducto2 = (props) => {
            
 
             <div className="contInput">
-              <TextCustom
-                text="Descripcion del Producto"
-                className="titleInput"
-              />
-              <input
+
+              <TextCustom text="Descripcion del Producto" className="titleInput" />
+              <textarea
+
                 onKeyDown={e => {
                   setdescripcion(e.target.value);
                   if (descrpcion == '') {
@@ -377,7 +384,6 @@ export const RegistroProducto2 = (props) => {
                 }}
                 onChange={e => setdescripcion(e.target.value)}
                 error={errordescripcion}
-                type="text"
                 name=""
                 maxLength={100}
                 className="inputCustomText"
@@ -412,15 +418,15 @@ export const RegistroProducto2 = (props) => {
                   if (precio === "" || cantidadMin === "" || cantidadMax === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(cantidadMin))) {
-                    swal("El campo cantidadMin solo acepta números.", "", "error");
+                    swal("El campo cantidad mínima solo acepta números.", "", "error");
                   } else if (isNaN(parseInt(cantidadMax))) {
-                    swal("El campo cantiadMax solo acepta números.", "", "error");
+                    swal("El campo cantiad máxima solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(precio))) {
                     swal("El campo precio solo acepta números.", "", "error");  
                   } else if (cantidadMin <= 0) {
-                    swal("El campo cantidadMinima no acepta valores negativos.", "", "error");
+                    swal("El campo cantidad mínima no acepta valores negativos.", "", "error");
                   }else if (cantidadMax <= cantidadMin) {
-                    swal("El campo cantidadMaxima no acepta valores menores.", "", "error");
+                    swal("El campo cantidad máxima no acepta valores menores.", "", "error");
                   }else if (precio <= 0) {
                     swal("El campo precio no acepta valores negativos.", "", "error");
                   }

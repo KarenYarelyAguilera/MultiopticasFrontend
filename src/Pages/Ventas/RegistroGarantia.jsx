@@ -116,13 +116,18 @@ const actualizarGarantia = async () => {
     dataB: dataB
   };
 
-  axios.put(urlUpdateGarantia,data).then(() => {
-    swal("Garantia Actualizada Correctamente", "", "success").then(() => {
-      bitacora(bitacora)
-      props.limpiarData({});
-      props.limpiarUpdate(false)
-      navegate('/menuVentas/listaGarantias');
-    })
+  axios.put(urlUpdateGarantia, data).then(response => {
+    console.log(response);
+    if (response.data == false) {
+      swal('¡Esta Garantia ya existe!', '', 'error')
+    } else {
+      swal("Garantia Actualizada Correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+        navegate('/menuVentas/listaGarantias');
+      });
+    }
   }).catch(error => {
     console.log(error);
     swal('Error al Actualizar Garantia.', '', 'error')

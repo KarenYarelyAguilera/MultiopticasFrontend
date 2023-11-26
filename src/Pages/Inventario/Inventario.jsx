@@ -89,7 +89,7 @@ export const Inventario = props => {
     // },
     {
       imagen: 'https://static.vecteezy.com/system/resources/previews/006/945/991/non_2x/my-order-list-illustration-exclusive-design-inspiration-vector.jpg',
-      titulo: 'Productos',
+      titulo: 'Aros',
       vinculo: '/menuInventario/ListaProductos',
     },
     // {

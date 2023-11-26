@@ -107,7 +107,7 @@ const handleGenerarExcel = () => {
             'N°': row.IdGarantia,
             'Descripción': row.descripcion,
             'Meses de Garantia': row.Meses,
-            'Producto': row.producto,
+            'Aro': row.producto,
           };
         });
         return formattedData;
@@ -144,7 +144,7 @@ const handleGenerarExcel = () => {
     { field: 'IdGarantia', headerName: 'ID', width: 210 },
     { field: 'descripcion', headerName: 'Descripción', width: 310 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
-    { field: 'Modelo', headerName: 'Producto', width: 210 },
+    { field: 'Modelo', headerName: 'Aro', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
 
     {

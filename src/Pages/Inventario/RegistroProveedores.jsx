@@ -16,6 +16,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 
 //APIS DE PROVEEDOR
@@ -30,6 +31,9 @@ const urlPaises = //Paises
 const urlCiudades = //Ciudades
   'http://localhost:3000/api/ciudades';
 
+ //BITACORAS
+ const urlBitacoraInsertProveedor='http://localhost:3000/api/bitacora/insertoproveedores';
+ const urlBitacoraUpdateProveedor='http://localhost:3000/api/bitacora/actualizoproveedores';
 
 export const RegistroProveedores = (props) => {
 
@@ -51,7 +55,7 @@ export const RegistroProveedores = (props) => {
   const [errorencargado, setErrorencargado] = React.useState(false);
 
   const [Pais, setPais] = useState([]);
-  const [Paises, setPaises]= useState(props.data.IdCiudad)
+  const [Paises, setPaises]= useState(props.data.IdPais || null)
   const [errorpais, setErrorpais] = React.useState(false);
 
 
@@ -103,19 +107,26 @@ export const RegistroProveedores = (props) => {
       correoElectronico: correoElectronico,
       estado: document.getElementById('estado').value,
       IdProveedor: props.data.IdProveedor, //El dato de IdProducto se obtiene de Producto seleccionado.
-    }
+    };
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraUpdateProveedor,
+      activo: props.activo,
+      dataB: dataB
+    };
 
-
-    //Funcion de bitacora 
-    /*  let dataB={
-       Id: props.idUsuario
-     } */
-
-    axios.put(urlUpdProveedor, data).then(() => {
-      swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/menuInventario/ListaProveedores');
-      })
+    axios.put(urlUpdProveedor, data).then(response => {
+      console.log(response);
+      if(response.data == false){
+        swal('¡Este Proveedor ya existe!', '', 'error')
+      }else{
+        swal("Proveedor Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora) 
+           navegate('/menuInventario/ListaProveedores');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Proveedor! , porfavor revise todos los campos.', '', 'error')
@@ -146,6 +157,14 @@ export const RegistroProveedores = (props) => {
       correoElectronico: correoElectronico,
       estado: document.getElementById('estado').value,
     };
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraInsertProveedor,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlProveedor, data).then(response => {
@@ -154,7 +173,7 @@ export const RegistroProveedores = (props) => {
         swal('¡Este Proveedor ya existe!', '', 'error')
       }else{
         swal('Proveedor agregado con exito', '', 'success').then(result => {
-          //axios.post(urlInsertBitacora, dataB)
+          Bitacora(bitacora)
           navegate('/menuInventario/ListaProveedores');
         });
       }
@@ -176,9 +195,6 @@ export const RegistroProveedores = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Proveedor</h2> : <h2>Registro de Proveedor</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos de los Proveedores.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -209,7 +225,7 @@ export const RegistroProveedores = (props) => {
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="nombreProveedor"
+                placeholder="Nombre de la empresa"
                 id="CiaProveedora"
                 value={nombre}
               />
@@ -243,7 +259,7 @@ export const RegistroProveedores = (props) => {
                 name=""
                 maxLength={50}
                 className="inputCustom"
-                placeholder="encargado"
+                placeholder="Nombre del encargado"
                 id="encargado"
                 value= {encargado}
               />
@@ -253,7 +269,7 @@ export const RegistroProveedores = (props) => {
       
 
             <div className="contInput">
-              <TextCustom text="Telefono" className="titleInput" />
+              <TextCustom text="Teléfono" className="titleInput" />
 
               <input
 
@@ -277,9 +293,9 @@ export const RegistroProveedores = (props) => {
                 onChange={e => settel(e.target.value)}
                 type="text"
                 name=""
-                maxLength={13}
+                maxLength={20}
                 className="inputCustom"
-                placeholder="telefono"
+                placeholder="Teléfono"
                 id="telefono"
                 value={tel}
               />
@@ -287,7 +303,7 @@ export const RegistroProveedores = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Correo Electronico" className="titleInput" />
+              <TextCustom text="Correo Electrónico" className="titleInput" />
 
               <input
                 onKeyDown={e => {
@@ -313,7 +329,7 @@ export const RegistroProveedores = (props) => {
                 name=""
                 maxLength={100}
                 className="inputCustom"
-                placeholder="correoElectronico"
+                placeholder="Correo Electrónico"
                 id="correoElectronico"
                 value={correo}
               />
@@ -388,8 +404,8 @@ export const RegistroProveedores = (props) => {
                 type="text"
                 name=""
                 maxLength={200}
-                className="inputCustomText"
-                placeholder="Producto que le ofrece..."
+                className="inputCustom"
+                placeholder="Productos que ofrecen"
                 id="productos"
                 value={productos}
               />
@@ -397,7 +413,7 @@ export const RegistroProveedores = (props) => {
             </div>
 
             <div className="contInput">
-              <TextCustom text="Direccion" className="titleInput" />
+              <TextCustom text="Dirección" className="titleInput" />
               <input
                 onKeyDown={e => {
                   setdireccion(e.target.value);
@@ -414,8 +430,8 @@ export const RegistroProveedores = (props) => {
                 type="text"
                 name=""
                 maxLength={100}
-                className="inputCustomText"
-                placeholder="direccion"
+                className="inputCustom"
+                placeholder="Dirección"
                 id="direccion"
                 value= {direccion}
               />
@@ -447,13 +463,23 @@ export const RegistroProveedores = (props) => {
 
                   if (CiaProveedora === "" || encargado === "" || productos === "" || direccion === "" || telefono === "" || correoElectronico === "") {
                     swal("No deje campos vacíos.", "", "error");
-                  } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)*$/.test(encargado)) {
-                    swal("El campo encargado solo acepta letras y solo un espacio entre palabras.", "", "error");
-                  } else if (isNaN(parseInt(telefono))) {
-                    swal("El campo teléfono solo acepta números.", "", "error");
+                  } else if (!/^[A-Z0-9]{3,}( [A-Z0-9]+)*$/.test(CiaProveedora)) {
+                    swal("El campo Empresa solo acepta letras mayúsculas, números y un mínimo de 3 caracteres con un espacio entre palabras.", "", "error");
+                  }
+                   else if (!/^[A-Z]{3,}( [A-Z]+)*$/.test(encargado)) {
+                    swal("El campo encargado solo acepta letras mayúsculas y un mínimo de 3 caracteres con un espacio entre palabras.", "", "error");
                   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoElectronico)) {
                     swal("El campo correo debe contener un correo válido.", "", "error");
-                  } else
+                  } else if (!/^[A-Z]{3,}( [A-Z]+)*$/.test(productos)) {
+                    swal("El campo producto solo acepta letras mayúsculas y un mínimo de 3 caracteres con un espacio entre palabras.", "", "error");
+                  } 
+                  else if (!/^[A-Z0-9]{3,}( [A-Z0-9]+)*$/.test(direccion)) {
+                    swal("El campo dirección solo acepta letras mayúsculas, números y un mínimo de 3 caracteres con un espacio entre palabras.", "", "error");
+                  }else if (isNaN(parseInt(telefono))) {
+                    swal("El campo teléfono solo acepta números.", "", "error");
+                  }
+                  
+                   else
                     props.actualizar ? actualizarProveedor() : handleNext();
                 }
                 }

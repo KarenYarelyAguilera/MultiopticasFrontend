@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import swal from '@sweetalert/with-react';
@@ -9,6 +9,8 @@ import { sendData } from '../../scripts/sendData';
 import logoImg from "../../IMG/MultiopticaBlanco.png";
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
+import React from 'react'
+import Visibility from '@mui/icons-material/Visibility';
 
 
 //Mui-Material-Icons
@@ -36,6 +38,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 export const ListaPagos = (props) => {
+  const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
@@ -79,7 +82,7 @@ export const ListaPagos = (props) => {
       'IdPago': row.IdPago,
       'IdVenta': row.IdVenta,
       'Tipo de Pago': row.MetodoDePago,
-      'Fecha': row.fecha,
+      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
       'Estado': row.estado,
       'Saldo Abonado': row.saldoAbono,
       'Saldo Restante': row.saldoRestante,
@@ -90,7 +93,7 @@ export const ListaPagos = (props) => {
 
 
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Pagos.xlsx');
+    XLSX.writeFile(workbook, 'Reporte_de_Pagos.xlsx');
   }
   };
 
@@ -102,7 +105,7 @@ export const ListaPagos = (props) => {
     } else {
       formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fechaCreacion);
+          const fechaCre = new Date(row.fecha);
           const fechaCreacion = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
@@ -110,7 +113,7 @@ export const ListaPagos = (props) => {
             'IdPago': row.IdPago,
             'IdVenta': row.IdVenta,
             'Tipo de Pago': row.MetodoDePago,
-            'Fecha': row.fecha,
+            'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
             'Estado': row.estado,
             'Saldo Abonado': row.saldoAbono,
             'Saldo Restante': row.saldoRestante,
@@ -151,7 +154,13 @@ export const ListaPagos = (props) => {
     // { field: 'IdPago', headerName: 'ID', width: 100 },
     { field: 'IdVenta', headerName: 'Número de venta', width: 200 },
     { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200 },
-    { field: 'fecha', headerName: 'Fecha', width: 200 },
+    {
+      field: 'fecha', headerName: 'Fecha', width: 200,
+      valueGetter: (params) => {
+        const date = new Date(params.row.fecha);
+        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+      },
+    },
     { field: 'estado', headerName: 'Estado', width: 200 },
     { field: 'saldoAbono', headerName: 'Saldo abonado', width: 200 },
     { field: 'saldoRestante', headerName: 'Saldo restante', width: 200 },
@@ -164,11 +173,11 @@ export const ListaPagos = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-          <Button
+           <Button
             className="btnEdit"
-
+            onClick={() => handleUpdt(params.row.IdVenta)}
           >
-            <EditIcon></EditIcon>
+            <Visibility></Visibility>
           </Button>
           <Button
             className="btnDelete"
@@ -187,6 +196,63 @@ export const ListaPagos = (props) => {
     },
   ];
 
+  async function handleUpdt(id) {
+
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      console.log(id);
+     axios.post(urlVentaDetalle, { id: id }).then((detalle)=>{
+      console.log(detalle);
+      const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+      const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
+       swal(
+         <div>
+           <div className="logoModal">DATOS DE LA VENTA</div>
+           <div className="contEditModal">
+             <div className="contInput">
+               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+               <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+               <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+               <label><b>Cliente: {detalle.data[0].cliente}</b></label>
+               <label><b>RTN: {detalle.data[0].RTN}</b></label>
+               <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
+               
+
+               
+               {detalle.data.map((detallito) => (
+              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+              <hr />
+                <label><b>Aro:  {detallito.aro} </b></label>
+                <label><b>Lente: {detallito.lente}</b></label>
+                <label><b>Promocion: {detallito.promocion}</b></label>
+                <label><b>Garantia: {detallito.garantia}</b></label>
+                <label><b>Precio del lente: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precLente.toFixed(2)}</div></b></label>
+                <label><b>Precio del aro: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precio.toFixed(2)}</div></b></label>
+                <label><b>cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
+                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.subtotal.toFixed(2)}</div></b></label> 
+                <label><b>Rebaja de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.rebaja.toFixed(2)}</div></b></label>
+              </React.Fragment>
+            ))}
+                <br />
+                <hr style={{width:'50%', marginLeft:'auto'}}/>
+               <label><b>subtotal: <div style={{textAlign:'right', marginRight:'20px'}}> {totalSubtotal.toFixed(2)}</div></b></label>
+               <label><b>Rebajas: <div style={{textAlign:'right', marginRight:'20px'}}>{totalRebajas.toFixed(2)}</div></b></label>
+               <label><b>Total a pagar: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+             </div>
+  
+           </div>
+         </div>,
+       )
+     })
+  
+      
+      
+    }
+    //setinformacionventa.data[0](id);
+
+
+  }
 
   const seguimientoPago = (pago) => {
     if (permisos[0].insertar === "n") {

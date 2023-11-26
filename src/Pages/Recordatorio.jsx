@@ -120,8 +120,8 @@ export const Recordatorio = (props) => {
 
   //limpiar filtros de la fecha
   const handleClearFilter = () => {
-    setStartDate(firstDayOfMonthString);
-    setEndDate(lastDayOfMonthString);
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
     setSearchTerm(''); // Limpiar el término de búsqueda
     // También puedes agregar lógica adicional para limpiar otros estados si es necesario
 
@@ -211,17 +211,16 @@ export const Recordatorio = (props) => {
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fecha);
-          const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
+          const date = new Date(row.fecha);
+          const formattedDate = date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+  
           return {
             'ID': row.IdRecordatorio,
             'Cliente': row.IdCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
             'Nota': row.Nota,
-            'Fecha': fecha,
+            'Fecha': formattedDate,
           };
         });
         return formattedData;
@@ -501,21 +500,16 @@ export const Recordatorio = (props) => {
                 } else {
                   navegate('/recordatorioCitas');
                 }
+              }}><AddIcon style={{ marginRight: '5px' }} />Nuevo
+            </Button>
 
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
-            </Button>
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <AnalyticsIcon style={{ marginRight: '3px' }} />
-              Generar Excel
+              <AnalyticsIcon style={{ marginRight: '3px' }} /> Generar Excel
             </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />Generar reporte
             </Button>
           </div>
         </div>

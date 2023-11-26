@@ -146,12 +146,12 @@ export const Bitacora = (props, idRol) => {
       headerName: 'Fecha',
       width: 170,
       headerAlign: 'center',
-      renderCell: (params) => (
+    /*   renderCell: (params) => (
         <span>
           {new Date(params.value).toLocaleDateString('es-ES')}
         </span>
       ),
-
+ */
 
     },
 

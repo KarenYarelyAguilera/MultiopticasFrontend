@@ -30,6 +30,7 @@ const urlBitacoraModEmple = 'http://localhost:3000/api/bitacora/Empleado';
 const urlCierre = 'http://localhost:3000/api/bitacora/Cierre';
 const urlBitacoraConfig = 'http://localhost:3000/api/bitacora/Configuracion';
 const urlBIngresoPCita='http://localhost:3000/api/bitacora/citas';
+const urlIngresoInventario ='http://localhost:3000/api/bitacora/PantallaInventarioB';
 //-----------------------------------------------------------------------
 
 export const BarraLateral = props => {
@@ -250,7 +251,18 @@ export const BarraLateral = props => {
             </li>
 
             <li>
-              <Link className="link" to="/inventario">
+              <Link className="link" to="/inventario"onClick={() => {
+                  const dataB = {
+                    Id: props.idUsuario,
+                  };
+                  const bitacora = {
+                    urlB:urlIngresoInventario,
+                    activo:props.activo,
+                    dataB:dataB
+                  };
+                  Bitacora(bitacora);
+                  props.obj(3);
+                }}> 
                 <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
                 <h1>INVENTARIO</h1>
               </Link>
