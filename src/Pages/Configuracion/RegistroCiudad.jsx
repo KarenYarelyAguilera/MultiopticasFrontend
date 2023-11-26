@@ -96,19 +96,13 @@ console.log(data)
     };
 
     //Consumo de API y lanzamiento se alerta
-    axios.put(urlUpdateCiudad, data).then(response => {
-    console.log(response);
-    if(response.data==false)
-    {
-      swal('¡Esta Ciudad ya existe!', '', 'error')
-    }else{
-      swal('Ciudad actualizada con exito', '', 'success').then(result => {
-        Bitacora(bitacora)
-        props.limpiarData({});
-        props.limpiarUpdate(false)
-        navegate('/config/ListaCiudad');
-    });
-  }
+  axios.put(urlUpdateCiudad, data).then(response => {
+    swal('Ciudad actualizada con exito', '', 'success').then(result => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
+      navegate('/config/ListaCiudad');
+    })
   }).catch(error => {
     console.log(error);
     swal('Error al crear la ciudad, porfavor revise los campos.', '', 'error')

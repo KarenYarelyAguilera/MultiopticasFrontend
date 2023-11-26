@@ -37,7 +37,7 @@ const urlDelSucursal = //BORRAR
 export const RegistroSucursal = (props) => {
 
   const [Departamento, setDepartamento] = useState([], props.data.departamento || '');
-  const [Ciudad, setCiudad] = useState([]);
+  const [Ciudad, setCiudad] = useState([], props.data.ciudad || '');
 
   const [departamento, setdepartamento] = React.useState(props.data.IdDepartamento ||null);
   const [errordepartamento, setErrordepartamento] = React.useState(false);
@@ -148,21 +148,16 @@ export const RegistroSucursal = (props) => {
 
     console.log(data)
 
-    axios.post(urlSucursal, data).then(response => {
-      console.log(response);
-      if (response.data == false) {
-        swal('¡Esta Sucursal ya existe!', '', 'error')
-        Bitacora(bitacora)
-      } else {
-        swal('Sucursal creada exitosamente!', '', 'success').then(result => {
-          navegate('/config/listaSucursal');
-        });
-      }
+    axios.put(urlUpdSucursal, data).then(() => {
+      swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
+        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        navegate('/config/listaSucursal');
+      })
     }).catch(error => {
       console.log(error);
-      swal('Error al crear sucursal.', '', 'error')
-    }
-    )
+      swal('Error al Actualizar Sucursal! , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
 
   };
 
@@ -228,7 +223,7 @@ export const RegistroSucursal = (props) => {
             <div className="contInput">
               <TextCustom text="Ciudad" className="titleInput" />
               <select name="" id="ciudad" className="selectCustom" value={ciudad} onChange={(e)=>{
-                setCiudad(e.target.value)
+                setciudad(e.target.value)
               }}>
                 {Ciudad.length ? (
                   Ciudad.map(pre => (
