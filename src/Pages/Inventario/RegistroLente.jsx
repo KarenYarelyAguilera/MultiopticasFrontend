@@ -152,8 +152,6 @@ export const RegistroLente = (props) => {
 
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Lente</h2> : <h2>Registro de Lente</h2>}
-
-        <h3>Complete todos los puntos para poder registrar los datos del Lente.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
