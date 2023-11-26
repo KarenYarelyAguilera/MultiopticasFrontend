@@ -114,13 +114,19 @@ const actualizarModelo = async () => {
    }; 
    console.log(data);
 
-  axios.put(urlUpdateModelo, data).then(() => {
-    swal("Modelo actualizado correctamente", "", "success").then(() => {
-      Bitacora(bitacora)
-      props.limpiarData({});
-      props.limpiarUpdate(false)
-      navegate('/config/lista');
-    })
+   axios.put(urlUpdateModelo, data).then(response => {
+    console.log(response);
+    if (response.data==false)
+    {
+      swal('¡Este modelo ya existe!', '', 'error')
+    } else{
+      swal("Modelo actualizado correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+        navegate('/config/lista');
+    });
+    }
   }).catch(error => {
     console.log(error);
     swal('Error al actualizar este modelo, por favor revise todos los campos.', '', 'error')

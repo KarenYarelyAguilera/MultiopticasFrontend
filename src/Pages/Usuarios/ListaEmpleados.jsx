@@ -107,7 +107,7 @@ export const ListaEmpleados = (props) => {
   
   
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Clientes.xlsx');
+    XLSX.writeFile(workbook, 'Lista_de_Empleados.xlsx');
   };
   ///pdf
 
@@ -156,6 +156,7 @@ export const ListaEmpleados = (props) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
+
   );
 
   const filteredDataInactivos = tableDataInactivos.filter(row =>

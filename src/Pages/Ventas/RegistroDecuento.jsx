@@ -50,11 +50,16 @@ export const RegistroDescuento = (props) => {
        Id: props.idUsuario
      } */
 
-    axios.put(urlUpdDescuento, data).then(() => {
-      swal("Descuento Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/menuVentas/listaDescuento');
-      })
+     axios.put(urlUpdDescuento, data).then(response=> {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este Descuento ya existe!', '', 'error')
+      } else {
+        swal("Descuento Actualizado Correctamente", "", "success").then(() => {
+          //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+          navegate('/menuVentas/listaDescuento');
+      });
+    } 
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Descuento! , porfavor revise todos los campos.', '', 'error')
@@ -78,6 +83,7 @@ export const RegistroDescuento = (props) => {
     console.log(data)
 
     axios.post(urlDescuento, data).then(response => {
+
       console.log(response);
       if (response.data == false) {
         swal('¡Este Descuento ya existe!', '', 'error')

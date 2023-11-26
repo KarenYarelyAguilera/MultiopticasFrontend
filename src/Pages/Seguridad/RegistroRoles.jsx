@@ -66,11 +66,15 @@ export const RegistroRoles = (props) => {
       Id: props.idUsuario
     }
 
-    axios.put(urlUpdRol, data).then(() => {
-      swal("Rol Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
-        navegate('/config/ListaRoles')
-      })
+    axios.put(urlUpdRol, data).then(response => {
+      if (response.data == false) {
+        swal('¡Este Rol ya éxiste!', '', 'error')
+      } else {
+        swal("Rol Actualizado Correctamente", "", "success").then(() => {
+          //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
+          navegate('/config/ListaRoles')
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Rol! , Sus campos pueden ser erroneos o ya existen en otro rol.', '', 'error')
