@@ -158,7 +158,14 @@ export const ListaVenta = (props) => {
     },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
     { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
-    { field: 'estado', headerName: 'Estado', width: 310 },
+    { 
+      field: 'estado', 
+      headerName: 'Estado', 
+      width: 310,
+      valueGetter: (params) => {
+        return params.row.estado === 'A' ? 'Activo' : 'Inactivo';
+      }
+    },
 
 
     {
