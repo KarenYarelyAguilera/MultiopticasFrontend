@@ -169,7 +169,7 @@ export const ListaProductos = (props) => {
         content: (
           <div>
 
-            <div className="logoModal">¿Desea Eliminar este Producto?</div>
+            <div className="logoModal">¿Desea Eliminar este Aro?</div>
             <div className="contEditModal">
 
             </div>
@@ -224,7 +224,7 @@ export const ListaProductos = (props) => {
         },
         content: (
           <div className="logoModal">
-            ¿Desea actualizar el producto: {id.Modelo} ?
+            ¿Desea actualizar el Aro: {id.Modelo} ?
           </div>
         ),
       }).then(
@@ -258,7 +258,7 @@ export const ListaProductos = (props) => {
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Productos</h2>
+      <h2 style={{ color: 'black', fontSize: '40px' }}>Lista de Aros</h2>
 
       <div
         style={{

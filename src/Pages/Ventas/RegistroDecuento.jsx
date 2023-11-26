@@ -13,6 +13,8 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 import { ContentPasteGoOutlined } from '@mui/icons-material';
 
 //APIS DE DESCUENTO
@@ -20,6 +22,9 @@ const urlDescuento = //CREAR
   'http://localhost:3000/api/Descuento/NuevoDescuento';
 const urlUpdDescuento = //ACTUALIZAR
   'http://localhost:3000/api/Descuento/ActualizarDescuento';
+
+  const urlInsertBitacora =  'http://localhost:3000/api/bitacora/NuevoDescuento';
+  const urlUpdateBitacora =  'http://localhost:3000/api/bitacora/ActualizacionDescuento';
 
 export const RegistroDescuento = (props) => {
 
@@ -42,19 +47,27 @@ export const RegistroDescuento = (props) => {
       estado: estado,
       descPorcent: descPorcent,
       IdDescuento: props.data.IdDescuento,
-    }
-
-
+    };
     //Funcion de bitacora 
-    /*  let dataB={
-       Id: props.idUsuario
-     } */
-
-    axios.put(urlUpdDescuento, data).then(() => {
-      swal("Descuento Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
-        navegate('/menuVentas/listaDescuento');
-      })
+    let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
+     axios.put(urlUpdDescuento, data).then(response=> {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este Descuento ya existe!', '', 'error')
+      } else {
+        swal("Descuento Actualizado Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
+          navegate('/menuVentas/listaDescuento');
+      });
+    } 
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Descuento! , porfavor revise todos los campos.', '', 'error')
@@ -74,16 +87,25 @@ export const RegistroDescuento = (props) => {
       estado: estado,
       descPorcent: descPorcent,
     };
-
+    let dataB=
+    {
+      Id:props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
     console.log(data)
 
     axios.post(urlDescuento, data).then(response => {
+
       console.log(response);
       if (response.data == false) {
         swal('¡Este Descuento ya existe!', '', 'error')
       } else {
       swal('Descuento agregado con exito', '', 'success').then(result => {
-        //axios.post(urlInsertBitacora, dataB)
+       Bitacora(bitacora)
         navegate('/menuVentas/listaDescuento');
       });
     }
@@ -182,28 +204,21 @@ export const RegistroDescuento = (props) => {
               <Button
                 variant="contained"
                 className="btnStepper"
-
                 onClick={() => {
-                  //Validaciones previo a ejecutar el boton
+                  // Validaciones previas a ejecutar el botón
                   var descPorcent = document.getElementById('descPorcent').value;
-
+                
                   if (descPorcent === "") {
                     swal("No deje campos vacíos.", "", "error");
-                  }else if(descPorcent <=0){
+                  } else if (isNaN(parseFloat(descPorcent))) {
+                    swal("El campo descuento solo acepta números decimales.", "", "error");
+                  } else if (descPorcent < 0) {
                     swal("No es permitido este valor.", "", "error");
-                  } 
-                  else if  (isNaN(parseInt(descPorcent))) {
-                    swal ("El campo descuento solo acepta números decimales.", "", "error");
-                  } else if (isNaN(parseInt(descPorcent))) 
-                  {
-                    swal ("El campo año solo acepta números.", "", "error");
-                  } else 
-                  {
+                  } else {
+                    // El campo es válido, puedes ejecutar la lógica deseada aquí
                     props.actualizar ? actualizarDescuento() : handleNext();
-
                   }
-                }
-                }
+                }}
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>

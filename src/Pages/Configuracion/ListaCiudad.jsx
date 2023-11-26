@@ -74,9 +74,10 @@ const handleGenerarExcel = () => {
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = filteredData.map((row, index) => ({
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
     'N°':row.IdCiudad,
     'Ciudad':row.ciudad, 
+    'Estado': row.estado,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Ciudad'] });
@@ -93,7 +94,7 @@ const handleGenerarExcel = () => {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = tableData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                                 String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -101,6 +102,7 @@ const handleGenerarExcel = () => {
                                 return {
                                   'N°':row.IdCiudad,
                                   'Ciudad':row.ciudad, 
+                                  'Estado': row.estado,
                                 };
         });
         return formattedData;
@@ -174,13 +176,13 @@ function handleDel(id) {
         </div>
       ),
       buttons: {
-        cancel: 'Eliminar',
-        delete: 'Cancelar',
+        cancel: 'Cancelar',
+        delete: 'Eliminar',
       },
     }).then(async(op) => {
   
       switch (op) {
-        case null:
+        case 'delete':
   
           let data = {
             IdCiudad: id

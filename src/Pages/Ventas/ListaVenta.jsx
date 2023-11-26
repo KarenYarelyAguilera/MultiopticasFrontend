@@ -265,52 +265,51 @@ export const ListaVenta = (props) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       console.log(id);
-      const informacionventa = await axios.post(urlVentaDetalle, { id: id })
-      
-      
-      
-      swal(
-        <div>
-          <div className="logoModal">DATOS DE LA VENTA</div>
-          <div className="contEditModal">
-            <div className="contInput">
-              <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-              <label><b>Venta#{informacionventa.data[0].IdVenta}</b></label>
-              <label><b>Fecha:{informacionventa.data[0].fecha}</b></label>
-              <label><b>RTN: 08019020229809 </b></label>
-              <label><b>NumeroCAI:{informacionventa.data[0].NumeroCAI}</b></label>
-              <label><b>Direccion:{informacionventa.data[0].direccion}</b></label>
-              <label><b>Cels: 95304100 // 99237123 </b></label>
-              <label><b>Email: multioptica9@gmail.com </b></label>
-              <label><b>Barrio El Centro, Calle Peatonal, Frente a Lady lee </b></label>
-              <label><b>Tegucigalpa, Honduras, C.A </b></label>
-            </div>
-            <div className="contInput">
-              <label><b>Cliente:{informacionventa.data[0].Cliente}</b></label>
-              <label><b>RTN:{informacionventa.data[0].RTN}</b></label>
-              <label><b>Empleado: {informacionventa.data[0].Empleado}  </b></label>
-              <label><b>Fecha de Entrega:{informacionventa.data[0].fechaEntrega}</b></label>
-              <label><b>Fecha Limite Entrega:{informacionventa.data[0].fechaLimiteEntrega}</b></label>
-              <label><b>Tipo de Pago:{informacionventa.data[0].TipoDePago}</b></label>
-              <label><b>Promocion:{informacionventa.data[0].Promocion}</b></label>
-              <label><b>Producto:{informacionventa.data[0].Producto}</b></label>
-              <label><b>Garantia:{informacionventa.data[0].Garantia}</b></label>
-              <label><b>Meses:{informacionventa.data[0].Meses}</b></label>
-            </div>
+     axios.post(urlVentaDetalle, { id: id }).then((detalle)=>{
+      const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+      const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
+       swal(
+         <div>
+           <div className="logoModal">DATOS DE LA VENTA</div>
+           <div className="contEditModal">
+             <div className="contInput">
+               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+               <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+               <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+               <label><b>Cliente: {detalle.data[0].cliente}</b></label>
+               <label><b>RTN: {detalle.data[0].RTN}</b></label>
+               <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
+               
 
-            <div className="contInput">
-              <label><b>Aro Rebajado:{informacionventa.data[0].precioAro}</b></label>
-              <label><b>Precio Lente:{informacionventa.data[0].precioLente}</b></label>
-              <label><b>Cantidad:{informacionventa.data[0].cantidad}</b></label>
-              <label><b>Subtotal: {informacionventa.data[0].subtotal}  </b></label>
-              <label><b>Rebaja por promocion:{informacionventa.data[0].rebaja}</b></label>
-              <label><b>Total a pagar:{informacionventa.data[0].totalVenta}</b></label>
-            </div>
-
-          </div>
-        </div>,
-      ).then(async () => {
-      });
+               
+               {detalle.data.map((detallito) => (
+              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+              <hr />
+                <label><b>Aro:  {detallito.aro} </b></label>
+                <label><b>Lente: {detallito.lente}</b></label>
+                <label><b>Promocion: {detallito.promocion}</b></label>
+                <label><b>Garantia: {detallito.garantia}</b></label>
+                <label><b>Precio del lente: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precLente.toFixed(2)}</div></b></label>
+                <label><b>Precio del aro: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precio.toFixed(2)}</div></b></label>
+                <label><b>cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
+                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.subtotal.toFixed(2)}</div></b></label> 
+                <label><b>Rebaja de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.rebaja.toFixed(2)}</div></b></label>
+              </React.Fragment>
+            ))}
+                <br />
+                <hr style={{width:'50%', marginLeft:'auto'}}/>
+               <label><b>subtotal: <div style={{textAlign:'right', marginRight:'20px'}}> {totalSubtotal.toFixed(2)}</div></b></label>
+               <label><b>Rebajas: <div style={{textAlign:'right', marginRight:'20px'}}>{totalRebajas.toFixed(2)}</div></b></label>
+               <label><b>Total a pagar: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+             </div>
+  
+           </div>
+         </div>,
+       )
+     })
+  
+      
+      
     }
     //setinformacionventa.data[0](id);
 

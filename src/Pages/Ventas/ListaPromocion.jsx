@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router';
 
 import swal from '@sweetalert/with-react';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora';
 
 //Mui-Material-Icons
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,9 +21,11 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import AnalyticsIcon from '@mui/icons-material/Analytics';  //para el boton de excel 
 import { Button } from '@mui/material';
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
 
 //GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
@@ -37,7 +40,7 @@ export const ListaPromocion = (props) => {
   useEffect(()=>{
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
-  const [cambio, setcambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
   const [inactivo, setInactivo] = useState(false)
   const [marcah, setMarcah] = useState()
 
@@ -50,6 +53,9 @@ export const ListaPromocion = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   //COLOCAR APIS DE BITACORA AQUI---
+  const urlDelBitacora ='http://localhost:3000/api/bitacora/EliminarPromocion';
+  const urlSalirLista ='http://localhost:3000/api/bitacora/SalirListaPromocion';
+
   //-------------------------------------------------------------------
   
 
@@ -73,8 +79,31 @@ export const ListaPromocion = (props) => {
   const [advertencia, setadvertencia] = useState('');
   const [errorcantidadmin, setErrorcantidadmin] = useState(false);
   
-  const [endDate, setEndDate] = useState(null);
-  const [startDate, setStartDate] = useState(null);
+  //const [endDate, setEndDate] = useState(null);
+  //const [startDate, setStartDate] = useState(null);
+
+  //Primer dia del mes
+  const todayf = new Date();
+  const firstDayOfMonth = new Date(todayf.getFullYear(), todayf.getMonth(), 1);
+  const firstDayOfMonthString = firstDayOfMonth.toISOString().split('T')[0];
+  const [startDate, setStartDate] = useState(firstDayOfMonthString);
+
+    //ultimo dia del mes
+    const todayE = new Date();
+    const lastDayOfMonth = new Date(todayE.getFullYear(), todayE.getMonth() + 1, 0);
+    const lastDayOfMonthString = lastDayOfMonth.toISOString().split('T')[0];
+    const [endDate, setEndDate] = useState(lastDayOfMonthString);
+  
+  //limpiar filtros de la fecha
+  const handleClearFilter = () => {
+    setStartDate(firstDayOfMonthString);
+    setEndDate(lastDayOfMonthString);
+    setSearchTerm(''); // Limpiar el término de búsqueda
+    // También puedes agregar lógica adicional para limpiar otros estados si es necesario
+
+    // Recargar los registros
+    setCambio(cambio + 1);
+  };
 
   //GENERADOR DE EXCEL
 const handleGenerarExcel = () => {
@@ -82,12 +111,13 @@ const handleGenerarExcel = () => {
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = filteredData.map((row, index) => ({
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
     'N°':row.IdPromocion,
     'Descripción':row.descripcion, 
     'Porcentaje':row.descPorcent, 
     'Fecha inicial':row.fechaInicialF, 
     'Fecha final':row.fechaFinalF, 
+    'Estado':row.estado,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Porcentaje', 'Fecha inicial','Fecha final', ] });
@@ -98,21 +128,22 @@ const handleGenerarExcel = () => {
 
  //IMPRIMIR PDF
  const handleGenerarReporte = () => {
-  if (permisos[0].consultar ==="n") {
+  if (permisos[0].consultar === "n") {
     swal("No cuenta con los permisos para realizar esta accion","","error")
   } else {
     const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
         const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
                               fechaCre.getFullYear();
                               return {
-                                'N°': row.IdPromocion,
-                                'Descripción': row.descripcion,
-                                'Porcentaje': row.descPorcent,
-                                'Fecha inicial': row.fechaInicialF,
-                                'Fecha final': row.fechaFinalF, 
+                                'N°':row.IdPromocion,
+                                'Descripción':row.descripcion, 
+                                'Porcentaje':row.descPorcent, 
+                                'Fecha inicial':row.fechaInicialF, 
+                                'Fecha final':row.fechaFinalF, 
+                                'Estado': row.estado,
                               };
       });
       return formattedData;
@@ -120,11 +151,12 @@ const handleGenerarExcel = () => {
 
     const urlPDF = 'Report_Promociones.pdf';
     const subTitulo = "LISTA DE PROMOCIONES"
-    const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
   }
-};
+
+}
   //Filtracion de fechas
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
@@ -208,20 +240,24 @@ const handleGenerarExcel = () => {
             let data = {
               IdPromocion: IdPromocion,
             };
-  
             //Funcion de Bitacora 
-            /*  let dataB = {
-               Id:props.idUsuario
-             } */
-  
+            let dataB=
+            {
+              Id:props.idUsuario
+            }; 
+            const bitacora = {
+              urlB: urlDelBitacora,
+              activo: props.activo,
+              dataB: dataB
+            };
             console.log(data);
   
             await axios
               .delete(urlDelPromocion, { data })
               .then(response => {
-                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
                 swal('Promocion eliminada correctamente', '', 'success');
-                setcambio(cambio + 1);
+                Bitacora(bitacora)
+                setCambio(cambio + 1);
               })
               .catch(error => {
                 console.log(error);
@@ -269,11 +305,19 @@ function handleUpdt(id) {
 
 };
 
-//Funcion de Bitacora 
-let dataB = {
-  Id: props.idUsuario
-}
+  //Funcion de Bitacora 
+  let dataB=
+  {
+    Id:props.idUsuario
+  }; 
+  const bitacora = {
+    urlB: urlSalirLista,
+    activo: props.activo,
+    dataB: dataB
+  };
+
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/config');
   };
 
@@ -292,9 +336,10 @@ let dataB = {
           left: '130px',
         }}
       >
-        <div className='contDateDH'>
+                <div className='contDateDHH' >
+          {/* <Button className="btnClearFilter" onClick={handleClearFilter}><DeleteForeverIcon></DeleteForeverIcon></Button> */}
 
-          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE: </span>
           <input
             type="date"
             value={startDate}
@@ -305,7 +350,8 @@ let dataB = {
             placeholderText="Fecha de inicio"
             className='inputCustomF'
           ></input>
-          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
+
+          <span style={{ marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
           <input
             type="date"
             value={endDate}
@@ -317,9 +363,13 @@ let dataB = {
             className='inputCustomF'
           ></input>
 
-        </div>
 
-        <div className="contFilter1">
+          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem' }}></HighlightOffTwoToneIcon></Button>
+
+        </div>
+        
+
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -332,7 +382,7 @@ let dataB = {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
