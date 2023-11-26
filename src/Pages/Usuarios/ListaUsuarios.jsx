@@ -86,7 +86,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-      XLSX.writeFile(workbook, 'Lista_de_Usuarios.xlsx');
+      XLSX.writeFile(workbook, 'Reporte_Usuarios.xlsx');
     };
   };
   //IMPRIMIR PDF
