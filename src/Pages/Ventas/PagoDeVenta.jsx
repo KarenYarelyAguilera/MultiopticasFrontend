@@ -45,7 +45,7 @@ export const PagoDeVenta = (props) => {
 
 
     let data={
-      IdVenta:props.venta.id.id || props.venta.id,
+      IdVenta:props.venta.id || props.venta.id,
       IdTipoPago: MetodoPago,
       fecha: fechaActual,
       saldoAbono: saldoAbono,
