@@ -1,8 +1,9 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router';
+import React from 'react';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -24,6 +25,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import * as XLSX from 'xlsx'
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
+
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
@@ -82,44 +84,37 @@ export const ListaCompra = (props) => {
   // PANTALLA MODAL
   function handleModal(id) {
     // setModalData(id);
-    console.log(id);
 
-    swal(
-      <div>
-        <div className="logoModal">DATOS GENERALES</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de Compra: {new Date(id.fechaCompra).toLocaleDateString('es-ES')}</b></label>
-          </div>
+    axios.post(urlFacturaCompra, { id: id }).then((detalle)=>{
+      console.log(detalle);
+       swal(
+         <div>
+           <div className="logoModal">DATOS DE LA COMPRA</div>
+           <div className="contEditModal">
+             <div className="contInput">
+               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+               <label><b>compra#{id}</b></label>
+               <label><b>Fecha:{new Date(detalle.data[0].fechaCompra).toLocaleDateString()}</b></label>               
+               
+               {detalle.data.map((detallito) => (
+              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+              <hr />
+              <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
+                <label><b>Aro:  {detallito.Aros} </b></label>
+                <label><b>Cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
+                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.costoCompra.toFixed(2)}</div></b></label> 
+              </React.Fragment>
+            ))}
+            <hr style={{width:'50%', marginLeft:'auto'}}/>
+            <label><b>Total de la compra: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
+             </div>
+  
+           </div>
+         </div>,
+       )
+     })
 
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Proveedor: {id.precio}</b></label>
-          </div>
-
-
-          <h3>________________________________</h3>
-          <table className="contTable">
-            <thead>
-              <tr>
-                <th></th>
-                <th><b>ARO</b></th>
-                <th><b>CANTIDAD</b></th>
-                <th><b>PRECIO</b></th>
-                <th><b>COSTO</b></th>
-              </tr>
-            </thead>
-        
-          </table>
-
-
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Total compra: {id.totalCompra}</b></label>
-          </div>
-        </div>
-      </div>
-    ).then(async () => {
-      // Puedes agregar lógica adicional aquí si es necesario
-    });
+    
   }
 
   const handleGenerarExcel = () => {
@@ -216,7 +211,7 @@ export const ListaCompra = (props) => {
 
           <Button
             className="btnAddExpe"
-            onClick={() => handleModal(params.row)}
+            onClick={() => handleModal(params.row.IdCompra)}
           >
             <Visibility></Visibility>
           </Button>

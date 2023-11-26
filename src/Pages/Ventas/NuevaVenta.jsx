@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -196,8 +195,16 @@ export const NuevaVenta = (props) => {
         },
       }).then((value) => {
           if (value) {
-            axios.post(urlVenta,data).then(()=>{
-              swal("¡Venta confirmada!", "", "success");   
+            axios.post(urlVenta,data).then((res)=>{
+              let dataVenta={
+                id: res.data.id,
+                total: response.data.total,
+                saldoRestante: response.data.total
+              }
+              swal("¡Venta confirmada!", "", "success").then(()=>{
+                props.venta(dataVenta)
+                navegate('/menuVentas/PagoDeVenta')
+              })  
             }).catch(()=>{
               swal("Venta cancelada", "", "error");
             })
