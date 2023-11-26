@@ -105,9 +105,6 @@ export const Kardex2 = (
       </Button>
       <div className="titleAddUser">
         <h2>Kardex</h2>
-        <h3>
-          Complete todos los puntos para poder registrar el Kardex
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
