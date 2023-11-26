@@ -141,11 +141,16 @@ export const DatosEmpleado = (props) => {
       Id: props.idUsuario
     }
 
-    axios.put(urlUpdEmpleado, data).then(() => {
-      swal("Empleado Actualizado Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
-        navegate('/empleados/lista')
-      })
+    axios.put(urlUpdEmpleado, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este empleado ya existe!', '', 'error')
+      } else {
+        swal("Empleado Actualizado Correctamente", "", "success").then(() => {
+          //axios.post(urlUpdBitacora, dataB) //UPDATE BITACORA 
+          navegate('/empleados/lista')
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Empleado! , Sus campos pueden ser erroneos o ya existen en otro empleado.', '', 'error')

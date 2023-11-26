@@ -16,18 +16,20 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
-
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
-export const ListaLentes = ({idRol,data,update}) => {
+export const ListaLentes = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:3
   }
   useEffect(()=>{
@@ -39,6 +41,12 @@ export const ListaLentes = ({idRol,data,update}) => {
 
   const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
 
+//Bitacora
+const urlBitacoraDeleteLentes='http://localhost:3000/api/bitacora/eliminarlentes';
+const urlBitacoraSalirListaLentes='http://localhost:3000/api/bitacora/saliolistalentes';
+
+
+
 
   const [cambio, setCambio] = useState(0)
   const [inactivo, setInactivo] = useState(false)
@@ -46,6 +54,8 @@ export const ListaLentes = ({idRol,data,update}) => {
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [Lente, setLente] = useState([]);
+
+  const [pageSize, setPageSize] = useState(5);
 
   useEffect(() => {
     fetch(urlLentes)
@@ -75,7 +85,27 @@ export const ListaLentes = ({idRol,data,update}) => {
     ),
   );
 
+//Excel
+const handleGenerarExcel = () => {
+  const workbook = XLSX.utils.book_new();
+  const currentDateTime = new Date().toLocaleString();
 
+  // Datos para el archivo Excel
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
+    'ID':row.IdLente,
+    'Lente':row.lente,
+    'Precio': row.precio,
+    'Estado':row.estado,
+
+  }));
+
+  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Lente', 'Precio', 'Estado'] });
+
+
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+  XLSX.writeFile(workbook, 'Lista_de_Lentes.xlsx');
+};
   const handleGenerarReporte = () => {
     if (permisos[0].consultar==="n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
@@ -90,6 +120,7 @@ export const ListaLentes = ({idRol,data,update}) => {
           'ID':row.IdLente,
           'Lente':row.lente,
           'Precio': row.precio,
+          'Estado':row.estado,
         };
       });
       return formattedData;
@@ -162,10 +193,20 @@ function handleDel(id) {
           let data = {
             IdLente:id
           }; 
+          //Funcion de Bitacora 
+          let dataB = {
+            Id: props.idUsuario
+          };
+          const bitacora = {
+            urlB: urlBitacoraDeleteLentes,
+            activo: props.activo,
+            dataB: dataB
+          };
           console.log(data);
   
           await axios .delete(urlLentesEliminar,{data}) .then(response => {
               swal('Lente eliminado correctamente', '', 'success');
+              Bitacora(bitacora)
               setCambio(cambio + 1);
             }).catch(error => {
               console.log(error);
@@ -199,8 +240,8 @@ function handleDel(id) {
         }).then((op)  => {
             switch (op) {
               case 'update':
-                data(id)
-                update(true)
+                props.data(id)
+                props.update(true)
                 navegate('/Inventario/RegistroLente')
                 break;
                 default:
@@ -210,8 +251,18 @@ function handleDel(id) {
       }
      
     };
+    //Funcion de Bitacora 
+    let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraSalirListaLentes,
+      activo: props.activo,
+      dataB: dataB
+    };
 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/inventario');
   };
 
@@ -230,7 +281,7 @@ function handleDel(id) {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -243,7 +294,7 @@ function handleDel(id) {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -254,7 +305,7 @@ function handleDel(id) {
                 }
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
 
@@ -264,21 +315,29 @@ function handleDel(id) {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
             <Button className="btnReport"
              onClick={handleGenerarReporte}
             >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdLente}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
+          autoHeight
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

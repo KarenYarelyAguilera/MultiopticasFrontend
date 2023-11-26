@@ -18,9 +18,14 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios';
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 const urlProducto = "http://localhost:3000/api/productos";
 const urlMovimientos = "http://localhost:3000/api/Tmovimientos";
 const urlMovimientosInsert = "http://localhost:3000/api/Extraordinario";
+//Bitacora
+const urlBitacoraMovimiento = "http://localhost:3000/api/bitacora/movimientoKardex";
+
 
 export const Kardex2 = (
   props
@@ -69,11 +74,21 @@ export const Kardex2 = (
       cantidad:cantidad,
       IdTipoMovimiento: selectedOptionM.value,
       descripcion:document.getElementById("descripcion").value
-    }
+    };
+     //Funcion de Bitacora 
+     let dataB = {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlBitacoraMovimiento,
+      activo: props.activo,
+      dataB: dataB
+    };
     console.log(data);
 
     if (sendData(urlMovimientosInsert, data)) {
       swal('Movimiento registrado con exito', '', 'success').then(result => {
+        Bitacora(bitacora)
         navegate('/menuInventario/Kardex');
       });
     }
