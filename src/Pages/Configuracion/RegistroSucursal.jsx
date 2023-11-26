@@ -226,8 +226,32 @@ export const RegistroSucursal = (props) => {
             </div>
 
             <div className="contInput">
+
               <TextCustom text="Ciudad" className="titleInput" />
-              <select name="" id="ciudad" className="selectCustom" value={ciudad} onChange={(e)=>{
+              <select name="" className="selectCustom" id="ciudad" value={ciudad} onChange={(e) => {
+                setciudad(e.target.value)
+              }}>
+
+                {Ciudad.length ? (
+                  Ciudad.map(pre => (
+                    <option key={pre.IdCiudad} value={pre.IdCiudad}>
+                      {pre.ciudad}
+                    </option>
+
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+                onChange={e => setciudad(e.target.value)}
+              </select>
+
+            </div>
+            {/* <div className="contInput">
+
+              <TextCustom text="Ciudad" className="titleInput" />
+              <select name="" className="selectCustom" id="ciudad" value={ciudad} onChange={(e)=>{
                 setCiudad(e.target.value)
               }}>
                 {Ciudad.length ? (
@@ -241,9 +265,11 @@ export const RegistroSucursal = (props) => {
                     No existe informacion
                   </option>
                 )}
+                  onChange={e => setCiudad(e.target.value)} 
+
               </select>
 
-            </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
