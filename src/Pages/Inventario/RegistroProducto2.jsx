@@ -194,7 +194,6 @@ export const RegistroProducto2 = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Aro</h2> : <h2>Registro de Aro</h2>}
-        <h3>Complete todos los puntos para poder registrar el Aro.</h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
