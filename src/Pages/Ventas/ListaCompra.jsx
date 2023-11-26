@@ -188,7 +188,14 @@ export const ListaCompra = (props) => {
     },
     //{ field: 'fechaCompra', headerName: 'Fecha', width: 380 },
     { field: 'totalCompra', headerName: 'Total', width: 200 },
-    { field: 'Estado', headerName: 'Estado', width: 100 },
+    { 
+      field: 'Estado', 
+      headerName: 'Estado', 
+      width: 310,
+      valueGetter: (params) => {
+        return params.row.estado === 'A' ? 'Activo' : 'Inactivo';
+      }
+    },
     {
       field: 'borrar',
       headerName: 'Acciones',
