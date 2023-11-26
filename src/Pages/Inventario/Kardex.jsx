@@ -20,12 +20,16 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const Kardex = (props) => {
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
@@ -58,22 +62,52 @@ export const Kardex = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
+  const handleGenerarExcel = () => {
+
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
+
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+
+        'ID':row.IdKardex,
+        'Tipo Movimiento':row.TipoMovimiento, 
+        'Producto':row.Producto,
+        'Cantidad': row.cantidad,
+        'Fecha':new Date(row.fechaYHora).toLocaleDateString('es-ES'), // Formatea la fecha
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Tipo Movimiento', 'Producto', 'Cantidad', 'Fecha'] });
+
+
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Reporte_Kardex.xlsx');
+
+
+    }
+
+  };
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fechaYHora);
-          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
+          const date = new Date(row.fechaYHora);
+          const formattedDate = date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+  
           return {
             'ID':row.IdKardex,
             'Tipo Movimiento':row.TipoMovimiento, 
             'Producto':row.Producto,
             'Cantidad': row.cantidad,
-            'Fecha':fechaYHora,
+            'Fecha':formattedDate,
           };
         });
         return formattedData;
@@ -89,12 +123,18 @@ export const Kardex = (props) => {
   };
 
   const columns = [
-    { field: 'IdKardex', headerName: 'ID', width: 240 },
-    { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 260 },
-    { field: 'Producto', headerName: 'Producto', width: 260 },
-    { field: 'cantidad', headerName: 'Cantidad', width: 260 },
-    { field: 'fechaYHora', headerName: 'Fecha', width: 260 },
-    { field: 'descripcion', headerName: 'Descripcion', width: 260 },
+    { field: 'IdKardex', headerName: 'ID', width: 50 },
+    { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 150 },
+    { field: 'Producto', headerName: 'Producto', width: 200 },
+    { field: 'cantidad', headerName: 'Cantidad', width: 90 },
+    {
+      field: 'fechaYHora', headerName: 'Fecha', width: 200,
+      valueGetter: (params) => {
+        const date = new Date(params.row.fechaYHora);
+        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+      },
+    },
+    { field: 'descripcion', headerName: 'Descripcion', width: 200 },
 
   ];
 
@@ -134,7 +174,7 @@ export const Kardex = (props) => {
           left: '130px',
         }}
       >
-         <div className="contFilter">
+         <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -147,7 +187,7 @@ export const Kardex = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport1">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -157,26 +197,30 @@ export const Kardex = (props) => {
                   navegate('/menuInventario/Kardex2');
                 }
                 
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              }} > <AddIcon style={{ marginRight: '3px' }}/>Nuevo
             </Button>
+
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} /> Generar Excel
+            </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '3px' }}/>Generar reporte
             </Button>
+
           </div>
         </div>
         <DataGrid
           getRowId={tableData => tableData.IdKardex}
           rows={filteredData}
           columns={columns}
-          pageSize={5}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          rowsPerPageOptions={[5]}
+          pagination
+          autoHeight
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

@@ -22,7 +22,7 @@ import Select from 'react-select';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
-import  oftalmologoFondo  from '../IMG/oftalmologofondo.png'
+import oftalmologoFondo from '../IMG/oftalmologofondo.png'
 
 import '../Styles/Usuarios.css';
 
@@ -198,21 +198,21 @@ export const RecordatorioCitas = (props) => {
 
 
   return (
-    <div className="divSection">
+    <div className="divSection" >
       <div className="divInfoQuestion1">
         <Button className="btnBack" onClick={handleBack}>
-         <ArrowBackIcon className="iconBack" />
-       </Button>
-       <div className="contRecordatorios">
-        <div className="contRecordCitas">
-          <div >
-            <h1>Nueva Cita</h1>
-            <hr />
-            <div className="contPrincipalNewCita">
-              <div className="contNewCita">
-                <TextCustom text="Cliente" className="titleInput" />
-                <div className="contInput">
-                  {/* <select id="idClientes" className="inputCustomPreguntas">
+          <ArrowBackIcon className="iconBack" />
+        </Button>
+        <div className="contRecordatorios" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignContent: 'center', marginTop: '250px', fontSize: '20px' }}>
+          <div className="contRecordCitas">
+            <div >
+              <h1>Nueva Cita</h1>
+              <hr />
+              <div className="contPrincipalNewCita">
+                <div className="contNewCita">
+                  <TextCustom text="Cliente" className="titleInput" />
+                  <div className="contInput">
+                    {/* <select id="idClientes" className="inputCustomPreguntas">
                     {tableData.length ? (
                       tableData.map(pre => (
                         <option key={pre.idCliente} value={pre.idCliente}>
@@ -225,24 +225,24 @@ export const RecordatorioCitas = (props) => {
                       </option>
                     )}
                   </select> */}
-                  <Select
-                    id="idClientes"
-                    // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="Seleccione un cliente"
-                  />
+                    <Select
+                      id="idClientes"
+                      // className="inputCustomPreguntas"
+                      options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
+                      value={selectedOption}
+                      onChange={setSelectedOption}
+                      placeholder="Seleccione un cliente"
+                    />
 
 
+                  </div>
                 </div>
-              </div>
 
 
-              {/* 
+                {/* 
               <div className="contNewCita">
                 <TextCustom text="Fecha" className="titleInput" />   */}
-              {/* <DatePicker
+                {/* <DatePicker
                   type="text"
                   name=""
                   maxLength={40}
@@ -251,9 +251,9 @@ export const RecordatorioCitas = (props) => {
                   id="fecha"
                 /> */}
 
-              {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
+                {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
 
-              {/*   <input
+                {/*   <input
                   //onChange={e => setFecha(e.target.value)}
                   type="text"
                   id="fecha"
@@ -262,81 +262,83 @@ export const RecordatorioCitas = (props) => {
                   value={fecha}
                   disabled
                 ></input>  */}
-              {/*     </div>  */}
+                {/*     </div>  */}
 
 
-              <div className="contNewCita">
-                <TextCustom text="Nota" className="titleInput" />
-                <input
-                  onKeyDown={e => {
-                    setNotas(e.target.value);
-                    if (Notas === '') {
-                      setErrorNotas(true);
-                      setMsj('Los campos no deben estar vacíos');
-                    } else {
-                      setErrorNotas(false);
-                      var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                      if (!regex.test(Notas)) {
+                <div className="contNewCita">
+                  <TextCustom text="Nota" className="titleInput" />
+                  <input
+                    onKeyDown={e => {
+                      setNotas(e.target.value);
+                      if (Notas === '') {
                         setErrorNotas(true);
-                        setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                      } else if (/(.)\1{2,}/.test(Notas)) {
-                        setErrorNotas(true);
-                        setMsj('No se permiten letras consecutivas repetidas');
+                        setMsj('Los campos no deben estar vacíos');
                       } else {
                         setErrorNotas(false);
-                        setMsj('');
+                        var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                        if (!regex.test(Notas)) {
+                          setErrorNotas(true);
+                          setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                        } else if (/(.)\1{2,}/.test(Notas)) {
+                          setErrorNotas(true);
+                          setMsj('No se permiten letras consecutivas repetidas');
+                        } else {
+                          setErrorNotas(false);
+                          setMsj('');
+                        }
                       }
-                    }
-                  }}
+                    }}
 
-                  onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                  error={errorNotas}
-                  type="text"
-                  helperText={Msj}
-                  name=""
-                  maxLength={40}
-                  className="inputCustomText"
-                  placeholder="Nota"
-                  id="nota"
-                  value={Notas}
-                />
-                {/*  <p className='error'>{Msj}</p> */}
-              </div>
+                    onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                    error={errorNotas}
+                    type="text"
+                    helperText={Msj}
+                    name=""
+                    maxLength={40}
+                    className="inputCustomText"
+                    placeholder="Nota"
+                    id="nota"
+                    value={Notas}
+                  />
+                  {/*  <p className='error'>{Msj}</p> */}
+                </div>
 
 
-              <div className="contBtnStepperRecord">
+                <div className="contBtnStepperRecord">
 
-                <Button
-                  className='btnStepperCan'
-                  onClick={() => navegate('/recordatorio')}
-                >Cancelar</Button>
+                  <Button
+                    style={{ fontSize: '15px' }}
+                    className='btnStepperCan'
+                    onClick={() => navegate('/recordatorio')}
+                  >Cancelar</Button>
 
-                <Button
-                  className='btnStepperGuardar'
-                  onClick={() => {
+                  <Button
+                    style={{ fontSize: '15px' }}
+                    className='btnStepperGuardar'
+                    onClick={() => {
 
-                    var nota = document.getElementById("nota").value;
+                      var nota = document.getElementById("nota").value;
 
-                    if (nota === "") {
-                      swal("No deje campos vacíos.", "", "error");
-                    } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
-                      swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                    } else if (/(.)\1{2,}/.test(nota)) {
-                      setErrorNotas(true);
-                      swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                    } else {
-                      handleClick();
-                    }
-                  }}
-                >Guardar</Button>
+                      if (nota === "") {
+                        swal("No deje campos vacíos.", "", "error");
+                      } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
+                        swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                      } else if (/(.)\1{2,}/.test(nota)) {
+                        setErrorNotas(true);
+                        swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                      } else {
+                        handleClick();
+                      }
+                    }}>Guardar
+                  </Button>
 
+                </div>
               </div>
             </div>
           </div>
+
+
         </div>
-
-
-      </div>
       </div>
 
       <div className="divImgSection">
