@@ -2592,13 +2592,15 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
 
                 <RegistroPreguntaDeSeguridad
                   actualizar={actualizar}
-                  update={update}
+                  update={actualizar}
                   data={data}
                   idUsuario={idUsuario}
                   infoPerfil={infoPerfil}
                   user={usuario}
                   Data={Data}
                 //data={data}
+                limpiarData={Data}
+                limpiarUpdate={update}
 
                 ></RegistroPreguntaDeSeguridad>
                 <Footer/>
