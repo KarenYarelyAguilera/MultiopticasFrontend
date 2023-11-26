@@ -292,7 +292,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
                 if (permisos[0].insertar === "n") {
                   swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
-                  navegate('/config/AgregarPreguntas');
+                  navegate('/progress');
                 }
 
               }}
