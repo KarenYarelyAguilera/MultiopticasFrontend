@@ -178,7 +178,7 @@ export const RegistroDescuento = (props) => {
                 name=""
                 maxLength={4}
                 className="inputCustom"
-                placeholder=""
+                placeholder="Descuento"
                 id="descPorcent"
                 value={descPorcent}
               />
