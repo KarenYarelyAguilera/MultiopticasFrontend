@@ -96,13 +96,15 @@ export const NuevaVenta = (props) => {
 
   // Nueva función para seleccionar un cliente
   const handleSelectCliente = (selectedCliente) => {
-    setSelectedOption({
-      value: selectedCliente.idCliente,
-      label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
-    });
-    closeModal();
-
+    if (selectedCliente) {
+      setSelectedOption({
+        value: selectedCliente.idCliente,
+        label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
+      });
+      closeModal();
+    }
   };
+  
 
   useEffect(() => {
     fetch(urlCliente).then(response => response.json()).then(data => setCliente(data))
@@ -268,6 +270,30 @@ export const NuevaVenta = (props) => {
     });
   };
 
+  //
+
+  // MAGIA DE SELECCIONAR MALDITASEA
+  const handleCellClick = (params) => {
+    const rowData = params.row;
+      setCliente(rowData)
+       console.log(Cliente.nombre);
+    closeModal()
+  };
+  const customStyles = {
+    content: {
+      width: '50%', // Ancho de la modal
+      height: '50%', // Alto de la modal
+      margin: 'auto', // Centrar la modal horizontalmente
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      borderRadius: '4px',
+      outline: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
+    },
+  };
 
   return (
     <div className="ContUsuarios">
@@ -281,7 +307,7 @@ export const NuevaVenta = (props) => {
       <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-
+<label htmlFor="" onChange={handleCellClick}> CLIENTE: {Cliente.nombre}</label>
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
@@ -289,10 +315,12 @@ export const NuevaVenta = (props) => {
               </div>
             </div>
             <ReactModal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Lista de Clientes"
-        ariaHideApp={false}
+            style={customStyles}
+             isOpen={isModalOpen}
+             onRequestClose={closeModal}
+             contentLabel="Lista de Clientes"
+             ariaHideApp={false}
+       
       >
         <div>
           <h2>Seleccione un Cliente</h2>
@@ -302,6 +330,7 @@ export const NuevaVenta = (props) => {
             getRowId={clientes => clientes.idCliente}
             pagination 
             autoHeight
+            onCellClick={handleCellClick}
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={pageSize}
             rowsPerPageOptions={[5, 10, 50]}
@@ -329,14 +358,19 @@ export const NuevaVenta = (props) => {
             ]}
 
             onSelectionModelChange={(selection) => {
-              // Manejar la selección del cliente
-              const selectedClientId = selection.selectionModel[0];
-              const selectedClient = clientes.find(
-                (client) => client.idCliente === selectedClientId
-              );
-              handleSelectCliente(selectedClient);
+              // Ensure that selection.selectionModel is defined and not empty
+              if (selection.selectionModel && selection.selectionModel.length > 0) {
+                const selectedClientId = selection.selectionModel[0];
+                const selectedClient = clientes.find(
+                  (client) => client.idCliente === selectedClientId
+                );
+                // Check if selectedClient is not undefined before calling handleSelectCliente
+                if (selectedClient) {
+                  handleSelectCliente(selectedClient);
+                }
+              }
             }}
-           
+            
           />
 
           {/* Botón para cerrar el modal */}
