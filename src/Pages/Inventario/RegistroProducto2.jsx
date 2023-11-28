@@ -115,6 +115,8 @@ export const RegistroProducto2 = (props) => {
       axios.put(urlUpdProducto, data).then(() => {
         swal("Aro Actualizado Correctamente", "", "success").then(() => {
           Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -179,6 +181,8 @@ export const RegistroProducto2 = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/menuInventario/ListaProductos');
@@ -330,6 +334,7 @@ export const RegistroProducto2 = (props) => {
               />
               <p class="error">{advertencia}</p>
             </div>
+            
             <div className="contInput">
               <TextCustom text="Cantidad Maxima" className="titleInput" />
 
@@ -367,11 +372,10 @@ export const RegistroProducto2 = (props) => {
            
 
             <div className="contInput">
-              <TextCustom
-                text="Descripcion del Aro"
-                className="titleInput"
-              />
-              <input
+
+              <TextCustom text="Descripcion del Producto" className="titleInput" />
+              <textarea
+
                 onKeyDown={e => {
                   setdescripcion(e.target.value);
                   if (descrpcion == '') {
@@ -384,7 +388,6 @@ export const RegistroProducto2 = (props) => {
                 }}
                 onChange={e => setdescripcion(e.target.value)}
                 error={errordescripcion}
-                type="text"
                 name=""
                 maxLength={100}
                 className="inputCustomText"
@@ -419,15 +422,15 @@ export const RegistroProducto2 = (props) => {
                   if (precio === "" || cantidadMin === "" || cantidadMax === "" || descripcion === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (isNaN(parseInt(cantidadMin))) {
-                    swal("El campo cantidadMin solo acepta números.", "", "error");
+                    swal("El campo cantidad mínima solo acepta números.", "", "error");
                   } else if (isNaN(parseInt(cantidadMax))) {
-                    swal("El campo cantiadMax solo acepta números.", "", "error");
+                    swal("El campo cantiad máxima solo acepta números.", "", "error");
                   } else if (isNaN(parseFloat(precio))) {
                     swal("El campo precio solo acepta números.", "", "error");  
                   } else if (cantidadMin <= 0) {
-                    swal("El campo cantidadMinima no acepta valores negativos.", "", "error");
+                    swal("El campo cantidad mínima no acepta valores negativos.", "", "error");
                   }else if (cantidadMax <= cantidadMin) {
-                    swal("El campo cantidadMaxima no acepta valores menores.", "", "error");
+                    swal("El campo cantidad máxima no acepta valores menores.", "", "error");
                   }else if (precio <= 0) {
                     swal("El campo precio no acepta valores negativos.", "", "error");
                   }

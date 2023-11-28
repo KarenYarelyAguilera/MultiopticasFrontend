@@ -56,7 +56,10 @@ export const ListaGarantia = (props) => {
   const urlGarantias = 'http://localhost:3000/api/garantias';
   const urlGarantiasInactivas = 'http://localhost:3000/api/garantiasInactivas';
   const urlDelGarantias = 'http://localhost:3000/api/garantias/eliminar';
+  
   const urlBorrarBitacora= 'http://localhost:3000/api/bitacora/EliminarGarantia';
+  const urlListaSalirBitacora= 'http://localhost:3000/api/bitacora/SalirListaGarantia';
+
 
   const [tableData, setTableData] = useState([]);
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
@@ -79,11 +82,12 @@ const handleGenerarExcel = () => {
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = filteredData.map((row, index) => ({
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
     'N°': row.IdGarantia,
     'Descripción': row.descripcion,
     'Meses de Garantia': row.Meses,
     'Producto': row.producto,
+    'Estado': row.estado,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Meses de Garantia','Producto'] });
@@ -98,7 +102,7 @@ const handleGenerarExcel = () => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = tableData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
@@ -108,6 +112,9 @@ const handleGenerarExcel = () => {
             'Descripción': row.descripcion,
             'Meses de Garantia': row.Meses,
             'Producto': row.producto,
+            'Estado': row.estado,
+
+
           };
         });
         return formattedData;
@@ -144,7 +151,7 @@ const handleGenerarExcel = () => {
     { field: 'IdGarantia', headerName: 'ID', width: 210 },
     { field: 'descripcion', headerName: 'Descripción', width: 310 },
     { field: 'Meses', headerName: 'Meses de Garantia', width: 210 },
-    { field: 'Modelo', headerName: 'Producto', width: 210 },
+    { field: 'Modelo', headerName: 'Aro', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
 
     {
@@ -221,9 +228,19 @@ const handleGenerarExcel = () => {
     }
 
   };
+  let dataB =
+  {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlListaSalirBitacora,
+    activo: props.activo,
+    dataB: dataB
+  };
 
   //BOTON DE RETROCEDER 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/config');
   };
 
