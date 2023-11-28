@@ -80,11 +80,13 @@ const handleGenerarExcel = () => {
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = filteredData.map((row, index) => ({
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
     'N°': row.IdModelo,
     'Marca': row.Marca,
     'Modelo': row.Modelo,
     'Año': row.anio, 
+    'Estado':row.estado,
+
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Marca','Modelo','Año'] });
@@ -102,7 +104,7 @@ const handleGenerarExcel = () => {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = tableData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                                 String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -112,6 +114,8 @@ const handleGenerarExcel = () => {
                                   'Marca':row.Marca, 
                                   'Modelo':row.Modelo, 
                                   'Año':row.anio, 
+                                  'Estado':row.estado,
+
                                 };
         });
         return formattedData;

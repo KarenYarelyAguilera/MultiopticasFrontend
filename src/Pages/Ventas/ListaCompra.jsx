@@ -267,7 +267,7 @@ export const ListaCompra = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -280,7 +280,7 @@ export const ListaCompra = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -292,20 +292,19 @@ export const ListaCompra = (props) => {
 
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
+
+            < Button className="btnExcel" onClick={handleGenerarExcel}>
+                <AnalyticsIcon style={{ marginRight: '5px' }} />
+                Generar Excel
+              </Button>
+            
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
-
-              <Button className="btnExcel" onClick={handleGenerarExcel}>
-                <AnalyticsIcon style={{ marginRight: '3px' }} />
-                Generar Excel
-              </Button>
-
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
               Generar PDF
             </Button>
           </div>

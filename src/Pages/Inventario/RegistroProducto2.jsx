@@ -115,6 +115,8 @@ export const RegistroProducto2 = (props) => {
       axios.put(urlUpdProducto, data).then(() => {
         swal("Aro Actualizado Correctamente", "", "success").then(() => {
           Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
           navegate('/menuInventario/ListaProductos');
         })
       }).catch(error => {
@@ -179,6 +181,8 @@ export const RegistroProducto2 = (props) => {
       dangerMode: true,
     }).then((confirmExit) => {
       if (confirmExit) {
+        props.limpiarData({});
+        props.limpiarUpdate(false)
         props.update(false)
         props.Data({})
         navegate('/menuInventario/ListaProductos');

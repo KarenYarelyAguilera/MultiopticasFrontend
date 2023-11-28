@@ -11,7 +11,7 @@ import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
+
 import swal from '@sweetalert/with-react';
 
 //Styles
@@ -31,9 +31,6 @@ const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
 const urlTotalAPagar = "http://localhost:3000/api/Ventas/totalAPagar"
 const urlVenta = 'http://localhost:3000/api/Ventas/nuevaVenta';
-
-ReactModal.setAppElement('#root');
-
 
 
 export const NuevaVenta = (props) => {
@@ -62,7 +59,7 @@ export const NuevaVenta = (props) => {
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
-  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
@@ -72,38 +69,6 @@ export const NuevaVenta = (props) => {
   const [costo, setCosto] = useState(0);
   const [cantidad, setCantidad] = useState(0);
   const [total, setTotal] = useState(0)
-
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Nuevo estado para almacenar los clientes
-  const [clientes, setClientes] = useState([]);
-
-  useEffect(() => {
-    // Cargar la lista de clientes al inicio
-    fetch(urlCliente)
-      .then((response) => response.json())
-      .then((data) => setClientes(data));
-  }, []);
-
-  // Nueva función para seleccionar un cliente
-  const handleSelectCliente = (selectedCliente) => {
-    if (selectedCliente) {
-      setSelectedOption({
-        value: selectedCliente.idCliente,
-        label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
-      });
-      closeModal();
-    }
-  };
 
 
   useEffect(() => {
@@ -123,10 +88,10 @@ export const NuevaVenta = (props) => {
 
   const navegate = useNavigate();
 
-  const AggDataGrid = () => {
-
+ const AggDataGrid = () => {
+   
     const cantidad = parseInt(document.getElementById("Cantidad").value);
-
+  
     const existingIndex = ventas.findIndex(item => item.IdProducto === selectedAros.value);
     console.log(existingIndex);
     if (existingIndex !== -1) {
@@ -135,27 +100,27 @@ export const NuevaVenta = (props) => {
       setVentas(updatedVentas);
     } else {
       const dataGrid = {
-        IdEmpleado: props.idUsuario,
+        IdEmpleado:props.idUsuario,
         IdProducto: selectedAros.value,
         Aro: selectedAros.label,
-        IdLente: selectedLente.value,
-        Lente: selectedLente.label,
-        PrecioAro: selectedAros.precio,
-        fechaEntrega: 2023 - 26 - 11,
-        fechaLimiteEntrega: 2023 - 1 - 12,
+        IdLente:selectedLente.value,
+        Lente:selectedLente.label,
+        PrecioAro:selectedAros.precio,
+        fechaEntrega:2023-26-11,
+        fechaLimiteEntrega:2023-1-12,
         IdCliente: selectedOption.value,
         RTN: document.getElementById("RTN".value) || " ",
         IdGarantia: selectedGarantia.value,
         IdPromocion: selectedPromocion.value,
         IdDescuento: selectedDescuento.value,
-        Descuento: selectedDescuento.label,
+        Descuento:  selectedDescuento.label,
         Promocion: selectedPromocion.label,
         cantidad: cantidad
       };
       console.log(dataGrid);
       setVentas([...ventas, dataGrid]);
       setCambio(cambio + 1);
-    }
+    }  
   };
 
   const eliminarVenta = (idProducto) => {
@@ -163,11 +128,11 @@ export const NuevaVenta = (props) => {
     const nuevasVentas = ventas.filter(ventas => ventas.IdProducto !== idProducto);
     console.log(nuevasVentas);
     setVentas(nuevasVentas);
-    setCambio(cambio + 1)
+    setCambio(cambio+1)
   };
 
   const columns = [
-    { field: 'Aro', headerName: 'Aro', width: 250 },
+    { field: 'Aro', headerName: 'Aro', width: 250},
     { field: 'Lente', headerName: 'Lente', width: 250 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'Descuento', headerName: 'Descuento', width: 145 },
@@ -185,7 +150,7 @@ export const NuevaVenta = (props) => {
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
-        </div>)
+          </div>)
     }
   ];
 
@@ -197,9 +162,9 @@ export const NuevaVenta = (props) => {
   };
 
   const GuardarVenta = async () => {
-    let data = {
-      arrVentas: ventas
-    }
+  let data = {
+    arrVentas:ventas
+  }
     await axios.post(urlTotalAPagar, data).then((response) => {
       swal({
         title: "Confirme la venta",
@@ -229,29 +194,29 @@ export const NuevaVenta = (props) => {
           },
         },
       }).then((value) => {
-        if (value) {
-          axios.post(urlVenta, data).then((res) => {
-            let dataVenta = {
-              id: res.data.id,
-              total: response.data.total,
-              saldoRestante: response.data.total
-            }
-            swal("¡Venta confirmada!", "", "success").then(() => {
-              props.venta(dataVenta)
-              navegate('/menuVentas/PagoDeVenta')
+          if (value) {
+            axios.post(urlVenta,data).then((res)=>{
+              let dataVenta={
+                id: res.data.id,
+                total: response.data.total,
+                saldoRestante: response.data.total
+              }
+              swal("¡Venta confirmada!", "", "success").then(()=>{
+                props.venta(dataVenta)
+                navegate('/menuVentas/PagoDeVenta')
+              })  
+            }).catch(()=>{
+              swal("Venta cancelada", "", "error");
             })
-          }).catch(() => {
+          } else {
+            // Lógica en caso de cancelación
             swal("Venta cancelada", "", "error");
-          })
-        } else {
-          // Lógica en caso de cancelación
-          swal("Venta cancelada", "", "error");
-        }
-      });
+          }
+        });
     })
   };
 
-
+  
 
   const handleBack = () => {
     swal({
@@ -270,138 +235,32 @@ export const NuevaVenta = (props) => {
     });
   };
 
-  //
-
-  // MAGIA DE SELECCIONAR MALDITASEA
-  const handleCellClick = (params) => {
-    const rowData = params.row;
-    setCliente(rowData)
-    console.log(Cliente.nombre);
-    closeModal()
-  };
-  const customStyles = {
-    content: {
-      width: '35%', // Ancho de la modal
-      height: '50%', // Alto de la modal
-      margin: 'auto', // Centrar la modal horizontalmente
-      border: '1px solid #ccc',
-      background: '#fff',
-      overflow: 'auto',
-      borderRadius: '4px',
-      outline: 'none',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
-    },
-  };
 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
       </div>
       <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            {/* <label htmlFor="" onChange={handleCellClick}> CLIENTE: {Cliente.nombre}</label>
+
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <button onClick={openModal}>Seleccionar Cliente</button>
-              </div>
-            </div> */}
-
-            <div className="contNewCita"  >
-              <TextCustom text="Cliente" className="titleInput" />
-              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
-
-                <input
-                  type="text"
-                  //onClick={openModal}
-                  className="inputCustomText"
+                <Select
+                  id="cliente"
+                  options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
-                  disabled
-                  onChange={handleCellClick}
-                  value={Cliente.nombre}
-                  style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
-
-
-
             </div>
 
-            <ReactModal
-              style={customStyles}
-              isOpen={isModalOpen}
-              onRequestClose={closeModal}
-              contentLabel="Lista de Clientes"
-              ariaHideApp={false} >
-              <div>
-                <h2>Seleccione un Cliente</h2>
-                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-                <DataGrid
-                  rows={clientes}
-                  getRowId={clientes => clientes.idCliente}
-                  pagination
-                  autoHeight
-                  onCellClick={handleCellClick}
-                  localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-                  pageSize={pageSize}
-                  rowsPerPageOptions={[5, 10, 50]}
-                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                  columns={[
-                    { field: 'COD_CLIENTE', headerName: 'ID', width: 80,headerAlign: 'center' },
-                    { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-                    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
-                    { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-
-
-
-                    //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
-                   /*  {
-                      field: 'fechaNacimiento',
-                      headerName: 'Fecha de Nacimiento',
-                      width: 170,
-                      headerAlign: 'center',
-                      renderCell: (params) => (
-                        <span>
-                          {new Date(params.value).toLocaleDateString('es-ES')}
-                        </span>
-                      ),
-                    }, */
-                  ]}
-                  style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
-                  onSelectionModelChange={(selection) => {
-                    // Ensure that selection.selectionModel is defined and not empty
-                    if (selection.selectionModel && selection.selectionModel.length > 0) {
-                      const selectedClientId = selection.selectionModel[0];
-                      const selectedClient = clientes.find(
-                        (client) => client.idCliente === selectedClientId
-                      );
-                      // Check if selectedClient is not undefined before calling handleSelectCliente
-                      if (selectedClient) {
-                        handleSelectCliente(selectedClient);
-                      }
-                    }
-                  }}
-
-                />
-
-                {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Cerrar
-                </Button>
-              </div>
-            </ReactModal>
-
-
-<div  className="contInput"  ></div>
             <div className="contInput"  >
               <TextCustom text="RTN" className="titleInput" />
               <input
@@ -589,7 +448,7 @@ export const NuevaVenta = (props) => {
                 }
                 }
               >
-                {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
+           {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
@@ -605,14 +464,14 @@ export const NuevaVenta = (props) => {
 
 
 
-          <div className="contFilter1">
+        <div className="contFilter1">
             <SearchIcon
               style={{
                 position: 'absolute',
                 color: 'gray',
                 paddingLeft: '10px',
               }}
-            />
+              />
             <input
               type="text"
               className="inputSearch"
@@ -624,6 +483,8 @@ export const NuevaVenta = (props) => {
               <Button
                 className="btnCreate1"
                 onClick={GuardarVenta}
+                
+
 
               >
                 <AddIcon style={{ marginRight: '5px' }} />
@@ -642,9 +503,9 @@ export const NuevaVenta = (props) => {
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />
+            />
 
-          {/* <img
+        {/* <img
           src={
             'https://static.vecteezy.com/system/resources/previews/018/942/487/non_2x/business-strategic-planning-illustration-concept-on-white-background-vector.jpg'
           }
