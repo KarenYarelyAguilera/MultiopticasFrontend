@@ -16,6 +16,8 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
+import { Bitacora } from '../../Components/bitacora.jsx';
+
 import { Today } from '@mui/icons-material';
 
 
@@ -26,6 +28,10 @@ const urlUpdPromocion = //ACTUALIZAR
   'http://localhost:3000/api/promociones/actualizar';
 const urlDelPromocion = //BORRAR
   'http://localhost:3000/api/promociones/eliminar';
+
+ //BITACORA
+ const urlInsertBitacora= 'http://localhost:3000/api/bitacora/NuevaPromocion';
+ const urlUpdateBitacora=   'http://localhost:3000/api/bitacora/ActualizacionPromocion';
 
 
 export const RegistroPromocion = (props) => {
@@ -85,17 +91,20 @@ export const RegistroPromocion = (props) => {
       estado: estado,
       descripcion: descripcion.toUpperCase(),
       IdPromocion: props.data.IdPromocion,
-    }
-
-
-    //Funcion de bitacora 
-    /*  let dataB={
-       Id: props.idUsuario
-     } */
+    };
+    let dataB=
+    {
+      Id:props.idUsuario
+    }; 
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     axios.put(urlUpdPromocion, data).then(() => {
       swal("Promocion Actualizada Correctamente", "", "success").then(() => {
-        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        Bitacora(bitacora)
         props.limpiarData({});
         props.limpiarUpdate(false)
         navegate('/promocion/listaPromocion');
@@ -103,7 +112,6 @@ export const RegistroPromocion = (props) => {
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Promocion! , porfavor revise todos los campos.', '', 'error')
-      // axios.post(urlErrorInsertBitacora, dataB)
     })
 
   }
@@ -123,6 +131,15 @@ export const RegistroPromocion = (props) => {
       estado: estado,
       descripcion: descripcion.toUpperCase()
     };
+    let dataB=
+    {
+      Id:props.idUsuario
+    }; 
+    const bitacora = {
+      urlB: urlInsertBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
     //Consumo de API y lanzamiento se alerta
     axios.post(urlPromocion, data).then(response => {
@@ -131,7 +148,7 @@ export const RegistroPromocion = (props) => {
         swal('¡Esta promocion ya existe!', '', 'error')
       } else {
         swal('Promocion agregada con exito', '', 'success').then(result => {
-          //axios.post(urlInsertBitacora, dataB)
+          Bitacora(bitacora)
           navegate('/promocion/listaPromocion');
         });
       }

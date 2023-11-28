@@ -124,9 +124,9 @@ export const Kardex = (props) => {
 
   const columns = [
     { field: 'IdKardex', headerName: 'ID', width: 50 },
-    { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 150 },
+    { field: 'TipoMovimiento', headerName: 'Tipo de Movimiento', width: 300 },
     { field: 'Producto', headerName: 'Producto', width: 200 },
-    { field: 'cantidad', headerName: 'Cantidad', width: 90 },
+    { field: 'cantidad', headerName: 'Cantidad', width: 150 },
     {
       field: 'fechaYHora', headerName: 'Fecha', width: 200,
       valueGetter: (params) => {

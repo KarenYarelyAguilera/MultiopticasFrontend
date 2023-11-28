@@ -209,13 +209,18 @@ const handleBack = () => {
                     if (genero ==="")
                     {
                       swal ("No deje campos vacíos.", "", "error");
-                    } else 
+                    } else  if (!/^[A-Z]+(?: [A-Z]+)*$/.test(genero))
                     {
+                      swal("El campo genero solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                    }else if (/(.)\1{2,}/.test(genero))
+                    {
+                      seterrorgenero(true);
+                      swal("El no acepta letras mayúsculas consecutivas repetidas.", "", "error")
+                    } else 
+                      {
                       props.actualizar ? actualizarGenero() : handleNext();
-
                     }
                   }
-                
                 }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
