@@ -96,19 +96,13 @@ const actualizarGenero = async () => {
       dataB: dataB
     };
 
-    axios.put(urlUpdateGenero, data).then(response => {
-
-    console.log(response);
-    if (response.data == false) {
-      swal('¡Este Genero ya existe!', '', 'error')
-    } else {
-      swal("Género Actualizado Correctamente", "", "success").then(() => {
-        Bitacora(bitacora)
-        props.limpiarData({});
-        props.limpiarUpdate(false)
-        navegate('/config/ListaGenero');
-    });
-  }
+  axios.put(urlUpdateGenero, data).then(() => {
+    swal("Género Actualizado Correctamente", "", "success").then(() => {
+      Bitacora(bitacora)
+      props.limpiarData({});
+      props.limpiarUpdate(false)
+      navegate('/config/ListaGenero');
+    })
   }).catch(error => {
     console.log(error);
     swal('Error al Actualizar Género , por favor revise todos los campos.', '', 'error')
@@ -215,13 +209,18 @@ const handleBack = () => {
                     if (genero ==="")
                     {
                       swal ("No deje campos vacíos.", "", "error");
-                    } else 
+                    } else  if (!/^[A-Z]+(?: [A-Z]+)*$/.test(genero))
                     {
+                      swal("El campo genero solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                    }else if (/(.)\1{2,}/.test(genero))
+                    {
+                      seterrorgenero(true);
+                      swal("El no acepta letras mayúsculas consecutivas repetidas.", "", "error")
+                    } else 
+                      {
                       props.actualizar ? actualizarGenero() : handleNext();
-
                     }
                   }
-                
                 }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}

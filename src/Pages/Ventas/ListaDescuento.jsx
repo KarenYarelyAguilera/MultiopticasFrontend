@@ -29,15 +29,16 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
+import { Bitacora } from '../../Components/bitacora';
 
 //GENERADOR DE PDF 
 import { generatePDF } from '../../Components/generatePDF';
 
-export const ListaDescuento = ({idRol,data,update}) => {
+export const ListaDescuento = (props) => {
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso={
-    idRol:idRol,
+    idRol:props.idRol,
     idObj:8
   }
   useEffect(()=>{
@@ -52,6 +53,9 @@ export const ListaDescuento = ({idRol,data,update}) => {
 const urlListaDescuentos = 'http://localhost:3000/api/Descuento';
 const urlListaDescuentosInactivos = 'http://localhost:3000/api/DescuentosInactivos';
 const urlDelDescuento = 'http://localhost:3000/api/Descuento/BorrarDescuento';
+
+const urlBorrarDescuentoB ='http://localhost:3000/api/bitacora/EliminarDescuento';
+const urlSalirListaDescuento ='http://localhost:3000/api/bitacora/salirlistadescuento';
 
 const [tableData, setTableData] = useState([]);
 const [tableDataInactivos, setTableDataInactivos] = useState([]);
@@ -69,24 +73,15 @@ const handleGenerarExcel = () => {
   const currentDateTime = new Date().toLocaleString();
 
   // Datos para el archivo Excel
-  const dataForExcel = tableData.map((row, index) => ({
+  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
     'N°': row.IdDescuento,
     'Estado': row.estado,
-    'Descuento del Cliente': row.descPorcent,
-    'Descuento del Empleado': row.descPorcentEmpleado, 
-   // 'Estado': row.estado,
+    'Descuento': row.descPorcent,
+    //'Descuento del Empleado': row.descPorcentEmpleado, 
+   'Estado': row.estado,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
-
-  // Formato para el encabezado
-  worksheet['A1'] = { v: 'LISTA DE DESCUENTOS', s: { font: { bold: true } } };
-  worksheet['A2'] = { v: currentDateTime, s: { font: { bold: true } } }; //muestra la hora 
-  worksheet['A5'] = { v: 'N°', s: { font: { bold: true } } };
-  worksheet['B5'] = { v: 'Estado', s: { font: { bold: true }} };
-  worksheet['C5'] = { v: 'Descuento del Cliente', s: { font: { bold: true }} };
-  worksheet['D5'] = { v: 'Descuento del Empleado', s: { font: { bold: true } }};
- // worksheet['E5'] = { v: 'Estado', s: { font: { bold: true } }};
 
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
   XLSX.writeFile(workbook, 'Lista_de_Descuentos.xlsx');
@@ -98,16 +93,16 @@ const handleGenerarExcel = () => {
       swal("No cuenta con los permisos para realizar esta accion","","error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = tableData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                                 String(fechaCre.getMonth()).padStart(2,'0')+"/"+
                                 fechaCre.getFullYear();
                                 return {
                                   'N°':row.IdDescuento,
+                                  'Descuento':row.descPorcent, 
+                                  //'Descuento del Empleado':row.descPorcentEmpleado, 
                                   'Estado':row.estado, 
-                                  'Descuento del Cliente':row.descPorcent, 
-                                  'Descuento del Empleado':row.descPorcentEmpleado, 
                                 };
         });
         return formattedData;
@@ -194,11 +189,20 @@ const handleGenerarExcel = () => {
             let data = {
               IdDescuento: id
             };
-  
+            let dataB =
+            {
+              Id: props.idUsuario
+            };
+            const bitacora = {
+              urlB: urlBorrarDescuentoB,
+              activo: props.activo,
+              dataB: dataB
+            };
             console.log(data);
   
             await axios.delete(urlDelDescuento,{data}).then(response=>{
               swal("Descuento eliminado correctamente","","success")
+              Bitacora(bitacora)
               setCambio(cambio+1)
             }).catch(error=>{
               console.log(error);
@@ -231,8 +235,8 @@ const handleGenerarExcel = () => {
       }).then((op) => {
         switch (op) {
             case 'update':
-            data(id)
-           update(true)
+              props.data(id)
+              props.update(true)
         navegate('/MenuVentas/RegistroDescuento')
         break;
         default:
@@ -243,8 +247,18 @@ const handleGenerarExcel = () => {
     
   };
 
+  let dataB =
+  {
+    Id: props.idUsuario
+  };
+  const bitacora = {
+    urlB: urlSalirListaDescuento,
+    activo: props.activo,
+    dataB: dataB
+  };
     //BOTON DE RETROCEDER 
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/config');
   };
 

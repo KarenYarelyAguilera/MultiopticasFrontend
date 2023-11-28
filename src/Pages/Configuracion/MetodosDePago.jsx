@@ -97,21 +97,13 @@ export const MetodosDePago = (props) => {
       dataB: dataB
     }
 
-    axios.put(urlUpdateMetodoPago, data).then(response => {
-      console.log(response);
-      if (response.data == false) {
-        swal('¡Este método ya existe!', '', 'error')
-      } else {
-        swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
-          Bitacora(bitacora)
-          props.limpiarData({});
-          props.limpiarUpdate(false)
-          navegate('/config/ListaMetodosDePago');
-        });
-      }
-      
-     
-      
+    axios.put(urlUpdateMetodoPago, data).then(() => {
+      swal("Metodo de Pago Actualizado Correctamente", "", "success").then(() => {
+        Bitacora(bitacora)
+        props.limpiarData({});
+        props.limpiarUpdate(false)
+        navegate('/config/ListaMetodosDePago');
+      })
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Metodo de pago! , porfavor revise todos los campos.', '', 'error')

@@ -9,8 +9,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import logoImg  from "../../IMG/MultiopticaBlanco.png";
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
-import fondoPDF from "../../IMG/fondoPDF.jpg";
 import AnalyticsIcon from '@mui/icons-material/Analytics';  //para el boton de excel 
 
 import swal from '@sweetalert/with-react';
@@ -103,6 +103,8 @@ const handleGenerarExcel = () => {
     'Ciudad':row.ciudad, 
     'Dirección':row.direccion, 
     'Teléfono':row.telefono,   
+    'Estado': row.estado,
+
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°','Departamento','Ciudad','Dirección','Teléfono'] });
@@ -113,11 +115,11 @@ const handleGenerarExcel = () => {
 
 //IMPRIMIR PDF
 const handleGenerarReporte = () => {
-  if (permisos[0].consultar ==="n") {
+  if (permisos[0].consultar === "n") {
     swal("No cuenta con los permisos para realizar esta accion","","error")
   } else {
     const formatDataForPDF = () => {
-      const formattedData = tableData.map((row) => {
+      const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
         const fechaCre = new Date(row.fechaNacimiento);
         const fechaNacimiento = String(fechaCre.getDate()).padStart(2,'0')+"/"+
                               String(fechaCre.getMonth()).padStart(2,'0')+"/"+
@@ -127,19 +129,20 @@ const handleGenerarReporte = () => {
                                 'Departamento':row.departamento, 
                                 'Ciudad':row.ciudad, 
                                 'Dirección':row.direccion, 
-                                'Teléfono':row.telefono,                                            
+                                'Teléfono':row.telefono,   
+                                'Estado': row.estado,
                               };
       });
       return formattedData;
     };
-  
-    const urlPDF = 'Report_Sucursales.pdf';
-    const subTitulo = "LISTA DE SUCURSALES"
-  
-    const orientation = "landscape";
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
-  }
 
+    const urlPDF = 'Report_MARCA.pdf';
+    const subTitulo = "LISTA DE MARCAS"
+
+    const orientation = "landscape";
+  generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+  }
+ 
 };
 
   const navegate = useNavigate();
@@ -297,7 +300,7 @@ const handleGenerarReporte = () => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -310,7 +313,7 @@ const handleGenerarReporte = () => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {

@@ -68,7 +68,7 @@ export const Kardex2 = (
     let cantidad = parseInt(document.getElementById("cant").value)
     const fechaYHora = fechaActual.toISOString();
     let data = {
-      idProducto: selectedOptionM.value,
+      idProducto: selectedOptionP.value,
       idUsuario: props.idUsuario,
       fechaYHora:fechaYHora,
       cantidad:cantidad,
