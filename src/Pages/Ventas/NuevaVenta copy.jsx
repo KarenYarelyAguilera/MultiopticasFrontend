@@ -32,9 +32,6 @@ const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
 const urlTotalAPagar = "http://localhost:3000/api/Ventas/totalAPagar"
 const urlVenta = 'http://localhost:3000/api/Ventas/nuevaVenta';
 
-ReactModal.setAppElement('#root');
-
-
 
 export const NuevaVenta = (props) => {
 
@@ -62,7 +59,7 @@ export const NuevaVenta = (props) => {
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
-  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
@@ -73,38 +70,6 @@ export const NuevaVenta = (props) => {
   const [cantidad, setCantidad] = useState(0);
   const [total, setTotal] = useState(0)
 
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  // Nuevo estado para almacenar los clientes
-  const [clientes, setClientes] = useState([]);
-
-  useEffect(() => {
-    // Cargar la lista de clientes al inicio
-    fetch(urlCliente)
-      .then((response) => response.json())
-      .then((data) => setClientes(data));
-  }, []);
-
-  // Nueva función para seleccionar un cliente
-  const handleSelectCliente = (selectedCliente) => {
-    if (selectedCliente) {
-      setSelectedOption({
-        value: selectedCliente.idCliente,
-        label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
-      });
-      closeModal();
-    }
-  };
-  
 
   useEffect(() => {
     fetch(urlCliente).then(response => response.json()).then(data => setCliente(data))
@@ -270,117 +235,31 @@ export const NuevaVenta = (props) => {
     });
   };
 
-  //
-
-  // MAGIA DE SELECCIONAR MALDITASEA
-  const handleCellClick = (params) => {
-    const rowData = params.row;
-      setCliente(rowData)
-       console.log(Cliente.nombre);
-    closeModal()
-  };
-  const customStyles = {
-    content: {
-      width: '50%', // Ancho de la modal
-      height: '50%', // Alto de la modal
-      margin: 'auto', // Centrar la modal horizontalmente
-      border: '1px solid #ccc',
-      background: '#fff',
-      overflow: 'auto',
-      borderRadius: '4px',
-      outline: 'none',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
-    },
-  };
 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
       </div>
       <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-<label htmlFor="" onChange={handleCellClick}> CLIENTE: {Cliente.nombre}</label>
+
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-              <button onClick={openModal}>Seleccionar Cliente</button>
+                <Select
+                  id="cliente"
+                  options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
+                  placeholder="Seleccione un cliente"
+                />
               </div>
             </div>
-            <ReactModal
-            style={customStyles}
-             isOpen={isModalOpen}
-             onRequestClose={closeModal}
-             contentLabel="Lista de Clientes"
-             ariaHideApp={false}
-       
-      >
-        <div>
-          <h2>Seleccione un Cliente</h2>
-          {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-          <DataGrid
-            rows={clientes}
-            getRowId={clientes => clientes.idCliente}
-            pagination 
-            autoHeight
-            onCellClick={handleCellClick}
-            localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-            pageSize={pageSize}
-            rowsPerPageOptions={[5, 10, 50]}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            columns={[
-             // { field: 'COD_CLIENTE', headerName: 'ID', width: 80,headerAlign: 'center' },
-              { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-              { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
-              { field: 'apellido', headerName: 'Apellido', width: 190,headerAlign: 'center' },
-              
-
-
-              //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
-              { 
-                field: 'fechaNacimiento', 
-                headerName: 'Fecha de Nacimiento', 
-                width: 170,
-                headerAlign: 'center',
-                renderCell: (params) => (
-                    <span>
-                        {new Date(params.value).toLocaleDateString('es-ES')}
-                    </span>
-                ),
-            },
-            ]}
-
-            onSelectionModelChange={(selection) => {
-              // Ensure that selection.selectionModel is defined and not empty
-              if (selection.selectionModel && selection.selectionModel.length > 0) {
-                const selectedClientId = selection.selectionModel[0];
-                const selectedClient = clientes.find(
-                  (client) => client.idCliente === selectedClientId
-                );
-                // Check if selectedClient is not undefined before calling handleSelectCliente
-                if (selectedClient) {
-                  handleSelectCliente(selectedClient);
-                }
-              }
-            }}
-            
-          />
-
-          {/* Botón para cerrar el modal */}
-          <Button className="btnCloseModal" onClick={closeModal}>
-            Cerrar
-          </Button>
-        </div>
-      </ReactModal>
-
-
 
             <div className="contInput"  >
               <TextCustom text="RTN" className="titleInput" />
@@ -605,6 +484,8 @@ export const NuevaVenta = (props) => {
                 className="btnCreate1"
                 onClick={GuardarVenta}
                 
+
+
               >
                 <AddIcon style={{ marginRight: '5px' }} />
                 Guardar

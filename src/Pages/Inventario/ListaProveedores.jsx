@@ -134,6 +134,8 @@ export const ListaProveedores = (props) => {
 
   //IMPRIMIR PDF
 
+  
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
@@ -145,13 +147,13 @@ export const ListaProveedores = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'IdProveedor': row.IdProveedor,
+            'ID': row.IdProveedor,
             'Empresa Proveedora': row.CiaProveedora,
-            'Encargado': row.encargado,
+            //'Encargado': row.encargado,
             'Productos': row.Productos,
             'Pais': row.Pais,
-            'Ciudad': row.Ciudad,
-            'Direccion': row.direccion,
+            //'Ciudad': row.Ciudad,
+            //'Direccion': row.direccion,
             'Telefono': row.telefono,
             'Email': row.correoElectronico,
             'Estado':row.estado,
@@ -165,9 +167,13 @@ export const ListaProveedores = (props) => {
       const orientation = "landscape";
 
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+
+      
     }
 
   };
+
+  
 
 
   const navegate = useNavigate();

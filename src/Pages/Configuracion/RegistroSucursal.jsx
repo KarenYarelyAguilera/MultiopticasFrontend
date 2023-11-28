@@ -148,14 +148,14 @@ export const RegistroSucursal = (props) => {
 
     console.log(data)
 
-    axios.put(urlUpdSucursal, data).then(() => {
-      swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
+    axios.post(urlSucursal, data).then(() => {
+      swal("Sucursal Creada Correctamente", "", "success").then(() => {
         //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
         navegate('/config/listaSucursal');
       })
     }).catch(error => {
       console.log(error);
-      swal('Error al Actualizar Sucursal! , porfavor revise todos los campos.', '', 'error')
+      swal('Error al Crear Sucursal! , porfavor revise todos los campos.', '', 'error')
       // axios.post(urlErrorInsertBitacora, dataB)
     })
 
@@ -188,9 +188,6 @@ export const RegistroSucursal = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Sucursal</h2> : <h2>Registro de Sucursal</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
