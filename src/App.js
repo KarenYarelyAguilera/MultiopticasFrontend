@@ -2336,7 +2336,18 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
             path="/config/perfil"
             element={
               // <ProtectedRoute activo={activo}>
+              
               <div className="">
+                <BarraLateral
+                  user={user}
+                  rol={rol}
+                  mail={mail}
+                  estado={access}
+                  Rol={Rol}
+                  obj={cObjeto}
+                  idUsuario={idUsuario}
+                  idRol={idRol}
+                />
                 <Perfil
                   infoPerfil={infoPerfil}
                   idUsuario={idUsuario}
