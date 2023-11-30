@@ -6,6 +6,9 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+//Imports para modal
+import ReactModal from 'react-modal';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -17,6 +20,8 @@ import swal from '@sweetalert/with-react';
 import { TextField } from '@mui/material';
 import axios from 'axios'; //Se necesita exportar Axios para consumiar las APIs
 import Select from 'react-select';
+//modal
+import { DataGrid, esES } from '@mui/x-data-grid';
 
 import { Bitacora } from '../../Components/bitacora.jsx';
 
@@ -32,8 +37,11 @@ const urlModelos = //MOSTRAR MODELOS
   //BITACORAS
   const urlBitacoraInsertProducto='http://localhost:3000/api/bitacora/insertoproducto';
   const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
+//para la modal 
+ReactModal.setAppElement('#root');
 
 export const RegistroProducto2 = (props) => { 
+
   const [Modelo, setModelo] = useState([]);  
   //const [modelos, setModelos] = useState(props.data.IdModelo || null);
   const [selectedOption, setSelectedOption] = useState(props.data.IdModelo || null);
@@ -59,6 +67,40 @@ export const RegistroProducto2 = (props) => {
   const [descrpcion, setdescripcion] = React.useState(props.data.descripcion ||'');
   const [msj, setmsj] = React.useState('');
   const [errordescripcion, setErrordescripcion] = React.useState(false);
+
+  //hooks para la modal
+  const [isModeloModalOpen, setIsModeloModalOpen] = useState(false);
+  const [filtroModelo, setFiltroModelo] = useState('');
+  const [pageSize, setPageSize] = useState(5);
+
+  const openModeloModal = () => {
+    setIsModeloModalOpen(true);
+  };
+  
+  const closeModeloModal = () => {
+    setIsModeloModalOpen(false);
+  };
+
+  const [Modeloss, setModeloss] = useState([]);
+  useEffect(() => {
+    // Cargar la lista de modelos al inicio
+    fetch(urlModelos)
+      .then((response) => response.json())
+      .then((data) => setModeloss(data));
+  }, []);
+
+   // Nueva función para seleccionar un modelo
+ const handleSelectModelos = (selectedModelos) => {
+  if (selectedModelos) {
+    setSelectedOption({
+      value: selectedModelos.IdModelo,
+      label: `${selectedModelos.IdModelo} - ${selectedModelos.Marca} ${selectedModelos.Modelo}`,
+    });
+    closeModeloModal();
+  }
+};
+
+
 
   const [estado, setEstado] = useState(props.data.estado || null)
 //Se usa para mostrar informacion en un listbox
@@ -190,6 +232,39 @@ export const RegistroProducto2 = (props) => {
       }
     });
   };
+     // MAGIA DE SELECCIONAR MODELO
+     const handleCellClic = (params) => {
+      const rowData = params.row;
+      setModeloss(rowData)
+      console.log(Modeloss.Modelo);
+      closeModeloModal()
+    };
+    const customStyles = {
+      content: {
+        width: '50%', // Ancho de la modal
+        height: '60%', // Alto de la modal
+        margin: 'auto', // Centrar la modal horizontalmente
+        border: '1px solid #ccc',
+        background: '#fff',
+        overflow: 'auto',
+        borderRadius: '4px',
+        outline: 'none',
+      },
+      overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
+      },
+    };
+    
+    const handleSearchChange = (event) => {
+      setFiltroModelo(event.target.value);
+    };
+  
+    const modelosFiltrados = Modelo.filter((prod) =>
+      prod.Modelo.toLowerCase().includes(filtroModelo.toLowerCase())
+    );
+    const columns = [
+    
+    ];
 
   return (
     <div className="ContUsuarios">
@@ -202,69 +277,105 @@ export const RegistroProducto2 = (props) => {
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-
-          <div className="contInput">
+          <div className="contNewCita">
               <TextCustom text="Modelo" className="titleInput" />
-             {/*  <select id="empleado" className="selectCustom">
-                {Empleado.length ? (
-                  Empleado.map(pre => (
-                    <option key={pre.numeroIdentidad} value={pre.numeroIdentidad}>
-                      {pre.numeroIdentidad}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select> */}
-              {props.actualizar ? <>
-                <Select isDisabled={true} 
-                   styles={{
-                    control: (base) => ({
-                      ...base,
-                      width: "300px", // Ajusta el ancho según tus necesidades
-                    }),
-                  }}
-                  id="modelo"
-                  options={optionsModelos}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
-                  placeholder="Seleccione un modelo"
-                /></>
-                :<> 
-                <Select 
-                  id="modelo"
-                  options={optionsModelos}
-                  value={selectedOption}
-                  onChange={setSelectedOption}
-                  placeholder="Seleccione un modelo"
+              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  //onClick={openModal}
+                  className="inputCustom"
+                  placeholder="Seleccione el modelo"
+                  disabled
+                  onChange={handleCellClic}
+                  value={Modeloss.Modelo}
+                  style={{ width: '300px' }}
                 />
-                </>}
-              
-
-
+                <Button className="btnClearFilter" onClick={openModeloModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+              </div>
             </div>
+            <ReactModal
+              style={customStyles}
+              isOpen={isModeloModalOpen}
+              onRequestClose={closeModeloModal}
+              contentLabel="Lista de Modelos"
+              ariaHideApp={false} >
+              <div>
+          
+              <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el modelo</h2>
+              
+                <input
+            type="text"
+            placeholder="Buscar modelo"
+            className="inputSearch"
+            value={filtroModelo}
+            onChange={handleSearchChange}
+            style={{ width: '300px', marginBottom: '15px' }}
+          />
+                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+                <DataGrid
+          getRowId={Modelitos => Modelitos.IdModelo}
+          rows={modelosFiltrados}
+          columnas={columns}
+          onCellClick={handleCellClic}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
 
-           {/*  <div className="contInput">
-              <TextCustom text="Modelo" className="titleInput" />
-              <select name="" className="selectCustom" id="modelo" value={modelos} onChange={(e)=>{
-                setModelos(e.target.value)
-              }}>
-                {Modelo.length ? (
-                  Modelo.map(pre => (
-                    <option key={pre.IdModelo} value={pre.IdModelo}>
-                      {pre.Modelo}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion
-                  </option>
-                )}
-              </select>
-            </div> */}
+          columns={[
+            { field: 'IdModelo', headerName: 'ID ', width: 150 },
+            { field: 'Marca', headerName: 'Marca', width: 200 },
+            { field: 'Modelo', headerName: 'Modelo', width: 200},
+            { field: 'anio', headerName: 'Año', width: 200 },
+          ]}
+        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
+                  onSelectionModelChange={(selection) => {
+                    // Ensure that selection.selectionModel is defined and not empty
+                    if (selection.selectionModel && selection.selectionModel.length > 0) {
+                      const selectedModeloId = selection.selectionModel[0];
+                      const selectedModels = Modeloss.find(
+                        (Models) => Models.IdModelo === selectedModeloId
+                      );
+                      // Check if selectedClient is not undefined before calling handleSelectCliente
+                      if (selectedModels) {
+                        handleSelectModelos(selectedModels);
+                      }
+                    }
+                  }}
+        />
+                {/* Botón para cerrar el modal */}
+                <Button className="btnCloseModal" onClick={closeModeloModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  Cerrar
+                </Button>
+              </div>
+            </ReactModal>
+            
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+         
             <div className="contInput">
               <TextCustom text="Precio" className="titleInput" />
 

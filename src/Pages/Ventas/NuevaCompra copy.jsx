@@ -6,12 +6,11 @@ import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import swal from '@sweetalert/with-react';
-import ReactModal from 'react-modal';
+
 //Mui-Material-Icons
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -26,9 +25,6 @@ const urlCompra = 'http://localhost:3000/api/compra/NuevaCompra';
 const urlProducto = "http://localhost:3000/api/productos";
 const urlProveedor = "http://localhost:3000/api/proveedor";
 const urlInsertCompraB = 'http://localhost:3000/api/bitacora/insertcompra';
-
-
-ReactModal.setAppElement('#root');
 
 export const NuevaCompra = ({
   msgError = '',
@@ -62,37 +58,12 @@ export const NuevaCompra = ({
   const [aviso, setaviso] = React.useState('');
   const [errorcocompra, setErrorcoscompra] = React.useState(false);
   const [cosCompra, setcosCompra] = React.useState(false);
-  const [pageSize, setPageSize] = useState(5);
+
   const [cantidadc, setcantidadc] = useState(0);
   const [costoc, setcostoc] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
-  const [isProductoModalOpen, setIsProductoModalOpen] = useState(false);
-  const [filtroProducto, setFiltroProducto] = useState('');
 
-  const openProductoModal = () => {
-    setIsProductoModalOpen(true);
-  };
-  
-  const closeProductoModal = () => {
-    setIsProductoModalOpen(false);
-  };
-  const [productos, setProductos] = useState([]);
-  useEffect(() => {
-    // Cargar la lista de productos al inicio
-    fetch(urlProducto)
-      .then((response) => response.json())
-      .then((data) => setProductos(data));
-  }, []);
- // Nueva función para seleccionar un producto
- const handleSelectProductos = (selectedProducto) => {
-  if (selectedProducto) {
-    setSelectedOption({
-      value: selectedProducto.idProducto,
-      label: `${selectedProducto.idProducto} - ${selectedProducto.Modelo} ${selectedProducto.PrecioAro}`,
-    });
-    closeProductoModal();
-  }
-};
+
+
   useEffect(() => {
     fetch(urlProducto)
       .then(response => response.json())
@@ -242,39 +213,6 @@ export const NuevaCompra = ({
     // Aquí puedes hacer lo que desees con el texto seleccionado
   };
 
-
-   // MAGIA DE SELECCIONAR PRODUCTO
-   const handleCellClic = (params) => {
-    const rowData = params.row;
-    setProductos(rowData)
-    console.log(productos.Modelo);
-    closeProductoModal()
-  };
-  const customStyles = {
-    content: {
-      width: '50%', // Ancho de la modal
-      height: '60%', // Alto de la modal
-      margin: 'auto', // Centrar la modal horizontalmente
-      border: '1px solid #ccc',
-      background: '#fff',
-      overflow: 'auto',
-      borderRadius: '4px',
-      outline: 'none',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
-    },
-  };
-
-
-  const handleSearchChange = (event) => {
-    setFiltroProducto(event.target.value);
-  };
-
-  const productosFiltrados = producto.filter((prod) =>
-    prod.Modelo.toLowerCase().includes(filtroProducto.toLowerCase())
-  );
-
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -315,112 +253,22 @@ export const NuevaCompra = ({
                 )}
               </select>
             </div>
-
             <div className="contInput">
               <TextCustom text="Producto" className="titleInput1" />
-              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type="text"
-                  //onClick={openModal}
-                  className="inputCustom"
-                  placeholder="Seleccione el aro"
-                  disabled
-                  onChange={handleCellClic}
-                  value={productos.Modelo}
-                  style={{ width: '300px' }}
-                />
-                <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
-              </div>
+              <select name="" className="selectCustom" id="producto">
+                {producto.length ? (
+                  producto.map(pre => (
+                    <option key={pre.IdProducto} value={pre.IdProducto}>
+                      {pre.Marca+ "-"+pre.Modelo}
+                    </option>
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+              </select>
             </div>
-            <ReactModal
-              style={customStyles}
-              isOpen={isProductoModalOpen}
-              onRequestClose={closeProductoModal}
-              contentLabel="Lista de Aros"
-              ariaHideApp={false} >
-              <div>
-          
-              <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el producto</h2>
-              
-                <input
-            type="text"
-            placeholder="Buscar producto"
-            className="inputSearch"
-            value={filtroProducto}
-            onChange={handleSearchChange}
-            style={{ width: '300px', marginBottom: '15px' }}
-          />
-                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-                <DataGrid
-          getRowId={Productos => Productos.IdProducto}
-          rows={productosFiltrados}
-          columnas={columns}
-          onCellClick={handleCellClic}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={pageSize}
-          pagination
-          autoHeight
-          rowsPerPageOptions={[5, 10, 50]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          columns={[
-            { field: 'IdProducto', headerName: 'ID', width: 80 },
-            { field: 'Modelo', headerName: 'Modelo', width: 200 },
-            { field: 'Marca', headerName: 'Marca', width: 200 },
-            { field: 'descripcion', headerName: 'Descripción', width: 280 },
-            { field: 'precio', headerName: 'Precio', width: 200 },
-          ]}
-        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
-                  onSelectionModelChange={(selection) => {
-                    // Ensure that selection.selectionModel is defined and not empty
-                    if (selection.selectionModel && selection.selectionModel.length > 0) {
-                      const selectedProductoId = selection.selectionModel[0];
-                      const selectedProduct = productos.find(
-                        (Product) => Product.IdProducto === selectedProductoId
-                      );
-                      // Check if selectedClient is not undefined before calling handleSelectCliente
-                      if (selectedProduct) {
-                        handleSelectProductos(selectedProduct);
-                      }
-                    }
-                  }}
-        />
-                {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeProductoModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Cerrar
-                </Button>
-              </div>
-            </ReactModal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
 
             <div className="contInput">
               <TextCustom text="Cantidad" className="titleInput1" />
