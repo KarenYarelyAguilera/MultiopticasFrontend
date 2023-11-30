@@ -16,6 +16,7 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 import { Bitacora } from '../../Components/bitacora.jsx';
+import { ColorLens } from '@mui/icons-material';
 
 //APIS DE MODELO 
 const urlMarcas = 'http://localhost:3000/api/marcas'; 
@@ -28,9 +29,13 @@ export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
 
-  const [modelo, setmodelo] = React.useState(props.data.Modelo ||'');
+  const [detalle, setmodelo] = React.useState(props.data.detalle ||'');
   const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
+
+  const [color, setcolor] = React.useState(props.data.color ||'');
+  const [mensaje, setmensaje] = React.useState(false);
+  const [errorcolor, setErrorcolor] = React.useState(false);
 
   const [year, setyear] = React.useState(props.data.anio ||'');
   const [aviso, setaviso] = React.useState(false);
@@ -49,6 +54,7 @@ export const RegistroModelo = (props) => {
  const handleNext = () => {
   let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
+  let color = document.getElementById("color").value;
   let anio = document.getElementById("anio").value;
   let estado = document.getElementById('estado').value;
 
@@ -56,6 +62,7 @@ export const RegistroModelo = (props) => {
   let data = {
     IdMarca: IdMarca,
     detalle: detalle,
+    color:color,
     anio: anio,
     estado: estado,
   };
@@ -92,6 +99,7 @@ export const RegistroModelo = (props) => {
 const actualizarModelo = async () => {
   let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
+  let color = document.getElementById("color").value;
   let anio = document.getElementById("anio").value;
   let estado = document.getElementById('estado').value;
 
@@ -99,6 +107,7 @@ const actualizarModelo = async () => {
   const data = {
     IdMarca: IdMarca,
     detalle: detalle,
+    color:color,
     anio: anio,
     estado: estado,
     IdModelo: props.data. IdModelo, 
@@ -193,15 +202,15 @@ const actualizarModelo = async () => {
               <input
               onKeyDown={e => {
                 setmodelo(e.target.value);
-                if (modelo === '') {
+                if (detalle === '') {
                   setErrorModelo(true);
                   setleyenda('Los campos no deben estar vacíos');
                 } else {
                   var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
-                  if (!regex.test(modelo)) {
+                  if (!regex.test(detalle)) {
                     setErrorModelo(true);
                     setleyenda('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
-                  } else if (/(.)\1{2,}/.test(modelo)) {
+                  } else if (/(.)\1{2,}/.test(detalle)) {
                     setErrorModelo(true);
                     setleyenda('No se permiten letras consecutivas repetidas');
                   } else {
@@ -220,10 +229,50 @@ const actualizarModelo = async () => {
                 className="inputCustom"
                 placeholder="Modelo"
                 id="detalle"
-                value={modelo}
+                value={detalle}
               />
               <p class="error">{leyenda}</p>
             </div>
+
+
+            <div className="contInput">
+              <TextCustom text="Color" className="titleInput" />
+
+              <input
+              onKeyDown={e => {
+                setcolor(e.target.value);
+                if (color === '') {
+                  setErrorcolor(true);
+                  setmensaje('Los campos no deben estar vacíos');
+                } else {
+                  var regex = /^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/;
+                  if (!regex.test(color)) {
+                    setErrorcolor(true);
+                    setmensaje('Solo debe ingresar letras mayúsculas, números, y guiones, con un espacio entre palabras si es necesario');
+                  } else if (/(.)\1{2,}/.test(color)) {
+                    setErrorcolor(true);
+                    setmensaje('No se permiten letras consecutivas repetidas');
+                  } else {
+                    setErrorcolor(false);
+                    setmensaje("");
+                  }
+                }
+              }}
+                onChange={e => setcolor(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                error={errorcolor}
+
+                helperText={mensaje}
+                type="text"
+                name=""
+                maxLength={13}
+                className="inputCustom"
+                placeholder="Color"
+                id="color"
+                value={color}
+              />
+              <p class="error">{mensaje}</p>
+            </div>
+
 
             <div className="contInput">
               <TextCustom text="Año" className="titleInput" />
@@ -270,13 +319,18 @@ const actualizarModelo = async () => {
                 onClick={()=>
                 {
                   var modelo = document.getElementById("detalle").value;
+                  var color = document.getElementById("color").value;
                   var año = document.getElementById("anio").value;
                   var estado = document.getElementById('estado').value;
-                   if (modelo === "" || año === "") {
+                   if (modelo === "" || color ==="" || año === "") 
+                   {
                     swal("No deje campos vacíos.", "", "error");
                   }  else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(modelo)) {
                     swal("El campo modelo solo acepta letras mayusculas guiones y numeros.", "", "error");
-                  }else if (isNaN(año) || año < 2000 || año > 2050) {
+                  }else if (!/^[A-Z0-9-]+(?: [A-Z0-9-]+)*$/.test(color)) 
+                  {
+                    swal("El campo color solo acepta letras mayusculas guiones y numeros.", "", "error");
+                  } else if (isNaN(año) || año < 2000 || año > 2050) {
                     swal("El campo año es invalido.", "", "error");
                   }
                   else{
