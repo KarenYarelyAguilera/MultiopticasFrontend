@@ -31,6 +31,22 @@ export const Bitacora = (props, idRol) => {
   const [cambio, setCambio] = useState(0)
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
+  // const bitacora = [
+  //   { IdBitacora: '', fecha: '', Id_Usuario: '', Id_Objeto:'', accion:'' , descripcion:'' },
+ 
+  // ];
+
+  // function depurarBitacora(bitacora, nivelMinimo = 'info', fechaLimite = null) {
+  //   // Filtrar por nivel y fecha si se proporcionan
+  //   const bitacoraFiltrada = bitacora.filter((registro) => {
+  //     const nivelValido = registro.nivel === nivelMinimo || (registro.nivel !== 'error' && registro.nivel !== 'advertencia');
+  //     const fechaValida = fechaLimite ? new Date(registro.fecha) >= new Date(fechaLimite) : true;
+  //     return nivelValido && fechaValida;
+  //   });
+  
+  //   return bitacoraFiltrada;
+  // }
+
   const urlBitacora =
     "http://localhost:3000/api/bitacora";
 

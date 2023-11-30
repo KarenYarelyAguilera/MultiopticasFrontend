@@ -57,7 +57,7 @@ export const NuevaVenta = (props) => {
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
   const [selectedEmpleado, setSelectedEmpleado] = useState(null);
   const [Producto, setProducto] = useState([]);
-  const [Lente, setLente] = useState([]);
+  const [Lente, setLente] = useState([]);//hook para los lentes
   const [Descuento, setDescuento] = useState([]);
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
@@ -67,32 +67,94 @@ export const NuevaVenta = (props) => {
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
   const [selectedDescuento, setSelectedDescuento] = useState(null);
-  const [selectedLente, setSelectedLente] = useState(null);
+ const [selectedLente, setSelectedLente] = useState(null);
 
   const [costo, setCosto] = useState(0);
   const [cantidad, setCantidad] = useState(0);
   const [total, setTotal] = useState(0)
 
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
+ // const [isModalOpen, setIsModalOpen] = useState(false);
+ const [filtroLente, setFiltroLentes] = useState('');
+  const [isClienteModalOpen, setIsClienteModalOpen] = useState(false);
+  const [isProductoModalOpen, setIsProductoModalOpen] = useState(false);
+  const [isLenteModalOpen, setIsLenteModalOpen] = useState(false);
+  
+  const openClienteModal = () => {
+    setIsClienteModalOpen(true);
   };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  
+  const closeClienteModal = () => {
+    setIsClienteModalOpen(false);
   };
-
-  // Nuevo estado para almacenar los clientes
-  const [clientes, setClientes] = useState([]);
-
+  
+  const openProductoModal = () => {
+    setIsProductoModalOpen(true);
+  };
+  
+  const closeProductoModal = () => {
+    setIsProductoModalOpen(false);
+  };
+  
+  const openLenteModal = () => {
+    setIsLenteModalOpen(true);
+  };
+  
+  const closeLenteModal = () => {
+    setIsLenteModalOpen(false);
+  };
+  
+ // Nuevo estado para almacenar los clientes
+ const [clientes, setClientes] = useState([]);
   useEffect(() => {
     // Cargar la lista de clientes al inicio
     fetch(urlCliente)
       .then((response) => response.json())
       .then((data) => setClientes(data));
   }, []);
+  
+//Lentes
+
+const [Rlentes, setRlentes] = useState([]);
+  useEffect(() => {
+    // Cargar la lista de lentes al inicio
+    fetch(urlLente)
+      .then((response) => response.json())
+      .then((data) => setRlentes(data));
+  }, []);
+
+   // Nueva función para seleccionar un lente
+   const handleSelectlentes = (selectedLentes) => {
+    if (selectedLentes) {
+      setSelectedOption({
+        value: selectedLentes.IdLente,
+        label: `${selectedLentes.IdLente} - ${selectedLentes.lente} ${selectedLentes.precio}`,
+      });
+      closeLenteModal();
+    }
+  };
+
+//producto
+  const [productos, setProductos] = useState([]);
+  useEffect(() => {
+    // Cargar la lista de productos al inicio
+    fetch(urlProducto)
+      .then((response) => response.json())
+      .then((data) => setProductos(data));
+  }, []);
+
+///////
+
+ // Nueva función para seleccionar un producto
+ const handleSelectProductos = (selectedProducto) => {
+  if (selectedProducto) {
+    setSelectedOption({
+      value: selectedProducto.idProducto,
+      label: `${selectedProducto.idProducto} - ${selectedProducto.Modelo} ${selectedProducto.PrecioAro}`,
+    });
+    closeProductoModal();
+  }
+};
 
   // Nueva función para seleccionar un cliente
   const handleSelectCliente = (selectedCliente) => {
@@ -101,9 +163,22 @@ export const NuevaVenta = (props) => {
         value: selectedCliente.idCliente,
         label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
       });
-      closeModal();
+      closeClienteModal(); // Cambia aquí
     }
   };
+
+
+    // Nueva función para seleccionar un lente
+    const handleSelectLentes = (selectedLente) => {
+      if (selectedLente) {
+        setSelectedOption({
+          value: selectedLente.IdLente,
+          label: `${selectedLente.IdLente} - ${selectedLente.lente} ${selectedLente.precio}`,
+        });
+        closeLenteModal();
+      }
+    };
+  
 
 
   useEffect(() => {
@@ -277,12 +352,12 @@ export const NuevaVenta = (props) => {
     const rowData = params.row;
     setCliente(rowData)
     console.log(Cliente.nombre);
-    closeModal()
+    closeClienteModal()
   };
   const customStyles = {
     content: {
-      width: '35%', // Ancho de la modal
-      height: '50%', // Alto de la modal
+      width: '50%', // Ancho de la modal
+      height: '60%', // Alto de la modal
       margin: 'auto', // Centrar la modal horizontalmente
       border: '1px solid #ccc',
       background: '#fff',
@@ -294,6 +369,26 @@ export const NuevaVenta = (props) => {
       backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
     },
   };
+
+
+
+    // MAGIA DE SELECCIONAR PRODUCTO
+    const handleCellClic = (params) => {
+      const rowData = params.row;
+      setProductos(rowData)
+      console.log(productos.Modelo);
+      closeProductoModal()
+    };
+   
+  // MAGIA DE SELECCIONAR lentes
+  const handleCellClickLentes = (params) => {
+    const rowData = params.row;
+    setRlentes(rowData)
+    console.log(Rlentes.lente);
+    closeLenteModal()
+  };
+
+     
 
   return (
     <div className="ContUsuarios">
@@ -329,7 +424,7 @@ export const NuevaVenta = (props) => {
                   value={Cliente.nombre}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openClienteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
 
 
@@ -338,8 +433,8 @@ export const NuevaVenta = (props) => {
 
             <ReactModal
               style={customStyles}
-              isOpen={isModalOpen}
-              onRequestClose={closeModal}
+              isOpen={isClienteModalOpen}
+              onRequestClose={closeClienteModal}
               contentLabel="Lista de Clientes"
               ariaHideApp={false} >
               <div>
@@ -394,7 +489,7 @@ export const NuevaVenta = (props) => {
                 />
 
                 {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                <Button className="btnCloseModal" onClick={closeClienteModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
                   Cerrar
                 </Button>
               </div>
@@ -460,17 +555,68 @@ export const NuevaVenta = (props) => {
 
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
-              <div className="contInput">
-                <Select
-                  id="producto"
-                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.Modelo} - L${pre.precio}` }))}
-                  value={selectedAros}
-                  onChange={setSelectedAros}
-                  menuPlacement="auto"
-                  placeholder="Seleccione un Aro"
+              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  //onClick={openModal}
+                  className="inputCustom"
+                  placeholder="Seleccione el aro"
+                  disabled
+                  onChange={handleCellClic}
+                  value={productos.Modelo}
+                  style={{ width: '300px' }}
                 />
+                <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
             </div>
+            <ReactModal
+              style={customStyles}
+              isOpen={isProductoModalOpen}
+              onRequestClose={closeProductoModal}
+              contentLabel="Lista de Aros"
+              ariaHideApp={false} >
+              <div>
+                <h2>Seleccione el producto</h2>
+                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+                <DataGrid
+          getRowId={Productos => Productos.IdProducto}
+          rows={Producto}
+          columnas={columns}
+          onCellClick={handleCellClic}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          columns={[
+            { field: 'IdProducto', headerName: 'ID', width: 100 },
+            { field: 'Modelo', headerName: 'Modelo', width: 190 },
+            { field: 'Marca', headerName: 'Marca', width: 190 },
+            { field: 'descripcion', headerName: 'Descripción', width: 190 },
+            { field: 'precio', headerName: 'Precio', width: 120 },
+          ]}
+        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
+                  onSelectionModelChange={(selection) => {
+                    // Ensure that selection.selectionModel is defined and not empty
+                    if (selection.selectionModel && selection.selectionModel.length > 0) {
+                      const selectedProductoId = selection.selectionModel[0];
+                      const selectedProduct = productos.find(
+                        (Product) => Product.IdProducto === selectedProductoId
+                      );
+                      // Check if selectedClient is not undefined before calling handleSelectCliente
+                      if (selectedProduct) {
+                        handleSelectProductos(selectedProduct);
+                      }
+                    }
+                  }}
+        />
+                {/* Botón para cerrar el modal */}
+                <Button className="btnCloseModal" onClick={closeProductoModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  Cerrar
+                </Button>
+              </div>
+            </ReactModal>
 
 
             <div className="contInput">
@@ -543,18 +689,75 @@ export const NuevaVenta = (props) => {
               </div>
             </div> */}
 
-            <div className="contInput">
-              <TextCustom text="Precio del lente" className="titleInput" />
-              <div className="contInput">
-                <Select
-                  id="lente"
-                  options={Lente.map(pre => ({ value: pre.IdLente, label: `${pre.lente} - L.${pre.precio}` }))}
-                  value={selectedLente}
-                  onChange={setSelectedLente}
-                  placeholder="Seleccione un lente"
+          <div className="contNewCita">
+              <TextCustom text="Lentes" className="titleInput" />
+              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  //onClick={openModal}
+                  className="inputCustom"
+                  placeholder="Seleccione el lente"
+                  disabled
+                  onChange={handleCellClickLentes}
+                  value={Rlentes.lente}
+                  style={{ width: '300px' }}
                 />
+                <Button className="btnClearFilter" onClick={openLenteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
             </div>
+            <ReactModal
+              style={customStyles}
+              isOpen={isLenteModalOpen}
+              onRequestClose={closeLenteModal}
+              contentLabel="Lista de Lentes"
+              ariaHideApp={false} >
+              <div>
+          
+              <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el lente</h2>
+              
+                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+                <DataGrid
+          getRowId={Lentecitos => Lentecitos.IdLente}
+          rows={Lente}
+          columnas={columns}
+          onCellClick={handleCellClickLentes}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+
+          columns={[
+            { field: 'IdLente', headerName: 'ID', width: 100, headerAlign: 'center' },
+            { field: 'lente', headerName: 'Tipo de lente', width: 450,headerAlign: 'center' },
+            { field: 'precio', headerName: 'Precio', width: 420,headerAlign: 'center' },
+          ]}
+        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
+                  onSelectionModelChange={(selection) => {
+                    // Ensure that selection.selectionModel is defined and not empty
+                    if (selection.selectionModel && selection.selectionModel.length > 0) {
+                      const selectedLentesId = selection.selectionModel[0];
+                      const selectedLent = Rlentes.find(
+                        (Lent) => Lent.IdLente === selectedLentesId
+                      );
+                      // Check if selectedClient is not undefined before calling handleSelectCliente
+                      if (selectedLent) {
+                        handleSelectLentes(selectedLente);
+                      }
+                    }
+                  }}
+        />
+                {/* Botón para cerrar el modal */}
+                <Button className="btnCloseModal" onClick={closeLenteModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  Cerrar
+                </Button>
+              </div>
+            </ReactModal>
+
+
+
+
 
             <div className="contBtnStepper2">
               <Button
