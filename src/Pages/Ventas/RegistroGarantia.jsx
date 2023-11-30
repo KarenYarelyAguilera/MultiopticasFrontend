@@ -38,21 +38,21 @@ export const RegistroGarantia = (props) => {
   const [estado, setEstado] = useState(props.data.estado || null)
 
 //GET PRODUCTOS
-  useEffect(() => {
-    axios.get (urlProductos).then (response=>setProductos(response.data))
-  }, []);
+  // useEffect(() => {
+  //   axios.get (urlProductos).then (response=>setProductos(response.data))
+  // }, []);
 
   const navegate = useNavigate();
 
  //INSERTAR GARANTIA
   const handleNext = async () => {
     
-    let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+    //let IdProducto = parseInt(document.getElementById ("IdProducto").value);
     let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
     let descripcion = document.getElementById ("descripcion").value;
 
     let data = {
-      IdProducto: IdProducto,
+     // IdProducto: IdProducto,
       mesesGarantia: mesesGarantia,
       estado: document.getElementById('estado').value,
       descripcion: descripcion.toUpperCase(),
@@ -89,7 +89,7 @@ export const RegistroGarantia = (props) => {
   //ACTUALIZAR
 const actualizarGarantia = async () => {
 
-  let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+  //let IdProducto = parseInt(document.getElementById ("IdProducto").value);
   let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
   let descripcion = document.getElementById ("descripcion").value;
 
@@ -100,7 +100,7 @@ const actualizarGarantia = async () => {
 
   //El dato de IdProducto se obtiene de Producto seleccionado.
  const data = {
-    IdProducto: IdProducto,
+    //IdProducto: IdProducto,
     mesesGarantia: mesesGarantia,
     estado: document.getElementById ("estado").value,
     descripcion: descripcion.toUpperCase(),
@@ -167,7 +167,7 @@ const actualizarGarantia = async () => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contInput">
+            {/* <div className="contInput">
               <TextCustom text="ID Producto" className="titleInput" />
               
               <select name="" className="selectCustom" id="IdProducto">
@@ -183,7 +183,7 @@ const actualizarGarantia = async () => {
                   </option>
                 )}
               </select>
-            </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
