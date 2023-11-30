@@ -131,6 +131,7 @@ const handleGenerarExcel = () => {
   };
 
   const navegate = useNavigate();
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
@@ -138,6 +139,7 @@ const handleGenerarExcel = () => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+
   const filteredDataInactivos = tableDataInactivos.filter(row =>
     Object.values(row).some(
       value =>
@@ -149,10 +151,9 @@ const handleGenerarExcel = () => {
   const columns = [
     { field: 'IdModelo', headerName: 'ID ', width: 150 },
     { field: 'Marca', headerName: 'Marca', width: 300 },
-    { field: 'detalle', headerName: 'Modelo', width: 300},
-    { field: 'color', headerName: 'Color', width:240},
-    { field: 'anio', headerName: 'Año', width: 240 },
-    { field: 'estado', headerName: 'Estado', width: 150 },
+    { field: 'Modelo', headerName: 'Modelo', width: 300},
+    { field: 'anio', headerName: 'Año', width: 260 },
+    { field: 'estado', headerName: 'Estado', width: 120 },
 
     {
       field: 'borrar',
