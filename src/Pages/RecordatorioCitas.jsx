@@ -19,10 +19,14 @@ import { useNavigate } from 'react-router';
 
 import axios from 'axios';
 import Select from 'react-select';
+import ReactModal from 'react-modal';
+import { DataGrid, esES } from '@mui/x-data-grid';
+
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
-import  oftalmologoFondo  from '../IMG/oftalmologofondo.png'
+import oftalmologoFondo from '../IMG/oftalmologofondo.png'
 
 import '../Styles/Usuarios.css';
 
@@ -93,7 +97,64 @@ export const RecordatorioCitas = (props) => {
 
 
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+  const urlCliente = 'http://localhost:3000/api/Expediente';
+  // Nuevo estado para almacenar los clientes
+  const [clientes, setClientes] = useState([]);
+  const [Cliente, setCliente] = useState([]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+
+  useEffect(() => {
+    // Cargar la lista de clientes al inicio
+    fetch(urlCliente)
+      .then((response) => response.json())
+      .then((data) => setClientes(data));
+  }, []);
+
+  // Nueva función para seleccionar un cliente
+  const handleSelectCliente = (selectedCliente) => {
+    if (selectedCliente) {
+      setSelectedOption({
+        value: selectedCliente.IdExpediente,
+        label: `${selectedCliente.Cliente} - ${selectedCliente.Nombre}`,
+      });
+      closeModal();
+    }
+  };
+
+  // MAGIA DE SELECCIONAR MALDITASEA
+  const handleCellClick = (params) => {
+    const rowData = params.row;
+    setCliente(rowData)
+    console.log(Cliente.Cliente);
+    closeModal()
+  };
+  const customStyles = {
+    content: {
+      width: '35%', // Ancho de la modal
+      height: '50%', // Alto de la modal
+      margin: 'auto', // Centrar la modal horizontalmente
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      borderRadius: '4px',
+      outline: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
+    },
+  };
 
 
 
@@ -131,13 +192,14 @@ export const RecordatorioCitas = (props) => {
 
     // let idCliente = document.getElementById('idClientes').value;
 
-    let idCliente = selectedOption.value; // Usamos el valor de la opción seleccionada
+    let idCliente = Cliente.Cliente; // Usamos el valor de la opción seleccionada
     let Nota = document.getElementById('nota').value;
     // let fecha = document.getElementById('fecha').value
 
     let dataIdCliente = {
       IdCliente: idCliente,
     }
+    console.log(dataIdCliente);
 
 
     await axios.post(urlFechaCita, dataIdCliente).then(response => {
@@ -198,62 +260,153 @@ export const RecordatorioCitas = (props) => {
 
 
   return (
-    <div className="divSection">
+    <div className="divSection" >
       <div className="divInfoQuestion1">
         <Button className="btnBack" onClick={handleBack}>
-         <ArrowBackIcon className="iconBack" />
-       </Button>
-       <div className="contRecordatorios">
-        <div className="contRecordCitas">
-          <div >
-            <h1>Nueva Cita</h1>
-            <hr />
-            <div className="contPrincipalNewCita">
-              <div className="contNewCita">
-                <TextCustom text="Cliente" className="titleInput" />
-                <div className="contInput">
+          <ArrowBackIcon className="iconBack" />
+        </Button>
+        <div className="contRecordatorios" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignContent: 'center', marginTop: '250px', fontSize: '20px' }}>
+          <div className="contRecordCitas">
+            <div >
+              <h1>Nueva Cita</h1>
+              <hr />
+              <div className="contPrincipalNewCita">
+                <div className="contNewCita">
+                  {/* <TextCustom text="Cliente" className="titleInput" /> */}
+
                   {/* <select id="idClientes" className="inputCustomPreguntas">
-                    {tableData.length ? (
-                      tableData.map(pre => (
-                        <option key={pre.idCliente} value={pre.idCliente}>
-                             {`${pre.idCliente} - ${pre.nombre}`}
+                      {tableData.length ? (
+                        tableData.map(pre => (
+                          <option key={pre.idCliente} value={pre.idCliente}>
+                              {`${pre.idCliente} - ${pre.nombre}`}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="No existe informacion">
+                          No existe informacion
                         </option>
-                      ))
-                    ) : (
-                      <option value="No existe informacion">
-                        No existe informacion
-                      </option>
-                    )}
-                  </select> */}
-                  <Select
-                    id="idClientes"
-                    // className="inputCustomPreguntas"
-                    options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="Seleccione un cliente"
-                  />
+                      )}
+                    </select> */}
+                  {/* <Select
+                      id="idClientes"
+                      // className="inputCustomPreguntas"
+                      options={tableData.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre}  ${pre.apellido}` }))}
+                      value={selectedOption}
+                      onChange={setSelectedOption}
+                      placeholder="Seleccione un cliente"
+                    />
+                    */}
+
+                  {/* <button onClick={openModal}>Seleccionar Cliente</button> */}
+
+
+
+
 
 
                 </div>
-              </div>
 
 
-              {/* 
-              <div className="contNewCita">
-                <TextCustom text="Fecha" className="titleInput" />   */}
-              {/* <DatePicker
-                  type="text"
-                  name=""
-                  maxLength={40}
-                  className="inputCustom"
-                  placeholderText="Fecha"
-                  id="fecha"
-                /> */}
 
-              {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
 
-              {/*   <input
+                <div className="contNewCita"  >
+                  <TextCustom text="Cliente" className="titleInput" />
+                  <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
+
+                    <input
+                      type="text"
+                      //onClick={openModal}
+                      className="inputCustomText"
+                      id="cliente"
+                      placeholder="Seleccione un cliente"
+                      disabled
+                      onChange={handleCellClick}
+                      value={Cliente.Nombre}
+                      style={{ width: '350px' }}
+                    />
+                    <Button className="btnClearFilter" onClick={openModal}><PersonSearchIcon style={{ fontSize: '3rem', marginLeft: '10px' }}></PersonSearchIcon></Button>
+                  </div>
+
+
+
+                </div>
+
+
+                {/* <div>
+                  <label htmlFor="" onChange={handleCellClick}> CLIENTE: {Cliente.Nombre}</label>
+                  <div className="contInput">
+                    <TextCustom text="Cliente:" className="titleInput" />
+                    <div className="contInput">
+                      <button onClick={openModal}>Seleccionar Cliente</button>
+                    </div>
+                  </div>
+                </div> */}
+
+                <ReactModal
+                  style={customStyles}
+                  isOpen={isModalOpen}
+                  onRequestClose={closeModal}
+                  contentLabel="Lista de Clientes"
+                  ariaHideApp={false}>
+                  <div>
+                    <h2>Seleccione un Cliente</h2>
+                    {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+                    <DataGrid
+                      rows={clientes}
+                      getRowId={clientes => clientes.IdExpediente}
+                      pagination
+                      autoHeight
+                      onCellClick={handleCellClick}
+                      localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+                      pageSize={pageSize}
+                      rowsPerPageOptions={[5, 10, 50]}
+                      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                      columns={[
+                        { field: 'Cliente', headerName: 'Identidad', width: 200, headerAlign: 'center' },
+                        { field: 'Nombre', headerName: 'Nombre', width: 300, headerAlign: 'center' }
+                      ]}
+                      style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
+                      onSelectionModelChange={(selection) => {
+                        // Ensure that selection.selectionModel is defined and not empty
+                        if (selection.selectionModel && selection.selectionModel.length > 0) {
+                          const selectedClientId = selection.selectionModel[0];
+                          const selectedClient = clientes.find(
+                            (client) => client.IdExpediente === selectedClientId
+                          );
+                          // Check if selectedClient is not undefined before calling handleSelectCliente
+                          if (selectedClient) {
+                            handleSelectCliente(selectedClient);
+                          }
+                        }
+                      }}
+
+                    />
+
+                    {/* Botón para cerrar el modal */}
+                    <Button className="btnCloseModal" onClick={closeModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                      Cerrar
+                    </Button>
+                  </div>
+                </ReactModal>
+
+
+
+                {/* 
+                  <div className="contNewCita">
+                    <TextCustom text="Fecha" className="titleInput" />   */}
+                {/* <DatePicker
+                      type="text"
+                      name=""
+                      maxLength={40}
+                      className="inputCustom"
+                      placeholderText="Fecha"
+                      id="fecha"
+                  /> 
+                  */}
+
+                {/*     <input type="date" className="inputCustom" id="fecha" ></input>  */}
+
+                {/*   <input
                   //onChange={e => setFecha(e.target.value)}
                   type="text"
                   id="fecha"
@@ -262,81 +415,86 @@ export const RecordatorioCitas = (props) => {
                   value={fecha}
                   disabled
                 ></input>  */}
-              {/*     </div>  */}
+                {/*     </div>  */}
 
 
-              <div className="contNewCita">
-                <TextCustom text="Nota" className="titleInput" />
-                <input
-                  onKeyDown={e => {
-                    setNotas(e.target.value);
-                    if (Notas === '') {
-                      setErrorNotas(true);
-                      setMsj('Los campos no deben estar vacíos');
-                    } else {
-                      setErrorNotas(false);
-                      var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                      if (!regex.test(Notas)) {
+                <div className="contNewCita">
+                  <TextCustom text="Nota" className="titleInput" />
+                  <input
+                    onKeyDown={e => {
+                      setNotas(e.target.value);
+                      if (Notas === '') {
                         setErrorNotas(true);
-                        setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                      } else if (/(.)\1{2,}/.test(Notas)) {
-                        setErrorNotas(true);
-                        setMsj('No se permiten letras consecutivas repetidas');
+                        setMsj('Los campos no deben estar vacíos');
                       } else {
                         setErrorNotas(false);
-                        setMsj('');
+                        var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                        if (!regex.test(Notas)) {
+                          setErrorNotas(true);
+                          setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                        } else if (/(.)\1{2,}/.test(Notas)) {
+                          setErrorNotas(true);
+                          setMsj('No se permiten letras consecutivas repetidas');
+                        } else {
+                          setErrorNotas(false);
+                          setMsj('');
+                        }
                       }
-                    }
-                  }}
+                    }}
 
-                  onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                  error={errorNotas}
-                  type="text"
-                  helperText={Msj}
-                  name=""
-                  maxLength={40}
-                  className="inputCustomText"
-                  placeholder="Nota"
-                  id="nota"
-                  value={Notas}
-                />
-                {/*  <p className='error'>{Msj}</p> */}
-              </div>
+                    onChange={e => setNotas(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                    error={errorNotas}
+                    type="textarea"
+                    helperText={Msj}
+                    name=""
+                    maxLength={40}
+                    className="inputCustomText"
+                    placeholder="Ingrese una nota"
+                    id="nota"
+                    value={Notas}
+                  />
+                  {/*  <p className='error'>{Msj}</p> */}
+                </div>
 
 
-              <div className="contBtnStepperRecord">
+                <div className="contBtnStepperRecord">
 
-                <Button
-                  className='btnStepperCan'
-                  onClick={() => navegate('/recordatorio')}
-                >Cancelar</Button>
+                  <Button
+                    style={{ fontSize: '15px' }}
+                    className='btnStepperCan'
+                    onClick={() => navegate('/recordatorio')}
+                  >Cancelar</Button>
 
-                <Button
-                  className='btnStepperGuardar'
-                  onClick={() => {
+                  <Button
+                    style={{ fontSize: '15px' }}
+                    className='btnStepperGuardar'
+                    onClick={() => {
 
-                    var nota = document.getElementById("nota").value;
+                      var nota = document.getElementById("nota").value;
 
-                    if (nota === "") {
-                      swal("No deje campos vacíos.", "", "error");
-                    } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
-                      swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                    } else if (/(.)\1{2,}/.test(nota)) {
-                      setErrorNotas(true);
-                      swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                    } else {
-                      handleClick();
-                    }
-                  }}
-                >Guardar</Button>
+                      if (nota === "") {
+                        swal("No deje campos vacíos.", "", "error");
+                      } else if (!/^[A-ZÑ]+(?: [A-ZÑ]+)*$/.test(nota)) {
+                        swal("El campo solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                      } else if (/(.)\1{2,}/.test(nota)) {
+                        setErrorNotas(true);
+                        swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                      } else {
+                        handleClick();
+                      }
+                    }}>Guardar
+                  </Button>
+
+                </div>
+
+
 
               </div>
             </div>
           </div>
+
+
         </div>
-
-
-      </div>
       </div>
 
       <div className="divImgSection">
