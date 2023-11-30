@@ -1,8 +1,9 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { useState, useEffect, React } from 'react';
+import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router';
+import React from 'react';
 
 import swal from '@sweetalert/with-react';
 import { sendData } from '../../scripts/sendData';
@@ -24,6 +25,7 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 import * as XLSX from 'xlsx'
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
+
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
@@ -82,44 +84,37 @@ export const ListaCompra = (props) => {
   // PANTALLA MODAL
   function handleModal(id) {
     // setModalData(id);
-    console.log(id);
 
-    swal(
-      <div>
-        <div className="logoModal">DATOS GENERALES</div>
-        <div className="contEditModal">
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Fecha de Compra: {new Date(id.fechaCompra).toLocaleDateString('es-ES')}</b></label>
-          </div>
+    axios.post(urlFacturaCompra, { id: id }).then((detalle)=>{
+      console.log(detalle);
+       swal(
+         <div>
+           <div className="logoModal">DATOS DE LA COMPRA</div>
+           <div className="contEditModal">
+             <div className="contInput">
+               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+               <label><b>compra#{id}</b></label>
+               <label><b>Fecha:{new Date(detalle.data[0].fechaCompra).toLocaleDateString()}</b></label>               
+               
+               {detalle.data.map((detallito) => (
+              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+              <hr />
+              <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
+                <label><b>Aro:  {detallito.Aros} </b></label>
+                <label><b>Cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
+                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.costoCompra.toFixed(2)}</div></b></label> 
+              </React.Fragment>
+            ))}
+            <hr style={{width:'50%', marginLeft:'auto'}}/>
+            <label><b>Total de la compra: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
+             </div>
+  
+           </div>
+         </div>,
+       )
+     })
 
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Proveedor: {id.precio}</b></label>
-          </div>
-
-
-          <h3>________________________________</h3>
-          <table className="contTable">
-            <thead>
-              <tr>
-                <th></th>
-                <th><b>ARO</b></th>
-                <th><b>CANTIDAD</b></th>
-                <th><b>PRECIO</b></th>
-                <th><b>COSTO</b></th>
-              </tr>
-            </thead>
-        
-          </table>
-
-
-          <div className="contInput">
-            <label style={{ fontFamily: 'Montserrat', lineHeight: 1 }}><b>Total compra: {id.totalCompra}</b></label>
-          </div>
-        </div>
-      </div>
-    ).then(async () => {
-      // Puedes agregar lógica adicional aquí si es necesario
-    });
+    
   }
 
   const handleGenerarExcel = () => {
@@ -166,9 +161,12 @@ export const ListaCompra = (props) => {
       const urlPDF = 'Reporte_Compras.pdf';
       const subTitulo = "LISTA DE COMPRAS"
 
+
+
+      //generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation);
+
       const orientation = "landscape";
 
-    generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
 
     }
 
@@ -190,7 +188,14 @@ export const ListaCompra = (props) => {
     },
     //{ field: 'fechaCompra', headerName: 'Fecha', width: 380 },
     { field: 'totalCompra', headerName: 'Total', width: 200 },
-    { field: 'Estado', headerName: 'Estado', width: 100 },
+    { 
+      field: 'Estado', 
+      headerName: 'Estado', 
+      width: 310,
+      valueGetter: (params) => {
+        return params.row.estado === 'A' ? 'Activo' : 'Inactivo';
+      }
+    },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -213,7 +218,7 @@ export const ListaCompra = (props) => {
 
           <Button
             className="btnAddExpe"
-            onClick={() => handleModal(params.row)}
+            onClick={() => handleModal(params.row.IdCompra)}
           >
             <Visibility></Visibility>
           </Button>
@@ -228,8 +233,12 @@ export const ListaCompra = (props) => {
     swal("No es posible realizar esta accion", "", "error")
   }
 
+
+
   function handlAnular(id) {
     alert(props.idUsuario)
+
+
     let data = {
       idUsuario: props.idUsuario,
       compraId: id
@@ -258,7 +267,7 @@ export const ListaCompra = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -271,7 +280,7 @@ export const ListaCompra = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -283,20 +292,19 @@ export const ListaCompra = (props) => {
 
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
+
+            < Button className="btnExcel" onClick={handleGenerarExcel}>
+                <AnalyticsIcon style={{ marginRight: '5px' }} />
+                Generar Excel
+              </Button>
+            
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
-
-              <Button className="btnExcel" onClick={handleGenerarExcel}>
-                <AnalyticsIcon style={{ marginRight: '3px' }} />
-                Generar Excel
-              </Button>
-
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
               Generar PDF
             </Button>
           </div>

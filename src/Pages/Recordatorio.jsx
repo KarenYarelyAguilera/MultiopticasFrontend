@@ -17,6 +17,8 @@ import fondoPDF from '../IMG/FondoPDFH.jpg'
 
 
 //Mui-Material-Icons
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
@@ -103,33 +105,66 @@ export const Recordatorio = (props) => {
   const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
   const urlBSalirPantalla = 'http://localhost:3000/api/bitacora/citasSalir';
 
+  //Primer dia del mes
+  const todayf = new Date();
+  const firstDayOfMonth = new Date(todayf.getFullYear(), todayf.getMonth(), 1);
+  const firstDayOfMonthString = firstDayOfMonth.toISOString().split('T')[0];
+  const [startDate, setStartDate] = useState(firstDayOfMonthString);
 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+
+  //ultimo dia del mes
+  const todayE = new Date();
+  const lastDayOfMonth = new Date(todayE.getFullYear(), todayE.getMonth() + 1, 0);
+  const lastDayOfMonthString = lastDayOfMonth.toISOString().split('T')[0];
+  const [endDate, setEndDate] = useState(lastDayOfMonthString);
+
+  //limpiar filtros de la fecha
+  const handleClearFilter = () => {
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
+    setSearchTerm(''); // Limpiar el término de búsqueda
+    // También puedes agregar lógica adicional para limpiar otros estados si es necesario
+
+    // Recargar los registros
+    setCambio(cambio + 1);
+  };
+
+
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
 
   const handleGenerarExcel = () => {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
-  
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
-      
-      'ID': row.IdRecordatorio,
-      'Cliente': row.IdCliente,
-      'Nombre': row.nombre,
-      'Apellido': row.apellido,
-      'Nota': row.Nota,
-      'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
-    }));
-  
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID','Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
-  
-  
-  
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
+
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
+
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+
+        'ID': row.IdRecordatorio,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+        'Identidad': row.IdCliente,
+        'Nombre': row.nombre,
+        'Apellido': row.apellido,
+        'Teléfono': row.telefonoCliente,
+        'Correo': row.correoElectronico,
+        'Nota': row.Nota,
+
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Fecha', 'Identidad', 'Nombre', 'Apellido', 'Teléfono', 'Correo', 'Nota'] });
+
+
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Citas.xlsx');
+
+
+    }
+
   };
 
   const handleAddEvent = () => {
@@ -179,17 +214,19 @@ export const Recordatorio = (props) => {
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fecha);
-          const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
+          const date = new Date(row.fecha);
+          const formattedDate = date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+
           return {
             'ID': row.IdRecordatorio,
-            'Cliente': row.IdCliente,
+            'Fecha': formattedDate,
+            'Identidad': row.IdCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
+            'Teléfono': row.telefonoCliente,
+            'Correo': row.correoElectronico,
             'Nota': row.Nota,
-            'Fecha': fecha,
+
           };
         });
         return formattedData;
@@ -226,6 +263,7 @@ export const Recordatorio = (props) => {
   console.log('filteredData:', filteredData);
 
 
+
   // Función para manejar el cambio en el input de fecha
   /*    const handleDateChange = (event) => {
       setSelectedDate(event.target.value); // Actualizar el estado con la fecha seleccionada
@@ -245,11 +283,7 @@ export const Recordatorio = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdRecordatorio', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'IdCliente', headerName: 'Identidad', width: 200, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 200, headerAlign: 'center' },
-    { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
+    { field: 'IdRecordatorio', headerName: 'ID', width: 50, headerAlign: 'center' },
     {
       field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
       valueGetter: (params) => {
@@ -257,6 +291,12 @@ export const Recordatorio = (props) => {
         return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
       },
     },
+    { field: 'IdCliente', headerName: 'Identidad', width: 150, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 150, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 150, headerAlign: 'center' },
+    { field: 'telefonoCliente', headerName: 'Teléono', width: 80, headerAlign: 'center' },
+    { field: 'correoElectronico', headerName: 'Correo', width: 150, headerAlign: 'center' },
+    { field: 'Nota', headerName: 'Nota', width: 200, headerAlign: 'center' },
     {
       field: 'borrar', headerName: 'Acciones', width: 190, headerAlign: 'center',
 
@@ -410,9 +450,10 @@ export const Recordatorio = (props) => {
         </div> */}
 
 
-        <div className='contDateDH'>
+        <div className='contDateDHH' >
+          {/* <Button className="btnClearFilter" onClick={handleClearFilter}><DeleteForeverIcon></DeleteForeverIcon></Button> */}
 
-          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE </span>
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE: </span>
           <input
             type="date"
             value={startDate}
@@ -423,7 +464,8 @@ export const Recordatorio = (props) => {
             placeholderText="Fecha de inicio"
             className='inputCustomF'
           ></input>
-          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA </span>
+
+          <span style={{ marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
           <input
             type="date"
             value={endDate}
@@ -434,6 +476,9 @@ export const Recordatorio = (props) => {
             placeholderText="Fecha de fin"
             className='inputCustomF'
           ></input>
+
+
+          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem' }}></HighlightOffTwoToneIcon></Button>
 
         </div>
 
@@ -463,31 +508,28 @@ export const Recordatorio = (props) => {
                 } else {
                   navegate('/recordatorioCitas');
                 }
+              }}><AddIcon style={{ marginRight: '5px' }} />Nuevo
+            </Button>
 
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
-            </Button>
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <AnalyticsIcon style={{ marginRight: '3px' }} />
-              Generar Excel
+              <AnalyticsIcon style={{ marginRight: '3px' }} /> Generar Excel
             </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />Generar reporte
             </Button>
           </div>
         </div>
 
         <DataGrid
-        pagination
-        autoHeight
+          autoHeight
+          pagination
+
           getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
+
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={pageSize}

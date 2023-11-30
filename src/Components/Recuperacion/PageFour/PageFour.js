@@ -59,16 +59,17 @@ export const PageFour = ({ correo, id, autor }) => {
   }
   return (
     <main>
-      <div className="titleRecuperacion">
-       {/*  <TextCustom text="Ingrese una nueva contraseña" className="titleInput" /> */}
+      {/* <div className="titleRecuperacion">
+       
         <TextCustom text="Asegurate que la nueva contraseña tenga x caracteres los cuales debe de incluir letras mayusculas y minusculas." className="titleInput" />
-      </div>
-      <form className="measure">
-        <div className="contPrincipalRecuperacion">
-          <div className='divInfoRecuperacion'>
+      </div> */}
+      <form className="measure" >
+        <div className="contPrincipalRecuperacion"  >
 
+          <div className='divInfoRecuperacion' >
+           
+            <div className="contInput"  style={{ fontSize: "17px" }} >
             <TextCustom text="Nueva contraseña" className="titleInput" />
-            <div className="contInput">
               <input
                 onKeyDown={(e) => {
                   setContra1(e.target.value);
@@ -109,12 +110,13 @@ export const PageFour = ({ correo, id, autor }) => {
                 }
               />
             </div>
-            <p className='error'>{msj}</p>
+             <p className='error'>{msj}</p> 
           </div>
 
-          <div className='divInfoRecuperacion'>
-            <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
-            <div className="contInput">
+          <div className='divInfoRecuperacion' >
+           
+            <div className="contInput"  style={{ fontSize: "17px" }} >
+            <TextCustom text="Confirme la nueva contraseña" className="titleInput"  />
               <input
                 onKeyDown={(e) => {
                   setContra2(e.target.value);
@@ -158,10 +160,11 @@ export const PageFour = ({ correo, id, autor }) => {
                 }
               />
             </div>
-            <p className='error'>{advertencia}</p>
+            <p className='error'>{advertencia}</p> 
           </div>
+
         </div>
-        <div className='divSubmitRecuperacion'>
+        <div className='divSubmitRecuperacion' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <input
             className="btnSubmit"
             type="button"

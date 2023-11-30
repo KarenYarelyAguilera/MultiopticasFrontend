@@ -18,9 +18,12 @@ import { Button } from '@mui/material';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import { generatePDF } from '../../Components/generatePDF';
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
+import { Bitacora } from '../../Components/bitacora.jsx';
 
 export const ListaProveedores = (props) => {
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
@@ -38,6 +41,7 @@ export const ListaProveedores = (props) => {
   const [roles, setRoles] = useState([]);
   const [marcah, setMarcah] = useState()
   const [permisos, setPermisos] = useState([]);
+  const [pageSize, setPageSize] = useState(5);
   
   //URLS
   const urlProveedores = 'http://localhost:3000/api/proveedor';
@@ -51,7 +55,10 @@ export const ListaProveedores = (props) => {
   const [Pais, setPais] = useState([]);
   const [Ciudad, setCiudad] = useState([]);
 
-  //COLOCAR APIS DE BITACORA AQUI---
+  //BITACORAS
+ const urlBitacoraDeleteProveedor='http://localhost:3000/api/bitacora/eliminarproveedores';
+ const urlBitacoraSalirListaProveedor='http://localhost:3000/api/bitacora/saliolistaproveedores';
+
   //-------------------------------------------------------------------
 
   const [proveed, setproveed] = useState('');
@@ -96,7 +103,38 @@ export const ListaProveedores = (props) => {
       axios.get(urlProveedoresInactivos).then(response => setTableDataInactivos(response.data))
   }, [cambio, inactivo]);
 
+
+
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
+      'ID': row.IdProveedor,
+      'Empresa Proveedora': row.CiaProveedora,
+      'Encargado': row.encargado,
+      'Productos': row.Productos,
+      'Pais': row.Pais,
+      'Ciudad': row.Ciudad,
+      'Direccion': row.direccion,
+      'Telefono': row.telefono,
+      'Email': row.correoElectronico,
+      'Estado':row.estado,
+
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Empresa Proveedora', 'Encargado', 'Productos','Pais','Ciudad','Direccion','Telefono', 'Email','Estado'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Proveedores.xlsx');
+  };
+
   //IMPRIMIR PDF
+
+  
 
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
@@ -109,15 +147,16 @@ export const ListaProveedores = (props) => {
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
             fechaCre.getFullYear();
           return {
-            'IdProveedor': row.IdProveedor,
+            'ID': row.IdProveedor,
             'Empresa Proveedora': row.CiaProveedora,
-            'Encargado': row.encargado,
+            //'Encargado': row.encargado,
             'Productos': row.Productos,
             'Pais': row.Pais,
-            'Ciudad': row.Ciudad,
-            'Direccion': row.direccion,
+            //'Ciudad': row.Ciudad,
+            //'Direccion': row.direccion,
             'Telefono': row.telefono,
             'Email': row.correoElectronico,
+            'Estado':row.estado,
           };
         });
         return formattedData;
@@ -128,9 +167,13 @@ export const ListaProveedores = (props) => {
       const orientation = "landscape";
 
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+
+      
     }
 
   };
+
+  
 
 
   const navegate = useNavigate();
@@ -154,13 +197,13 @@ export const ListaProveedores = (props) => {
   const columns = [
     { field: 'IdProveedor', headerName: 'ID', width: 70, headerAlign: 'center' },
     { field: 'CiaProveedora', headerName: 'Empresa', width: 150,  headerAlign: 'center' },
-    { field: 'encargado', headerName: 'Encargado', width: 150, headerAlign: 'center' },
+    { field: 'encargado', headerName: 'Encargado', width: 200, headerAlign: 'center' },
     { field: 'Pais', headerName: 'Pais', width: 150, headerAlign: 'center' },
     { field: 'Ciudad', headerName: 'Ciudad', width: 150, headerAlign: 'center' },
-    { field: 'Productos', headerName: 'Producto', width: 690, headerAlign: 'center' },
+    { field: 'Productos', headerName: 'Producto', width: 300, headerAlign: 'center' },
     { field: 'telefono', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
     //{ field: 'direccion', headerName: 'Dirección', width: 150, headerAlign: 'center' },
-    { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 230, headerAlign: 'center' },
+    { field: 'correoElectronico', headerName: 'Correo Electrónico', width: 200, headerAlign: 'center' },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
 
 
@@ -209,18 +252,21 @@ export const ListaProveedores = (props) => {
             let data = {
               IdProveedor: IdProveedor,
             };
-  
             //Funcion de Bitacora 
-            /*  let dataB = {
-               Id:props.idUsuario
-             } */
-  
+            let dataB = {
+              Id: props.idUsuario
+            };
+            const bitacora = {
+              urlB: urlBitacoraDeleteProveedor,
+              activo: props.activo,
+              dataB: dataB
+            };
             console.log(data);
   
             await axios
               .delete(urlDelProveedor, { data })
               .then(response => {
-                //axios.post (urlDelBitacora, dataB) //Bitacora de eliminar un empleado
+                Bitacora(bitacora)
                 swal('Proveedor eliminado correctamente', '', 'success');
                 setCambio(cambio + 1);
               })
@@ -246,8 +292,8 @@ export const ListaProveedores = (props) => {
     } else {
       swal({
         buttons: {
-          update: 'ACTUALIZAR',
           cancel: 'CANCELAR',
+          update: 'ACTUALIZAR',
         },
         content: (
           <div className="logoModal">
@@ -273,9 +319,14 @@ export const ListaProveedores = (props) => {
   //Funcion de Bitacora 
   let dataB = {
     Id: props.idUsuario
-  }
-
+  };
+  const bitacora = {
+    urlB: urlBitacoraSalirListaProveedor,
+    activo: props.activo,
+    dataB: dataB
+  };
   const handleBack = () => {
+    Bitacora(bitacora)
     navegate('/inventario');
   };
 
@@ -294,7 +345,7 @@ export const ListaProveedores = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -307,7 +358,7 @@ export const ListaProveedores = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -319,7 +370,7 @@ export const ListaProveedores = (props) => {
                
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               NUEVO
             </Button>
 
@@ -329,20 +380,29 @@ export const ListaProveedores = (props) => {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
+
             <Button className="btnReport"  
             onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+          pagination
           getRowId={tableData => tableData.IdProveedor}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
+          autoHeight
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

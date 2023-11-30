@@ -15,6 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Button } from '@mui/material';
 import { generatePDF } from '../../Components/generatePDF';
 import fondoPDF from '../../IMG/FondoPDFH.jpg'
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
 
 import '../../Styles/Usuarios.css';
@@ -63,6 +65,8 @@ export const ListaEmpleados = (props) => {
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
+  const [pageSize, setPageSize] = useState(5);
+
   useEffect(() => {
     axios.get(urlEmployees).then(response => { setTableData(response.data); })
     axios.get(urlEmpleadosInactivos).then(response => setTableDataInactivos(response.data))
@@ -79,13 +83,40 @@ export const ListaEmpleados = (props) => {
     return `${año}-${mes}-${dia}`;
   }
 
-  //IMPRIMIR PDF
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
+  
+    // Datos para el archivo Excel
+    const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
+            'ID': row.IdEmpleado,
+            'Nombre': row.nombre,
+            'Apellido': row.apellido,
+            'Telefono': row.telefonoEmpleado,
+            'Sucursal': row.direccion,
+            'Género': row.descripcion,
+            'Numero de identidad': row.numeroIdentidad,
+            'Fecha Nacimiento':new Date(row.fechaCumpleanos).toLocaleDateString('es-ES'), 
+            'Fecha Ingreso':new Date(row.fechaIngreso).toLocaleDateString('es-ES'),
+            'Estado':row.estado,
+
+    }));
+  
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Nombre', 'Apellido', 'Telefono','Sucursal','Género','Numero de identidad','Fecha Nacimiento', 'Fecha Ingreso','Estado'] });
+  
+  
+  
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Empleados.xlsx');
+  };
+  ///pdf
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+      swal("No cuenta con los permisos para realizar esta accion", "", "error");
     } else {
       const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaNacimiento);
           const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
@@ -96,21 +127,24 @@ export const ListaEmpleados = (props) => {
             'Apellido': row.apellido,
             'Telefono': row.telefonoEmpleado,
             'Sucursal': row.direccion,
-            'Descripcion': row.descripcion,
+            'Género': row.descripcion,
             'Numero de identidad': row.numeroIdentidad,
+            'Fecha Nacimiento': new Date(row.fechaCumpleanos).toLocaleDateString('es-ES'),
+            'Fecha Ingreso': new Date(row.fechaIngreso).toLocaleDateString('es-ES'),
+            'Estado': row.estado,
           };
         });
         return formattedData;
       };
-
+  
       const urlPDF = 'Reporte_Empleados.pdf';
-      const subTitulo = "LISTA DE EMPLEADOS"
-
+      const subTitulo = "LISTA DE EMPLEADOS";
       const orientation = "landscape";
+  
       generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
     }
-
   };
+  
 
   /////////
 
@@ -122,6 +156,7 @@ export const ListaEmpleados = (props) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
+
   );
 
   const filteredDataInactivos = tableDataInactivos.filter(row =>
@@ -138,25 +173,25 @@ export const ListaEmpleados = (props) => {
     { field: 'numeroIdentidad', headerName: 'Número de identidad', width: 190, headerAlign: 'center' },
     { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
     { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-    { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 190, headerAlign: 'center' },
-    { field: 'direccion', headerName: 'Sucursal', width: 190, headerAlign: 'center' },
-    { field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
+    { field: 'telefonoEmpleado', headerName: 'Teléfono', width: 150, headerAlign: 'center' },
+    { field: 'direccion', headerName: 'Sucursal', width: 210, headerAlign: 'center' },
+    //{ field: 'descripcion', headerName: 'Género', width: 190, headerAlign: 'center' },
 
-    {
-      field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaIngreso);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      },
-    },
-    {
-      field: 'fechaCumpleanos', headerName: 'Fecha Nacimiento', width: 190,
-      valueGetter: (params) => {
-        const date = new Date(params.row.fechaCumpleanos);
-        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
-      }
-    },
-    { field: 'estado', headerName: 'Estado', width: 190, headerAlign: 'center' },
+    // {
+    //   field: 'fechaIngreso', headerName: 'Fecha Ingreso', width: 190,
+    //   valueGetter: (params) => {
+    //     const date = new Date(params.row.fechaIngreso);
+    //     return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    //   },
+    // },
+    // {
+    //   field: 'fechaCumpleanos', headerName: 'Fecha Nacimiento', width: 190,
+    //   valueGetter: (params) => {
+    //     const date = new Date(params.row.fechaCumpleanos);
+    //     return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+    //   }
+    // },
+    { field: 'estado', headerName: 'Estado', width: 150, headerAlign: 'center' },
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -167,18 +202,18 @@ export const ListaEmpleados = (props) => {
           <Button className="btnEdit" onClick={() => handleUpdt(params.row)}>
             <EditIcon></EditIcon>
           </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => handleDel(params.row.IdEmpleado)}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
+                  <Button
+          className="btnDelete"
+          onClick={() => swal("No es posible realizar esta acción", "", "error")}
+        >
+          <DeleteForeverIcon></DeleteForeverIcon>
+        </Button>
         </div>
       ),
     },
   ];
 
-  //funcion de eliminar
+/*   //funcion de eliminar
   function handleDel(id) {
     if (permisos[0].eliminar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
@@ -230,7 +265,8 @@ export const ListaEmpleados = (props) => {
       });
     }
 
-  }
+  } */
+ 
 
 
 
@@ -241,8 +277,9 @@ export const ListaEmpleados = (props) => {
     } else {
       swal({
         buttons: {
-          update: 'ACTUALIZAR',
           cancel: 'CANCELAR',
+          update: 'ACTUALIZAR',
+          
         },
         content: (
           <div className="logoModal">
@@ -289,7 +326,7 @@ export const ListaEmpleados = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -302,7 +339,7 @@ export const ListaEmpleados = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -314,7 +351,7 @@ export const ListaEmpleados = (props) => {
 
               }}
             >
-              <AddIcon style={{ marginRight: '5px' }} />
+              <AddIcon style={{ marginRight: '3px' }} />
               Nuevo
             </Button>
 
@@ -323,25 +360,30 @@ export const ListaEmpleados = (props) => {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
-            <Button className="btnReport"
+               <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />
+              Generar Excel
+            </Button>
+
+
+          <Button className="btnReport"
               onClick={handleGenerarReporte}
-
             >
-
-
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} />
+              Generar PDF
             </Button>
           </div>
         </div>
         <DataGrid
+        pagination
           getRowId={tableData => tableData.IdEmpleado}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
+          autoHeight
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          //aqui iba el onrow
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

@@ -2062,3 +2062,16 @@ button {
   /* padding: 40px; */
 }
 /* Calculos Venta */
+
+
+/* Agrega estilos según tus necesidades */
+.btnClearFilter {
+  margin-left: 10px;
+ 
+}
+
+.contDateDHH{
+  display: flex;
+  align-items: center;
+}
+

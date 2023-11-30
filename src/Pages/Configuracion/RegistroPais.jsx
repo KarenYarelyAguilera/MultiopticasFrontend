@@ -54,14 +54,13 @@ export const RegistroPais = (props) => {
     };
     axios.post(urlInsertPais, data).then(response => {
       console.log(response);
-      if(response.data==false)
-      {
+      if (response.data == false) {
         swal('¡Este Pais ya existe!', '', 'error')
-      }else{
+      } else {
         swal('Pais creado exitosamente', '', 'success').then(result => {
           Bitacora(bitacora)
           navegate('/config/ListaPais');
-      });
+        });
       }
     }).catch(error => {
       console.log(error);
@@ -81,22 +80,27 @@ export const RegistroPais = (props) => {
       IdPais: props.data.IdPais, //El dato de IdProducto se obtiene de Producto seleccionado.
     };
     let dataB =
-          {
-            Id: props.idUsuario
-          };
-          const bitacora = {
-            urlB: urlUpdateBitacora,
-            activo: props.activo,
-            dataB: dataB
-          };
+    {
+      Id: props.idUsuario
+    };
+    const bitacora = {
+      urlB: urlUpdateBitacora,
+      activo: props.activo,
+      dataB: dataB
+    };
 
-    axios.put(urlUpdatePais, data).then(() => {
-      swal("Datos Actualizado Correctamente", "", "success").then(() => {
-        props.limpiarData({});
-        props.limpiarUpdate(false)
-        Bitacora(bitacora)
-        navegate('/config/ListaPais');
-      })
+    axios.put(urlUpdatePais, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Este Pais ya existe!', '', 'error')
+      } else {
+        swal("Datos Actualizado Correctamente", "", "success").then(() => {
+          props.limpiarData({});
+          props.limpiarUpdate(false)
+          Bitacora(bitacora)
+          navegate('/config/ListaPais');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar! , por favor revise todos los campos.', '', 'error')

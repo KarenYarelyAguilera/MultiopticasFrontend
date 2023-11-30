@@ -553,27 +553,30 @@
 
 /*FOOTER*/
 
-.contFooter{
+.contFooter {
   position: relative;
   top: 220px;
   left: 355px;
   width: calc(94.5% - 250px);
   height: 100px;
-  background: rgb(38, 103, 177);
+  background: rgb(255, 255, 255);
   background: linear-gradient(
     90deg,
-    rgb(38, 103, 177) 0%,
-    rgba(49, 110, 230, 1) 100%
+    rgb(255, 255, 255) 0%,
+    rgb(255, 255, 255) 100%
   );
   transition: 0.5s ease;
   border-radius: 25px;
-
-  display: grid;
-  grid-template-columns: repeat(2,2fr);
-  padding-left: 15px;
-  align-content: center;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.contFooter h1 {
+  color: blue;
+  margin: 0; /* Elimina el margen predeterminado del h1 */
+}
+
 
 .BarraLateral.close ~ .contFooter {
   left: 140px;

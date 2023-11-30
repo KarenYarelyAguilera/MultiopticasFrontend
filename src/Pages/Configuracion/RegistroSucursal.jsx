@@ -37,7 +37,7 @@ const urlDelSucursal = //BORRAR
 export const RegistroSucursal = (props) => {
 
   const [Departamento, setDepartamento] = useState([], props.data.departamento || '');
-  const [Ciudad, setCiudad] = useState([]);
+  const [Ciudad, setCiudad] = useState([], props.data.ciudad || '');
 
   const [departamento, setdepartamento] = React.useState(props.data.IdDepartamento ||null);
   const [errordepartamento, setErrordepartamento] = React.useState(false);
@@ -99,13 +99,19 @@ export const RegistroSucursal = (props) => {
       dataB: dataB
     };
 
-    axios.put(urlUpdSucursal, data).then(() => {
-      swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
-       Bitacora(bitacora)
-       props.limpiarData({});
-       props.limpiarUpdate(false)
-        navegate('/config/listaSucursal');
-      })
+    axios.put(urlUpdSucursal, data).then(response => {
+      console.log(response);
+      if (response.data == false) {
+        swal('¡Esta Sucursal ya existe!', '', 'error')
+        Bitacora(bitacora)
+      } else {
+        swal("Sucursal Actualizada Correctamente", "", "success").then(() => {
+          Bitacora(bitacora)
+          props.limpiarData({});
+          props.limpiarUpdate(false)
+           navegate('/config/listaSucursal');
+        });
+      }
     }).catch(error => {
       console.log(error);
       swal('Error al Actualizar Sucursal! , porfavor revise todos los campos.', '', 'error')
@@ -142,21 +148,16 @@ export const RegistroSucursal = (props) => {
 
     console.log(data)
 
-    axios.post(urlSucursal, data).then(response => {
-      console.log(response);
-      if (response.data == false) {
-        swal('¡Esta Sucursal ya existe!', '', 'error')
-        Bitacora(bitacora)
-      } else {
-        swal('Sucursal creada exitosamente!', '', 'success').then(result => {
-          navegate('/config/listaSucursal');
-        });
-      }
+    axios.post(urlSucursal, data).then(() => {
+      swal("Sucursal Creada Correctamente", "", "success").then(() => {
+        //axios.post(urlUpdBitacora,dataB) //UPDATE BITACORA 
+        navegate('/config/listaSucursal');
+      })
     }).catch(error => {
       console.log(error);
-      swal('Error al crear sucursal.', '', 'error')
-    }
-    )
+      swal('Error al Crear Sucursal! , porfavor revise todos los campos.', '', 'error')
+      // axios.post(urlErrorInsertBitacora, dataB)
+    })
 
   };
 
@@ -187,9 +188,6 @@ export const RegistroSucursal = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Sucursal</h2> : <h2>Registro de Sucursal</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
@@ -220,8 +218,33 @@ export const RegistroSucursal = (props) => {
             </div>
 
             <div className="contInput">
+
               <TextCustom text="Ciudad" className="titleInput" />
+
               <select name="" id="ciudad" className="selectCustom" value={ciudad} onChange={(e)=>{
+                setciudad(e.target.value)
+              }}>
+
+                {Ciudad.length ? (
+                  Ciudad.map(pre => (
+                    <option key={pre.IdCiudad} value={pre.IdCiudad}>
+                      {pre.ciudad}
+                    </option>
+
+                  ))
+                ) : (
+                  <option value="No existe informacion">
+                    No existe informacion
+                  </option>
+                )}
+                onChange={e => setciudad(e.target.value)}
+              </select>
+
+            </div>
+            {/* <div className="contInput">
+
+              <TextCustom text="Ciudad" className="titleInput" />
+              <select name="" className="selectCustom" id="ciudad" value={ciudad} onChange={(e)=>{
                 setCiudad(e.target.value)
               }}>
                 {Ciudad.length ? (
@@ -235,9 +258,11 @@ export const RegistroSucursal = (props) => {
                     No existe informacion
                   </option>
                 )}
+                  onChange={e => setCiudad(e.target.value)} 
+
               </select>
 
-            </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Direccion" className="titleInput" />
