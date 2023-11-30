@@ -6,6 +6,9 @@ import { sendData } from '../../scripts/sendData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+//Imports para modal
+import ReactModal from 'react-modal';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 
 //Styles
 import '../../Styles/Usuarios.css';
@@ -16,6 +19,8 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 import { Bitacora } from '../../Components/bitacora.jsx';
+//modal
+import { DataGrid, esES } from '@mui/x-data-grid';
 
 //APIS DE MODELO 
 const urlMarcas = 'http://localhost:3000/api/marcas'; 
@@ -24,6 +29,9 @@ const urlUpdateModelo ='http://localhost:3000/api/modelo/actualizar';
 const urlInsertBitacora ='http://localhost:3000/api/bitacora/insertmodelo';
 const urlUpdateBitacora ='http://localhost:3000/api/bitacora/actualizarmodelo';
 
+//para la modal 
+ReactModal.setAppElement('#root');
+
 export const RegistroModelo = (props) => {
 
   const [Marca, setMarca] = useState([])
@@ -31,7 +39,7 @@ export const RegistroModelo = (props) => {
   const [modelo, setmodelo] = React.useState(props.data.Modelo ||'');
   const [leyenda, setleyenda] = React.useState(false);
   const [errormodelo, setErrorModelo] = React.useState(false);
-
+  const [selectedOption, setSelectedOption] = useState(props.data.IdModelo || null);
   const [year, setyear] = React.useState(props.data.anio ||'');
   const [aviso, setaviso] = React.useState(false);
   const [erroranio, setErroranio] = React.useState(false);
@@ -39,6 +47,38 @@ export const RegistroModelo = (props) => {
   const [estado, setEstado] = useState(props.data.estado || null)
 
   const navegate = useNavigate();
+
+    //hooks para la modal
+    const [isMarcaModalOpen, setIsMarcaModalOpen] = useState(false);
+    const [filtroMarca, setFiltroMarca] = useState('');
+    const [pageSize, setPageSize] = useState(5);
+  
+    const openMarcaModal = () => {
+      setIsMarcaModalOpen(true);
+    };
+    
+    const closeMarcaModal = () => {
+      setIsMarcaModalOpen(false);
+    };
+  
+    const [Marcas, setMarcas] = useState([]);
+    useEffect(() => {
+      // Cargar la lista de marcas al inicio
+      fetch(urlMarcas)
+        .then((response) => response.json())
+        .then((data) => setMarcas(data));
+    }, []);
+  
+     // Nueva función para seleccionar una marca
+   const handleSelectMarcas = (selectedMarcas) => {
+    if (selectedMarcas) {
+      setSelectedOption({
+        value: selectedMarcas.IdMarca,
+        label: `${selectedMarcas.IdMarca} - ${selectedMarcas.descripcion}`,
+      });
+      closeMarcaModal();
+    }
+  };
 
   //Se usa para mostrar informacion en un listbox en este caso es el de marca.
   useEffect(() => {
@@ -154,6 +194,33 @@ const actualizarModelo = async () => {
       }
     });
   };
+   // MAGIA DE SELECCIONAR MARCA
+   const handleCellClic = (params) => {
+    const rowData = params.row;
+    setMarcas(rowData)
+    console.log(Marcas.descripcion);
+    closeMarcaModal()
+  };
+  const customStyles = {
+    content: {
+      width: '50%', // Ancho de la modal
+      height: '60%', // Alto de la modal
+      margin: 'auto', // Centrar la modal horizontalmente
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      borderRadius: '4px',
+      outline: 'none',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
+    },
+  };
+  
+ 
+  const columns = [
+  
+  ];
 
   
   return (
@@ -163,29 +230,76 @@ const actualizarModelo = async () => {
       </Button>
       <div className="titleAddUser">
       {props.actualizar ? <h2>Actualizar Modelo</h2> : <h2>Registro de Modelo</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos del modelo.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            <div className="contInput">
+          <div className="contNewCita">
               <TextCustom text="Marca" className="titleInput" />
-              <select name="" className="selectCustom" id="IdMarca">
-              {Marca.length ? (
-                  Marca.map(pre => (
-                    <option key={pre.IdMarca} value={pre.IdMarca}>
-                      {pre.descripcion}
-                    </option>
-                  ))
-                ) : (
-                  <option value="No existe informacion">
-                    No existe informacion 
-                  </option>
-                )}
-              </select>
+              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  //onClick={openModal}
+                  className="inputCustom"
+                  placeholder="Seleccione la marca"
+                  disabled
+                  onChange={handleCellClic}
+                  value={Marcas.descripcion}
+                  style={{ width: '300px' }}
+                />
+                <Button className="btnClearFilter" onClick={openMarcaModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+              </div>
             </div>
+            <ReactModal
+              style={customStyles}
+              isOpen={isMarcaModalOpen}
+              onRequestClose={closeMarcaModal}
+              contentLabel="Lista de Marcas"
+              ariaHideApp={false} >
+              <div>
+          
+              <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione la marca</h2>
+              
+          
+                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+                <DataGrid
+          getRowId={Marquitas => Marquitas.IdMarca}
+          rows={Marca}
+          columnas={columns}
+          onCellClick={handleCellClic}
+          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+
+          columns={[
+            { field: 'IdMarca', headerName: 'ID', width: 400 },
+            { field: 'descripcion', headerName: 'Marca', width: 500 },
+          ]}
+        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
+                  onSelectionModelChange={(selection) => {
+                    // Ensure that selection.selectionModel is defined and not empty
+                    if (selection.selectionModel && selection.selectionModel.length > 0) {
+                      const selectedMarcaId = selection.selectionModel[0];
+                      const selectedMarc = Marcas.find(
+                        (Marc) => Marc.IdMarca === selectedMarcaId
+                      );
+                      // Check if selectedClient is not undefined before calling handleSelectCliente
+                      if (selectedMarc) {
+                        handleSelectMarcas(selectedMarc);
+                      }
+                    }
+                  }}
+        />
+                {/* Botón para cerrar el modal */}
+                <Button className="btnCloseModal" onClick={closeMarcaModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
+                  Cerrar
+                </Button>
+              </div>
+            </ReactModal>
+            
           
             <div className="contInput">
               <TextCustom text="Modelo" className="titleInput" />
