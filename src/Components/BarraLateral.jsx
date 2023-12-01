@@ -106,7 +106,7 @@ export const BarraLateral = props => {
 
 
   const Recordatorios = () => {
-    if (consulta[3] === 's' && pantallas[3] === "Recordatorios") {
+    if (consulta[3] === 's' && pantallas[3] === "Citas") {
       return (
         <li>
           <Link className="link" to="/recordatorio">
@@ -193,12 +193,12 @@ export const BarraLateral = props => {
           <ul>
 
             <Usuario></Usuario>  
+            <Ventas></Ventas>
+            <Inventario/>
             <Clientes></Clientes>
             <Recordatorios></Recordatorios>
-            <Inventario/>
-            <Ventas></Ventas>
-            <Configuracion></Configuracion>
             <Seguridad></Seguridad>
+            <Configuracion></Configuracion>
             
 
             {/* <Usuario />
