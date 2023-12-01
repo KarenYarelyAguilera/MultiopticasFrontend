@@ -327,7 +327,7 @@ function handleDel() {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} /> Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} /> Generar PDF
             </Button>
 
           </div>
