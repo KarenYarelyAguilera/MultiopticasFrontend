@@ -203,20 +203,40 @@ export const MetodosDePago = (props) => {
               <Button
                 variant="contained"
                 className="btnStepper"
-                onClick={() => {
-                  var descripcion = document.getElementById("descripcion").value;
-                  var estado = document.getElementById('estado').value;
+                onClick={()=> 
+                  {
+                    var descripcion = document.getElementById("descripcion").value;
 
-
-                  if (descripcion === "" || estado === "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else {
-                    props.actualizar ? actualizarMetodoPago() : handleNext();
-
+                    if (descripcion ==="")
+                    {
+                      swal ("No deje campos vacíos.", "", "error");
+                    } else  if (!/^[A-Z]+(?: [A-Z]+)*$/.test(descripcion))
+                    {
+                      swal("El campo genero solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                    }else if (/(.)\1{2,}/.test(descripcion))
+                    {
+                      setErrorDescripcion(true);
+                      swal("El no acepta letras mayúsculas consecutivas repetidas.", "", "error")
+                    } else 
+                      {
+                      props.actualizar ? actualizarMetodoPago() : handleNext();
+                    }
                   }
                 }
+                // onClick={() => {
+                //   var descripcion = document.getElementById("descripcion").value;
+                //   var estado = document.getElementById('estado').value;
 
-                }
+
+                //   if (descripcion === "" || estado === "") {
+                //     swal("No deje campos vacíos.", "", "error");
+                //   } else {
+                //     props.actualizar ? actualizarMetodoPago() : handleNext();
+
+                //   }
+                // }
+
+                // }
               >
                 {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
