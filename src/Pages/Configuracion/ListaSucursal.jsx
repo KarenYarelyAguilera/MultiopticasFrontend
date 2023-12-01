@@ -342,7 +342,7 @@ const handleGenerarReporte = () => {
             <Button className="btnReport" 
             onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
