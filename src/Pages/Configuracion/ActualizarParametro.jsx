@@ -64,7 +64,7 @@ const handleUpdate = async () => {
          <div className="PanelInfo">
           <div className="InputContPrincipal1">
           
-             <div className="contInput">
+             <div className="contInput" style={{fontSize:'17px'}}>
              <TextCustom text="Valor" className="titleInput" />
               <input
 

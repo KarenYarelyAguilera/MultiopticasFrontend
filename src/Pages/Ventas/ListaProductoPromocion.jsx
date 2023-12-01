@@ -192,7 +192,7 @@ export const ListaProductoPromocion = (props) => {
             </Button>
             <Button className="btnReport">
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
