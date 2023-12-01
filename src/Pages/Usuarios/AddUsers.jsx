@@ -233,7 +233,7 @@ export const AddUsers = (props) => {
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Empleado" className="titleInput" value={optionsEmpleados} />
               {/*  <select id="empleado" className="selectCustom">
                 {Empleado.length ? (
@@ -276,7 +276,7 @@ export const AddUsers = (props) => {
 
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Nombre de usuario"
                 className="titleInput" />
               <input
@@ -315,7 +315,7 @@ export const AddUsers = (props) => {
               <p className='error'>{mensaje}</p>
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Contraseña" className="titleInput" />
               <FilledInput
                 onChange={(e) => {
@@ -363,7 +363,7 @@ export const AddUsers = (props) => {
               <p className='error'>{msjs}</p>
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Confirme Contraseña" className="titleInput" />
               <FilledInput
                 onChange={(e) => {
@@ -405,7 +405,7 @@ export const AddUsers = (props) => {
             </div>
 
 
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Correo Electrónico" className="titleInput" />
 
               <input
@@ -445,7 +445,7 @@ export const AddUsers = (props) => {
               <p className='error'>{texto}</p>
             </div>
 
-            <div className="contInput">
+            <div className="contInput"  style={{ fontSize: '17px' }}>
               <TextCustom text="Rol" className="titleInput" />
               <select id="cargo" className="selectCustom" value={rol} onChange={(e) => {
                 setRolSelect(e.target.value)
@@ -473,7 +473,7 @@ export const AddUsers = (props) => {
               </select>
             </div> : ''}
 
-            <div className="contBtnStepper">
+            <div className="contBtnStepper"  style={{ fontSize: '17px', alignItems:'center' }}>
               {props.update ? <Button
                 variant="contained"
                 className="btnStepper"
