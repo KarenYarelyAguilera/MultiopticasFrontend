@@ -5,9 +5,10 @@ import swal from '@sweetalert/with-react';
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
-
+  const navigate = useNavigate();
   const [email, setCorreo] = useState("");
   const [textoCorreo, setTextoCorreo] = useState("");
   const [errorCorreo, setErrorCorreo] = useState(false);
@@ -66,7 +67,20 @@ export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
   };
 
 
-
+  const handleBack = () => {
+    /*  swal({
+       title: 'Advertencia',
+       text: 'Hay un proceso de recuperación de contraseña ¿Estás seguro que deseas salir?',
+       icon: 'warning',
+       buttons: ['Cancelar', 'Salir'],
+       dangerMode: true,
+     }).then((confirmExit) => {
+       if (confirmExit) {
+         navigate('/Preguntas/lista');
+       }
+     }); */
+    navigate('/');
+  };
 
 
   return (
@@ -74,8 +88,8 @@ export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
 
 
       <form className="measure">
-        <div className="contPrincipalRecuperacion">
-          <div className='divInfoRecuperacion' style={{ fontSize: "17px" }}>
+        <div className="contPrincipalRecuperacion" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className='divInfoRecuperacion' style={{ fontSize: "15px" }}>
 
             <TextCustom text="Ingrese su correo electrónico:" className="titleInput" />
             <div className="contInput">
@@ -120,7 +134,16 @@ export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
             <p className='error'>{textoCorreo}</p>
           </div>
         </div>
-        <div className='divSubmitRecuperacion'>
+        <div className='divSubmitRecuperacion' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+          <input
+            className="btnSubmit"
+            type="button"
+            value="Cancelar"
+            onClick={handleBack}
+          />
+
+
           <input
             className="btnSubmit"
             type="button"

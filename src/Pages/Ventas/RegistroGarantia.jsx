@@ -38,21 +38,21 @@ export const RegistroGarantia = (props) => {
   const [estado, setEstado] = useState(props.data.estado || null)
 
 //GET PRODUCTOS
-  useEffect(() => {
-    axios.get (urlProductos).then (response=>setProductos(response.data))
-  }, []);
+  // useEffect(() => {
+  //   axios.get (urlProductos).then (response=>setProductos(response.data))
+  // }, []);
 
   const navegate = useNavigate();
 
  //INSERTAR GARANTIA
   const handleNext = async () => {
     
-    let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+    //let IdProducto = parseInt(document.getElementById ("IdProducto").value);
     let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
     let descripcion = document.getElementById ("descripcion").value;
 
     let data = {
-      IdProducto: IdProducto,
+     // IdProducto: IdProducto,
       mesesGarantia: mesesGarantia,
       estado: document.getElementById('estado').value,
       descripcion: descripcion.toUpperCase(),
@@ -89,7 +89,7 @@ export const RegistroGarantia = (props) => {
   //ACTUALIZAR
 const actualizarGarantia = async () => {
 
-  let IdProducto = parseInt(document.getElementById ("IdProducto").value);
+  //let IdProducto = parseInt(document.getElementById ("IdProducto").value);
   let mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
   let descripcion = document.getElementById ("descripcion").value;
 
@@ -100,7 +100,7 @@ const actualizarGarantia = async () => {
 
   //El dato de IdProducto se obtiene de Producto seleccionado.
  const data = {
-    IdProducto: IdProducto,
+    //IdProducto: IdProducto,
     mesesGarantia: mesesGarantia,
     estado: document.getElementById ("estado").value,
     descripcion: descripcion.toUpperCase(),
@@ -167,7 +167,7 @@ const actualizarGarantia = async () => {
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-            <div className="contInput">
+            {/* <div className="contInput">
               <TextCustom text="ID Producto" className="titleInput" />
               
               <select name="" className="selectCustom" id="IdProducto">
@@ -183,7 +183,7 @@ const actualizarGarantia = async () => {
                   </option>
                 )}
               </select>
-            </div>
+            </div> */}
 
             <div className="contInput">
               <TextCustom text="Descripcion" className="titleInput" />
@@ -224,25 +224,43 @@ const actualizarGarantia = async () => {
             <div className="contInput">
               <TextCustom text="Meses" className="titleInput" />
               <input
-
-                onKeyDown={e => {
-                  setGarantia(e.target.value);
-                  if (mesesGarantia === "") {
+              onKeyDown={e => {
+                setGarantia(e.target.value);
+            
+                if (mesesGarantia === "" || parseFloat(mesesGarantia) <= 0) {
                     seterrormesesGarantia(true);
-                    setmensaje("Los campos no deben de quedar vacíos");
-                  } else {
+                    setmensaje("El campo meses debe ser un número positivo.");
+                } else {
                     seterrormesesGarantia(false);
                     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
                     if (!regex.test(mesesGarantia)) {
-                      seterrormesesGarantia(true);
-                      setmensaje('El campo meses solo acepta numeros.')
+                        seterrormesesGarantia(true);
+                        setmensaje('El campo meses solo acepta letras.')
                     } else {
-                      seterrormesesGarantia(false);
-                      setmensaje("");
+                        seterrormesesGarantia(false);
+                        setmensaje("");
                     }
-                  }
                 }
-                }
+            }}
+
+                // onKeyDown={e => {
+                //   setGarantia(e.target.value);
+                //   if (mesesGarantia === "") {
+                //     seterrormesesGarantia(true);
+                //     setmensaje("Los campos no deben de quedar vacíos");
+                //   } else {
+                //     seterrormesesGarantia(false);
+                //     var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                //     if (!regex.test(mesesGarantia)) {
+                //       seterrormesesGarantia(true);
+                //       setmensaje('El campo meses solo acepta numeros.')
+                //     } else {
+                //       seterrormesesGarantia(false);
+                //       setmensaje("");
+                //     }
+                //   }
+                // }
+                // }
                 onChange={e => setGarantia(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
 
                 error= {errormesesGarantia}
@@ -275,25 +293,41 @@ const actualizarGarantia = async () => {
               <Button
               variant="contained"
               className="btnStepper"
-
-               onClick={() => {
-                 //Validaciones previo a ejecutar el boton
-                var descripcion  = document.getElementById ("descripcion").value;
-                var mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
+              onClick={() => {
+                // Validaciones previo a ejecutar el botón
+                var descripcion = document.getElementById("descripcion").value;
+                var mesesGarantia = parseInt(document.getElementById("mesesGarantia").value);
+            
+                if (descripcion === "" || mesesGarantia === "") {
+                    swal("No deje campos vacíos.", "", "error");
+                } else if (isNaN(parseFloat(mesesGarantia)) || parseFloat(mesesGarantia) <= 0) {
+                    seterrormesesGarantia(true);
+                    swal("El campo meses debe ser un número positivo.", "", "error");
+                } else if (parseFloat(mesesGarantia) > 12) {
+                    swal("Valor de mes inválido.", "", "error");
+                } else {
+                    props.actualizar ? actualizarGarantia() : handleNext();
+                }
+            }}
+            
+              //  onClick={() => {
+              //    //Validaciones previo a ejecutar el boton
+              //   var descripcion  = document.getElementById ("descripcion").value;
+              //   var mesesGarantia = parseInt(document.getElementById ("mesesGarantia").value);
                 
-                if ( descripcion ==="" || mesesGarantia ==="" ){
-                  swal ("No deje campos vacios.","","error");
-                }else if (isNaN(parseFloat(mesesGarantia))){
-                  seterrormesesGarantia(true)
-                  swal("El campo meses solo acepta numeros.","","error");
-                }else if(parseFloat(mesesGarantia) < 0 || parseFloat(mesesGarantia) >12){
-                  swal("Valor de mes invalido.","","error");
-                }else{
-                  props.actualizar ? actualizarGarantia() : handleNext();
-                }
+              //   if ( descripcion ==="" || mesesGarantia ==="" ){
+              //     swal ("No deje campos vacios.","","error");
+              //   }else if (isNaN(parseFloat(mesesGarantia))){
+              //     seterrormesesGarantia(true)
+              //     swal("El campo meses solo acepta numeros.","","error");
+              //   }else if(parseFloat(mesesGarantia) < 0 || parseFloat(mesesGarantia) >12){
+              //     swal("Valor de mes invalido.","","error");
+              //   }else{
+              //     props.actualizar ? actualizarGarantia() : handleNext();
+              //   }
                  
-                }
-                }
+              //   }
+              //   }
               >
                  {props.actualizar ? <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1> : <h1>{'Finish' ? 'Guardar' : 'Finish'}</h1>}
               </Button>
