@@ -106,7 +106,7 @@ export const BarraLateral = props => {
 
 
   const Recordatorios = () => {
-    if (consulta[3] === 's' && pantallas[3] === "Recordatorios") {
+    if (consulta[3] === 's' && pantallas[3] === "Citas") {
       return (
         <li>
           <Link className="link" to="/recordatorio">
