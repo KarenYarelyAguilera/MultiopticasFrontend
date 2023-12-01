@@ -28,6 +28,8 @@ import { Bitacora } from '../Components/bitacora.jsx';
 
 import oftalmologoFondo from '../IMG/oftalmologofondo.png'
 
+import SearchIcon from '@mui/icons-material/Search';
+
 import '../Styles/Usuarios.css';
 
 const locales = {
@@ -85,7 +87,7 @@ export const RecordatorioCitas = (props) => {
   const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
 
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
-
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   //para el el cliente
@@ -122,6 +124,16 @@ export const RecordatorioCitas = (props) => {
       .then((data) => setClientes(data));
   }, []);
 
+  
+  //filtrar datos
+  const filteredData = clientes.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
   // Nueva función para seleccionar un cliente
   const handleSelectCliente = (selectedCliente) => {
     if (selectedCliente) {
@@ -140,6 +152,7 @@ export const RecordatorioCitas = (props) => {
     console.log(Cliente.Cliente);
     closeModal()
   };
+
   const customStyles = {
     content: {
       width: '35%', // Ancho de la modal
@@ -259,6 +272,10 @@ export const RecordatorioCitas = (props) => {
   };
 
 
+
+
+
+
   return (
     <div className="divSection" >
       <div className="divInfoQuestion1">
@@ -351,9 +368,25 @@ export const RecordatorioCitas = (props) => {
                   <div>
                     <h2>Seleccione un Cliente</h2>
                     {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
+
+                    <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
                     <DataGrid
-                      rows={clientes}
+                      
                       getRowId={clientes => clientes.IdExpediente}
+                      rows={filteredData}
                       pagination
                       autoHeight
                       onCellClick={handleCellClick}
@@ -379,6 +412,9 @@ export const RecordatorioCitas = (props) => {
                           }
                         }
                       }}
+
+
+
 
                     />
 

@@ -1,7 +1,7 @@
 import { DataGrid, esES } from '@mui/x-data-grid';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import React from 'react';
 
@@ -26,6 +26,7 @@ import { TextCustom } from '../../Components/TextCustom';
 import * as XLSX from 'xlsx'
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
@@ -73,48 +74,81 @@ export const ListaCompra = (props) => {
 
   const navegate = useNavigate();
 
+  //Primer dia del mes
+  const todayf = new Date();
+  const firstDayOfMonth = new Date(todayf.getFullYear(), todayf.getMonth(), 1);
+  const firstDayOfMonthString = firstDayOfMonth.toISOString().split('T')[0];
+  const [startDate, setStartDate] = useState(firstDayOfMonthString);
+
+  //ultimo dia del mes
+  const todayE = new Date();
+  const lastDayOfMonth = new Date(todayE.getFullYear(), todayE.getMonth() + 1, 0);
+  const lastDayOfMonthString = lastDayOfMonth.toISOString().split('T')[0];
+  const [endDate, setEndDate] = useState(lastDayOfMonthString);
+
+  //limpiar filtros de la fecha
+  const handleClearFilter = () => {
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
+    setSearchTerm(''); // Limpiar el término de búsqueda
+    // También puedes agregar lógica adicional para limpiar otros estados si es necesario
+
+    // Recargar los registros
+    setCambio(cambio + 1);
+  };
+
+
+
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
+    ) &&
+    (!startDate || new Date(row.fechaCompra) >= new Date(startDate + 'T00:00:00')) &&
+    (!endDate || new Date(row.fechaCompra) <= new Date(endDate + 'T23:59:59'))
   );
+  
+
+  console.log('startDate:', startDate);
+  console.log('endDate:', endDate);
+  console.log('filteredData:', filteredData);
 
   // PANTALLA MODAL
   function handleModal(id) {
     // setModalData(id);
 
-    axios.post(urlFacturaCompra, { id: id }).then((detalle)=>{
+    axios.post(urlFacturaCompra, { id: id }).then((detalle) => {
       console.log(detalle);
-       swal(
-         <div>
-           <div className="logoModal">DATOS DE LA COMPRA</div>
-           <div className="contEditModal">
-             <div className="contInput">
-               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-               <label><b>compra#{id}</b></label>
-               <label><b>Fecha:{new Date(detalle.data[0].fechaCompra).toLocaleDateString()}</b></label>               
-               
-               {detalle.data.map((detallito) => (
-              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
-              <hr />
-              <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
-                <label><b>Aro:  {detallito.Aros} </b></label>
-                <label><b>Cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
-                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.costoCompra.toFixed(2)}</div></b></label> 
-              </React.Fragment>
-            ))}
-            <hr style={{width:'50%', marginLeft:'auto'}}/>
-            <label><b>Total de la compra: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
-             </div>
-  
-           </div>
-         </div>,
-       )
-     })
+      swal(
+        <div>
+          <div className="logoModal">DATOS DE LA COMPRA</div>
+          <div className="contEditModal">
+            <div className="contInput">
+              <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+              <label><b>compra#{id}</b></label>
+              <label><b>Fecha:{new Date(detalle.data[0].fechaCompra).toLocaleDateString()}</b></label>
 
-    
+              {detalle.data.map((detallito) => (
+                <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+                  <hr />
+                  <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
+                  <label><b>Aro:  {detallito.Aros} </b></label>
+                  <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                  <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.costoCompra.toFixed(2)}</div></b></label>
+                </React.Fragment>
+              ))}
+              <hr style={{ width: '50%', marginLeft: 'auto' }} />
+              <label><b>Total de la compra: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
+            </div>
+
+          </div>
+        </div>,
+      )
+    })
+
+
   }
 
   const handleGenerarExcel = () => {
@@ -188,9 +222,9 @@ export const ListaCompra = (props) => {
     },
     //{ field: 'fechaCompra', headerName: 'Fecha', width: 380 },
     { field: 'totalCompra', headerName: 'Total', width: 200 },
-    { 
-      field: 'Estado', 
-      headerName: 'Estado', 
+    {
+      field: 'Estado',
+      headerName: 'Estado',
       width: 310,
       valueGetter: (params) => {
         return params.row.estado === 'A' ? 'Activo' : 'Inactivo';
@@ -265,8 +299,42 @@ export const ListaCompra = (props) => {
           width: '85%',
           position: 'relative',
           left: '130px',
-        }}
-      >
+        }}>
+
+
+        <div className='contDateDHH' >
+          {/* <Button className="btnClearFilter" onClick={handleClearFilter}><DeleteForeverIcon></DeleteForeverIcon></Button> */}
+
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE: </span>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de inicio"
+            className='inputCustomF'
+          ></input>
+
+          <span style={{ marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de fin"
+            className='inputCustomF'
+          ></input>
+
+
+          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem' }}></HighlightOffTwoToneIcon></Button>
+
+        </div>
+
+
         <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
@@ -297,10 +365,10 @@ export const ListaCompra = (props) => {
             </Button>
 
             < Button className="btnExcel" onClick={handleGenerarExcel}>
-                <AnalyticsIcon style={{ marginRight: '5px' }} />
-                Generar Excel
-              </Button>
-            
+              <AnalyticsIcon style={{ marginRight: '5px' }} />
+              Generar Excel
+            </Button>
+
             <Button className="btnReport"
               onClick={handleGenerarReporte}
             >
