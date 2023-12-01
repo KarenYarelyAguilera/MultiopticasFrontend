@@ -523,12 +523,13 @@ export const Recordatorio = (props) => {
         </div>
 
         <DataGrid
+          autoHeight
           pagination
 
           getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
-          autoHeight
+
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={pageSize}
