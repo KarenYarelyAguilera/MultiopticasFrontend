@@ -72,7 +72,7 @@ export const Backup = props => {
   const navegate = useNavigate();
 
   const handleBack = () => {
-    navegate("/usuarios");
+    navegate("/seguridad");
   }
 
 

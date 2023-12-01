@@ -51,18 +51,18 @@ export const Usuarios = (props) => {
       titulo: 'Empleados',
       vinculo: '/empleados/lista',
     },
-    {
-      consulta:"s",
-      titulo: "Bitacora",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/002/788/724/non_2x/checklist-on-smartphone-screen-online-survey-concept-hand-holds-mobile-phone-and-check-list-with-checkmark-illustration-flat-vector.jpg',
-      vinculo: "/Administracion/Bitacora", 
-    },
-    {
-      consulta:"s",
-      titulo: "BackUp",
-      imagen: 'https://static.vecteezy.com/system/resources/previews/004/689/194/non_2x/server-computer-network-free-vector.jpg',
-      vinculo:"/usuarios/backup", 
-    },
+    // {
+    //   consulta:"s",
+    //   titulo: "Bitacora",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/002/788/724/non_2x/checklist-on-smartphone-screen-online-survey-concept-hand-holds-mobile-phone-and-check-list-with-checkmark-illustration-flat-vector.jpg',
+    //   vinculo: "/Administracion/Bitacora", 
+    // },
+    // {
+    //   consulta:"s",
+    //   titulo: "BackUp",
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/004/689/194/non_2x/server-computer-network-free-vector.jpg',
+    //   vinculo:"/usuarios/backup", 
+    // },
     {
       // insert:"s",
       // imagen: InforUsers,
