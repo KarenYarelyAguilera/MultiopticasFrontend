@@ -35,28 +35,30 @@ import { DataGrid, esES } from '@mui/x-data-grid';
 import * as XLSX from 'xlsx'
 import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
 
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
+
 
 
 export const ListaVenta = (props) => {
-  
+
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const urlVentas = 'http://localhost:3000/api/Ventas';
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
-  const urlAnularVenta="http://localhost:3000/api/Ventas/anular"
+  const urlAnularVenta = "http://localhost:3000/api/Ventas/anular"
 
   const [permisos, setPermisos] = useState([]);
-  const [cambio,setCambio] = useState(0)
+  const [cambio, setCambio] = useState(0)
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const dataPermiso={
-    idRol:props.idRol,
-    idObj:9
+  const dataPermiso = {
+    idRol: props.idRol,
+    idObj: 9
   }
-  useEffect(()=>{
-    axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
-  },[])
+  useEffect(() => {
+    axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
+  }, [])
 
   useEffect(() => {
     console.log(props.id);
@@ -85,36 +87,65 @@ export const ListaVenta = (props) => {
 
   const navegate = useNavigate();
 
+  //Primer dia del mes
+  const todayf = new Date();
+  const firstDayOfMonth = new Date(todayf.getFullYear(), todayf.getMonth(), 1);
+  const firstDayOfMonthString = firstDayOfMonth.toISOString().split('T')[0];
+  const [startDate, setStartDate] = useState(firstDayOfMonthString);
+
+  //ultimo dia del mes
+  const todayE = new Date();
+  const lastDayOfMonth = new Date(todayE.getFullYear(), todayE.getMonth() + 1, 0);
+  const lastDayOfMonthString = lastDayOfMonth.toISOString().split('T')[0];
+  const [endDate, setEndDate] = useState(lastDayOfMonthString);
+
+  //limpiar filtros de la fecha
+  const handleClearFilter = () => {
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
+    setSearchTerm(''); // Limpiar el término de búsqueda
+    // También puedes agregar lógica adicional para limpiar otros estados si es necesario
+
+    // Recargar los registros
+    setCambio(cambio + 1);
+  };
+
+
+
+
   const filteredData = tableData.filter(row =>
     Object.values(row).some(
       value =>
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
-    ),
+    ) &&
+    (!startDate || new Date(row.fecha) >= new Date(startDate + 'T00:00:00')) &&
+    (!endDate || new Date(row.fecha) <= new Date(endDate + 'T23:59:59'))
+
   );
 
   const handleGenerarExcel = () => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
 
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
-      'IdVenta': row.IdVenta,
-      //'Fecha': row.fecha,
-      'Cliente': row.Cliente,
-      'ValorVenta': row.ValorVenta,
-    }));
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+        'IdVenta': row.IdVenta,
+        //'Fecha': row.fecha,
+        'Cliente': row.Cliente,
+        'ValorVenta': row.ValorVenta,
+      }));
 
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdVenta', 'Cliente', 'ValorVenta'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdVenta', 'Cliente', 'ValorVenta'] });
 
 
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Ventas.xlsx');
-  }
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Ventas.xlsx');
+    }
   };
 
 
@@ -158,9 +189,9 @@ export const ListaVenta = (props) => {
     },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
     { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
-    { 
-      field: 'estado', 
-      headerName: 'Estado', 
+    {
+      field: 'estado',
+      headerName: 'Estado',
       width: 310,
       valueGetter: (params) => {
         return params.row.estado === 'A' ? 'Activo' : 'Inactivo';
@@ -205,13 +236,13 @@ export const ListaVenta = (props) => {
     },
   ];
 
-  function handlAnular(id){
+  function handlAnular(id) {
     let data = {
-      idUsuario:props.idUsuario,
-      ventaId:id
+      idUsuario: props.idUsuario,
+      ventaId: id
     }
-    axios.put(urlAnularVenta,data).then(()=>{
-      setCambio(cambio+1)
+    axios.put(urlAnularVenta, data).then(() => {
+      setCambio(cambio + 1)
       swal("Venta Anulada")
     })
   }
@@ -262,7 +293,7 @@ export const ListaVenta = (props) => {
     const año = fecha.getUTCFullYear();
     const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
     const dia = fecha.getUTCDate().toString().padStart(2, '0');
-    
+
     return `${año}-${mes}-${dia}`;
   }
   //PANTALLA MODAL---------------------------------------------------------------------------
@@ -272,51 +303,51 @@ export const ListaVenta = (props) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       console.log(id);
-     axios.post(urlVentaDetalle, { id: id }).then((detalle)=>{
-      const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
-      const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
-       swal(
-         <div>
-           <div className="logoModal">DATOS DE LA VENTA</div>
-           <div className="contEditModal">
-             <div className="contInput">
-               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-               <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
-               <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
-               <label><b>Cliente: {detalle.data[0].cliente}</b></label>
-               <label><b>RTN: {detalle.data[0].RTN}</b></label>
-               <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
-               
+      axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
+        const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+        const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
+        swal(
+          <div>
+            <div className="logoModal">DATOS DE LA VENTA</div>
+            <div className="contEditModal">
+              <div className="contInput">
+                <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+                <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+                <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+                <label><b>Cliente: {detalle.data[0].cliente}</b></label>
+                <label><b>RTN: {detalle.data[0].RTN}</b></label>
+                <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
 
-               
-               {detalle.data.map((detallito) => (
-              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
-              <hr />
-                <label><b>Aro:  {detallito.aro} </b></label>
-                <label><b>Lente: {detallito.lente}</b></label>
-                <label><b>Promocion: {detallito.promocion}</b></label>
-                <label><b>Garantia: {detallito.garantia}</b></label>
-                <label><b>Precio del lente: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precLente.toFixed(2)}</div></b></label>
-                <label><b>Precio del aro: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precio.toFixed(2)}</div></b></label>
-                <label><b>cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
-                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.subtotal.toFixed(2)}</div></b></label> 
-                <label><b>Rebaja de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.rebaja.toFixed(2)}</div></b></label>
-              </React.Fragment>
-            ))}
+
+
+                {detalle.data.map((detallito) => (
+                  <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+                    <hr />
+                    <label><b>Aro:  {detallito.aro} </b></label>
+                    <label><b>Lente: {detallito.lente}</b></label>
+                    <label><b>Promocion: {detallito.promocion}</b></label>
+                    <label><b>Garantia: {detallito.garantia}</b></label>
+                    <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
+                    <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
+                    <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                    <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
+                    <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
+                  </React.Fragment>
+                ))}
                 <br />
-                <hr style={{width:'50%', marginLeft:'auto'}}/>
-               <label><b>subtotal: <div style={{textAlign:'right', marginRight:'20px'}}> {totalSubtotal.toFixed(2)}</div></b></label>
-               <label><b>Rebajas: <div style={{textAlign:'right', marginRight:'20px'}}>{totalRebajas.toFixed(2)}</div></b></label>
-               <label><b>Total a pagar: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
-             </div>
-  
-           </div>
-         </div>,
-       )
-     })
-  
-      
-      
+                <hr style={{ width: '50%', marginLeft: 'auto' }} />
+                <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
+                <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
+                <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+              </div>
+
+            </div>
+          </div>,
+        )
+      })
+
+
+
     }
     //setinformacionventa.data[0](id);
 
@@ -341,8 +372,41 @@ export const ListaVenta = (props) => {
           width: '85%',
           position: 'relative',
           left: '130px',
-        }}
-      >
+        }}>
+
+<div className='contDateDHH' >
+          {/* <Button className="btnClearFilter" onClick={handleClearFilter}><DeleteForeverIcon></DeleteForeverIcon></Button> */}
+
+          <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE: </span>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de inicio"
+            className='inputCustomF'
+          ></input>
+
+          <span style={{ marginLeft: '10px', marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> HASTA: </span>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            placeholderText="Fecha de fin"
+            className='inputCustomF'
+          ></input>
+
+
+          <Button className="btnClearFilter" onClick={handleClearFilter}><HighlightOffTwoToneIcon style={{ fontSize: '3rem' }}></HighlightOffTwoToneIcon></Button>
+
+        </div>
+
+        
         <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
@@ -365,7 +429,7 @@ export const ListaVenta = (props) => {
                 } else {
                   navegate('/menuVentas/NuevaVenta');
                 }
-              }}> <AddIcon style={{ marginRight: '3px' }}/>Nuevo
+              }}> <AddIcon style={{ marginRight: '3px' }} />Nuevo
             </Button>
 
             <Button className="btnExcel" onClick={handleGenerarExcel}>
@@ -374,7 +438,7 @@ export const ListaVenta = (props) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}  >
-              <PictureAsPdfIcon style={{ marginRight: '3px' }}/> Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} /> Generar reporte
             </Button>
 
           </div>

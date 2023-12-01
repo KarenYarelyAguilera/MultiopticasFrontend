@@ -111,7 +111,7 @@ export const NuevaCompra = ({
   }, [cantidad, costo]);
   const navegate = useNavigate();
   const AggDataGrid = () => {
-    const productoId = parseInt(document.getElementById("producto").value);
+    const productoId = productos.IdProducto;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     const costo = parseFloat(document.getElementById("costo").value);
   
@@ -127,12 +127,12 @@ export const NuevaCompra = ({
         idProducto: productoId,
         proveedor: document.getElementById("proveedor").options[document.getElementById("proveedor").selectedIndex].text,
         idProveedor:parseInt(document.getElementById("proveedor").value),
-        producto:document.getElementById("producto").options[document.getElementById("producto").selectedIndex].text,
+        producto: `${productos.Marca} - ${productos.Modelo}`,
         cantidad: cantidad,
         fechaYHora: fechaActual,
         costo: costo,
       };
-      console.log(dataGrid);
+
       setCompras([...compras, dataGrid]);
       setCambio(cambio + 1);
     }
@@ -153,7 +153,9 @@ export const NuevaCompra = ({
     { field: 'producto', headerName: 'Producto', width: 145 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'fechaYHora', headerName: 'Fecha', width: 145 },
-    { field: 'costo', headerName: 'Costo de la Compra', width: 145 },
+    { field: 'costo', headerName: 'Costo de la Compra', width: 145,renderCell:params=>{
+      
+   return parseFloat(params.value).toFixed(2)}},
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -221,7 +223,7 @@ export const NuevaCompra = ({
         if (value) {
          
             swal("¡Compra confirmada!", "", "success").then(()=>{
-              console.log(data);
+              
               axios.post(urlCompra, data).then(() => {
                 navegate('/menuInventario/ListaCompra');
               })
@@ -247,7 +249,6 @@ export const NuevaCompra = ({
    const handleCellClic = (params) => {
     const rowData = params.row;
     setProductos(rowData)
-    console.log(productos.Modelo);
     closeProductoModal()
   };
   const customStyles = {
@@ -585,6 +586,7 @@ export const NuevaCompra = ({
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
+          <label htmlFor="">Total de la compra: {compras.reduce((total,compra)=>(total+compra.costo).toFixed(2),0)}</label>
         </div>
       </div>
     </div>
