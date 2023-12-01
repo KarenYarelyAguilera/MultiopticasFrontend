@@ -47,17 +47,15 @@ export const PageThree = ({ onButtonClick, correo, id }) => {
         </h3>
       </div> */}
       <form className="measure">
-        <div className="contPrincipalRecuperacion">
-          <div className="divInfoRecuperacion">
-            <TextCustom text="Se te acaba de enviar a tu correo electrónico un codigo de
-                            confirmación para realizar el cambio de contraseña." className="titleInput" />
-            <TextCustom text="Ingresa el código:" className="titleInput" />
-            <div className="contInput">
+        <div className="contPrincipalRecuperacion" style={{display: 'flex',  alignItems: 'center', justifyContent: 'center'}}>
+          <div className="divInfoRecuperacion"  style={{ fontSize: "15px" }}>
+            <TextCustom text="Revisa tu correo elctrónico e ingresa el código." className="titleInput" />
+           
               <input type="text" name="" className="inputCustom" id="codigo" />
-            </div>
+          
           </div>
         </div>
-        <div className="divSubmitRecuperacion">
+        <div className="divSubmitRecuperacion" style={{display: 'flex',  alignItems: 'center', justifyContent: 'center'}}>
           <input
             className="btnSubmit"
             type="button"
