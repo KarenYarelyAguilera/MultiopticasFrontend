@@ -4,9 +4,10 @@ import { TextCustom } from '../../TextCustom';
 // import "./PageOne.css";
 import '../../../Styles/RecuperacionPassword.css';
 import swal from '@sweetalert/with-react';
+import { useNavigate } from 'react-router-dom';
 
 export const PageOne = ({ onButtonClick, correo }) => {
-
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
   const [prueba, setprueba] = useState('');
   const [errorUsuario, setErrorUsuario] = useState(false);
@@ -18,6 +19,21 @@ export const PageOne = ({ onButtonClick, correo }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const refUsuario = useRef(null);
+
+  const handleBack = () => {
+    /*  swal({
+       title: 'Advertencia',
+       text: 'Hay un proceso de creación de una nueva pregunta de seguridad ¿Estás seguro que deseas salir?',
+       icon: 'warning',
+       buttons: ['Cancelar', 'Salir'],
+       dangerMode: true,
+     }).then((confirmExit) => {
+       if (confirmExit) {
+         navigate('/Preguntas/lista');
+       }
+     }); */
+    navigate('/');
+  };
 
   return (
 
@@ -85,6 +101,14 @@ export const PageOne = ({ onButtonClick, correo }) => {
 
         </div>
         <div className='divSubmitRecuperacion'>
+           <input
+              className="btnSubmitPreguntas"
+              type="button"
+              value="Cancelar"
+              onClick={handleBack}
+            />
+
+
           <input
             className="btnSubmit"
             type="button"
@@ -115,6 +139,7 @@ export const PageOne = ({ onButtonClick, correo }) => {
 
 
           />
+
         </div>
       </form>
     </main>

@@ -11,7 +11,7 @@ import axios from 'axios';
 import ReactModal from 'react-modal';
 import jsPDF from 'jspdf';
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
+
 import swal from '@sweetalert/with-react';
 
 //Styles
@@ -31,9 +31,6 @@ const urlGarantia = 'http://localhost:3000/api/garantias';
 const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
 const urlTotalAPagar = "http://localhost:3000/api/Ventas/totalAPagar"
 const urlVenta = 'http://localhost:3000/api/Ventas/nuevaVenta';
-
-ReactModal.setAppElement('#root');
-
 
 
 export const NuevaVenta = (props) => {
@@ -57,128 +54,21 @@ export const NuevaVenta = (props) => {
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
   const [selectedEmpleado, setSelectedEmpleado] = useState(null);
   const [Producto, setProducto] = useState([]);
-  const [Lente, setLente] = useState([]);//hook para los lentes
+  const [Lente, setLente] = useState([]);
   const [Descuento, setDescuento] = useState([]);
   const [DescuentoLente, setDescuentoLente] = useState([]);
   const [Promocion, setPromocion] = useState([]);
   const [Garantia, setGarantia] = useState([]);
-  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   const [selectedAros, setSelectedAros] = useState(null); // Estado para la opción seleccionada
   const [selectedPromocion, setSelectedPromocion] = useState(null);
   const [selectedGarantia, setSelectedGarantia] = useState(null);
   const [selectedDescuento, setSelectedDescuento] = useState(null);
- const [selectedLente, setSelectedLente] = useState(null);
+  const [selectedLente, setSelectedLente] = useState(null);
 
   const [costo, setCosto] = useState(0);
   const [cantidad, setCantidad] = useState(0);
   const [total, setTotal] = useState(0)
-
-
- // const [isModalOpen, setIsModalOpen] = useState(false);
- const [filtroLente, setFiltroLentes] = useState('');
-  const [isClienteModalOpen, setIsClienteModalOpen] = useState(false);
-  const [isProductoModalOpen, setIsProductoModalOpen] = useState(false);
-  const [isLenteModalOpen, setIsLenteModalOpen] = useState(false);
-  
-  const openClienteModal = () => {
-    setIsClienteModalOpen(true);
-  };
-  
-  const closeClienteModal = () => {
-    setIsClienteModalOpen(false);
-  };
-  
-  const openProductoModal = () => {
-    setIsProductoModalOpen(true);
-  };
-  
-  const closeProductoModal = () => {
-    setIsProductoModalOpen(false);
-  };
-  
-  const openLenteModal = () => {
-    setIsLenteModalOpen(true);
-  };
-  
-  const closeLenteModal = () => {
-    setIsLenteModalOpen(false);
-  };
-  
- // Nuevo estado para almacenar los clientes
- const [clientes, setClientes] = useState([]);
-  useEffect(() => {
-    // Cargar la lista de clientes al inicio
-    fetch(urlCliente)
-      .then((response) => response.json())
-      .then((data) => setClientes(data));
-  }, []);
-  
-//Lentes
-
-const [Rlentes, setRlentes] = useState([]);
-  useEffect(() => {
-    // Cargar la lista de lentes al inicio
-    fetch(urlLente)
-      .then((response) => response.json())
-      .then((data) => setRlentes(data));
-  }, []);
-
-   // Nueva función para seleccionar un lente
-   const handleSelectlentes = (selectedLentes) => {
-    if (selectedLentes) {
-      setSelectedOption({
-        value: selectedLentes.IdLente,
-        label: `${selectedLentes.IdLente} - ${selectedLentes.lente} ${selectedLentes.precio}`,
-      });
-      closeLenteModal();
-    }
-  };
-
-//producto
-  const [productos, setProductos] = useState([]);
-  useEffect(() => {
-    // Cargar la lista de productos al inicio
-    fetch(urlProducto)
-      .then((response) => response.json())
-      .then((data) => setProductos(data));
-  }, []);
-
-///////
-
- // Nueva función para seleccionar un producto
- const handleSelectProductos = (selectedProducto) => {
-  if (selectedProducto) {
-    setSelectedOption({
-      value: selectedProducto.idProducto,
-      label: `${selectedProducto.idProducto} - ${selectedProducto.Modelo} ${selectedProducto.PrecioAro}`,
-    });
-    closeProductoModal();
-  }
-};
-
-  // Nueva función para seleccionar un cliente
-  const handleSelectCliente = (selectedCliente) => {
-    if (selectedCliente) {
-      setSelectedOption({
-        value: selectedCliente.idCliente,
-        label: `${selectedCliente.idCliente} - ${selectedCliente.nombre} ${selectedCliente.apellido}`,
-      });
-      closeClienteModal(); // Cambia aquí
-    }
-  };
-
-
-    // Nueva función para seleccionar un lente
-    const handleSelectLentes = (selectedLente) => {
-      if (selectedLente) {
-        setSelectedOption({
-          value: selectedLente.IdLente,
-          label: `${selectedLente.IdLente} - ${selectedLente.lente} ${selectedLente.precio}`,
-        });
-        closeLenteModal();
-      }
-    };
-  
 
 
   useEffect(() => {
@@ -198,10 +88,10 @@ const [Rlentes, setRlentes] = useState([]);
 
   const navegate = useNavigate();
 
-  const AggDataGrid = () => {
-
+ const AggDataGrid = () => {
+   
     const cantidad = parseInt(document.getElementById("Cantidad").value);
-
+  
     const existingIndex = ventas.findIndex(item => item.IdProducto === selectedAros.value);
     console.log(existingIndex);
     if (existingIndex !== -1) {
@@ -210,27 +100,27 @@ const [Rlentes, setRlentes] = useState([]);
       setVentas(updatedVentas);
     } else {
       const dataGrid = {
-        IdEmpleado: props.idUsuario,
+        IdEmpleado:props.idUsuario,
         IdProducto: selectedAros.value,
         Aro: selectedAros.label,
-        IdLente: selectedLente.value,
-        Lente: selectedLente.label,
-        PrecioAro: selectedAros.precio,
-        fechaEntrega: 2023 - 26 - 11,
-        fechaLimiteEntrega: 2023 - 1 - 12,
+        IdLente:selectedLente.value,
+        Lente:selectedLente.label,
+        PrecioAro:selectedAros.precio,
+        fechaEntrega:2023-26-11,
+        fechaLimiteEntrega:2023-1-12,
         IdCliente: selectedOption.value,
         RTN: document.getElementById("RTN".value) || " ",
         IdGarantia: selectedGarantia.value,
         IdPromocion: selectedPromocion.value,
         IdDescuento: selectedDescuento.value,
-        Descuento: selectedDescuento.label,
+        Descuento:  selectedDescuento.label,
         Promocion: selectedPromocion.label,
         cantidad: cantidad
       };
       console.log(dataGrid);
       setVentas([...ventas, dataGrid]);
       setCambio(cambio + 1);
-    }
+    }  
   };
 
   const eliminarVenta = (idProducto) => {
@@ -238,11 +128,11 @@ const [Rlentes, setRlentes] = useState([]);
     const nuevasVentas = ventas.filter(ventas => ventas.IdProducto !== idProducto);
     console.log(nuevasVentas);
     setVentas(nuevasVentas);
-    setCambio(cambio + 1)
+    setCambio(cambio+1)
   };
 
   const columns = [
-    { field: 'Aro', headerName: 'Aro', width: 250 },
+    { field: 'Aro', headerName: 'Aro', width: 250},
     { field: 'Lente', headerName: 'Lente', width: 250 },
     { field: 'cantidad', headerName: 'Cantidad', width: 145 },
     { field: 'Descuento', headerName: 'Descuento', width: 145 },
@@ -260,7 +150,7 @@ const [Rlentes, setRlentes] = useState([]);
           >
             <DeleteForeverIcon></DeleteForeverIcon>
           </Button>
-        </div>)
+          </div>)
     }
   ];
 
@@ -272,9 +162,9 @@ const [Rlentes, setRlentes] = useState([]);
   };
 
   const GuardarVenta = async () => {
-    let data = {
-      arrVentas: ventas
-    }
+  let data = {
+    arrVentas:ventas
+  }
     await axios.post(urlTotalAPagar, data).then((response) => {
       swal({
         title: "Confirme la venta",
@@ -304,29 +194,29 @@ const [Rlentes, setRlentes] = useState([]);
           },
         },
       }).then((value) => {
-        if (value) {
-          axios.post(urlVenta, data).then((res) => {
-            let dataVenta = {
-              id: res.data.id,
-              total: response.data.total,
-              saldoRestante: response.data.total
-            }
-            swal("¡Venta confirmada!", "", "success").then(() => {
-              props.venta(dataVenta)
-              navegate('/menuVentas/PagoDeVenta')
+          if (value) {
+            axios.post(urlVenta,data).then((res)=>{
+              let dataVenta={
+                id: res.data.id,
+                total: response.data.total,
+                saldoRestante: response.data.total
+              }
+              swal("¡Venta confirmada!", "", "success").then(()=>{
+                props.venta(dataVenta)
+                navegate('/menuVentas/PagoDeVenta')
+              })  
+            }).catch(()=>{
+              swal("Venta cancelada", "", "error");
             })
-          }).catch(() => {
+          } else {
+            // Lógica en caso de cancelación
             swal("Venta cancelada", "", "error");
-          })
-        } else {
-          // Lógica en caso de cancelación
-          swal("Venta cancelada", "", "error");
-        }
-      });
+          }
+        });
     })
   };
 
-
+  
 
   const handleBack = () => {
     swal({
@@ -345,158 +235,32 @@ const [Rlentes, setRlentes] = useState([]);
     });
   };
 
-  //
-
-  // MAGIA DE SELECCIONAR MALDITASEA
-  const handleCellClick = (params) => {
-    const rowData = params.row;
-    setCliente(rowData)
-    console.log(Cliente.nombre);
-    closeClienteModal()
-  };
-  const customStyles = {
-    content: {
-      width: '50%', // Ancho de la modal
-      height: '60%', // Alto de la modal
-      margin: 'auto', // Centrar la modal horizontalmente
-      border: '1px solid #ccc',
-      background: '#fff',
-      overflow: 'auto',
-      borderRadius: '4px',
-      outline: 'none',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo oscurecido de la modal
-    },
-  };
-
-
-
-    // MAGIA DE SELECCIONAR PRODUCTO
-    const handleCellClic = (params) => {
-      const rowData = params.row;
-      setProductos(rowData)
-      console.log(productos.Modelo);
-      closeProductoModal()
-    };
-   
-  // MAGIA DE SELECCIONAR lentes
-  const handleCellClickLentes = (params) => {
-    const rowData = params.row;
-    setRlentes(rowData)
-    console.log(Rlentes.lente);
-    closeLenteModal()
-  };
-
-     
 
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
         <ArrowBackIcon className="iconBack" />
       </Button>
-
       <div className="titleAddUser">
         <h2>Nueva Venta</h2>
       </div>
       <div className="infoAddUser1">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
-            {/* <label htmlFor="" onChange={handleCellClick}> CLIENTE: {Cliente.nombre}</label>
+
             <div className="contInput">
               <TextCustom text="Cliente:" className="titleInput" />
               <div className="contInput">
-                <button onClick={openModal}>Seleccionar Cliente</button>
-              </div>
-            </div> */}
-
-            <div className="contNewCita"  >
-              <TextCustom text="Cliente" className="titleInput" />
-              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
-
-                <input
-                  type="text"
-                  //onClick={openModal}
-                  className="inputCustomText"
+                <Select
+                  id="cliente"
+                  options={Cliente.map(pre => ({ value: pre.idCliente, label: `${pre.idCliente} - ${pre.nombre} ${pre.apellido}` }))}
+                  value={selectedOption}
+                  onChange={setSelectedOption}
                   placeholder="Seleccione un cliente"
-                  disabled
-                  onChange={handleCellClick}
-                  value={Cliente.nombre}
-                  style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openClienteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
-
-
-
             </div>
 
-            <ReactModal
-              style={customStyles}
-              isOpen={isClienteModalOpen}
-              onRequestClose={closeClienteModal}
-              contentLabel="Lista de Clientes"
-              ariaHideApp={false} >
-              <div>
-                <h2>Seleccione un Cliente</h2>
-                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-                <DataGrid
-                  rows={clientes}
-                  getRowId={clientes => clientes.idCliente}
-                  pagination
-                  autoHeight
-                  onCellClick={handleCellClick}
-                  localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-                  pageSize={pageSize}
-                  rowsPerPageOptions={[5, 10, 50]}
-                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                  columns={[
-                    { field: 'COD_CLIENTE', headerName: 'ID', width: 80,headerAlign: 'center' },
-                    { field: 'idCliente', headerName: 'Identidad', width: 165, headerAlign: 'center' },
-                    { field: 'nombre', headerName: 'Nombre', width: 190, headerAlign: 'center' },
-                    { field: 'apellido', headerName: 'Apellido', width: 190, headerAlign: 'center' },
-
-
-
-                    //{ field: 'genero', headerName: 'Género', width: 165, headerAlign: 'center' },
-                   /*  {
-                      field: 'fechaNacimiento',
-                      headerName: 'Fecha de Nacimiento',
-                      width: 170,
-                      headerAlign: 'center',
-                      renderCell: (params) => (
-                        <span>
-                          {new Date(params.value).toLocaleDateString('es-ES')}
-                        </span>
-                      ),
-                    }, */
-                  ]}
-                  style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
-                  onSelectionModelChange={(selection) => {
-                    // Ensure that selection.selectionModel is defined and not empty
-                    if (selection.selectionModel && selection.selectionModel.length > 0) {
-                      const selectedClientId = selection.selectionModel[0];
-                      const selectedClient = clientes.find(
-                        (client) => client.idCliente === selectedClientId
-                      );
-                      // Check if selectedClient is not undefined before calling handleSelectCliente
-                      if (selectedClient) {
-                        handleSelectCliente(selectedClient);
-                      }
-                    }
-                  }}
-
-                />
-
-                {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeClienteModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Cerrar
-                </Button>
-              </div>
-            </ReactModal>
-
-
-<div  className="contInput"  ></div>
             <div className="contInput"  >
               <TextCustom text="RTN" className="titleInput" />
               <input
@@ -555,68 +319,17 @@ const [Rlentes, setRlentes] = useState([]);
 
             <div className="contInput">
               <TextCustom text="Aros:" className="titleInput" />
-              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type="text"
-                  //onClick={openModal}
-                  className="inputCustom"
-                  placeholder="Seleccione el aro"
-                  disabled
-                  onChange={handleCellClic}
-                  value={productos.Modelo}
-                  style={{ width: '300px' }}
+              <div className="contInput">
+                <Select
+                  id="producto"
+                  options={Producto.map(pre => ({ value: pre.IdProducto, label: `${pre.Modelo} - L${pre.precio}` }))}
+                  value={selectedAros}
+                  onChange={setSelectedAros}
+                  menuPlacement="auto"
+                  placeholder="Seleccione un Aro"
                 />
-                <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
             </div>
-            <ReactModal
-              style={customStyles}
-              isOpen={isProductoModalOpen}
-              onRequestClose={closeProductoModal}
-              contentLabel="Lista de Aros"
-              ariaHideApp={false} >
-              <div>
-                <h2>Seleccione el producto</h2>
-                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-                <DataGrid
-          getRowId={Productos => Productos.IdProducto}
-          rows={Producto}
-          columnas={columns}
-          onCellClick={handleCellClic}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={pageSize}
-          pagination
-          autoHeight
-          rowsPerPageOptions={[5, 10, 50]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          columns={[
-            { field: 'IdProducto', headerName: 'ID', width: 100 },
-            { field: 'Modelo', headerName: 'Modelo', width: 190 },
-            { field: 'Marca', headerName: 'Marca', width: 190 },
-            { field: 'descripcion', headerName: 'Descripción', width: 190 },
-            { field: 'precio', headerName: 'Precio', width: 120 },
-          ]}
-        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
-                  onSelectionModelChange={(selection) => {
-                    // Ensure that selection.selectionModel is defined and not empty
-                    if (selection.selectionModel && selection.selectionModel.length > 0) {
-                      const selectedProductoId = selection.selectionModel[0];
-                      const selectedProduct = productos.find(
-                        (Product) => Product.IdProducto === selectedProductoId
-                      );
-                      // Check if selectedClient is not undefined before calling handleSelectCliente
-                      if (selectedProduct) {
-                        handleSelectProductos(selectedProduct);
-                      }
-                    }
-                  }}
-        />
-                {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeProductoModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Cerrar
-                </Button>
-              </div>
-            </ReactModal>
 
 
             <div className="contInput">
@@ -689,75 +402,18 @@ const [Rlentes, setRlentes] = useState([]);
               </div>
             </div> */}
 
-          <div className="contNewCita">
-              <TextCustom text="Lentes" className="titleInput" />
-              <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  type="text"
-                  //onClick={openModal}
-                  className="inputCustom"
-                  placeholder="Seleccione el lente"
-                  disabled
-                  onChange={handleCellClickLentes}
-                  value={Rlentes.lente}
-                  style={{ width: '300px' }}
+            <div className="contInput">
+              <TextCustom text="Precio del lente" className="titleInput" />
+              <div className="contInput">
+                <Select
+                  id="lente"
+                  options={Lente.map(pre => ({ value: pre.IdLente, label: `${pre.lente} - L.${pre.precio}` }))}
+                  value={selectedLente}
+                  onChange={setSelectedLente}
+                  placeholder="Seleccione un lente"
                 />
-                <Button className="btnClearFilter" onClick={openLenteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
             </div>
-            <ReactModal
-              style={customStyles}
-              isOpen={isLenteModalOpen}
-              onRequestClose={closeLenteModal}
-              contentLabel="Lista de Lentes"
-              ariaHideApp={false} >
-              <div>
-          
-              <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el lente</h2>
-              
-                {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
-                <DataGrid
-          getRowId={Lentecitos => Lentecitos.IdLente}
-          rows={Lente}
-          columnas={columns}
-          onCellClick={handleCellClickLentes}
-          localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={pageSize}
-          pagination
-          autoHeight
-          rowsPerPageOptions={[5, 10, 50]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-
-          columns={[
-            { field: 'IdLente', headerName: 'ID', width: 100, headerAlign: 'center' },
-            { field: 'lente', headerName: 'Tipo de lente', width: 450,headerAlign: 'center' },
-            { field: 'precio', headerName: 'Precio', width: 420,headerAlign: 'center' },
-          ]}
-        style={{ fontSize: '14px' }} // Ajusta el tamaño de la letra aquí
-                  onSelectionModelChange={(selection) => {
-                    // Ensure that selection.selectionModel is defined and not empty
-                    if (selection.selectionModel && selection.selectionModel.length > 0) {
-                      const selectedLentesId = selection.selectionModel[0];
-                      const selectedLent = Rlentes.find(
-                        (Lent) => Lent.IdLente === selectedLentesId
-                      );
-                      // Check if selectedClient is not undefined before calling handleSelectCliente
-                      if (selectedLent) {
-                        handleSelectLentes(selectedLente);
-                      }
-                    }
-                  }}
-        />
-                {/* Botón para cerrar el modal */}
-                <Button className="btnCloseModal" onClick={closeLenteModal} style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                  Cerrar
-                </Button>
-              </div>
-            </ReactModal>
-
-
-
-
 
             <div className="contBtnStepper2">
               <Button
@@ -792,7 +448,7 @@ const [Rlentes, setRlentes] = useState([]);
                 }
                 }
               >
-                {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
+           {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
                 <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
               </Button>
             </div>
@@ -808,14 +464,14 @@ const [Rlentes, setRlentes] = useState([]);
 
 
 
-          <div className="contFilter1">
+        <div className="contFilter1">
             <SearchIcon
               style={{
                 position: 'absolute',
                 color: 'gray',
                 paddingLeft: '10px',
               }}
-            />
+              />
             <input
               type="text"
               className="inputSearch"
@@ -827,6 +483,8 @@ const [Rlentes, setRlentes] = useState([]);
               <Button
                 className="btnCreate1"
                 onClick={GuardarVenta}
+                
+
 
               >
                 <AddIcon style={{ marginRight: '5px' }} />
@@ -845,9 +503,9 @@ const [Rlentes, setRlentes] = useState([]);
             localeText={esES.components.MuiDataGrid.defaultProps.localeText}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />
+            />
 
-          {/* <img
+        {/* <img
           src={
             'https://static.vecteezy.com/system/resources/previews/018/942/487/non_2x/business-strategic-planning-illustration-concept-on-white-background-vector.jpg'
           }

@@ -11,6 +11,9 @@ import '../Styles/login.css';
 
 import ImgLogin from '../IMG/InforUsers.jpg';
 
+import ImgPerfil from '../IMG/4022487.jpg'
+import ImgPerfilMujer from '../IMG/PerfilMujer.jpg'
+
 //Components
 //import VerticalStepper from '../../Components/VerticalStepper.jsx';
 import swal from '@sweetalert/with-react';
@@ -64,14 +67,14 @@ export const Perfil = (props) => {
     navegate("/perfilStepper");
   };
 
-  const handlePreguntas = async() => {
+  const handlePreguntas = async () => {
     const dataId = {
       Id_Usuario: props.idUsuario,
     };
     console.log(dataId);
 
-   
-    await axios.post(urlDelAllPreguntas,dataId).then(response => {
+
+    await axios.post(urlDelAllPreguntas, dataId).then(response => {
       navegate('/preguntasPerfil')
     }).catch(error => {
       console.log('error');
@@ -85,15 +88,15 @@ export const Perfil = (props) => {
     };
 
     const bitacora = {
-      urlB:urlBitacoraPerfil,
-      activo:props.activo,
-      dataB:dataId
+      urlB: urlBitacoraPerfil,
+      activo: props.activo,
+      dataB: dataId
     };
 
 
 
     navegate('/dashboard');
-   // axios.post(urlBitacoraPerfil, dataId)
+    // axios.post(urlBitacoraPerfil, dataId)
     Bitacora(bitacora);
 
   };
@@ -143,6 +146,7 @@ export const Perfil = (props) => {
 
         <div className="infoAddUser" align="left" >
           <section className='section2'>
+
             <div className="contInput">
               <TextCustom text="Usuario: " className="titleInput" />
               <input
@@ -155,6 +159,7 @@ export const Perfil = (props) => {
                 value={props.infoPerfil.Nombre_Usuario}
                 disabled
               />
+
             </div>
             <br />
 
@@ -196,6 +201,7 @@ export const Perfil = (props) => {
               {/* <p className="error">{Msj}</p> */}
             </div>
             <br />
+
             <div className="contInput">
               <TextCustom text="Apellido: " className="titleInput" />
               <input
@@ -232,12 +238,10 @@ export const Perfil = (props) => {
                 disabled
               />
               {/* <p className="error">{aviso}</p> */}
-              <br />
-            </div>
-          </section>
 
-          <section className='section2' >
-            <br /> <br /><br /><br /> <br /> <br /> <br />
+            </div>
+            <br />
+
             <div className="contInput">
               <TextCustom text="Identidad: " className="titleInput" />
               <input
@@ -254,6 +258,7 @@ export const Perfil = (props) => {
               />
             </div>
             <br />
+
             <div className="contInput">
               <TextCustom text="Correo:   " className="titleInput" />
               <input
@@ -289,71 +294,7 @@ export const Perfil = (props) => {
               {<p className="error">{advertencia}</p>}
             </div>
             <br />
-            {/* <div className="contInput">
-              <TextCustom text="Cargo:  " className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Rol"
-                id="rol"
-                value={props.infoPerfil.Rol}
-                disabled
-              />
-            </div> */}
 
-            {/*  <div className="contInput">
-              <TextCustom text="Teléfono:  " className="titleInput" />
-              <input
-                type="text"
-                name=""
-                maxLength={13}
-                className="inputCustom"
-                placeholder="Rol"
-                id="teléfono"
-                value={props.infoPerfil.telefonoEmpleado}
-                disabled
-              />
-            </div> */}
-          </section>
-
-
-          <section className='section2'>
-            {/*  <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <button
-                className="btnUpdatePassword"
-                type='submit'
-                onClick={() => {
-                  var nombre = document.getElementById("nombre").value;
-                  var apellido = document.getElementById("apellido").value;
-                  var correo = document.getElementById("correo").value;
-                  if (nombre === "" || apellido === "" || correo === "") {
-                    swal("No deje campos vacíos.", "", "error");
-                  }
-                  if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nombre)) {
-                    swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                  } else if (/(.)\1{2,}/.test(nombre)) {
-                    setErrorNombre(true);
-                    swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                  }
-                  else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(apellido)) {
-                    swal("El campo apellido solo acepta letras mayusculas y un espacio entre palabra.", "", "error");
-                  } else if (/(.)\1{2,}/.test(apellido)) {
-                    setErrorApellido(true);
-                    swal("El campo apellido no acepta letras consecutivas repetidas.", "", "error");
-                  }
-                  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-                    swal("El campo correo debe contener un correo válido.", "", "error");
-                  } else {
-                    handleActualizarDatos();
-                  }
-                }}
-
-              //onClick={handleActualizarDatos}
-              // onClick={handleActualizarDatos}
-              >Actualizar Datos</button>
-            </div> */}
             <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <button
                 className="btnUpdatePassword"
@@ -361,9 +302,7 @@ export const Perfil = (props) => {
                 onClick={handlePreguntas}
               >Modificar Preguntas</button>
             </div>
-          </section>
-
-          <section className='section2'>
+            <br />
             <div className="contUpdatePassword" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <button
                 className="btnUpdatePassword"
@@ -373,9 +312,13 @@ export const Perfil = (props) => {
             </div>
           </section>
 
-          <section>
+
+
+
+
+          <section  className='section2'>
             <div>
-              <img src={ImgLogin} className="imgLogin" alt="No existe la imagen" />
+              <img src={ImgPerfilMujer} className="imgLogin" alt="No existe la imagen" />
             </div>
           </section>
         </div>

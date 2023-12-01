@@ -75,6 +75,8 @@ export const ListaPreguntasDeSeguridad = (props) => {
   const [errorTelefono, setErrorTelefono] = useState(false);
   const [texto, setTexto] = useState(false);
 
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
+
   //COLOCAR APIS DE BITACORA AQUI---  
 
   //-------------------------------------------------------------------
@@ -292,7 +294,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
                 if (permisos[0].insertar === "n") {
                   swal("No cuenta con los permisos para realizar esta accion", "", "error")
                 } else {
-                  navegate('/progress');
+                  navegate('/config/AgregarPreguntas');
                 }
 
               }}
@@ -303,7 +305,7 @@ export const ListaPreguntasDeSeguridad = (props) => {
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>
@@ -312,9 +314,10 @@ export const ListaPreguntasDeSeguridad = (props) => {
           rows={filteredData}
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

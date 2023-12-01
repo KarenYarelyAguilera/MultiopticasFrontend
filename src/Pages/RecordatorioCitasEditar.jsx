@@ -21,7 +21,7 @@ import axios from 'axios';
 
 import { Bitacora } from '../Components/bitacora.jsx';
 
-import  oftalmologoFondo  from '../IMG/oftalmologofondo.png'
+import oftalmologoFondo from '../IMG/oftalmologofondo.png'
 
 
 import '../Styles/Usuarios.css';
@@ -82,9 +82,9 @@ export const RecordatorioCitasEditar = props => {
 
     console.log(data);
 
-    const fechadatos={
+    const fechadatos = {
         IdRecordatorio: props.data.IdRecordatorio,
-        Nota:props.data.Nota,
+        Nota: props.data.Nota,
         fecha: new Date(props.data.fecha).toISOString().split('T')[0], // Formatear la fecha
     };
     console.log(fechadatos);
@@ -164,39 +164,39 @@ export const RecordatorioCitasEditar = props => {
 
 
     return (
-    <div className="divSection">
-        <div className='divInfoQuestion1'>
-        <Button className="btnBack" onClick={handleBack}>
-         <ArrowBackIcon className="iconBack" />
-       </Button>
-            <div className="contRecordatorios">
-                <div className="contRecordCitas">
-                    <div  >
-                        <h1>Actualizar Cita</h1>
-                        <hr />
-                        <div className="contPrincipalNewCita">
-                            <div className="contNewCita">
-                                <TextCustom text="Cliente" className="titleInput" />
-                                <div className="contInput">
-                                    <input
-                                        // onChange={e => (e.target.value)}
-                                        type="text"
-                                        name=""
-                                        className="inputCustom"
-                                        placeholder="Cliente"
-                                        id='cliente'
-                                        value={`${props.data.IdCliente} - ${props.data.nombre}`}
-                                        disabled
-                                    />
+        <div className="divSection">
+            <div className='divInfoQuestion1'>
+                <Button className="btnBack" onClick={handleBack}>
+                    <ArrowBackIcon className="iconBack" />
+                </Button>
+                <div className="contRecordatorios" style={{ width: '100%', display: 'flex', justifyContent: 'center', alignContent: 'center', marginTop: '200px', fontSize: '15px' }}>
+                    <div className="contRecordCitas">
+                        <div  >
+                            <h1>Actualizar Cita</h1>
+                            <hr />
+                            <div className="contPrincipalNewCita">
+                                <div className="contNewCita">
+                                    <TextCustom text="Cliente" className="titleInput" />
+                                    <div className="contInput">
+                                        <input
+                                            // onChange={e => (e.target.value)}
+                                            type="text"
+                                            name=""
+                                            className="inputCustom"
+                                            placeholder="Cliente"
+                                            id='cliente'
+                                            value={`${props.data.IdCliente} - ${props.data.nombre}`}
+                                            disabled
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
 
 
-                            <div className="contNewCita">
-                                <TextCustom text="Fecha" className="titleInput" />
-                                <div className="contInput">
-                                    {/* <DatePicker
+                                <div className="contNewCita">
+                                    <TextCustom text="Fecha" className="titleInput" />
+                                    <div className="contInput">
+                                        {/* <DatePicker
                                         type="text"
                                         name=""
                                         maxLength={40}
@@ -207,63 +207,63 @@ export const RecordatorioCitasEditar = props => {
                                     /> */}
 
 
-                                    <input
-                                        onChange={e => setFecha(e.target.value)}
-                                        type="date"
-                                        id="fecha"
-                                        className="inputCustom"
-                                        placeholderText="Fecha"
-                                        value={fecha}
-                                    ></input>
+                                        <input
+                                            onChange={e => setFecha(e.target.value)}
+                                            type="date"
+                                            id="fecha"
+                                            className="inputCustom"
+                                            placeholderText="Fecha"
+                                            value={fecha}
+                                        ></input>
+                                    </div>
+
+
+                                    {/*   <input type="date"  id="fecha" ></input> */}
                                 </div>
 
 
-                                {/*   <input type="date"  id="fecha" ></input> */}
-                            </div>
-
-
-                            <div className="contNewCita">
-                                <TextCustom text="Nota" className="titleInput" />
-                                <div className="contInput">
-                                    <input
-                                        onKeyDown={e => {
-                                            setNota(e.target.value);
-                                            if (Nota === '') {
-                                                setErrorNotas(true);
-                                                setMsj('Los campos no deben estar vacíos');
-                                            } else {
-                                                setErrorNotas(false);
-                                                var regex = /^[A-Z]+(?: [A-Z]+)*$/;
-                                                if (!regex.test(Nota)) {
+                                <div className="contNewCita">
+                                    <TextCustom text="Nota" className="titleInput" />
+                                    <div className="contInput">
+                                        <input
+                                            onKeyDown={e => {
+                                                setNota(e.target.value);
+                                                if (Nota === '') {
                                                     setErrorNotas(true);
-                                                    setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                                                } else if (/(.)\1{2,}/.test(Nota)) {
-                                                    setErrorNotas(true);
-                                                    setMsj('No se permiten letras consecutivas repetidas');
+                                                    setMsj('Los campos no deben estar vacíos');
                                                 } else {
                                                     setErrorNotas(false);
-                                                    setMsj('');
+                                                    var regex = /^[A-Z]+(?: [A-Z]+)*$/;
+                                                    if (!regex.test(Nota)) {
+                                                        setErrorNotas(true);
+                                                        setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
+                                                    } else if (/(.)\1{2,}/.test(Nota)) {
+                                                        setErrorNotas(true);
+                                                        setMsj('No se permiten letras consecutivas repetidas');
+                                                    } else {
+                                                        setErrorNotas(false);
+                                                        setMsj('');
+                                                    }
                                                 }
-                                            }
-                                        }}
+                                            }}
 
-                                        onChange={e => setNota(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
-                                        error={errorNotas}
-                                        type="text"
-                                        helperText={Msj}
-                                        name=""
-                                        maxLength={40}
-                                        className="inputCustomText"
-                                        variant="standard"
-                                        placeholder="Nota"
-                                        id="Nota"
-                                        value={Nota}
-                                    // disabled="false"
-                                    />
+                                            onChange={e => setNota(e.target.value)} //Tambien ponerlo para llamar los datos a la hora de actualizar
+                                            error={errorNotas}
+                                            type="text"
+                                            helperText={Msj}
+                                            name=""
+                                            maxLength={40}
+                                            className="inputCustomText"
+                                            variant="standard"
+                                            placeholder="Nota"
+                                            id="Nota"
+                                            value={Nota}
+                                        // disabled="false"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* <div className='divInfoQuestionResp'>
+                                {/* <div className='divInfoQuestionResp'>
                                 <TextCustom text="Respuesta:" className="titleInput" />
                                 <div className="contInput" >
                                 
@@ -285,39 +285,41 @@ export const RecordatorioCitasEditar = props => {
 
 
 
-                            <div className="contBtnStepperRecord">
-                                <Button
-                                    className='btnStepperCan'
-                                    onClick={() => navegate('/recordatorio')}
-                                >Cancelar</Button>
+                                <div className="contBtnStepperRecord">
+                                    <Button
+                                        style={{ fontSize: '15px' }}
+                                        className='btnStepperCan'
+                                        onClick={() => navegate('/recordatorio')}
+                                    >Cancelar</Button>
 
-                                <Button
-                                    className='btnStepperGuardar'
-                                    onClick={() => {
+                                    <Button
+                                        style={{ fontSize: '15px' }}
+                                        className='btnStepperGuardar'
+                                        onClick={() => {
 
-                                        var nota = document.getElementById("Nota").value;
+                                            var nota = document.getElementById("Nota").value;
 
-                                        if (nota === "") {
-                                            swal("No deje campos vacíos.", "", "error");
-                                        } else if (!/^[A-Z]+(?: [A-Z]+)*$/.test(nota)) {
-                                            swal("El campo nombre solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
-                                        } else if (/(.)\1{2,}/.test(nota)) {
-                                            setErrorNotas(true);
-                                            swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
-                                        } else {
-                                            handleClick();
-                                        }
-                                    }}
-                                >Guardar</Button>
+                                            if (nota === "") {
+                                                swal("No deje campos vacíos.", "", "error");
+                                            } else if (!/^[A-ZÑ]+(?: [A-ZÑ]+)*$/.test(nota)) {
+                                                swal("El campo solo acepta letras mayúsculas y solo un espacio entre palabras.", "", "error");
+                                            } else if (/(.)\1{2,}/.test(nota)) {
+                                                setErrorNotas(true);
+                                                swal("El campo nombre no acepta letras mayúsculas consecutivas repetidas.", "", "error");
+                                            } else {
+                                                handleClick();
+                                            }
+                                        }}
+                                    >Guardar</Button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="divImgSection">
+                <img src={oftalmologoFondo} alt="Iamgen no encontrada" />
+            </div>
         </div>
-        <div className="divImgSection">
-        <img src={oftalmologoFondo} alt="Iamgen no encontrada" />
-      </div>
-    </div>
     );
 };

@@ -23,9 +23,10 @@ export const RegistroPreguntaDeSeguridad = props => {
     const urlPreguntas = 'http://localhost:3000/api/preguntas';
     const urlPostPreguntas = 'http://localhost:3000/api/preguntas/agregar';
     const urlPutPreguntas = 'http://localhost:3000/api/preguntas/editar';
+    const urlExistePregunta = 'http://localhost:3000/api/preguntas/existe';
 
     const [cambio, setCambio] = useState(0);
-    const [Resp, setResp] = useState(props.data.Respuesta || '');
+    const [Resp, setResp] = React.useState(props.data.Pregunta || '');
     const [errorResp, setErrorResp] = useState(false);
     const [Msj, setMsj] = useState('');
 
@@ -57,54 +58,75 @@ export const RegistroPreguntaDeSeguridad = props => {
             dangerMode: true,
         }).then((confirmExit) => {
             if (confirmExit) {
-                props.update(false)
-                props.Data({})
+                props.limpiarData({});
+                props.limpiarUpdate(false)
                 navigate('/config/PreguntasSeguridad');
             }
         });
     };
 
     const handleClick = async () => {
-        const respuestap = Resp;
+        try {
+            const Resp = document.getElementById("preguntaSeg").value;
 
-        const data = {
-            pregunta: respuestap.toUpperCase(),
-            creadoPor: props.infoPerfil.nombre.toUpperCase(),
-            FechaCrea: new Date()
-        };
+            const data = {
+                pregunta: Resp,
+                creadoPor: props.infoPerfil.nombre,
+                FechaCrea: new Date()
+            };
+            console.log(data);
 
-        await axios.post(urlPostPreguntas, data).then(response => {
-            swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'))
-        }).catch(error => {
+            await axios.post(urlPostPreguntas, data).then(response => {
+                swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'))
+            }).catch(error => {
+                console.log(error);
+                swal("¡Error al registrar su pregunta! verifique si ya ha agregado esta pregunta.", "", "error")
+            })
+
+        } catch (error) {
             console.log(error);
             swal("¡Error al registrar su pregunta! verifique si ya ha agregado esta pregunta.", "", "error")
-        })
+        }
+
     };
 
     //ACTUALIZAR
     const actualizar = async () => {
         try {
-            const respuestap = Resp;
+            const Resp =  document.getElementById("preguntaSeg").value;
 
             const data = {
-                pregunta: respuestap,
+                pregunta: Resp,
                 modificado_por: props.infoPerfil.nombre,
                 fecha_modificacion: new Date(),
                 Id_Pregunta: props.data.Id_Pregunta,
             };
-
             console.log(data);
 
-            await axios.put(urlPutPreguntas, data);
+            const Pregunta = {
+                Resp            };
 
-            swal("Pregunta Actualizada Correctamente", "", "success").then(() => {
-                navigate('/config/PreguntasSeguridad');
-            });
+            console.log(Pregunta);
+
+            const response = await axios.put(urlPutPreguntas, data);
+
+            if (response.data.estado === "ya_existe") {
+                swal('¡Error al Actualizar! Compruebe si la pregunta ya existe.', '', 'error');
+                props.limpiarData({});
+                props.limpiarUpdate(false)
+            } else {
+                swal("Pregunta actualizada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'));
+            }
+
         } catch (error) {
             console.error(error);
+            props.limpiarData({});
+            props.limpiarUpdate(false)
             swal('¡Error al Actualizar! Verifique si la pregunta ya existe.', '', 'error');
         }
     };
+
+
 
 
     return (
@@ -115,7 +137,7 @@ export const RegistroPreguntaDeSeguridad = props => {
                 </div> */}
 
                 <div className="titleRecuPassword">
-                    {props.actualizar ? <h2>Actualización de Pregunta</h2> : <h2>Registro de Pregunta</h2>}
+                    {props.update ? <h2>Actualización de Pregunta</h2> : <h2>Registro de Pregunta</h2>}
                 </div>
                 <form className="measure">
                     <br />
@@ -124,20 +146,19 @@ export const RegistroPreguntaDeSeguridad = props => {
                         <h3>Ingrese una nueva pregunta:</h3>
                         <div className="contInput">
                             <input
-                                onChange={e => {
-                                    const value = e.target.value;
-                                    setResp(value);
 
-                                    if (value === '') {
+                                onKeyDown={e => {
+                                    setResp(e.target.value);
+                                    if (Resp === '') {
                                         setErrorResp(true);
-                                        setMsj('Los campos no deben estar vacíos, ingrese mas de 5 caracteres');
+                                        setMsj('Los campos no deben estar vacíos, ingrese más de 5 caracteres');
                                     } else {
                                         setErrorResp(false);
-                                        const regex = /^[¿A-Z? ]+/;
-                                        if (!regex.test(value)) {
+                                        const regex = /^[¿A-Z? ]+$/;  // Añadido el signo de interrogación a la expresión regular
+                                        if (!regex.test(Resp)) {
                                             setErrorResp(true);
-                                            setMsj('Solo debe ingresar letras mayúsculas y un espacio entre palabras');
-                                        } else if (/(.)\1{2,}/.test(value)) {
+                                            setMsj('Solo debe ingresar letras mayúsculas, espacios y signos de interrogación');
+                                        } else if (/(.)\1{2,}/.test(Resp)) {
                                             setErrorResp(true);
                                             setMsj('No se permiten letras consecutivas repetidas');
                                         } else {
@@ -145,8 +166,13 @@ export const RegistroPreguntaDeSeguridad = props => {
                                             setMsj('');
                                         }
                                     }
-                                }}
+                                }
+                                }
+
+
+                                onChange={e => setResp(e.target.value)}
                                 error={errorResp}
+                                id='preguntaSeg'
                                 type="text"
                                 helperText={Msj}
                                 minLength={5}
@@ -156,6 +182,7 @@ export const RegistroPreguntaDeSeguridad = props => {
                                 placeholder=""
                                 value={Resp}
                             />
+
                         </div>
                         <p className="error">{Msj}</p>
                     </div>
@@ -207,8 +234,8 @@ export const RegistroPreguntaDeSeguridad = props => {
                                     swal('No deje campos vacíos.', '', 'error');
                                 } else if (respuestap.length < 5 || respuestap.length > 50) {
                                     swal('La longitud del campo debe estar entre 5 y 50 caracteres.', '', 'error');
-                                } else if (!/^[¿A-Z]+( [A-Z?]+)*$/.test(respuestap)) {
-                                    swal('El campo solo acepta letras mayúsculas y solo un espacio entre palabras.', '', 'error');
+                                } else if (!/^[¿A-Z?]+( [A-Z?]+)*$/.test(respuestap)) {
+                                    swal('El campo solo acepta letras mayúsculas, espacios y signos de interrogación.', '', 'error');
                                 } else if (/(.)\1{2,}/.test(respuestap)) {
                                     setErrorResp(true);
                                     swal('El campo no acepta letras mayúsculas consecutivas repetidas.', '', 'error');
@@ -216,6 +243,7 @@ export const RegistroPreguntaDeSeguridad = props => {
                                     props.actualizar ? actualizar() : handleClick();
                                 }
                             }}
+
                         />
                     </div>
 

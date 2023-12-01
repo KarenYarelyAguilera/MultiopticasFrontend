@@ -19,7 +19,14 @@ import { Button } from '@mui/material';
 import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
+import * as XLSX from 'xlsx'
+import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de excel 
+
+//FondoPDF
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
+
 export const ListaProductos = (props) => {
+  const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
   const dataPermiso = {
@@ -64,16 +71,9 @@ export const ListaProductos = (props) => {
   const [errordescripcion, setErrordescripcion] = useState(false);
 
   useEffect(() => {
-    fetch(urlProducto)
-      .then(response => response.json())
-      .then(data => setTableData(data));
-    fetch(urlProductosInactivos)
-      .then(response => response.json())
-      .then(data => setTableDataInactivos(data));
-    fetch(urlModelos)
-      .then(response => response.json())
-      .then(data => setModelo(data));
-
+    fetch(urlProducto).then(response => response.json()).then(data => setTableData(data));
+    fetch(urlProductosInactivos).then(response => response.json()).then(data => setTableDataInactivos(data));
+    fetch(urlModelos).then(response => response.json()).then(data => setModelo(data));
   }, [cambio, inactivo]);
 
   const navegate = useNavigate();
@@ -86,7 +86,8 @@ export const ListaProductos = (props) => {
     ),
   );
 
-  const filteredDataInactivos = tableDataInactivos.filter(row =>
+  const filteredDataInactivos = 
+  tableDataInactivos.filter(row =>
     Object.values(row).some(
       value =>
         value &&
@@ -94,12 +95,40 @@ export const ListaProductos = (props) => {
     ),
   );
 
+  const handleGenerarExcel = () => {
+    if (permisos[0].consultar === "n") {
+      swal("No cuenta con los permisos para realizar esta accion", "", "error")
+    } else {
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
+
+      // Datos para el archivo Excel
+      const dataForExcel =  (inactivo === false ? filteredData : tableDataInactivos).map((row, index)  => ({
+        'ID': row.IdProducto,
+        'Modelo': row.Modelo,
+        'Marca': row.Marca,
+        'Descripcion': row.descripcion,
+        'Precio': row.precio,
+        'CantidadMinima': row.cantidadMin,
+        'CantidadMaxima': row.cantidadMax,
+        'Estado': row.estado,
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Modelo','Marca', 'Precio', 'CantidadMinima', 'CantidadMaxima', 'Estado'] });
+
+
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Reporte_Productos.xlsx');
+    };
+  };
+
   const handleGenerarReporte = () => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
+        const formattedData = (inactivo === false ? filteredData : tableDataInactivos).map((row) => {
           const fechaCre = new Date(row.fechaYHora);
           const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
             String(fechaCre.getMonth()).padStart(2, '0') + "/" +
@@ -112,6 +141,7 @@ export const ListaProductos = (props) => {
             'Precio': row.precio,
             'CantidadMinima': row.cantidadMin,
             'CantidadMaxima': row.cantidadMax,
+            'Estado': row.estado,
           };
         });
         return formattedData;
@@ -120,7 +150,8 @@ export const ListaProductos = (props) => {
       const urlPDF = 'Reporte_Productos.pdf';
       const subTitulo = "LISTA DE PRODUCTOS"
 
-      generatePDF(formatDataForPDF, urlPDF, subTitulo);
+      const orientation = "landscape";
+      generatePDF(formatDataForPDF, urlPDF, subTitulo,  orientation, fondoPDF);
     }
 
   };
@@ -268,7 +299,7 @@ export const ListaProductos = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -281,7 +312,7 @@ export const ListaProductos = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             <Button
               className="btnCreate"
               onClick={() => {
@@ -290,10 +321,7 @@ export const ListaProductos = (props) => {
                 } else {
                   navegate('/menuInventario/RegistroProducto2');
                 }
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
+              }}><AddIcon style={{ marginRight: '3px' }} />Nuevo
             </Button>
 
             <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
@@ -301,11 +329,13 @@ export const ListaProductos = (props) => {
               {inactivo === false ? "Inactivos" : "Activos"}
             </Button>
 
+            <Button className="btnExcel" onClick={handleGenerarExcel}>
+              <AnalyticsIcon style={{ marginRight: '3px' }} />Generar Excel
+            </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '3px' }}/> Generar PDF
             </Button>
           </div>
         </div>
@@ -313,9 +343,12 @@ export const ListaProductos = (props) => {
           getRowId={tableData => tableData.IdProducto}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           columns={columns}
-          pageSize={5}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-          rowsPerPageOptions={[5]}
+          pageSize={pageSize}
+          pagination
+          autoHeight
+          rowsPerPageOptions={[5, 10, 50]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
       </div>
     </div>

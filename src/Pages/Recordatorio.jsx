@@ -120,8 +120,8 @@ export const Recordatorio = (props) => {
 
   //limpiar filtros de la fecha
   const handleClearFilter = () => {
-    setStartDate(firstDayOfMonthString);
-    setEndDate(lastDayOfMonthString);
+    setStartDate(''); //firstDayOfMonthString
+    setEndDate('');//lastDayOfMonthString
     setSearchTerm(''); // Limpiar el término de búsqueda
     // También puedes agregar lógica adicional para limpiar otros estados si es necesario
 
@@ -145,14 +145,17 @@ export const Recordatorio = (props) => {
       const dataForExcel = filteredData.map((row, index) => ({
 
         'ID': row.IdRecordatorio,
-        'Cliente': row.IdCliente,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+        'Identidad': row.IdCliente,
         'Nombre': row.nombre,
         'Apellido': row.apellido,
+        'Teléfono': row.telefonoCliente,
+        'Correo': row.correoElectronico,
         'Nota': row.Nota,
-        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+
       }));
 
-      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Cliente', 'Nombre', 'Apellido', 'Nota', 'Fecha'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Fecha', 'Identidad', 'Nombre', 'Apellido', 'Teléfono', 'Correo', 'Nota'] });
 
 
 
@@ -211,17 +214,19 @@ export const Recordatorio = (props) => {
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fecha);
-          const fecha = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
+          const date = new Date(row.fecha);
+          const formattedDate = date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+
           return {
             'ID': row.IdRecordatorio,
-            'Cliente': row.IdCliente,
+            'Fecha': formattedDate,
+            'Identidad': row.IdCliente,
             'Nombre': row.nombre,
             'Apellido': row.apellido,
+            'Teléfono': row.telefonoCliente,
+            'Correo': row.correoElectronico,
             'Nota': row.Nota,
-            'Fecha': fecha,
+
           };
         });
         return formattedData;
@@ -249,7 +254,7 @@ export const Recordatorio = (props) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ) &&
-    (!startDate || new Date(row.fecha) >= new Date(startDate)) &&
+    (!startDate || new Date(row.fecha) >= new Date(startDate+ 'T00:00:00')) &&
     (!endDate || new Date(row.fecha) <= new Date(endDate + 'T23:59:59')) // Ajuste aquí
   );
 
@@ -278,11 +283,7 @@ export const Recordatorio = (props) => {
 
   const columns = [
     //son los de la base no los de node
-    { field: 'IdRecordatorio', headerName: 'ID', width: 100, headerAlign: 'center' },
-    { field: 'IdCliente', headerName: 'Identidad', width: 200, headerAlign: 'center' },
-    { field: 'nombre', headerName: 'Nombre', width: 200, headerAlign: 'center' },
-    { field: 'apellido', headerName: 'Apellido', width: 200, headerAlign: 'center' },
-    { field: 'Nota', headerName: 'Nota', width: 300, headerAlign: 'center' },
+    { field: 'IdRecordatorio', headerName: 'ID', width: 50, headerAlign: 'center' },
     {
       field: 'fecha', headerName: 'Fecha', width: 100, headerAlign: 'center',
       valueGetter: (params) => {
@@ -290,6 +291,12 @@ export const Recordatorio = (props) => {
         return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
       },
     },
+    { field: 'IdCliente', headerName: 'Identidad', width: 150, headerAlign: 'center' },
+    { field: 'nombre', headerName: 'Nombre', width: 150, headerAlign: 'center' },
+    { field: 'apellido', headerName: 'Apellido', width: 150, headerAlign: 'center' },
+    { field: 'telefonoCliente', headerName: 'Teléono', width: 80, headerAlign: 'center' },
+    { field: 'correoElectronico', headerName: 'Correo', width: 150, headerAlign: 'center' },
+    { field: 'Nota', headerName: 'Nota', width: 200, headerAlign: 'center' },
     {
       field: 'borrar', headerName: 'Acciones', width: 190, headerAlign: 'center',
 
@@ -501,31 +508,28 @@ export const Recordatorio = (props) => {
                 } else {
                   navegate('/recordatorioCitas');
                 }
+              }}><AddIcon style={{ marginRight: '5px' }} />Nuevo
+            </Button>
 
-              }}
-            >
-              <AddIcon style={{ marginRight: '5px' }} />
-              Nuevo
-            </Button>
             <Button className="btnExcel" onClick={handleGenerarExcel}>
-              <AnalyticsIcon style={{ marginRight: '3px' }} />
-              Generar Excel
+              <AnalyticsIcon style={{ marginRight: '3px' }} /> Generar Excel
             </Button>
+
             <Button className="btnReport"
-              onClick={handleGenerarReporte}
-            >
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />
-              Generar reporte
+              onClick={handleGenerarReporte}>
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />Generar PDF
             </Button>
           </div>
         </div>
 
         <DataGrid
-          pagination
           autoHeight
+          pagination
+
           getRowId={tableData => tableData.IdRecordatorio}//este id me permite traer la lista
           //getRowId={row => row.fecha} // Utiliza la propiedad "fecha" como el ID para las filas
           rows={filteredData}
+
           columns={columns}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           pageSize={pageSize}
