@@ -45,11 +45,11 @@ const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor prede
 
   const columns = [
     { field: 'Rol', headerName: 'Rol', width: 130 },
-    { field: 'Objeto', headerName: 'Modulo', width: 200 },
-    { field: 'Permiso_Insercion', headerName: 'Permiso para Insertar', width: 200, },
-    { field: 'Permiso_Eliminacion', headerName: 'Permiso para Eliminar', width: 200, },
-    { field: 'Permiso_Actualizacion', headerName: 'Permiso para Actualizar', width: 200, },
-    { field: 'Permiso_Consultar', headerName: 'Permiso para Consultar', width: 200, },
+    { field: 'Objeto', headerName: 'Modulo', width: 150 },
+    { field: 'Permiso_Insercion', headerName: 'Permiso para Insertar', width: 150, },
+    { field: 'Permiso_Eliminacion', headerName: 'Permiso para Eliminar', width:150, },
+    { field: 'Permiso_Actualizacion', headerName: 'Permiso para Actualizar', width: 150, },
+    { field: 'Permiso_Consultar', headerName: 'Permiso para Consultar', width: 150, },
 
     {
       field: 'borrar',
