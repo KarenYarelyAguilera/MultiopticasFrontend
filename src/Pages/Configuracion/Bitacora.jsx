@@ -31,33 +31,14 @@ export const Bitacora = (props, idRol) => {
   const [cambio, setCambio] = useState(0)
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
-  // const bitacora = [
-  //   { IdBitacora: '', fecha: '', Id_Usuario: '', Id_Objeto:'', accion:'' , descripcion:'' },
- 
-  // ];
-
-  // function depurarBitacora(bitacora, nivelMinimo = 'info', fechaLimite = null) {
-  //   // Filtrar por nivel y fecha si se proporcionan
-  //   const bitacoraFiltrada = bitacora.filter((registro) => {
-  //     const nivelValido = registro.nivel === nivelMinimo || (registro.nivel !== 'error' && registro.nivel !== 'advertencia');
-  //     const fechaValida = fechaLimite ? new Date(registro.fecha) >= new Date(fechaLimite) : true;
-  //     return nivelValido && fechaValida;
-  //   });
-  
-  //   return bitacoraFiltrada;
-  // }
-
-  const urlBitacora =
-    "http://localhost:3000/api/bitacora";
+  const urlBitacora = "http://localhost:3000/api/bitacora";
 
   const urlOnOffBitacora = "http://localhost:3000/api/parametro/bitacora"
 
-  const urlSalirListaBitacora =
-    "http://localhost:3000/api/bitacora/SalirListaBitacora";
+  const urlSalirListaBitacora = "http://localhost:3000/api/bitacora/SalirListaBitacora";
 
+  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminar';
 
-  //   const urlProducto =
-  // "http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=Bitacora";
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -209,7 +190,93 @@ export const Bitacora = (props, idRol) => {
       }
 
     })
-  }
+  };
+
+
+//   //FUNCION DE ELIMINAR 
+// function handleDel(id) {
+//   if (permisos[0].eliminar==="n") {
+//     swal("No cuenta con los permisos para realizar esta accion","","error")
+//   } else {
+//     swal({
+//       content: (
+//         <div>
+//           <div className="logoModal">¿Desea elimiar todos los registros de la bitacora?</div>
+//           <div className="contEditModal">
+//           </div>
+//         </div>
+//       ),
+//       buttons: {
+//         cancel: 'Cancelar',
+//         delete: 'Eliminar',
+//       },
+//     }).then(async(op) => {
+  
+//       switch (op) {
+//         case 'delete':
+  
+//           let data = {
+//             IdBitacora: id
+//           };
+//           console.log(data);
+    
+        
+
+//           await axios.delete(urlBorrarBitacora,{data}).then(response=>{
+//             swal("Bitacora eliminada corectamente","","success")
+           
+//             setCambio(cambio+1)
+//           }).catch(error=>{
+//             console.log(error);
+//             swal("Error al eliminar datos","","error")
+//           })
+         
+//         break;
+      
+//         default:
+//         break;
+//       }
+//     });
+//   }
+  
+// };
+
+function handleDel() {
+  swal({
+    content: (
+      <div>
+        <div className="logoModal">¿Desea eliminar todos los registros de la bitácora?</div>
+        <div className="contEditModal">
+        </div>
+      </div>
+    ),
+    buttons: {
+      cancel: 'Cancelar',
+      delete: 'Eliminar',
+    },
+  }).then(async (op) => {
+
+    switch (op) {
+      case 'delete':
+
+        await axios.delete(urlBorrarBitacora).then(response => {
+          swal("Bitácora eliminada correctamente", "", "success");
+          setCambio(cambio + 1);
+        }).catch(error => {
+          console.log(error);
+          swal("Error al eliminar datos", "", "error");
+        });
+
+        break;
+
+      default:
+        break;
+    }
+  });
+}
+
+
+
 
   return (
     <div className="ContUsuarios">
@@ -226,7 +293,7 @@ export const Bitacora = (props, idRol) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
+        <div className="contFilter2">
           {/* <div className="buscador"> */}
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
@@ -239,7 +306,7 @@ export const Bitacora = (props, idRol) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
+          <div className="btnActionsNewReport2">
             {props.bitacora === "si" ?
               <Button className="btnOff" onClick={handleUpdateBitacora}>
                 Desactivar Bitacora
@@ -248,6 +315,11 @@ export const Bitacora = (props, idRol) => {
                 Activar Bitacora
               </Button>}
 
+              <Button className="btnBorrar" onClick={handleDel}>
+              <DeleteForeverIcon style={{ marginRight: '3px' }} />
+              Borrar Bitacora
+            </Button>
+
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '3px' }} />
               Generar Excel
@@ -255,7 +327,7 @@ export const Bitacora = (props, idRol) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} /> Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} /> Generar PDF
             </Button>
 
           </div>

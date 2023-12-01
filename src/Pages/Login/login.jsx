@@ -238,20 +238,22 @@ export const Login = props => {
         </div>
         <div className="contButtons">
           <div className="secondButtons">
-            <div className="contRecuerdame">
+            {/* <div className="contRecuerdame">
               <input
                 type="checkbox"
                 name="Recuerdame"
                 className="btnRecuerdame"
               />
               Recuerdame
-            </div>
+            </div> */}
             {/* <Link className="btnOlvidar" to={'/recuperacion'}>
               ¿Olvidaste tu contraseña?
             </Link> */}
-            <Link className="btnOlvidar" onClick={handleOpen}>
+
+            <div><Link className="btnOlvidar" onClick={handleOpen}>
               ¿Olvidaste tu contraseña?
-            </Link>
+            </Link></div>
+            
             <Modal
               open={open}
               onClose={handleClose}

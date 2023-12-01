@@ -65,9 +65,7 @@ export const PageFour = ({ correo, id, autor }) => {
       <form className="measure">
         <div className="contPrincipalRecuperacion" >
 
-          <div className="contInput" style={{ fontSize: "17px" }}>
-            <TextCustom text="Debe de incluir letras mayúsculas, minúsculas y almenos dos caracteres especiales." ></TextCustom>
-          </div>
+          
           <div className='divInfoRecuperacion'>
             <div className="contInput" style={{ fontSize: "17px" }}>
               <TextCustom text="Nueva contraseña" className="titleInput" />
@@ -164,7 +162,7 @@ export const PageFour = ({ correo, id, autor }) => {
             <p className='error'>{advertencia}</p>
           </div>
         </div>
-        <div className='divSubmitRecuperacion'>
+        <div className='divSubmitRecuperacion'  style={{ fontSize: "17px" }}>
           <input
             className="btnSubmit"
             type="button"

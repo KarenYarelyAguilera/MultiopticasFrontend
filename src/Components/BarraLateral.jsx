@@ -31,6 +31,7 @@ const urlCierre = 'http://localhost:3000/api/bitacora/Cierre';
 const urlBitacoraConfig = 'http://localhost:3000/api/bitacora/Configuracion';
 const urlBIngresoPCita='http://localhost:3000/api/bitacora/citas';
 const urlIngresoInventario ='http://localhost:3000/api/bitacora/PantallaInventarioB';
+const urlPermisos = 'http://localhost:3000/api/permisosRol'
 //-----------------------------------------------------------------------
 
 export const BarraLateral = props => {
@@ -46,40 +47,29 @@ export const BarraLateral = props => {
 
   const [permisos, setPermisos] = useState([]);
 
-  // useEffect(() => {
-  //   fetch(urlP, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => setPermisos(data))
-  // }, [])
+  const dataP={
+      idRol:props.idRol
+  }
 
-  let pantallas = Object.values(permisos).map(({ Id_Objeto }) =>
-    parseInt(Id_Objeto),
+  useEffect(() => {
+      axios.post(urlPermisos,dataP).then((response) => setPermisos(response.data))
+  }, [])
+
+  console.log(permisos);
+
+  let pantallas = Object.values(permisos).map(({ Objeto}) => Objeto
   ); //permite acceder a la propiedad del objeto y aislarla a un array aparte
   let consulta = Object.values(permisos).map(
-    ({ Permiso_Consultar }) => Permiso_Consultar,
+    ({ PermConsul }) => PermConsul,
   );
+  console.log(consulta);
 
   //------------------------Componentes del menu-------------------------
   const Usuario = () => {
-    if (consulta[0] === 's' && pantallas[0] === 2) {
+    if (consulta[0] === 's' && pantallas[0] === "Usuario") {
       return (
         <li>
           <Link className="link" to="/usuarios" onClick={() => props.obj(2)}>
-            {/* fetch(urlBitacoraUsuario, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(dataB),
-            })
-            props.obj(2)}}> */}
-
             <FontAwesomeIcon className="iconLi" icon={faUsers} />
             <h1>ADMINISTRACION</h1>
           </Link>
@@ -89,7 +79,7 @@ export const BarraLateral = props => {
   };
 
   const Inventario = () => {
-    if (consulta[1] === 's' && pantallas[1] === 3) {
+    if (consulta[1] === 's' && pantallas[1] === "Inventario") {
       return (
         <li>
           <Link className="link" to="/inventario">
@@ -102,7 +92,7 @@ export const BarraLateral = props => {
   };
 
   const Clientes = () => {
-    if (consulta[2] === 's' && pantallas[2] === 4) {
+    if (consulta[2] === 's' && pantallas[2] === "Clientes") {
       return (
         <li>
           <Link className="link" to="/menuClientes">
@@ -116,7 +106,7 @@ export const BarraLateral = props => {
 
 
   const Recordatorios = () => {
-    if (consulta[3] === 's' && pantallas[3] === 5) {
+    if (consulta[3] === 's' && pantallas[3] === "Citas") {
       return (
         <li>
           <Link className="link" to="/recordatorio">
@@ -128,24 +118,11 @@ export const BarraLateral = props => {
     }
   };
 
-  const Reportes = () => {
-    if (consulta[4] === 's' && pantallas[4] === 6) {
-      return (
-        <li>
-          <Link className="link" to="/preguntasSeguridad">
-            <FontAwesomeIcon className="iconLi" icon={faFileLines} />
-            <h1>REPORTES</h1>
-          </Link>
-        </li>
-      );
-    }
-  };
-  console.log(consulta[5] === 's' && pantallas[5] === 7 && props.idRol===1);
   const Seguridad = () => {
-    if (consulta[5] === 's' && pantallas[5] === 7 && props.idRol===1) {
+    if (consulta[5] === 's' && pantallas[5] === "Seguridad") {
       return (
         <li>
-          <Link className="link" to="">
+          <Link className="link" to="/seguridad">
             <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
             <h1>SEGURIDAD</h1>
           </Link>
@@ -154,12 +131,12 @@ export const BarraLateral = props => {
     }
   };
   const Configuracion = () => {
-    if (consulta[6] === 's' && pantallas[6] === 8) {
+    if (consulta[6] === 's' && pantallas[6] === "Configuracion") {
       return (
         <li>
           <Link className="link" to="/config">
             <FontAwesomeIcon className="iconLi" icon={faGear} />
-            <h1>CONFIGURACION</h1>
+            <h1>Mantenimiento</h1>
           </Link>
         </li>
       );
@@ -167,7 +144,7 @@ export const BarraLateral = props => {
   };
 
   const Ventas = () => {
-    if (consulta[7] === 's' && pantallas[7] === 9) {
+    if (consulta[7] === 's' && pantallas[7] === "Ventas") {
       return (
         <li>
           <Link className="link" to="/ventas">
@@ -215,99 +192,13 @@ export const BarraLateral = props => {
         <nav>
           <ul>
 
-            {props.idRol===1?<>
-              <li>
-              <Link
-                className="link"
-                to="/usuarios"
-                onClick={() => {
-                  axios.post(urlBitacoraModEmple, dataB); //Bitacora del modulo de usuario/empleado
-                  props.obj(2);
-                }}>
-                <FontAwesomeIcon className="iconLi" icon={faUsers} />
-                <h1>ADMINISTRACION</h1>
-              </Link>
-            </li>
-            </>:<></>}
-
-          {/*   <li>
-              <Link className="link" to="/compras">
-                <FontAwesomeIcon
-                  className="iconLi"
-                  icon={faCartShopping}
-                />
-                <h1>COMPRAS</h1>
-              </Link>
-            </li> */}
-
-            <li>
-              <Link className="link" to="/ventas">
-                <FontAwesomeIcon
-                  className="iconLi"
-                  icon={faHandHoldingDollar}
-                />
-                <h1>VENTAS</h1>
-              </Link>
-            </li>
-
-            <li>
-              <Link className="link" to="/inventario"onClick={() => {
-                  const dataB = {
-                    Id: props.idUsuario,
-                  };
-                  const bitacora = {
-                    urlB:urlIngresoInventario,
-                    activo:props.activo,
-                    dataB:dataB
-                  };
-                  Bitacora(bitacora);
-                  props.obj(3);
-                }}> 
-                <FontAwesomeIcon className="iconLi" icon={faClipboardList} />
-                <h1>INVENTARIO</h1>
-              </Link>
-            </li>
-
-            <li>
-              <Link className="link" to="/menuClientes">
-                <FontAwesomeIcon className="iconLi" icon={faPeopleRoof} />
-                <h1>CLIENTES</h1>
-              </Link>
-            </li>
-
-            <li>
-              <Link className="link" to="/recordatorio"   onClick={() => {
-                  //axios.post(urlBIngresoPCita, dataB); 
-                  Bitacora(bitacora);
-                  props.obj(2);
-                }}>
-                <FontAwesomeIcon className="iconLi" icon={faCalendar} />
-                <h1>CITAS</h1>
-              </Link>
-            </li>
-
-                {props.idRol===1?<>
-                  <li>
-              <Link className="link" to="/seguridad">
-                <FontAwesomeIcon className="iconLi" icon={faShieldHalved} />
-                <h1>SEGURIDAD</h1>
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                className="link"
-                to="/config"
-                onClick={() => {
-                  axios.post(urlBitacoraConfig, dataB); //Bitacora de etrar a la pantalla de configuracion
-                  props.obj(2);
-                }}
-              >
-                <FontAwesomeIcon className="iconLi" icon={faGear} />
-                <h1>MANTENIMIENTO</h1>
-              </Link>
-            </li>
-                </>:<></>}
+            <Usuario></Usuario>  
+            <Ventas></Ventas>
+            <Inventario/>
+            <Clientes></Clientes>
+            <Recordatorios></Recordatorios>
+            <Seguridad></Seguridad>
+            <Configuracion></Configuracion>
             
 
             {/* <Usuario />

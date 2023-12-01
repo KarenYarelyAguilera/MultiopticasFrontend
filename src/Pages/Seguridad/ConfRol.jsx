@@ -31,7 +31,7 @@ export const ConfigRol = props => {
   const urlSeguridad = "http://localhost:3000/api/permisosOBJ7"
   const urlConfig = "http://localhost:3000/api/permisosOBJ8"
   const urlVentas = "http://localhost:3000/api/permisosOBJ9"
-   
+
 
   const [roles, setRoles] = useState([]);
   const [permisos, setPermisos] = useState([]);
@@ -78,36 +78,197 @@ export const ConfigRol = props => {
   const [cont, setCont] = useState(0);
   const navegate = useNavigate();
 
-  
-  
 
-  
+
+
+
 
   const handleEditar = () => {
     swal(
-    <div className="logoModal">¿Desea editar este rol?</div>,
-     {
-      buttons: {
-        defeat: 'ACEPTAR',
-        cancel: 'CANCELAR',
-      },
-    }).then(resp => {
-      switch (resp) {
-        case 'defeat':
-          if (document.getElementById('rol').value === '1') {
-            swal('Este Rol no se puede actualizar.', '', 'error');
-          } else {
+      <div className="logoModal">¿Desea editar este rol?</div>,
+      {
+        buttons: {
+          defeat: 'ACEPTAR',
+          cancel: 'CANCELAR',
+        },
+      }).then(resp => {
+        switch (resp) {
+          case 'defeat':
+            if (document.getElementById('rol').value === '1') {
+              swal('Este Rol no se puede actualizar.', '', 'error');
+            } else {
+              swal(
+                <div>
+                  <div className='logoModal'>Datos de Rol</div>
+                  <div className='contEditModal'>
+                    <div className="contInput">
+                      <TextCustom text="Rol " className="titleInput" />
+                      <input type="text" id="Rol" className='inputCustom' />
+                    </div>
+
+                    <div className="contInput">
+                      <TextCustom text="Descripcion " className="titleInput" />
+                      <textarea id="desc" className='textAreaCustom' />
+                    </div>
+                  </div>
+                </div>,
+              ).then(() => {
+                var today = new Date();
+                let autor = document.getElementById('rol').value;
+
+                var fecha =
+                  today.getFullYear() +
+                  '-' +
+                  (today.getMonth() + 1) +
+                  '-' +
+                  today.getDate();
+                let data = {
+                  rol: document.getElementById('Rol').value,
+                  descripcion: document.getElementById('desc').value,
+                  id: autor,
+                  autor: props.usuario,
+                  fecha: fecha,
+                };
+
+                // if (sendData(urlURol, data)) {
+                //   swal('Rol actualizado exitosamente', '', 'success');
+                //   setCont(cont + 1);
+                // }
+              });
+            }
+            break;
+        }
+      });
+  };
+
+  const updUsuarios = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: usuarioLeer ? 's' : 'n',
+        insert: usuarioInsertar ? 's' : 'n',
+        upd: usuarioEditar ? 's' : 'n',
+        del: usuarioEliminar ? 's' : 'n',
+      };
+      await axios.put(urlUsuario, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updVentas = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: ventasLeer ? 's' : 'n',
+        insert: ventasInsertar ? 's' : 'n',
+        upd: ventasEditar ? 's' : 'n',
+        del: ventasEliminar ? 's' : 'n',
+      };
+      await axios.put(urlVentas, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updInventario = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: inventarioLeer ? 's' : 'n',
+        insert: inventarioInsertar ? 's' : 'n',
+        upd: inventarioEditar ? 's' : 'n',
+        del: inventarioEliminar ? 's' : 'n',
+      };
+      await axios.put(urlInventario, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updClientes = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: clientesLeer ? 's' : 'n',
+        insert: clientesInsertar ? 's' : 'n',
+        upd: clientesEditar ? 's' : 'n',
+        del: clientesEliminar ? 's' : 'n',
+      };
+      await axios.put(urlClientes, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updRecordatorios = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: recordatoriosLeer ? 's' : 'n',
+        insert: recordatoriosInsertar ? 's' : 'n',
+        upd: recordatoriosEditar ? 's' : 'n',
+        del: recordatoriosEliminar ? 's' : 'n',
+      };
+      await axios.put(urlRecordatorio, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updSeguridad = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: seguridadLeer ? 's' : 'n',
+        insert: seguridadInsertar ? 's' : 'n',
+        upd: seguridadEditar ? 's' : 'n',
+        del: seguridadEliminar ? 's' : 'n',
+      };
+      await axios.put(urlSeguridad, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+  const updConfiguracion = async () => {
+    if (gRol === 1) {
+      alert('este rol no se puede editar');
+    } else {
+      const data = {
+        idRol: gRol,
+        select: configuracionLeer ? 's' : 'n',
+        insert: configuracionInsertar ? 's' : 'n',
+        upd: configuracionEditar ? 's' : 'n',
+        del: configuracionEliminar ? 's' : 'n',
+      };
+      await axios.put(urlConfig, data).then(() => swal("Permisos actualizados con exito", "", "success"))
+    }
+
+  }
+
+  /* 
+    const handleNuevoRol = () => {
+      swal(
+      <div className='logoModal'>Crear un nuevo rol</div>, {
+        buttons: {
+          defeat: 'ACEPTAR',
+          cancel: 'CANCELAR',
+        },
+      }).then(resp => {
+        switch (resp) {
+          case 'defeat':
             swal(
               <div>
                 <div className='logoModal'>Datos de Rol</div>
                 <div className='contEditModal'>
                   <div className="contInput">
-                    <TextCustom text="Rol " className="titleInput" />
+                    <TextCustom text="Rol" className="titleInput" />
                     <input type="text" id="Rol" className='inputCustom' />
                   </div>
-
+  
                   <div className="contInput">
-                    <TextCustom text="Descripcion " className="titleInput" />
+                    <TextCustom text="Descripcion" className="titleInput" />
                     <textarea id="desc" className='textAreaCustom'/>
                   </div>
                 </div>
@@ -115,7 +276,7 @@ export const ConfigRol = props => {
             ).then(() => {
               var today = new Date();
               let autor = document.getElementById('rol').value;
-
+  
               var fecha =
                 today.getFullYear() +
                 '-' +
@@ -129,223 +290,62 @@ export const ConfigRol = props => {
                 autor: props.usuario,
                 fecha: fecha,
               };
-
-              // if (sendData(urlURol, data)) {
-              //   swal('Rol actualizado exitosamente', '', 'success');
+  
+              // if (sendData(urlNRol, data)) {
+              //   swal('Rol creado exitosamente', '', 'success');
               //   setCont(cont + 1);
               // }
             });
-          }
-          break;
-      }
-    });
-  };
-
-  const updUsuarios = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: usuarioLeer? 's' : 'n',
-        insert: usuarioInsertar ? 's' : 'n',
-        upd: usuarioEditar ? 's' : 'n',
-        del: usuarioEliminar ? 's' : 'n',
-      };
-      await axios.put(urlUsuario,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updVentas = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: ventasLeer? 's' : 'n',
-        insert: ventasInsertar ? 's' : 'n',
-        upd: ventasEditar ? 's' : 'n',
-        del: ventasEliminar ? 's' : 'n',
-      };
-      await axios.put(urlVentas,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updInventario = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: inventarioLeer? 's' : 'n',
-        insert: inventarioInsertar ? 's' : 'n',
-        upd: inventarioEditar ? 's' : 'n',
-        del: inventarioEliminar ? 's' : 'n',
-      };
-      await axios.put(urlInventario,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updClientes = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: clientesLeer? 's' : 'n',
-        insert: clientesInsertar ? 's' : 'n',
-        upd: clientesEditar ? 's' : 'n',
-        del: clientesEliminar ? 's' : 'n',
-      };
-      await axios.put(urlClientes,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updRecordatorios = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: recordatoriosLeer? 's' : 'n',
-        insert: recordatoriosInsertar ? 's' : 'n',
-        upd: recordatoriosEditar ? 's' : 'n',
-        del: recordatoriosEliminar ? 's' : 'n',
-      };
-      await axios.put(urlRecordatorio,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updSeguridad = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: seguridadLeer? 's' : 'n',
-        insert: seguridadInsertar ? 's' : 'n',
-        upd: seguridadEditar ? 's' : 'n',
-        del: seguridadEliminar ? 's' : 'n',
-      };
-      await axios.put(urlSeguridad,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-  const updConfiguracion = async ()=>{
-    if (gRol === 1) {
-      alert('este rol no se puede editar');
-    }else{
-      const data = {
-        idRol:gRol,
-        select: configuracionLeer? 's' : 'n',
-        insert: configuracionInsertar ? 's' : 'n',
-        upd: configuracionEditar ? 's' : 'n',
-        del: configuracionEliminar ? 's' : 'n',
-      };
-      await axios.put(urlConfig,data).then(()=>swal("Permisos actualizados con exito","","success"))
-    }
-
-  }
-
-/* 
-  const handleNuevoRol = () => {
-    swal(
-    <div className='logoModal'>Crear un nuevo rol</div>, {
-      buttons: {
-        defeat: 'ACEPTAR',
-        cancel: 'CANCELAR',
-      },
-    }).then(resp => {
-      switch (resp) {
-        case 'defeat':
-          swal(
-            <div>
-              <div className='logoModal'>Datos de Rol</div>
-              <div className='contEditModal'>
-                <div className="contInput">
-                  <TextCustom text="Rol" className="titleInput" />
-                  <input type="text" id="Rol" className='inputCustom' />
-                </div>
-
-                <div className="contInput">
-                  <TextCustom text="Descripcion" className="titleInput" />
-                  <textarea id="desc" className='textAreaCustom'/>
-                </div>
-              </div>
-            </div>,
-          ).then(() => {
-            var today = new Date();
-            let autor = document.getElementById('rol').value;
-
-            var fecha =
-              today.getFullYear() +
-              '-' +
-              (today.getMonth() + 1) +
-              '-' +
-              today.getDate();
-            let data = {
-              rol: document.getElementById('Rol').value,
-              descripcion: document.getElementById('desc').value,
-              id: autor,
-              autor: props.usuario,
-              fecha: fecha,
-            };
-
-            // if (sendData(urlNRol, data)) {
-            //   swal('Rol creado exitosamente', '', 'success');
-            //   setCont(cont + 1);
-            // }
-          });
-          break;
-      }
-    });
-  }; */
+            break;
+        }
+      });
+    }; */
 
   useEffect(() => {
     fetch(urlRoles)
       .then(response => response.json())
       .then(data => setRoles(data));
 
-    axios.post(urlPermisos,{idRol:gRol}).then((response)=>{
+    axios.post(urlPermisos, { idRol: gRol }).then((response) => {
       //Leer
-    setRecordatoriosLeer(response.data[3].PermConsul==="s"?true:false);
-    setClientesLeer(response.data[2].PermConsul==="s"?true:false);
-    setConfigLeer(response.data[6].PermConsul==="s"?true:false);
-    setUsuarioLeer(response.data[0].PermConsul==="s"?true:false);
-    setInventarioLeer(response.data[1].PermConsul==="s"?true:false);
-    setVentasLeer(response.data[7].PermConsul==="s"?true:false);
-    setSeguridadLeer(response.data[5].PermConsul==="s"?true:false);
+      setRecordatoriosLeer(response.data[3].PermConsul === "s" ? true : false);
+      setClientesLeer(response.data[2].PermConsul === "s" ? true : false);
+      setConfigLeer(response.data[6].PermConsul === "s" ? true : false);
+      setUsuarioLeer(response.data[0].PermConsul === "s" ? true : false);
+      setInventarioLeer(response.data[1].PermConsul === "s" ? true : false);
+      setVentasLeer(response.data[7].PermConsul === "s" ? true : false);
+      setSeguridadLeer(response.data[5].PermConsul === "s" ? true : false);
 
 
-    //Editar
-    setRecordatoriosEditar(response.data[3].PermUpd==="s"?true:false);
-    setClientesEditar(response.data[2].PermUpd==="s"?true:false);
-    setConfigEditar(response.data[6].PermUpd==="s"?true:false);
-    setUsuarioEditar(response.data[0].PermUpd==="s"?true:false);
-    setInventarioEditar(response.data[1].PermUpd==="s"?true:false);
-    setVentasEditar(response.data[7].PermUpd==="s"?true:false);
-    setSeguridadEditar(response.data[5].PermUpd==="s"?true:false);
+      //Editar
+      setRecordatoriosEditar(response.data[3].PermUpd === "s" ? true : false);
+      setClientesEditar(response.data[2].PermUpd === "s" ? true : false);
+      setConfigEditar(response.data[6].PermUpd === "s" ? true : false);
+      setUsuarioEditar(response.data[0].PermUpd === "s" ? true : false);
+      setInventarioEditar(response.data[1].PermUpd === "s" ? true : false);
+      setVentasEditar(response.data[7].PermUpd === "s" ? true : false);
+      setSeguridadEditar(response.data[5].PermUpd === "s" ? true : false);
 
-    //Insertar
-    setRecordatoriosInsertar(response.data[3].PermI==="s"?true:false);
-    setClientesInsertar(response.data[2].PermI==="s"?true:false);
-    setConfigInsertar(response.data[6].PermI==="s"?true:false);
-    setUsuarioInsertar(response.data[0].PermI==="s"?true:false);
-    setInventarioInsertar(response.data[1].PermI==="s"?true:false);
-    setVentasInsertar(response.data[7].PermI==="s"?true:false);
-    setSeguridadInsertar(response.data[5].PermI==="s"?true:false);
+      //Insertar
+      setRecordatoriosInsertar(response.data[3].PermI === "s" ? true : false);
+      setClientesInsertar(response.data[2].PermI === "s" ? true : false);
+      setConfigInsertar(response.data[6].PermI === "s" ? true : false);
+      setUsuarioInsertar(response.data[0].PermI === "s" ? true : false);
+      setInventarioInsertar(response.data[1].PermI === "s" ? true : false);
+      setVentasInsertar(response.data[7].PermI === "s" ? true : false);
+      setSeguridadInsertar(response.data[5].PermI === "s" ? true : false);
 
-    //Eliminar
-    setRecordatoriosEliminar(response.data[3].PermDel==="s"?true:false);
-    setClientesEliminar(response.data[2].PermDel==="s"?true:false);
-    setConfigEliminar(response.data[6].PermDel==="s"?true:false);
-    setUsuarioEliminar(response.data[0].PermDel==="s"?true:false);
-    setInventarioEliminar(response.data[1].PermDel==="s"?true:false);
-    setVentasEliminar(response.data[7].PermDel==="s"?true:false);
-    setSeguridadEliminar(response.data[5].PermDel==="s"?true:false);
+      //Eliminar
+      setRecordatoriosEliminar(response.data[3].PermDel === "s" ? true : false);
+      setClientesEliminar(response.data[2].PermDel === "s" ? true : false);
+      setConfigEliminar(response.data[6].PermDel === "s" ? true : false);
+      setUsuarioEliminar(response.data[0].PermDel === "s" ? true : false);
+      setInventarioEliminar(response.data[1].PermDel === "s" ? true : false);
+      setVentasEliminar(response.data[7].PermDel === "s" ? true : false);
+      setSeguridadEliminar(response.data[5].PermDel === "s" ? true : false);
     })
 
-    
+
   }, [accion, cont]);
 
   //Leer
@@ -454,7 +454,7 @@ export const ConfigRol = props => {
     setConfigEliminar(!configuracionEliminar);
   };
 
-  
+
 
   const handleBack = () => {
     navegate('/seguridad');
@@ -534,8 +534,9 @@ export const ConfigRol = props => {
                 className="selectCustom"
                 onChange={e => {
                   setGRol(parseInt(document.getElementById('rol').value));
-                  setCont(cont+1)
+                  setCont(cont + 1)
                 }}
+                value={gRol}
               >
                 {roles.length ? (
                   roles.map(pre => (
@@ -550,9 +551,9 @@ export const ConfigRol = props => {
                 )}
               </select>
             </div>
-           
+
             <div className="contButton">
-           {/*    <Button
+              {/*    <Button
                 className="btnEditRol"
                 onClick={() => {
                   setGRol(parseInt(document.getElementById('rol').value));
@@ -562,9 +563,9 @@ export const ConfigRol = props => {
                 <EditIcon style={{ marginRight: '5px' }} />
                 Editar
               </Button> */}
-              <Button className="btnNewRol"  onClick={() => {
-                 navegate('/config/ListaRoles')
-                }}>
+              <Button className="btnNewRol" onClick={() => {
+                navegate('/config/ListaRoles')
+              }}>
                 <AddIcon style={{ marginRight: '5px' }} />
                 Lista Roles
               </Button>
@@ -624,6 +625,7 @@ export const ConfigRol = props => {
               <TextCustom text="Administración" className="titleInput" />
               <TextCustom text="Ventas " className="titleInput" />
               <TextCustom text="Inventario" className="titleInput" />
+              <TextCustom text="Compras" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />
               <TextCustom text="Citas" className="titleInput" />
               <TextCustom text="Seguridad" className="titleInput" />
@@ -637,7 +639,7 @@ export const ConfigRol = props => {
                   checked={usuarioLeer}
                   onChange={handleUsuarioChange}
                   value={1}
-                  
+
                 ></IOSSwitch>
                 <IOSSwitch
                   checked={ventasLeer}
@@ -648,6 +650,16 @@ export const ConfigRol = props => {
                 ></IOSSwitch>
 
                 <IOSSwitch
+                  checked={inventarioLeer}
+                  onChange={handleInventarioChange}
+                  id="accion"
+                  onClick={() =>
+                    setAccion(parseInt(document.getElementById('accion').value))
+                  }
+                  value={1}
+                ></IOSSwitch>
+
+                <IOSSwitch //compras
                   checked={inventarioLeer}
                   onChange={handleInventarioChange}
                   id="accion"
@@ -719,6 +731,16 @@ export const ConfigRol = props => {
                 ></IOSSwitch>
 
                 <IOSSwitch
+                  id="accion"
+                  onClick={() =>
+                    setAccion(parseInt(document.getElementById('accion').value))
+                  }
+                  value={2}
+                  checked={inventarioInsertar}
+                  onChange={handleInventarioInsertarChange}
+                ></IOSSwitch>
+
+                <IOSSwitch //compras
                   id="accion"
                   onClick={() =>
                     setAccion(parseInt(document.getElementById('accion').value))
@@ -800,6 +822,16 @@ export const ConfigRol = props => {
                   onChange={handleInventarioEditarChange}
                 ></IOSSwitch>
 
+                <IOSSwitch //compras
+                  id="accion"
+                  onClick={() =>
+                    setAccion(parseInt(document.getElementById('accion').value))
+                  }
+                  value={3}
+                  checked={inventarioEditar}
+                  onChange={handleInventarioEditarChange}
+                ></IOSSwitch>
+
                 <IOSSwitch
                   id="accion"
                   onClick={() =>
@@ -872,6 +904,16 @@ export const ConfigRol = props => {
                   onChange={handleInventarioEliminarChange}
                 ></IOSSwitch>
 
+                <IOSSwitch //compras
+                  id="accion"
+                  onClick={() =>
+                    setAccion(parseInt(document.getElementById('accion').value))
+                  }
+                  value={4}
+                  checked={inventarioEliminar}
+                  onChange={handleInventarioEliminarChange}
+                ></IOSSwitch>
+
                 <IOSSwitch
                   id="accion"
                   onClick={() =>
@@ -914,40 +956,45 @@ export const ConfigRol = props => {
                 ></IOSSwitch>
               </div>
               <div className="contSwitchControl">
-              <Button className="btnEditPermiso" onClick={updUsuarios} >
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updUsuarios} >
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updVentas}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updVentas}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updInventario}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updInventario}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updClientes}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updInventario}> {/**compras */}
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updRecordatorios}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updClientes}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updSeguridad}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updRecordatorios}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
 
-              <Button className="btnEditPermiso" onClick={updConfiguracion}>
-              <EditIcon style={{ marginRight: '5px' }} />
-              Editar Permiso
-              </Button>
+                <Button className="btnEditPermiso" onClick={updSeguridad}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
+
+                <Button className="btnEditPermiso" onClick={updConfiguracion}>
+                  <EditIcon style={{ marginRight: '5px' }} />
+                  Editar Permiso
+                </Button>
               </div>
             </div>
           </div>
