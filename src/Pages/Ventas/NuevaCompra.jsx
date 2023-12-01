@@ -223,7 +223,7 @@ export const NuevaCompra = ({
         if (value) {
          
             swal("¡Compra confirmada!", "", "success").then(()=>{
-              console.log(data);
+              
               axios.post(urlCompra, data).then(() => {
                 navegate('/menuInventario/ListaCompra');
               })
