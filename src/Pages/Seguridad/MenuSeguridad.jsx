@@ -44,6 +44,21 @@ export const MenuSeguridad = () => {
       imagen: 'https://static.vecteezy.com/system/resources/previews/001/860/124/non_2x/clipboard-check-mark-list-icon-isolated-style-free-vector.jpg',
       vinculo: "/config/ListaParametros",
     },
+
+    {
+      consulta:"s",
+      titulo: "Bitacora",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/002/788/724/non_2x/checklist-on-smartphone-screen-online-survey-concept-hand-holds-mobile-phone-and-check-list-with-checkmark-illustration-flat-vector.jpg',
+      vinculo: "/Administracion/Bitacora", 
+    },
+
+    {
+      consulta:"s",
+      titulo: "BackUp",
+      imagen: 'https://static.vecteezy.com/system/resources/previews/004/689/194/non_2x/server-computer-network-free-vector.jpg',
+      vinculo:"/usuarios/backup", 
+    },
+    
     // {
     //   titulo: "Detalle de Venta Promocion",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/718/non_2x/global-marketing-strategy-concept-marketing-team-target-affiliate-program-flat-modern-illustration-vector.jpg',
