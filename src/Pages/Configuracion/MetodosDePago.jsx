@@ -139,9 +139,7 @@ export const MetodosDePago = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizacion de Método de Pago</h2> : <h2>Registro de Método de Pago</h2>}        <h3>
-          Complete todos los puntos para poder actualizar los Métodos de Pago.
-        </h3>
+        {props.actualizar ? <h2>Actualizacion de Método de Pago</h2> : <h2>Registro de Método de Pago</h2>}  
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
