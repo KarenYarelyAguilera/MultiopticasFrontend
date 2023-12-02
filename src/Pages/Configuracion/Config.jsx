@@ -65,6 +65,8 @@ export const Configuracion = () => {
       titulo: 'Modelos',
       vinculo: '/config/lista',
     },
+    
+    
     // {
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/089/243/non_2x/house-with-file-folder-design-of-property-documents-premium-icon-vector.jpg',
     //   titulo: 'Registro de la Marca',
