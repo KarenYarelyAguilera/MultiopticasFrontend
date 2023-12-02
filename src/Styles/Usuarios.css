@@ -1116,6 +1116,11 @@ button {
   border-radius: 25px !important;
 }
 
+.btnBorrar {
+  background-color: rgb(244, 105, 105) !important;
+  color: white !important;
+  border-radius: 25px !important;
+}
 .btnExcel {
   border: 2px solid rgb(5, 151, 5) !important;
   color: rgb(5, 151, 5) !important;

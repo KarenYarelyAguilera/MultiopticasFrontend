@@ -38,18 +38,25 @@ export const Usuarios = (props) => {
   
   let usuario = [
     
-    {
-      consulta:"s",
-      imagen: ListUsers,
-      titulo: 'Usuarios',
-      vinculo: '/usuarios/lista',
-    },
-    
+
     {
       consulta:"s",
       imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/727/non_2x/career-opportunity-concept-executive-job-human-resources-find-employee-flat-modern-illustration-vector.jpg',
       titulo: 'Empleados',
       vinculo: '/empleados/lista',
+    },
+    // {
+    //   consulta:"s",
+    //   imagen: ListUsers,
+    //   titulo: 'Usuarios',
+    //   vinculo: '/usuarios/lista',
+    // },
+    
+    {
+      // consulta:"s",
+      // imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/727/non_2x/career-opportunity-concept-executive-job-human-resources-find-employee-flat-modern-illustration-vector.jpg',
+      // titulo: 'Empleados',
+      // vinculo: '/empleados/lista',
     },
     // {
     //   consulta:"s",
