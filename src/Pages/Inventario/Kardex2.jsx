@@ -109,18 +109,18 @@ export const Kardex2 = (
   }, []);
   const handleNext = () => {
     let idTM = parseInt(document.getElementById("idTM").value)
-    let idProducto = parseInt(document.getElementById("idP").value)
     const fechaActual = new Date();
     let cantidad = parseInt(document.getElementById("cant").value)
     const fechaYHora = fechaActual.toISOString();
     let data = {
-      idProducto: selectedOptionP.value,
+      idProducto: productos.IdProducto,
       idUsuario: props.idUsuario,
       fechaYHora:fechaYHora,
       cantidad:cantidad,
       IdTipoMovimiento: selectedOptionM.value,
       descripcion:document.getElementById("descripcion").value
     };
+    console.log(data);
      //Funcion de Bitacora 
      let dataB = {
       Id: props.idUsuario

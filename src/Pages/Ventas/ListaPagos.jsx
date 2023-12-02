@@ -41,6 +41,7 @@ export const ListaPagos = (props) => {
   const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
   const [permisos, setPermisos] = useState([]);
   const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlHistPago = "http://localhost:3000/api/pago"
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 9
@@ -169,7 +170,7 @@ export const ListaPagos = (props) => {
         <div className="contActions1">
            <Button
             className="btnEdit"
-            onClick={() => handleUpdt(params.row.IdVenta)}
+            onClick={() => handleFactVenta(params.row.IdVenta)}
           >
             <Visibility></Visibility>
           </Button>
@@ -190,62 +191,70 @@ export const ListaPagos = (props) => {
     },
   ];
 
-  async function handleUpdt(id) {
-
+  async function handleFactVenta(id) {
+    let data = {
+      idVenta: id
+    }
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
-      console.log(id);
-     axios.post(urlVentaDetalle, { id: id }).then((detalle)=>{
-      console.log(detalle);
-      const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
-      const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
-       swal(
-         <div>
-           <div className="logoModal">DATOS DE LA VENTA</div>
-           <div className="contEditModal">
-             <div className="contInput">
-               <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-               <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
-               <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
-               <label><b>Cliente: {detalle.data[0].cliente}</b></label>
-               <label><b>RTN: {detalle.data[0].RTN}</b></label>
-               <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
-               
+      axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
+        axios.post(urlHistPago, data).then((histPago) => {
+          const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+          const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
 
-               
-               {detalle.data.map((detallito) => (
-              <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
-              <hr />
-                <label><b>Aro:  {detallito.aro} </b></label>
-                <label><b>Lente: {detallito.lente}</b></label>
-                <label><b>Promocion: {detallito.promocion}</b></label>
-                <label><b>Garantia: {detallito.garantia}</b></label>
-                <label><b>Precio del lente: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precLente.toFixed(2)}</div></b></label>
-                <label><b>Precio del aro: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.precio.toFixed(2)}</div></b></label>
-                <label><b>cantidad: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.cantidad}</div></b></label>
-                <label><b>Total de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.subtotal.toFixed(2)}</div></b></label> 
-                <label><b>Rebaja de los lentes y aros: <div style={{textAlign:'right', marginRight:'20px'}}>{detallito.rebaja.toFixed(2)}</div></b></label>
-              </React.Fragment>
-            ))}
-                <br />
-                <hr style={{width:'50%', marginLeft:'auto'}}/>
-               <label><b>subtotal: <div style={{textAlign:'right', marginRight:'20px'}}> {totalSubtotal.toFixed(2)}</div></b></label>
-               <label><b>Rebajas: <div style={{textAlign:'right', marginRight:'20px'}}>{totalRebajas.toFixed(2)}</div></b></label>
-               <label><b>Total a pagar: <div style={{textAlign:'right', marginRight:'20px'}}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
-             </div>
-  
-           </div>
-         </div>,
-       )
-     })
-  
-      
-      
+          swal(
+            <div>
+              <div className="logoModal">DATOS DE LA VENTA</div>
+              <div className="contEditModal">
+                <div className="contInput">
+                  <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+                  <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+                  <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+                  <label><b>Cliente: {detalle.data[0].cliente}</b> </label>
+                  <label><b>RTN: {detalle.data[0].RTN}</b></label>
+                  <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
+
+                  <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
+                    histPago.data.map((pago, index) => (
+                      <div key={index}>
+                        <label htmlFor="">fecha: {pago.fecha}</label><br />
+                        <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
+                        <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
+                        <label> Saldo Restante: {pago.saldoRestante}</label>
+                        <br />
+                      </div>
+                    ))
+                  }</label>
+
+
+                  {detalle.data.map((detallito) => (
+                    <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+                      <hr />
+                      <label><b>Aro:  {detallito.aro} </b></label>
+                      <label><b>Lente: {detallito.lente}</b></label>
+                      <label><b>Promocion: {detallito.promocion}</b></label>
+                      <label><b>Garantia: {detallito.garantia}</b></label>
+                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
+                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
+                      <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
+                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
+                    </React.Fragment>
+                  ))}
+                  <br />
+                  <hr style={{ width: '50%', marginLeft: 'auto' }} />
+                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
+                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
+                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+                </div>
+
+              </div>
+            </div>,
+          )
+        })
+      })
     }
-    //setinformacionventa.data[0](id);
-
-
   }
 
   const seguimientoPago = (pago) => {

@@ -586,7 +586,7 @@ export const NuevaCompra = ({
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
-          <label htmlFor="">Total de la compra: {compras.reduce((total,compra)=>(total+compra.costo).toFixed(2),0)}</label>
+          <label htmlFor="">Total de la compra: {compras.reduce((total,compra)=>total+compra.costo,0).toFixed(2)}</label>
         </div>
       </div>
     </div>
