@@ -254,7 +254,7 @@ export const Recordatorio = (props) => {
         value &&
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ) &&
-    (!startDate || new Date(row.fecha) >= new Date(startDate)) &&
+    (!startDate || new Date(row.fecha) >= new Date(startDate+ 'T00:00:00')) &&
     (!endDate || new Date(row.fecha) <= new Date(endDate + 'T23:59:59')) // Ajuste aquí
   );
 
@@ -517,7 +517,7 @@ export const Recordatorio = (props) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '5px' }} />Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '5px' }} />Generar PDF
             </Button>
           </div>
         </div>

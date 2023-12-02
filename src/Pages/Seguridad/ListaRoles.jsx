@@ -149,7 +149,8 @@ export const ListaRoles = (props) => {
     { field: 'Id_Rol', headerName: 'ID', width: 100, headerAlign: 'center' },
     { field: 'Rol', headerName: 'Rol', width: 300, headerAlign: 'center' },
     { field: 'Descripcion', headerName: 'Descripción', width: 300, headerAlign: 'center' },
-    { field: 'estado', headerName: 'Estado', width: 300, headerAlign: 'center' },
+    { field: 'estado', headerName: 'Estado', width: 200, headerAlign: 'center', valueGetter: (params) => (params.value === 'A' ? 'ACTIVO' : 'INACTIVO') },
+
     {
       field: 'borrar',
       headerName: 'Acciones',
@@ -318,7 +319,7 @@ export const ListaRoles = (props) => {
               onClick={handleGenerarReporte}
             >
               <PictureAsPdfIcon style={{ marginRight: '3px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
           </div>
         </div>

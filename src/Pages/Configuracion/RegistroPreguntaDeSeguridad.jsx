@@ -26,7 +26,7 @@ export const RegistroPreguntaDeSeguridad = props => {
     const urlExistePregunta = 'http://localhost:3000/api/preguntas/existe';
 
     const [cambio, setCambio] = useState(0);
-    const [Resp, setResp] = useState(props.data.Respuesta || '');
+    const [Resp, setResp] = React.useState(props.data.Pregunta || '');
     const [errorResp, setErrorResp] = useState(false);
     const [Msj, setMsj] = useState('');
 
@@ -67,50 +67,49 @@ export const RegistroPreguntaDeSeguridad = props => {
 
     const handleClick = async () => {
         try {
-            const respuestap = Resp;
+            const Resp = document.getElementById("preguntaSeg").value;
 
-        const data = {
-            pregunta: respuestap,
-            creadoPor: props.infoPerfil.nombre,
-            FechaCrea: new Date()
-        };
-        console.log(data);
+            const data = {
+                pregunta: Resp,
+                creadoPor: props.infoPerfil.nombre,
+                FechaCrea: new Date()
+            };
+            console.log(data);
 
-        await axios.post(urlPostPreguntas, data).then(response => {
-            swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'))
-        }).catch(error => {
-            console.log(error);
-            swal("¡Error al registrar su pregunta! verifique si ya ha agregado esta pregunta.", "", "error")
-        })
+            await axios.post(urlPostPreguntas, data).then(response => {
+                swal("Pregunta registrada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'))
+            }).catch(error => {
+                console.log(error);
+                swal("¡Error al registrar su pregunta! verifique si ya ha agregado esta pregunta.", "", "error")
+            })
 
         } catch (error) {
             console.log(error);
             swal("¡Error al registrar su pregunta! verifique si ya ha agregado esta pregunta.", "", "error")
         }
-        
+
     };
 
     //ACTUALIZAR
     const actualizar = async () => {
         try {
-            const respuestap = Resp;
-    
+            const Resp =  document.getElementById("preguntaSeg").value;
+
             const data = {
-                pregunta: respuestap,
+                pregunta: Resp,
                 modificado_por: props.infoPerfil.nombre,
                 fecha_modificacion: new Date(),
                 Id_Pregunta: props.data.Id_Pregunta,
             };
             console.log(data);
-    
+
             const Pregunta = {
-                pregunta: respuestap,
-            };
-    
+                Resp            };
+
             console.log(Pregunta);
-    
+
             const response = await axios.put(urlPutPreguntas, data);
-    
+
             if (response.data.estado === "ya_existe") {
                 swal('¡Error al Actualizar! Compruebe si la pregunta ya existe.', '', 'error');
                 props.limpiarData({});
@@ -118,7 +117,7 @@ export const RegistroPreguntaDeSeguridad = props => {
             } else {
                 swal("Pregunta actualizada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'));
             }
-    
+
         } catch (error) {
             console.error(error);
             props.limpiarData({});
@@ -126,8 +125,8 @@ export const RegistroPreguntaDeSeguridad = props => {
             swal('¡Error al Actualizar! Verifique si la pregunta ya existe.', '', 'error');
         }
     };
-    
-    
+
+
 
 
     return (
@@ -147,20 +146,19 @@ export const RegistroPreguntaDeSeguridad = props => {
                         <h3>Ingrese una nueva pregunta:</h3>
                         <div className="contInput">
                             <input
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    setResp(value);
 
-                                    if (value === '') {
+                                onKeyDown={e => {
+                                    setResp(e.target.value);
+                                    if (Resp === '') {
                                         setErrorResp(true);
                                         setMsj('Los campos no deben estar vacíos, ingrese más de 5 caracteres');
                                     } else {
                                         setErrorResp(false);
                                         const regex = /^[¿A-Z? ]+$/;  // Añadido el signo de interrogación a la expresión regular
-                                        if (!regex.test(value)) {
+                                        if (!regex.test(Resp)) {
                                             setErrorResp(true);
                                             setMsj('Solo debe ingresar letras mayúsculas, espacios y signos de interrogación');
-                                        } else if (/(.)\1{2,}/.test(value)) {
+                                        } else if (/(.)\1{2,}/.test(Resp)) {
                                             setErrorResp(true);
                                             setMsj('No se permiten letras consecutivas repetidas');
                                         } else {
@@ -168,8 +166,13 @@ export const RegistroPreguntaDeSeguridad = props => {
                                             setMsj('');
                                         }
                                     }
-                                }}
+                                }
+                                }
+
+
+                                onChange={e => setResp(e.target.value)}
                                 error={errorResp}
+                                id='preguntaSeg'
                                 type="text"
                                 helperText={Msj}
                                 minLength={5}

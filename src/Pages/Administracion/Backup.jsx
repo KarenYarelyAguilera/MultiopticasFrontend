@@ -72,7 +72,7 @@ export const Backup = props => {
   const navegate = useNavigate();
 
   const handleBack = () => {
-    navegate("/usuarios");
+    navegate("/seguridad");
   }
 
 
@@ -164,7 +164,7 @@ export const Backup = props => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleBackup">
-        <h2>Gestión de Base de datos.</h2>
+        <h2>Backup y Restore</h2>
       </div>
 
       <div className="infoConfigBackup">

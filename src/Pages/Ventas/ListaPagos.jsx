@@ -333,7 +333,7 @@ export const ListaPagos = (props) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}
-            >  <PictureAsPdfIcon style={{ marginRight: '3px' }} />  Generar reporte
+            >  <PictureAsPdfIcon style={{ marginRight: '3px' }} />  Generar PDF
             </Button>
 
           </div>

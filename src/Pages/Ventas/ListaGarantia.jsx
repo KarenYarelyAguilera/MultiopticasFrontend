@@ -56,9 +56,9 @@ export const ListaGarantia = (props) => {
   const urlGarantias = 'http://localhost:3000/api/garantias';
   const urlGarantiasInactivas = 'http://localhost:3000/api/garantiasInactivas';
   const urlDelGarantias = 'http://localhost:3000/api/garantias/eliminar';
-  
-  const urlBorrarBitacora= 'http://localhost:3000/api/bitacora/EliminarGarantia';
-  const urlListaSalirBitacora= 'http://localhost:3000/api/bitacora/SalirListaGarantia';
+
+  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/EliminarGarantia';
+  const urlListaSalirBitacora = 'http://localhost:3000/api/bitacora/SalirListaGarantia';
 
 
   const [tableData, setTableData] = useState([]);
@@ -77,24 +77,24 @@ export const ListaGarantia = (props) => {
   }, [cambio, inactivo]);
 
   //GENERADOR DE EXCEL
-const handleGenerarExcel = () => {
-  const workbook = XLSX.utils.book_new();
-  const currentDateTime = new Date().toLocaleString();
+  const handleGenerarExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const currentDateTime = new Date().toLocaleString();
 
-  // Datos para el archivo Excel
-  const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
-    'N°': row.IdGarantia,
-    'Descripción': row.descripcion,
-    'Meses de Garantia': row.Meses,
-    //'Producto': row.producto,
-    'Estado': row.estado,
-  }));
+    // Datos para el archivo Excel
+    const dataForExcel = (inactivo === false ? filteredData : tableDataInactivos).map((row, index) => ({
+      'N°': row.IdGarantia,
+      'Descripción': row.descripcion,
+      'Meses de Garantia': row.Meses,
+      //'Producto': row.producto,
+      'Estado': row.estado,
+    }));
 
-  const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Meses de Garantia','Producto'] });
+    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['N°', 'Descripción', 'Meses de Garantia', 'Producto'] });
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-  XLSX.writeFile(workbook, 'Lista_de_Garantias.xlsx');
-};
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+    XLSX.writeFile(workbook, 'Lista_de_Garantias.xlsx');
+  };
 
   //IMPRIMIR PDF
   const handleGenerarReporte = () => {
@@ -111,7 +111,7 @@ const handleGenerarExcel = () => {
             'N°': row.IdGarantia,
             'Descripción': row.descripcion,
             'Meses de Garantia': row.Meses,
-           // 'Producto': row.producto,
+            // 'Producto': row.producto,
             'Estado': row.estado,
 
 
@@ -146,12 +146,13 @@ const handleGenerarExcel = () => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  
 
   const columns = [
     { field: 'IdGarantia', headerName: 'ID', width: 210 },
     { field: 'descripcion', headerName: 'Descripción', width: 310 },
     { field: 'mesesGarantia', headerName: 'Meses de Garantia', width: 210 },
-   // { field: 'Modelo', headerName: 'Aro', width: 210 },
+    // { field: 'Modelo', headerName: 'Aro', width: 210 },
     { field: 'estado', headerName: 'Estado', width: 210 },
 
     {
@@ -263,7 +264,7 @@ const handleGenerarExcel = () => {
         switch (op) {
           case 'update':
             props.data(id)
-           props.update(true)
+            props.update(true)
             navegate('/menuVentas/RegistroGarantia')
             break;
           default:
@@ -323,7 +324,7 @@ const handleGenerarExcel = () => {
               Generar excel
             </Button>
 
-             
+
             <Button className="btnInactivo" onClick={() => { setInactivo(inactivo === false ? true : false) }}>
               <AddIcon style={{ marginRight: '5px' }} />
               {inactivo === false ? "Inactivos" : "Activos"}
@@ -331,13 +332,13 @@ const handleGenerarExcel = () => {
 
             <Button className="btnReport" onClick={handleGenerarReporte}>
               <PictureAsPdfIcon style={{ marginRight: '3px' }} />
-              Generar reporte
+              Generar PDF
             </Button>
 
           </div>
         </div>
         <DataGrid
-        pagination
+          pagination
           getRowId={tableData => tableData.IdGarantia}
           rows={inactivo === false ? filteredData : filteredDataInactivos}
           autoHeight
