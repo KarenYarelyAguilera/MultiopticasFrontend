@@ -335,7 +335,7 @@ export const ListaProductos = (props) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}>
-              <PictureAsPdfIcon style={{ marginRight: '3px' }}/> Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }}/> Generar PDF
             </Button>
           </div>
         </div>

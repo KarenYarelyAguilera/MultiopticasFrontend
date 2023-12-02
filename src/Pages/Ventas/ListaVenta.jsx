@@ -391,7 +391,7 @@ export const ListaVenta = (props) => {
           left: '130px',
         }}>
 
-<div className='contDateDHH' >
+        <div className='contDateDHH' >
           {/* <Button className="btnClearFilter" onClick={handleClearFilter}><DeleteForeverIcon></DeleteForeverIcon></Button> */}
 
           <span style={{ marginRight: '10px', fontFamily: 'inherit', fontWeight: 'bold' }}> DESDE: </span>
@@ -423,7 +423,7 @@ export const ListaVenta = (props) => {
 
         </div>
 
-        
+
         <div className="contFilter1">
           {/* <div className="buscador"> */}
           <SearchIcon
@@ -455,7 +455,7 @@ export const ListaVenta = (props) => {
 
             <Button className="btnReport"
               onClick={handleGenerarReporte}  >
-              <PictureAsPdfIcon style={{ marginRight: '3px' }} /> Generar reporte
+              <PictureAsPdfIcon style={{ marginRight: '3px' }} /> Generar PDF
             </Button>
 
           </div>
