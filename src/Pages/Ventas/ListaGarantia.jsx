@@ -146,6 +146,7 @@ export const ListaGarantia = (props) => {
         value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
     ),
   );
+  
 
   const columns = [
     { field: 'IdGarantia', headerName: 'ID', width: 210 },
