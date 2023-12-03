@@ -1972,8 +1972,8 @@ dependiendo del estado un componente puede reaccionar de formas diferentes */
                 <BarraHorizontal user={usuario} />
                 <NuevaVenta venta={dVenta}
                   update={update}
-                  
-                  idUsuario={idEmpleado}
+                  idEmpleado={idEmpleado}
+                  idUsuario={idUsuario}
                   data={data} 
                   Data={Data} />
                 <Footer/>

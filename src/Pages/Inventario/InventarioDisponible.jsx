@@ -122,7 +122,6 @@ export const InventarioDisponible = (props) => {
   };
   const columns = [
     { field: 'IdInventario', headerName: 'Número de inventario', width: 200, headerAlign: 'center' },
-    { field: 'IdProducto', headerName: 'ID Producto', width: 100, headerAlign: 'center' },
     { field: 'descripcion', headerName: 'Marca', width: 200, headerAlign: 'center' },
     { field: 'detalle', headerName: 'Producto', width: 200, headerAlign: 'center' },
     { field: 'cantidad', headerName: 'Cantidad', width: 200, headerAlign: 'center' },
@@ -136,19 +135,6 @@ export const InventarioDisponible = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-          <Button
-            className="btnEdit"
-            title='Editar inventario'
-            onClick={() => swal("No es posible realizar esta accion", "", "error")}
-          >
-            <EditIcon></EditIcon>
-          </Button>
-          <Button
-            className="btnDelete"
-            onClick={() => swal("No es posible realizar esta accion", "", "error")}
-          >
-            <DeleteForeverIcon></DeleteForeverIcon>
-          </Button>
           <Button
             className="btnImprimirExp"
             onClick={() =>
