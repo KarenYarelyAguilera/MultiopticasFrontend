@@ -37,8 +37,10 @@ ReactModal.setAppElement('#root');
 
 
 export const NuevaVenta = (props) => {
-
+  
+  const urltotal = 'http://localhost:3000/api/Ventas/totalAPagar';
   const [tableData, setTableData] = useState([]);
+  const [totales,setTotales]=useState({subtotal:0,rebajas:0,total:0})
   const [searchTerm, setSearchTerm] = useState('');
   const [ventas, setVentas] = useState([])
   const [Cliente, setCliente] = useState([]);
@@ -192,9 +194,11 @@ const [Rlentes, setRlentes] = useState([]);
 
   useEffect(() => {
     setTableData(ventas)
-  }, [cambio])
+  }, [ventas,cambio])
 
-
+  useEffect(() => {
+    axios.post(urlTotalAPagar,{arrVentas:ventas}).then(res=>setTotales(res.data))
+  }, [ventas])
 
   const navegate = useNavigate();
 
@@ -202,23 +206,25 @@ const [Rlentes, setRlentes] = useState([]);
 
     const cantidad = parseInt(document.getElementById("Cantidad").value);
 
-    const existingIndex = ventas.findIndex(item => item.IdProducto === selectedAros.value);
-    console.log(existingIndex);
+    const existingIndex = ventas.findIndex(item => item.IdProducto === productos.IdProducto);
+    console.log(clientes);
     if (existingIndex !== -1) {
       const updatedVentas = [...ventas];
       updatedVentas[existingIndex].cantidad += cantidad;
       setVentas(updatedVentas);
+     
     } else {
       const dataGrid = {
-        IdEmpleado: props.idUsuario,
-        IdProducto: selectedAros.value,
-        Aro: selectedAros.label,
-        IdLente: selectedLente.value,
-        Lente: selectedLente.label,
-        PrecioAro: selectedAros.precio,
+        IdEmpleado: props.idEmpleado,
+        idUsuario:props.idUsuario,
+        IdProducto: productos.IdProducto,
+        Aro: `${productos.Marca} - ${productos.Modelo}`,
+        IdLente: Rlentes.IdLente,
+        Lente: Rlentes.lente,
+        PrecioAro: productos.precio,
         fechaEntrega: 2023 - 26 - 11,
         fechaLimiteEntrega: 2023 - 1 - 12,
-        IdCliente: selectedOption.value,
+        IdCliente: Cliente.idCliente,
         RTN: document.getElementById("RTN".value) || " ",
         IdGarantia: selectedGarantia.value,
         IdPromocion: selectedPromocion.value,
@@ -227,8 +233,7 @@ const [Rlentes, setRlentes] = useState([]);
         Promocion: selectedPromocion.label,
         cantidad: cantidad
       };
-      console.log(dataGrid);
-      setVentas([...ventas, dataGrid]);
+      setVentas([...ventas, dataGrid]);      
       setCambio(cambio + 1);
     }
   };
@@ -351,7 +356,7 @@ const [Rlentes, setRlentes] = useState([]);
   const handleCellClick = (params) => {
     const rowData = params.row;
     setCliente(rowData)
-    console.log(Cliente.nombre);
+    console.log(Cliente);
     closeClienteModal()
   };
   const customStyles = {
@@ -376,7 +381,7 @@ const [Rlentes, setRlentes] = useState([]);
     const handleCellClic = (params) => {
       const rowData = params.row;
       setProductos(rowData)
-      console.log(productos.Modelo);
+      console.log(productos);
       closeProductoModal()
     };
    
@@ -384,7 +389,7 @@ const [Rlentes, setRlentes] = useState([]);
   const handleCellClickLentes = (params) => {
     const rowData = params.row;
     setRlentes(rowData)
-    console.log(Rlentes.lente);
+    console.log(Rlentes);
     closeLenteModal()
   };
 
@@ -655,7 +660,7 @@ const [Rlentes, setRlentes] = useState([]);
               <div className="contInput">
                 <Select
                   id="garantia"
-                  options={Garantia.map(pre => ({ value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.Meses} Meses` }))}
+                  options={Garantia.map(pre => ({ value: pre.IdGarantia, label: `${pre.descripcion} - ${pre.mesesGarantia} Meses` }))}
                   value={selectedGarantia}
                   onChange={setSelectedGarantia}
                   placeholder="Seleccione una Garantia"
@@ -846,6 +851,9 @@ const [Rlentes, setRlentes] = useState([]);
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
+          <label htmlFor="">Subtotal: {totales.subtotal.toFixed(2)}</label><br />
+          <label htmlFor="">Rebajas: {totales.rebajas.toFixed(2)}</label><br />
+          <label htmlFor="">Total: {totales.total.toFixed(2)}</label><br />
 
           {/* <img
           src={
