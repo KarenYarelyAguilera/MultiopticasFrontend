@@ -139,7 +139,7 @@ const handleGenerarExcel = () => {
   );
 
   const columns = [
-    { field: 'IdTipoPago', headerName: 'ID', width: 500 },
+    { field: 'IdTipoPago', headerName: 'ID', width: 200 },
     { field: 'descripcion', headerName: 'Método', width: 500 },
     { field: 'estado', headerName: 'Estado', width: 120 },
 
