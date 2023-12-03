@@ -143,12 +143,12 @@ export const Bitacora = (props, idRol) => {
       headerName: 'Fecha',
       width: 170,
       headerAlign: 'center',
-    /*   renderCell: (params) => (
+   renderCell: (params) => (
         <span>
           {new Date(params.value).toLocaleDateString('es-ES')}
         </span>
       ),
- */
+ 
 
     },
 
@@ -170,7 +170,7 @@ export const Bitacora = (props, idRol) => {
 
   const handleBack = () => {
     //axios.post(urlSalirListaBitacora,dataB) //BOTON DE RETROCESO API BITACORA 
-    navegate('/usuarios');
+    navegate('/seguridad');
   };
 
   const handleUpdateBitacora = () => {

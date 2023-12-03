@@ -128,11 +128,11 @@ export const Configuracion = () => {
       titulo: 'Género',
       vinculo: '/config/ListaGenero',
     },
-    {
-      imagen: 'https://static.vecteezy.com/system/resources/previews/006/409/490/non_2x/people-thinking-to-make-decision-problem-solving-and-find-creative-ideas-with-question-mark-in-flat-cartoon-background-for-poster-illustration-vector.jpg',
-      titulo: 'Preguntas de Seguridad',
-      vinculo: '/config/PreguntasSeguridad',
-    },
+    // {
+    //   imagen: 'https://static.vecteezy.com/system/resources/previews/006/409/490/non_2x/people-thinking-to-make-decision-problem-solving-and-find-creative-ideas-with-question-mark-in-flat-cartoon-background-for-poster-illustration-vector.jpg',
+    //   titulo: 'Preguntas de Seguridad',
+    //   vinculo: '/config/PreguntasSeguridad',
+    // },
   ];
 
   return (
