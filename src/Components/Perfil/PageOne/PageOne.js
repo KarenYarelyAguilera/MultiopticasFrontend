@@ -54,7 +54,7 @@ export const PageOne = ({ correo, onButtonClick }) => {
     <main>
       <form className="measure">
         <div className="contPrincipalRecuperacion">
-          <div className='divInfoRecuperacion'>
+          <div className='divInfoRecuperacion' style={{fontSize:'17px'}}>
 
             <TextCustom text="Contraseña actual:" className="titleInput" />
             <div className="contInput">
