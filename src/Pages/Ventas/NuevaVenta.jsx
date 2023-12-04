@@ -282,18 +282,32 @@ const [Rlentes, setRlentes] = useState([]);
     }
     await axios.post(urlTotalAPagar, data).then((response) => {
       swal({
-        title: "Confirme la venta",
-        content: {
-          element: "div",
-          attributes: {
-            innerHTML: `
-              <h1>Confirme la venta</h1>
-              <h3>Subtotal ${response.data.subtotal}</h3>
-              <h3>Rebajas ${response.data.rebajas}</h3>
-              <h3>Total a Pagar ${response.data.total}</h3>
-            `,
-          },
-        },
+        content: (
+          <div className="contMod">
+            <div className="logoModal1">
+              Confirmar la Venta
+            </div>
+            <div className="infoMod">
+              <h3>SubTotal: <h4>${response.data.subtotal}</h4></h3>
+              <h3>Rebajas: <h4>${response.data.rebajas}</h4></h3>
+              <h3>Total a Pagar: <h4>${response.data.total}</h4></h3>
+            </div>
+        </div>
+        ),
+// content: {
+//   element: 'div',
+//           attributes: {
+//             innerHTML: `
+//             <div className=`${logoModal}`>
+//             ¿Desea actualizar la Promocion de Producto?
+//           </div>
+//               <h3>Subtotal ${response.data.subtotal}</h3>
+//               <h3>Rebajas ${response.data.rebajas}</h3>
+//               <h3>Total a Pagar ${response.data.total}</h3>
+//             `,
+//           },
+//         },
+        
         buttons: {
           cancel: {
             text: "Cancelar",
