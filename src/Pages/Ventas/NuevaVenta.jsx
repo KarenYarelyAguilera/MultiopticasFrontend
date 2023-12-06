@@ -287,9 +287,9 @@ const [Rlentes, setRlentes] = useState([]);
               Confirmar la Venta
             </div>
             <div className="infoMod">
-              <h3>SubTotal: <h4>${response.data.subtotal}</h4></h3>
-              <h3>Rebajas: <h4>${response.data.rebajas}</h4></h3>
-              <h3>Total a Pagar: <h4>${response.data.total}</h4></h3>
+              <h3>SubTotal: <h4>L.{response.data.subtotal}</h4></h3>
+              <h3>Rebajas: <h4>L.{response.data.rebajas}</h4></h3>
+              <h3>Total a Pagar: <h4>L.{response.data.total}</h4></h3>
             </div>
         </div>
         ),
@@ -941,17 +941,17 @@ const [Rlentes, setRlentes] = useState([]);
           <div className="resultados">
             <div className="contResultados">
               <TextCustom text="SubTotal" className="titlePResult" />
-              <label htmlFor="" className='titleSResult'>{totales.subtotal.toFixed(2)}</label>
+              <label htmlFor="" className='titleSResult'>L  {totales.subtotal.toFixed(2)}</label>
             </div>
 
             <div className="contResultados">
               <TextCustom text="Rebajas" className="titlePResult" />
-              <label htmlFor="" className='titleSResult'>{totales.rebajas.toFixed(2)}</label>
+              <label htmlFor="" className='titleSResult'>L  {totales.rebajas.toFixed(2)}</label>
             </div>
 
             <div className="contResultados">
               <TextCustom text="Total" className="titlePResult" />
-              <label htmlFor="" className='titleSResultT'>{totales.total.toFixed(2)}</label>
+              <label htmlFor="" className='titleSResultT'>L  {totales.total.toFixed(2)}</label>
             </div>
           </div>
 
