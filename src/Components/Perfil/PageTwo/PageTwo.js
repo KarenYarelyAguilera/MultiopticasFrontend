@@ -79,9 +79,9 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
       <form className="measure">
         <div className="contPrincipalRecuperacion">
 
-          <div className='divInfoRecuperacion'>
+          <div className='divInfoRecuperacion'style={{fontSize:'17px'}}>
             <TextCustom text="Nueva contraseña" className="titleInput" />
-            <div className="contInput">
+            <div className="contInput" >
               <FilledInput
 
                 onChange={(e) => {
@@ -127,7 +127,7 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
             </div>
           </div>
 
-          <div className='divInfoRecuperacion'>
+          <div className='divInfoRecuperacion' style={{fontSize:'17px'}}>
             <TextCustom text="" className="titleInput" />
             <TextCustom text="Confirme la nueva contraseña" className="titleInput" />
             <div className="contInput">

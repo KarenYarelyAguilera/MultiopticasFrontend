@@ -109,15 +109,12 @@ export const PagoDeVenta = (props) => {
       </Button>
       <div className="titleAddUser">
         <h2>Pago De La Venta</h2>
-        <h3>
-          Complete todos los puntos para poder registrar los datos de Pago de la Venta.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">
           <div className="InputContPrincipal1">
 
-          <div className="contInput">
+          <div className="contInput" style={{fontSize:'17px'}}>
               <TextCustom text="Metodo de Pago" className="titleInput" />
               <select name="" className="selectCustom" id="metodopago">
               {MetodoPago.length ? (
@@ -149,7 +146,7 @@ export const PagoDeVenta = (props) => {
               /> 
             </div> */}
 
-            <div className="contInput">
+            <div className="contInput" style={{fontSize:'17px'}}>
               <TextCustom text="Saldo Abonado" className="titleInput" />
 
               <input
@@ -162,7 +159,7 @@ export const PagoDeVenta = (props) => {
               />
             </div>
 
-            <div className="contInput">
+            <div className="contInput" style={{fontSize:'17px'}}>
               <TextCustom text="Saldo Restante" className="titleInput" />
 
               <input

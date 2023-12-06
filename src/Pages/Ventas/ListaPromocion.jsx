@@ -189,7 +189,7 @@ const handleGenerarExcel = () => {
 
   const columns = [
     { field: 'IdPromocion', headerName: 'ID', width: 80 },
-    { field: 'descripcion', headerName: 'Descripción', width: 590 },
+    { field: 'descripcion', headerName: 'Descripción', width: 200 },
     { field: 'descPorcent', headerName: 'Porcentaje', width: 120 },
     { field: 'fechaInicialF', headerName: 'Fecha inicial', width: 120 },
     { field: 'fechaFinalF', headerName: 'Fecha final', width: 120 },

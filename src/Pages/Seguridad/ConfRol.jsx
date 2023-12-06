@@ -23,6 +23,7 @@ export const ConfigRol = props => {
   // const urlNRol =
   //   'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
 
+<<<<<<< HEAD
   const urlUsuario = "http://194.163.45.55:4000/api/permisosOBJ2"
   const urlInventario = "http://194.163.45.55:4000/api/permisosOBJ3"
   const urlClientes = "http://194.163.45.55:4000/api/permisosOBJ4"
@@ -31,6 +32,16 @@ export const ConfigRol = props => {
   const urlSeguridad = "http://194.163.45.55:4000/api/permisosOBJ7"
   const urlConfig = "http://194.163.45.55:4000/api/permisosOBJ8"
   const urlVentas = "http://194.163.45.55:4000/api/permisosOBJ9"
+=======
+  const urlUsuario = "http://localhost:3000/api/permisosOBJ2"
+  const urlInventario = "http://localhost:3000/api/permisosOBJ3"
+  const urlClientes = "http://localhost:3000/api/permisosOBJ4"
+  const urlRecordatorio = "http://localhost:3000/api/permisosOBJ5"
+
+  const urlSeguridad = "http://localhost:3000/api/permisosOBJ7"
+  const urlConfig = "http://localhost:3000/api/permisosOBJ8"
+  const urlVentas = "http://localhost:3000/api/permisosOBJ9"
+>>>>>>> 99cd87f1579f13328d7055b8813750d6a43bc710
 
 
   const [roles, setRoles] = useState([]);
@@ -625,7 +636,6 @@ export const ConfigRol = props => {
               <TextCustom text="Administración" className="titleInput" />
               <TextCustom text="Ventas " className="titleInput" />
               <TextCustom text="Inventario" className="titleInput" />
-              <TextCustom text="Compras" className="titleInput" />
               <TextCustom text="Clientes" className="titleInput" />
               <TextCustom text="Citas" className="titleInput" />
               <TextCustom text="Seguridad" className="titleInput" />
@@ -659,15 +669,7 @@ export const ConfigRol = props => {
                   value={1}
                 ></IOSSwitch>
 
-                <IOSSwitch //compras
-                  checked={inventarioLeer}
-                  onChange={handleInventarioChange}
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={1}
-                ></IOSSwitch>
+                
 
                 <IOSSwitch
                   checked={clientesLeer}
@@ -740,16 +742,7 @@ export const ConfigRol = props => {
                   onChange={handleInventarioInsertarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch //compras
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={2}
-                  checked={inventarioInsertar}
-                  onChange={handleInventarioInsertarChange}
-                ></IOSSwitch>
-
+                
                 <IOSSwitch
                   id="accion"
                   onClick={() =>
@@ -822,15 +815,6 @@ export const ConfigRol = props => {
                   onChange={handleInventarioEditarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch //compras
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={3}
-                  checked={inventarioEditar}
-                  onChange={handleInventarioEditarChange}
-                ></IOSSwitch>
 
                 <IOSSwitch
                   id="accion"
@@ -904,16 +888,7 @@ export const ConfigRol = props => {
                   onChange={handleInventarioEliminarChange}
                 ></IOSSwitch>
 
-                <IOSSwitch //compras
-                  id="accion"
-                  onClick={() =>
-                    setAccion(parseInt(document.getElementById('accion').value))
-                  }
-                  value={4}
-                  checked={inventarioEliminar}
-                  onChange={handleInventarioEliminarChange}
-                ></IOSSwitch>
-
+                
                 <IOSSwitch
                   id="accion"
                   onClick={() =>
@@ -971,10 +946,7 @@ export const ConfigRol = props => {
                   Editar Permiso
                 </Button>
 
-                <Button className="btnEditPermiso" onClick={updInventario}> {/**compras */}
-                  <EditIcon style={{ marginRight: '5px' }} />
-                  Editar Permiso
-                </Button>
+              
 
                 <Button className="btnEditPermiso" onClick={updClientes}>
                   <EditIcon style={{ marginRight: '5px' }} />

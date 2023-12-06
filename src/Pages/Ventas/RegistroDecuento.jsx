@@ -141,9 +141,6 @@ export const RegistroDescuento = (props) => {
       </Button>
       <div className="titleAddUser">
         {props.actualizar ? <h2>Actualizar Descuentos</h2> : <h2>Registro de Descuentos</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar los datos del descuento.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

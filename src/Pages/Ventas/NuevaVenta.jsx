@@ -282,18 +282,32 @@ const [Rlentes, setRlentes] = useState([]);
     }
     await axios.post(urlTotalAPagar, data).then((response) => {
       swal({
-        title: "Confirme la venta",
-        content: {
-          element: "div",
-          attributes: {
-            innerHTML: `
-              <h1>Confirme la venta</h1>
-              <h3>Subtotal ${response.data.subtotal}</h3>
-              <h3>Rebajas ${response.data.rebajas}</h3>
-              <h3>Total a Pagar ${response.data.total}</h3>
-            `,
-          },
-        },
+        content: (
+          <div className="contMod">
+            <div className="logoModal1">
+              Confirmar la Venta
+            </div>
+            <div className="infoMod">
+              <h3>SubTotal: <h4>${response.data.subtotal}</h4></h3>
+              <h3>Rebajas: <h4>${response.data.rebajas}</h4></h3>
+              <h3>Total a Pagar: <h4>${response.data.total}</h4></h3>
+            </div>
+        </div>
+        ),
+// content: {
+//   element: 'div',
+//           attributes: {
+//             innerHTML: `
+//             <div className=`${logoModal}`>
+//             ¿Desea actualizar la Promocion de Producto?
+//           </div>
+//               <h3>Subtotal ${response.data.subtotal}</h3>
+//               <h3>Rebajas ${response.data.rebajas}</h3>
+//               <h3>Total a Pagar ${response.data.total}</h3>
+//             `,
+//           },
+//         },
+        
         buttons: {
           cancel: {
             text: "Cancelar",
@@ -415,21 +429,23 @@ const [Rlentes, setRlentes] = useState([]);
               </div>
             </div> */}
 
-            <div className="contNewCita"  >
+            <div className="contInput"  >
               <TextCustom text="Cliente" className="titleInput" />
               <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
 
                 <input
                   type="text"
                   //onClick={openModal}
-                  className="inputCustomText"
+                  className="inputCustom"
                   placeholder="Seleccione un cliente"
                   disabled
                   onChange={handleCellClick}
                   value={Cliente.nombre}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openClienteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openClienteModal}>
+                  <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
 
 
@@ -571,7 +587,9 @@ const [Rlentes, setRlentes] = useState([]);
                   value={productos.Modelo}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openProductoModal}>
+                <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
             </div>
             <ReactModal
@@ -694,7 +712,7 @@ const [Rlentes, setRlentes] = useState([]);
               </div>
             </div> */}
 
-          <div className="contNewCita">
+          <div className="contInput">
               <TextCustom text="Lentes" className="titleInput" />
               <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
                 <input
@@ -707,7 +725,9 @@ const [Rlentes, setRlentes] = useState([]);
                   value={Rlentes.lente}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openLenteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openLenteModal}>
+                  <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
             </div>
             <ReactModal
@@ -851,9 +871,22 @@ const [Rlentes, setRlentes] = useState([]);
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
-          <label htmlFor="">Subtotal: {totales.subtotal.toFixed(2)}</label><br />
-          <label htmlFor="">Rebajas: {totales.rebajas.toFixed(2)}</label><br />
-          <label htmlFor="">Total: {totales.total.toFixed(2)}</label><br />
+          <div className="resultados">
+            <div className="contResultados">
+              <TextCustom text="SubTotal" className="titlePResult" />
+              <label htmlFor="" className='titleSResult'>{totales.subtotal.toFixed(2)}</label>
+            </div>
+
+            <div className="contResultados">
+              <TextCustom text="Rebajas" className="titlePResult" />
+              <label htmlFor="" className='titleSResult'>{totales.rebajas.toFixed(2)}</label>
+            </div>
+
+            <div className="contResultados">
+              <TextCustom text="Total" className="titlePResult" />
+              <label htmlFor="" className='titleSResultT'>{totales.total.toFixed(2)}</label>
+            </div>
+          </div>
 
           {/* <img
           src={

@@ -186,10 +186,8 @@ export const RegistroPromocion = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizar Promocion</h2> : <h2>Registro de Promocion</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar la Promocion.
-        </h3>
+        {props.actualizar ? <h2>Actualizar Promoción</h2> : <h2>Registro de Promoción</h2>}
+        
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

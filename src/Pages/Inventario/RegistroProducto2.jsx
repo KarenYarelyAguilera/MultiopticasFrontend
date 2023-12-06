@@ -181,7 +181,7 @@ export const RegistroProducto2 = (props) => {
 
     let data = {
       //IdProducto: parseInt(document.getElementById('idProducto').value),
-      IdModelo: selectedOption.value,
+      IdModelo: Modeloss.IdModelo,
       precio: precio,
       cantidadMin: cantidadMin,
       cantidadMax: cantidadMax,

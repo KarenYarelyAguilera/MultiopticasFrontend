@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { DataGrid, esES } from '@mui/x-data-grid';
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import swal from '@sweetalert/with-react';
@@ -75,27 +75,27 @@ export const ListaPagos = (props) => {
     if (permisos[0].consultar === "n") {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
-    const workbook = XLSX.utils.book_new();
-    const currentDateTime = new Date().toLocaleString();
+      const workbook = XLSX.utils.book_new();
+      const currentDateTime = new Date().toLocaleString();
 
-    // Datos para el archivo Excel
-    const dataForExcel = filteredData.map((row, index) => ({
-      'IdPago': row.IdPago,
-      'IdVenta': row.IdVenta,
-      'Tipo de Pago': row.MetodoDePago,
-      'Fecha': row.fecha,
-      'Estado': row.estado,
-      'Saldo Abonado': row.saldoAbono,
-      'Saldo Restante': row.saldoRestante,
-    }));
+      // Datos para el archivo Excel
+      const dataForExcel = filteredData.map((row, index) => ({
+        'IdPago': row.IdPago,
+        'IdVenta': row.IdVenta,
+        'Tipo de Pago': row.MetodoDePago,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
+        'Estado': row.estado,
+        'Saldo Abonado': row.saldoAbono,
+        'Saldo Restante': row.saldoRestante,
+      }));
 
-    const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdPago', 'IdVenta', 'Tipo de Pago', 'Fecha', 'Estado', 'Saldo Abonado', 'Saldo Restante'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdPago', 'IdVenta', 'Tipo de Pago', 'Fecha', 'Estado', 'Saldo Abonado', 'Saldo Restante'] });
 
 
 
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
-    XLSX.writeFile(workbook, 'Lista_de_Pagos.xlsx');
-  }
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Hoja1');
+      XLSX.writeFile(workbook, 'Lista_de_Pagos.xlsx');
+    }
   };
 
 
@@ -114,7 +114,7 @@ export const ListaPagos = (props) => {
             'IdPago': row.IdPago,
             'IdVenta': row.IdVenta,
             'Tipo de Pago': row.MetodoDePago,
-            'Fecha': row.fecha,
+            'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
             'Estado': row.estado,
             'Saldo Abonado': row.saldoAbono,
             'Saldo Restante': row.saldoRestante,
@@ -153,12 +153,20 @@ export const ListaPagos = (props) => {
 
   const columns = [
     // { field: 'IdPago', headerName: 'ID', width: 100 },
-    { field: 'IdVenta', headerName: 'Número de venta', width: 200 },
+    { field: 'IdVenta', headerName: 'Número de venta', width: 110 },
     { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200 },
-    { field: 'fecha', headerName: 'Fecha', width: 200 },
+    {
+      field: 'fecha', headerName: 'Fecha', width: 90,
+      valueGetter: (params) => {
+        const date = new Date(params.row.fecha);
+        return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
+      },
+
+    },
+
     { field: 'estado', headerName: 'Estado', width: 200 },
-    { field: 'saldoAbono', headerName: 'Saldo abonado', width: 200 },
-    { field: 'saldoRestante', headerName: 'Saldo restante', width: 200 },
+    { field: 'saldoAbono', headerName: 'Saldo abonado', width: 110 },
+    { field: 'saldoRestante', headerName: 'Saldo restante', width: 110 },
 
     {
 
@@ -168,7 +176,7 @@ export const ListaPagos = (props) => {
 
       renderCell: params => (
         <div className="contActions1">
-           <Button
+          <Button
             className="btnEdit"
             onClick={() => handleFactVenta(params.row.IdVenta)}
           >
@@ -314,8 +322,8 @@ export const ListaPagos = (props) => {
           left: '130px',
         }}
       >
-        <div className="contFilter1">
-          
+        <div className="contFilter">
+
           <SearchIcon
             style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
           />
@@ -327,15 +335,16 @@ export const ListaPagos = (props) => {
             onChange={e => setSearchTerm(e.target.value)}
           />
           {/* </div> */}
-          <div className="btnActionsNewReport1">
-            <Button
+          <div className="btnActionsNewReport">
+            {/* <Button
               className="btnCreate"
               onClick={() => {
                 swal("No es posible realizar una accion con este boton", "", "error")
               }}
             > <AddIcon style={{ marginRight: '3px' }} />  NUEVO
             </Button>
-
+            */}
+            
             <Button className="btnExcel" onClick={handleGenerarExcel}>
               <AnalyticsIcon style={{ marginRight: '5px' }} />  Generar Excel
             </Button>

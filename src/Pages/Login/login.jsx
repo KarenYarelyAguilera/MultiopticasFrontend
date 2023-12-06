@@ -211,7 +211,7 @@ export const Login = props => {
               }
               }
               error={errorContra}
-              inputProps={{ maxLength: 150 }}
+             inputProps={{ maxLength: 150 }}
               placeholder="Contraseña"
               id="filled-adornment-password"
               className="inputCustomPass"

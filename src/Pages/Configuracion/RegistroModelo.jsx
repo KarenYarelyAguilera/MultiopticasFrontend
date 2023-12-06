@@ -87,14 +87,13 @@ export const RegistroModelo = (props) => {
 
  //INSERTAR MODELO
  const handleNext = () => {
-  let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
   let anio = document.getElementById("anio").value;
   let estado = document.getElementById('estado').value;
 
  
   let data = {
-    IdMarca: IdMarca,
+    IdMarca: Marcas.IdMarca,
     detalle: detalle,
     anio: anio,
     estado: estado,
@@ -130,14 +129,13 @@ export const RegistroModelo = (props) => {
 
 //ACTUALIZAR
 const actualizarModelo = async () => {
-  let IdMarca = parseInt(document.getElementById("IdMarca").value);
   let detalle = document.getElementById("detalle").value;
   let anio = document.getElementById("anio").value;
   let estado = document.getElementById('estado').value;
 
 
   const data = {
-    IdMarca: IdMarca,
+    IdMarca: Marcas.IdMarca,
     detalle: detalle,
     anio: anio,
     estado: estado,

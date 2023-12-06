@@ -158,10 +158,8 @@ export const RegistroGarantia = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizacion de Garantia</h2> : <h2>Registro de Garantia</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar la garantia.
-        </h3>
+        {props.actualizar ? <h2>Actualización de Garantía</h2> : <h2>Registro de Garantía</h2>}
+       
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

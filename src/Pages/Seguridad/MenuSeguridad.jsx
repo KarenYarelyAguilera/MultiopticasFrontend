@@ -11,10 +11,17 @@ import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
 import ListUsers from '../../IMG/ListUsers.jpg';
 
+
 export const MenuSeguridad = () => {
 
   const dataCards = 
   [
+    {
+      consulta:"s",
+      imagen: ListUsers,
+      titulo: 'Usuarios',
+      vinculo: '/usuarios/lista',
+    },
     // {
     //   titulo: "Nueva Venta",
     //   imagen: 'https://static.vecteezy.com/system/resources/previews/021/621/716/non_2x/global-marketing-strategy-concept-marketing-team-macromarketing-flat-modern-illustration-vector.jpg',
