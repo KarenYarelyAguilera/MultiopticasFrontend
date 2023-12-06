@@ -20,10 +20,10 @@ export const RegistroPreguntaDeSeguridad = props => {
 
     const navigate = useNavigate();
     const [Preguntas, setPreguntas] = useState([]);
-    const urlPreguntas = 'http://localhost:3000/api/preguntas';
-    const urlPostPreguntas = 'http://localhost:3000/api/preguntas/agregar';
-    const urlPutPreguntas = 'http://localhost:3000/api/preguntas/editar';
-    const urlExistePregunta = 'http://localhost:3000/api/preguntas/existe';
+    const urlPreguntas = 'http://194.163.45.55:4000/api/preguntas';
+    const urlPostPreguntas = 'http://194.163.45.55:4000/api/preguntas/agregar';
+    const urlPutPreguntas = 'http://194.163.45.55:4000/api/preguntas/editar';
+    const urlExistePregunta = 'http://194.163.45.55:4000/api/preguntas/existe';
 
     const [cambio, setCambio] = useState(0);
     const [Resp, setResp] = React.useState(props.data.Pregunta || '');

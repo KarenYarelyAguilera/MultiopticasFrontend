@@ -19,10 +19,10 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 import { Bitacora } from '../../Components/bitacora.jsx';
 
-const urlInsertPais = 'http://localhost:3000/api/pais/crear';
-const urlUpdatePais = 'http://localhost:3000/api/pais/actualizar';
-const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertPais';
-const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarPais';
+const urlInsertPais = 'http://194.163.45.55:4000/api/pais/crear';
+const urlUpdatePais = 'http://194.163.45.55:4000/api/pais/actualizar';
+const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/insertPais';
+const urlUpdateBitacora = 'http://194.163.45.55:4000/api/bitacora/actualizarPais';
 
 export const RegistroPais = (props) => {
 

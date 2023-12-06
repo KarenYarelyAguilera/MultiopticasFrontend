@@ -30,7 +30,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de ex
 export const ListUsuarios = ({ idRol, data, update, }) => {
   const [roles, setRoles] = useState([]);
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: idRol,
     idObj: 2
@@ -42,15 +42,15 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
 
 
   const urlUsers =
-    'http://localhost:3000/api/usuarios';
+    'http://194.163.45.55:4000/api/usuarios';
 
   const urlDelUser =
-    'http://localhost:3000/api/usuario/delete';
+    'http://194.163.45.55:4000/api/usuario/delete';
 
-  const urlUserBlock = "http://localhost:3000/api/usuarios/inactivos"
+  const urlUserBlock = "http://194.163.45.55:4000/api/usuarios/inactivos"
 
   //  const urlBitacoraDelUsuario=
-  //    'http://localhost:3000/api/bitacora/EliminarUsuario';
+  //    'http://194.163.45.55:4000/api/bitacora/EliminarUsuario';
 
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [tableData, setTableData] = useState([]);

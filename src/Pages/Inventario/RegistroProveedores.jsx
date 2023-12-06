@@ -21,19 +21,19 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 
 //APIS DE PROVEEDOR
 const urlProveedor = //CREAR
-  'http://localhost:3000/api/proveedor/NuevoProveedor';
+  'http://194.163.45.55:4000/api/proveedor/NuevoProveedor';
 const urlUpdProveedor = //ACTUALIZAR
-  'http://localhost:3000/api/proveedor/ActualizarProveedor';
+  'http://194.163.45.55:4000/api/proveedor/ActualizarProveedor';
 const urlDelProveedor = //BORRAR
-  'http://localhost:3000/api/proveedor/EliminarProveedor';
+  'http://194.163.45.55:4000/api/proveedor/EliminarProveedor';
 const urlPaises = //Paises
-  'http://localhost:3000/api/paises';
+  'http://194.163.45.55:4000/api/paises';
 const urlCiudades = //Ciudades
-  'http://localhost:3000/api/ciudades';
+  'http://194.163.45.55:4000/api/ciudades';
 
  //BITACORAS
- const urlBitacoraInsertProveedor='http://localhost:3000/api/bitacora/insertoproveedores';
- const urlBitacoraUpdateProveedor='http://localhost:3000/api/bitacora/actualizoproveedores';
+ const urlBitacoraInsertProveedor='http://194.163.45.55:4000/api/bitacora/insertoproveedores';
+ const urlBitacoraUpdateProveedor='http://194.163.45.55:4000/api/bitacora/actualizoproveedores';
 
 export const RegistroProveedores = (props) => {
 

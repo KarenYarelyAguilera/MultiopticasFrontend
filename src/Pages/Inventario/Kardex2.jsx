@@ -25,11 +25,11 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
 
-const urlProducto = "http://localhost:3000/api/productos";
-const urlMovimientos = "http://localhost:3000/api/Tmovimientos";
-const urlMovimientosInsert = "http://localhost:3000/api/Extraordinario";
+const urlProducto = "http://194.163.45.55:4000/api/productos";
+const urlMovimientos = "http://194.163.45.55:4000/api/Tmovimientos";
+const urlMovimientosInsert = "http://194.163.45.55:4000/api/Extraordinario";
 //Bitacora
-const urlBitacoraMovimiento = "http://localhost:3000/api/bitacora/movimientoKardex";
+const urlBitacoraMovimiento = "http://194.163.45.55:4000/api/bitacora/movimientoKardex";
 
 ReactModal.setAppElement('#root');
 

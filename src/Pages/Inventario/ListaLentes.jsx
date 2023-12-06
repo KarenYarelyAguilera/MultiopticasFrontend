@@ -27,7 +27,7 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 
 export const ListaLentes = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:3
@@ -36,14 +36,14 @@ export const ListaLentes = (props) => {
     axios.post(urlPermisos,dataPermiso).then((response)=>setPermisos(response.data))
   },[])
 
-  const urlLentes ='http://localhost:3000/api/Lentes';
-  const urlLentesInactivos ='http://localhost:3000/api/LentesInactivos';
+  const urlLentes ='http://194.163.45.55:4000/api/Lentes';
+  const urlLentesInactivos ='http://194.163.45.55:4000/api/LentesInactivos';
 
-  const urlLentesEliminar ='http://localhost:3000/api/Lentes/BorrarLente';
+  const urlLentesEliminar ='http://194.163.45.55:4000/api/Lentes/BorrarLente';
 
 //Bitacora
-const urlBitacoraDeleteLentes='http://localhost:3000/api/bitacora/eliminarlentes';
-const urlBitacoraSalirListaLentes='http://localhost:3000/api/bitacora/saliolistalentes';
+const urlBitacoraDeleteLentes='http://194.163.45.55:4000/api/bitacora/eliminarlentes';
+const urlBitacoraSalirListaLentes='http://194.163.45.55:4000/api/bitacora/saliolistalentes';
 
 
 

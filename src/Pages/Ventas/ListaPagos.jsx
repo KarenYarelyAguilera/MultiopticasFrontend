@@ -38,10 +38,10 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 export const ListaPagos = (props) => {
-  const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
+  const urlVentaDetalle = 'http://194.163.45.55:4000/api/VentaDetalle'
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const urlHistPago = "http://localhost:3000/api/pago"
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
+  const urlHistPago = "http://194.163.45.55:4000/api/pago"
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 9
@@ -51,7 +51,7 @@ export const ListaPagos = (props) => {
   }, [])
 
   const [cambio, setCambio] = useState(0);
-  const urlPagos = 'http://localhost:3000/api/pagos';
+  const urlPagos = 'http://194.163.45.55:4000/api/pagos';
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPdfDialog, setShowPdfDialog] = useState(false);

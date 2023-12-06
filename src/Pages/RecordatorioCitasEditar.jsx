@@ -73,8 +73,8 @@ export const RecordatorioCitasEditar = props => {
     const [Msj, setMsj] = React.useState(false);
 
 
-    const urlUpdateCitas = 'http://localhost:3000/api/actualizarCita'
-    const urlBitacoraUpdCita = 'http://localhost:3000/api/bitacora/actualizarcita';
+    const urlUpdateCitas = 'http://194.163.45.55:4000/api/actualizarCita'
+    const urlBitacoraUpdCita = 'http://194.163.45.55:4000/api/bitacora/actualizarcita';
 
     const data = {
         IdRecordatorio: props.data.IdRecordatorio,

@@ -35,7 +35,7 @@ import axios from 'axios';
 
 export const ListaMarcas = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -46,9 +46,9 @@ export const ListaMarcas = ({idRol,data,update}) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
-  const urlMarcas = 'http://localhost:3000/api/marcas';
-  const urlDelMarca = 'http://localhost:3000/api/marcas/eliminar';
-  const urlListaMarcasInactivas = 'http://localhost:3000/api/marcas/marcasInactivas';
+  const urlMarcas = 'http://194.163.45.55:4000/api/marcas';
+  const urlDelMarca = 'http://194.163.45.55:4000/api/marcas/eliminar';
+  const urlListaMarcasInactivas = 'http://194.163.45.55:4000/api/marcas/marcasInactivas';
 
 
   const [tableData, setTableData] = useState([]);

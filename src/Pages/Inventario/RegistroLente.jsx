@@ -21,11 +21,11 @@ import { MarkChatReadOutlined } from '@mui/icons-material';
 import { Bitacora } from '../../Components/bitacora.jsx';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertLente = 'http://localhost:3000/api/Lentes/NuevoLente';
-const urlUpdateLente = 'http://localhost:3000/api/Lentes/ActualizarLente';
+const urlInsertLente = 'http://194.163.45.55:4000/api/Lentes/NuevoLente';
+const urlUpdateLente = 'http://194.163.45.55:4000/api/Lentes/ActualizarLente';
 //Bitacora
-const urlBitacoraInsertLentes='http://localhost:3000/api/bitacora/insertolentes';
-const urlBitacoraUpdateLentes='http://localhost:3000/api/bitacora/actualizolentes';
+const urlBitacoraInsertLentes='http://194.163.45.55:4000/api/bitacora/insertolentes';
+const urlBitacoraUpdateLentes='http://194.163.45.55:4000/api/bitacora/actualizolentes';
 
 export const RegistroLente = (props) => {
 

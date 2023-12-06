@@ -21,11 +21,11 @@ import { Bitacora } from '../../Components/bitacora';
 
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMetodoPago = 'http://localhost:3000/api/tipopago/crear';
-const urlUpdateMetodoPago = 'http://localhost:3000/api/tipopago/actualizar';
+const urlInsertMetodoPago = 'http://194.163.45.55:4000/api/tipopago/crear';
+const urlUpdateMetodoPago = 'http://194.163.45.55:4000/api/tipopago/actualizar';
 
-const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/insertMetodopago'; 
-const urlBitacoraUpdate=  'http://localhost:3000/api/bitacora/actualizarMetodopago'; 
+const urlBitacoraInsert = 'http://194.163.45.55:4000/api/bitacora/insertMetodopago'; 
+const urlBitacoraUpdate=  'http://194.163.45.55:4000/api/bitacora/actualizarMetodopago'; 
 
 
 export const MetodosDePago = (props) => {

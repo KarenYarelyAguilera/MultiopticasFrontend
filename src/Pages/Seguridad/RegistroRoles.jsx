@@ -20,14 +20,14 @@ import { TextField } from '@mui/material';
 import axios from 'axios';
 import { Bitacora } from '../../Components/bitacora.jsx';
 
-const urlInsertRol = 'http://localhost:3000/api/Rol/NuevoRol';
-const urlUpdRol = 'http://localhost:3000/api/Rol/RolActualizado'
+const urlInsertRol = 'http://194.163.45.55:4000/api/Rol/NuevoRol';
+const urlUpdRol = 'http://194.163.45.55:4000/api/Rol/RolActualizado'
 
 //----------------------------------URL de bitacora --------------------------------------------
-const urlUpdBitacora = 'http://localhost:3000/api/bitacora/ActualizarEmpleado';
-const urlInsertBitacora = 'http://localhost:3000/api/bitacora/RegistroEmpleado';
-const urlErrorInsertBitacora = 'http://localhost:3000/api/bitacora/ErrorActualizarEmpleado';
-const urlBitacoraSalirRE = 'http://localhost:3000/api/bitacora/SalirRegistroEmpleado';
+const urlUpdBitacora = 'http://194.163.45.55:4000/api/bitacora/ActualizarEmpleado';
+const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/RegistroEmpleado';
+const urlErrorInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/ErrorActualizarEmpleado';
+const urlBitacoraSalirRE = 'http://194.163.45.55:4000/api/bitacora/SalirRegistroEmpleado';
 //---------------------------------------------------------------- ------------------------------
 
 export const RegistroRoles = (props) => {
@@ -43,7 +43,7 @@ export const RegistroRoles = (props) => {
   const [aviso, setAviso] = React.useState(false);
 
 
-  //const urlEmpleadoExist = 'http://localhost:3000/api/empleado/RegistroInvalido'; 
+  //const urlEmpleadoExist = 'http://194.163.45.55:4000/api/empleado/RegistroInvalido'; 
 
   const navegate = useNavigate();
 

@@ -25,7 +25,7 @@ import axios from 'axios';
 
 export const ListaRoles = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 2
@@ -40,18 +40,18 @@ export const ListaRoles = (props) => {
 
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
-  const urlRoles ='http://localhost:3000/api/Rol';
+  const urlRoles ='http://194.163.45.55:4000/api/Rol';
 
- // const urlDeteleRol ='http://localhost:3000/api/Rol/RolEliminado';
+ // const urlDeteleRol ='http://194.163.45.55:4000/api/Rol/RolEliminado';
 
-  const urlRolesInactivos="http://localhost:3000/api/RolesInactivos";
+  const urlRolesInactivos="http://194.163.45.55:4000/api/RolesInactivos";
 
   //--------------------URL DE BITACORA--------------------
  /*  const urlDelBitacora =
-    'http://localhost:3000/api/bitacora/EliminarEmpleado';
+    'http://194.163.45.55:4000/api/bitacora/EliminarEmpleado';
 
   const urlBitacoraBotonSalirLE =
-    'http://localhost:3000/api/bitacora/SalirListaEmpleado'; */
+    'http://194.163.45.55:4000/api/bitacora/SalirListaEmpleado'; */
   //--------------------------------------------------------
 
   const [tableData, setTableData] = useState([]);

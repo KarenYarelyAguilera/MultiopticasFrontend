@@ -37,7 +37,7 @@ import { Bitacora } from '../../Components/bitacora';
 
 export const ListaGenero = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -52,10 +52,10 @@ export const ListaGenero = (props) => {
   
 
   //API DE GENERO
- const urlGenero = 'http://localhost:3000/api/Genero';
- const urlDeleteGenero = 'http://localhost:3000/api/Genero/borrar';
- const urlListaGeneroInactivos = 'http://localhost:3000/api/Genero/GeneroInactivo';
- const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminarGenero';
+ const urlGenero = 'http://194.163.45.55:4000/api/Genero';
+ const urlDeleteGenero = 'http://194.163.45.55:4000/api/Genero/borrar';
+ const urlListaGeneroInactivos = 'http://194.163.45.55:4000/api/Genero/GeneroInactivo';
+ const urlBorrarBitacora = 'http://194.163.45.55:4000/api/bitacora/eliminarGenero';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

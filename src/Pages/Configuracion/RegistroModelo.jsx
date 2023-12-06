@@ -23,11 +23,11 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 import { DataGrid, esES } from '@mui/x-data-grid';
 
 //APIS DE MODELO 
-const urlMarcas = 'http://localhost:3000/api/marcas'; 
-const urlInsertModelo ='http://localhost:3000/api/modelos/crear';
-const urlUpdateModelo ='http://localhost:3000/api/modelo/actualizar';
-const urlInsertBitacora ='http://localhost:3000/api/bitacora/insertmodelo';
-const urlUpdateBitacora ='http://localhost:3000/api/bitacora/actualizarmodelo';
+const urlMarcas = 'http://194.163.45.55:4000/api/marcas'; 
+const urlInsertModelo ='http://194.163.45.55:4000/api/modelos/crear';
+const urlUpdateModelo ='http://194.163.45.55:4000/api/modelo/actualizar';
+const urlInsertBitacora ='http://194.163.45.55:4000/api/bitacora/insertmodelo';
+const urlUpdateBitacora ='http://194.163.45.55:4000/api/bitacora/actualizarmodelo';
 
 //para la modal 
 ReactModal.setAppElement('#root');

@@ -81,10 +81,10 @@ export const RecordatorioCitas = (props) => {
 
 
 
-  const urlPostCitas = 'http://localhost:3000/api/recordatorioCitas/agregar';
-  const urlClientes = 'http://localhost:3000/api/clientesEx';
-  const urlFechaCita = 'http://localhost:3000/api/recordatorios/fecha';
-  const urlBitacoraAggCita = 'http://localhost:3000/api/bitacora/agregarcita';
+  const urlPostCitas = 'http://194.163.45.55:4000/api/recordatorioCitas/agregar';
+  const urlClientes = 'http://194.163.45.55:4000/api/clientesEx';
+  const urlFechaCita = 'http://194.163.45.55:4000/api/recordatorios/fecha';
+  const urlBitacoraAggCita = 'http://194.163.45.55:4000/api/bitacora/agregarcita';
 
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
   const [searchTerm, setSearchTerm] = useState('');
@@ -100,7 +100,7 @@ export const RecordatorioCitas = (props) => {
 
 
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
-  const urlCliente = 'http://localhost:3000/api/Expediente';
+  const urlCliente = 'http://194.163.45.55:4000/api/Expediente';
   // Nuevo estado para almacenar los clientes
   const [clientes, setClientes] = useState([]);
   const [Cliente, setCliente] = useState([]);

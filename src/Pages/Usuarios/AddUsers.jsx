@@ -71,23 +71,23 @@ export const AddUsers = (props) => {
   // const urlBitacoraUsuario =
   //   'http://localhost/APIS-Multioptica/bitacora/controller/bitacora.php?op=UsuarioInsert';
   const urlEmployees =
-    'http://localhost:3000/api/empleados/nousuarios';
+    'http://194.163.45.55:4000/api/empleados/nousuarios';
   const urlRoles =
-    'http://localhost:3000/api/Rol';
+    'http://194.163.45.55:4000/api/Rol';
   const urlInsert =
-    'http://localhost:3000/api/usuario/insert';
+    'http://194.163.45.55:4000/api/usuario/insert';
 
   const urlUpdateUser =
-    'http://localhost:3000/api/usuario/update';
+    'http://194.163.45.55:4000/api/usuario/update';
 
   //------------URL DE BITACORA-----------------------
-  const urlBitacoraInsert = 'http://localhost:3000/api/bitacora/InsertUsuario';
+  const urlBitacoraInsert = 'http://194.163.45.55:4000/api/bitacora/InsertUsuario';
 
   const urlBitacoraUpdUsuario =
-    'http://localhost:3000/api/bitacora/ActualizacionUsuario';
+    'http://194.163.45.55:4000/api/bitacora/ActualizacionUsuario';
 
   const urlBitacoraSalirRU =
-    'http://localhost:3000/api/bitacora/SalirRegistroUsuario';
+    'http://194.163.45.55:4000/api/bitacora/SalirRegistroUsuario';
 
   //---------------------------------------------------------
 

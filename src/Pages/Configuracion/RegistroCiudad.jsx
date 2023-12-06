@@ -19,10 +19,10 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 import { Bitacora } from '../../Components/bitacora';
 
-const urlInsertCiudad = 'http://localhost:3000/api/ciudad/crear';
-const urlUpdateCiudad= 'http://localhost:3000/api/ciudad/actualizar';
-const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertCiudad';
-const urlUpdateBitacora ='http://localhost:3000/api/bitacora/actualizarCiudad';
+const urlInsertCiudad = 'http://194.163.45.55:4000/api/ciudad/crear';
+const urlUpdateCiudad= 'http://194.163.45.55:4000/api/ciudad/actualizar';
+const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/insertCiudad';
+const urlUpdateBitacora ='http://194.163.45.55:4000/api/bitacora/actualizarCiudad';
 export const RegistroCiudad = (props) => {
   
   const navegate = useNavigate();

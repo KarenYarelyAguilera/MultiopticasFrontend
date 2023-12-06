@@ -39,7 +39,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaModelos = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -56,10 +56,10 @@ export const ListaModelos = (props) => {
   
 
   //URL DE LAS APIS DE MODELO
-  const urlModelos ='http://localhost:3000/api/modelos'; //LLama todos los datos de la tabla de modelo.
-  const urlDelModelo = 'http://localhost:3000/api/modelo/eliminar'; //Elimina datos de modelo.
-  const urlListaModelosInactivos = 'http://localhost:3000/api/modelosInactivos';
-  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminarmodelo';
+  const urlModelos ='http://194.163.45.55:4000/api/modelos'; //LLama todos los datos de la tabla de modelo.
+  const urlDelModelo = 'http://194.163.45.55:4000/api/modelo/eliminar'; //Elimina datos de modelo.
+  const urlListaModelosInactivos = 'http://194.163.45.55:4000/api/modelosInactivos';
+  const urlBorrarBitacora = 'http://194.163.45.55:4000/api/bitacora/eliminarmodelo';
 
 //Filtracion de fechas
 const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado

@@ -31,13 +31,13 @@ import '../../Styles/Usuarios.css';
 import { TextCustom } from '../../Components/TextCustom';
 
 export const Kardex = (props) => {
-  const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
-  const urlFacturaCompra = 'http://localhost:3000/api/facturaCompra'
-  const urlHistPago = "http://localhost:3000/api/pago"
+  const urlVentaDetalle = 'http://194.163.45.55:4000/api/VentaDetalle'
+  const urlFacturaCompra = 'http://194.163.45.55:4000/api/facturaCompra'
+  const urlHistPago = "http://194.163.45.55:4000/api/pago"
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 3
@@ -45,10 +45,10 @@ export const Kardex = (props) => {
   useEffect(() => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
   }, [])
-  const urlKardex = 'http://localhost:3000/api/kardex';
+  const urlKardex = 'http://194.163.45.55:4000/api/kardex';
 
   //Bitacora
-  const urlBitacoraSalirListaKardex = 'http://localhost:3000/api/bitacora/salirListaKardex';
+  const urlBitacoraSalirListaKardex = 'http://194.163.45.55:4000/api/bitacora/salirListaKardex';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

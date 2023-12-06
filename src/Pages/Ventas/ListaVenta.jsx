@@ -43,16 +43,16 @@ export const ListaVenta = (props) => {
 
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
-  const urlVentas = 'http://localhost:3000/api/Ventas';
-  const urlVentaDetalle = 'http://localhost:3000/api/VentaDetalle'
-  const urlHistPago = "http://localhost:3000/api/pago"
+  const urlVentas = 'http://194.163.45.55:4000/api/Ventas';
+  const urlVentaDetalle = 'http://194.163.45.55:4000/api/VentaDetalle'
+  const urlHistPago = "http://194.163.45.55:4000/api/pago"
   const [tableData, setTableData] = React.useState([]);
   const [searchTerm, setSearchTerm] = React.useState('');
-  const urlAnularVenta = "http://localhost:3000/api/Ventas/anular"
+  const urlAnularVenta = "http://194.163.45.55:4000/api/Ventas/anular"
 
   const [permisos, setPermisos] = useState([]);
   const [cambio, setCambio] = useState(0)
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 9

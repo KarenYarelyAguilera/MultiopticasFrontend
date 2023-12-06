@@ -15,7 +15,7 @@ import axios from 'axios';
 import { async } from 'q';
 
 export const CalculosDeVenta = (props) => {
-  const urlVenta = 'http://localhost:3000/api/Ventas/NuevaVentaDbdb';
+  const urlVenta = 'http://194.163.45.55:4000/api/Ventas/NuevaVentaDbdb';
 
 
   const navegate = useNavigate();

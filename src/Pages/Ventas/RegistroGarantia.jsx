@@ -16,11 +16,11 @@ import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar 
 import { Bitacora } from '../../Components/bitacora.jsx';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlProductos = 'http://localhost:3000/api/productos'; //API DE PRODUCTO
-const urlUpdateGarantia = 'http://localhost:3000/api/garantias/actualizar';//API DE ACTUALIZAR
-const urlInsertGarantia = 'http://localhost:3000/api/garantias/crear';//CREAR 
-const urlInsertBitacora = 'http://localhost:3000/api/bitacora/NuevaGarantia';
-const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/ActualizacionGarantia';
+const urlProductos = 'http://194.163.45.55:4000/api/productos'; //API DE PRODUCTO
+const urlUpdateGarantia = 'http://194.163.45.55:4000/api/garantias/actualizar';//API DE ACTUALIZAR
+const urlInsertGarantia = 'http://194.163.45.55:4000/api/garantias/crear';//CREAR 
+const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/NuevaGarantia';
+const urlUpdateBitacora = 'http://194.163.45.55:4000/api/bitacora/ActualizacionGarantia';
 
 
 export const RegistroGarantia = (props) => {

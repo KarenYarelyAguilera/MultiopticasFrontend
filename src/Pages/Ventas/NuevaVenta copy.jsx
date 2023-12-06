@@ -22,15 +22,15 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 //import swal from '@sweetalert/with-react';
 
 //URLS
-const urlCliente = 'http://localhost:3000/api/clientes';
-const urlProducto = 'http://localhost:3000/api/productos';
-const urlLente = 'http://localhost:3000/api/Lentes';
-const urlDescuento = 'http://localhost:3000/api/Descuento';
-const urlPromocion = 'http://localhost:3000/api/promociones';
-const urlGarantia = 'http://localhost:3000/api/garantias';
-const urlBitacoraInsertVenta = 'http://localhost:3000/api/bitacora/insertventa';
-const urlTotalAPagar = "http://localhost:3000/api/Ventas/totalAPagar"
-const urlVenta = 'http://localhost:3000/api/Ventas/nuevaVenta';
+const urlCliente = 'http://194.163.45.55:4000/api/clientes';
+const urlProducto = 'http://194.163.45.55:4000/api/productos';
+const urlLente = 'http://194.163.45.55:4000/api/Lentes';
+const urlDescuento = 'http://194.163.45.55:4000/api/Descuento';
+const urlPromocion = 'http://194.163.45.55:4000/api/promociones';
+const urlGarantia = 'http://194.163.45.55:4000/api/garantias';
+const urlBitacoraInsertVenta = 'http://194.163.45.55:4000/api/bitacora/insertventa';
+const urlTotalAPagar = "http://194.163.45.55:4000/api/Ventas/totalAPagar"
+const urlVenta = 'http://194.163.45.55:4000/api/Ventas/nuevaVenta';
 
 
 export const NuevaVenta = (props) => {

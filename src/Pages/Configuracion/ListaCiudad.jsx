@@ -39,7 +39,7 @@ import { Bitacora } from '../../Components/bitacora';
 
 export const ListaCiudad = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -51,10 +51,10 @@ export const ListaCiudad = (props) => {
   const [marcah, setMarcah] = useState()
   const [cambio, setCambio] = useState(0)
 
-  const urlCuidad = 'http://localhost:3000/api/ciudades';
-  const urlDeleteCuidad = 'http://localhost:3000/api/ciudad/eliminar';
-  const urlListaCiudadesInactivas = 'http://localhost:3000/api/ciudades/ciudadInactiva';
-  const urlBorrarBitacora= 'http://localhost:3000/api/bitacora/eliminarCiudad';
+  const urlCuidad = 'http://194.163.45.55:4000/api/ciudades';
+  const urlDeleteCuidad = 'http://194.163.45.55:4000/api/ciudad/eliminar';
+  const urlListaCiudadesInactivas = 'http://194.163.45.55:4000/api/ciudades/ciudadInactiva';
+  const urlBorrarBitacora= 'http://194.163.45.55:4000/api/bitacora/eliminarCiudad';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

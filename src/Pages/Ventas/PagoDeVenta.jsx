@@ -16,10 +16,10 @@ import { TextCustom } from '../../Components/TextCustom.jsx';
 import swal from '@sweetalert/with-react';
 
 
-const urlPago = 'http://localhost:3000/api/pagos/crear';
-const urlMetodoPago = 'http://localhost:3000/api/tipopago';
-const urlEstadoVenta = 'http://localhost:3000/api/VentasEstados';
-const urlInsertPagoB = 'http://localhost:3000/api/bitacora/insertpago';
+const urlPago = 'http://194.163.45.55:4000/api/pagos/crear';
+const urlMetodoPago = 'http://194.163.45.55:4000/api/tipopago';
+const urlEstadoVenta = 'http://194.163.45.55:4000/api/VentasEstados';
+const urlInsertPagoB = 'http://194.163.45.55:4000/api/bitacora/insertpago';
 
 export const PagoDeVenta = (props) => {
 

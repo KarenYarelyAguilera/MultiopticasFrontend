@@ -19,12 +19,12 @@ import { ContentPasteGoOutlined } from '@mui/icons-material';
 
 //APIS DE DESCUENTO
 const urlDescuento = //CREAR
-  'http://localhost:3000/api/Descuento/NuevoDescuento';
+  'http://194.163.45.55:4000/api/Descuento/NuevoDescuento';
 const urlUpdDescuento = //ACTUALIZAR
-  'http://localhost:3000/api/Descuento/ActualizarDescuento';
+  'http://194.163.45.55:4000/api/Descuento/ActualizarDescuento';
 
-  const urlInsertBitacora =  'http://localhost:3000/api/bitacora/NuevoDescuento';
-  const urlUpdateBitacora =  'http://localhost:3000/api/bitacora/ActualizacionDescuento';
+  const urlInsertBitacora =  'http://194.163.45.55:4000/api/bitacora/NuevoDescuento';
+  const urlUpdateBitacora =  'http://194.163.45.55:4000/api/bitacora/ActualizacionDescuento';
 
 export const RegistroDescuento = (props) => {
 

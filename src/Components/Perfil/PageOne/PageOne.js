@@ -29,7 +29,7 @@ export const PageOne = ({ correo, onButtonClick }) => {
   };
 
   const handleClick = () => {
-    const urlCompararContra = "http://localhost:3000/api/login/compare"
+    const urlCompararContra = "http://194.163.45.55:4000/api/login/compare"
     const contra1 = document.getElementById("contra1").value
     //const contra2 = document.getElementById("contra2").value
 

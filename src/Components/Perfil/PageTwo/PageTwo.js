@@ -15,7 +15,7 @@ import { Bitacora } from '../../../Components/bitacora.jsx';
 export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
   const navegate = useNavigate()
 
-  const urlUserExist = "http://localhost:3000/api/login"
+  const urlUserExist = "http://194.163.45.55:4000/api/login"
 
   const [contra1, setContra1] = useState("");
   const [errorContra1, setErrorContra1] = useState(false);
@@ -34,8 +34,8 @@ export const PageTwo = ({ correo: password2, id, autor, bitacora }) => {
 
 
   const handleClick = () => {
-    const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/cambiocontrasena';
-    const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+    const urlBitacoraPerfil = 'http://194.163.45.55:4000/api/bitacora/cambiocontrasena';
+    const urlUpdPassword = "http://194.163.45.55:4000/api/usuario/UpdContra"
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
 

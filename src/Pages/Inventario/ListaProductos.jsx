@@ -28,7 +28,7 @@ import fondoPDF from '../../IMG/FondoPDFH.jpg'
 export const ListaProductos = (props) => {
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 3
@@ -41,11 +41,11 @@ export const ListaProductos = (props) => {
   const [Modelo, setModelo] = useState([]);
   const [roles, setRoles] = useState([]);
 
-  const urlProducto = 'http://localhost:3000/api/productos'; //MUESTA LOS PRODUCTOS EN LA TABLA
-  const urlProductosInactivos = 'http://localhost:3000/api/productosInactivos';
-  //const urlDelProducto = 'http://localhost:3000/api/producto/eliminar'; //ELIMINA PRODUCTO
+  const urlProducto = 'http://194.163.45.55:4000/api/productos'; //MUESTA LOS PRODUCTOS EN LA TABLA
+  const urlProductosInactivos = 'http://194.163.45.55:4000/api/productosInactivos';
+  //const urlDelProducto = 'http://194.163.45.55:4000/api/producto/eliminar'; //ELIMINA PRODUCTO
 
-  const urlModelos = 'http://localhost:3000/api/modelos'; //MUESTRA LOA MODELOS
+  const urlModelos = 'http://194.163.45.55:4000/api/modelos'; //MUESTRA LOA MODELOS
 
   const [tableData, setTableData] = useState([]);
   const [tableDataInactivos, setTableDataInactivos] = useState([]);

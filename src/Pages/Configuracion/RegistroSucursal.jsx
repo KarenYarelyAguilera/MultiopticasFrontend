@@ -21,18 +21,18 @@ import { ContentPasteGoOutlined } from '@mui/icons-material';
 
 //APIS DE SUCURSAL
 const urlSucursal = //CREAR
-  'http://localhost:3000/api/sucursal/crear';
+  'http://194.163.45.55:4000/api/sucursal/crear';
 const urlUpdSucursal = //ACTUALIZAR
-  'http://localhost:3000/api/sucursal/actualizar';
+  'http://194.163.45.55:4000/api/sucursal/actualizar';
 const urlDelSucursal = //BORRAR
-  'http://localhost:3000/apisucursal/eliminar';
+  'http://194.163.45.55:4000/apisucursal/eliminar';
   const urlDepartamentos = //MUESTRA LOS DEPTOS
-  'http://localhost:3000/api/departamentos';
+  'http://194.163.45.55:4000/api/departamentos';
   const urlCiudades = //MUESTRA CIUDADES
-  'http://localhost:3000/api/ciudades';
+  'http://194.163.45.55:4000/api/ciudades';
 
-  const urlInsertBitacora  = 'http://localhost:3000/api/bitacora/insertsucursal';
-  const urlUpdateBitacora  = 'http://localhost:3000/api/bitacora/actualizarsucursal';
+  const urlInsertBitacora  = 'http://194.163.45.55:4000/api/bitacora/insertsucursal';
+  const urlUpdateBitacora  = 'http://194.163.45.55:4000/api/bitacora/actualizarsucursal';
 
 export const RegistroSucursal = (props) => {
 

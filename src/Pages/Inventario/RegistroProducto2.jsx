@@ -27,16 +27,16 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 
 //APIS DE PRODUCTO
 const urlProducto = //CREAR
-  'http://localhost:3000/api/productos/crear';
+  'http://194.163.45.55:4000/api/productos/crear';
 const urlUpdProducto = //ACTUALIZAR
-  'http://localhost:3000/api/productos/actualizar';
+  'http://194.163.45.55:4000/api/productos/actualizar';
 const urlDelProducto = //BORRAR
-  'http://localhost:3000/api/productos/eliminar';
+  'http://194.163.45.55:4000/api/productos/eliminar';
 const urlModelos = //MOSTRAR MODELOS
-  'http://localhost:3000/api/modelos';
+  'http://194.163.45.55:4000/api/modelos';
   //BITACORAS
-  const urlBitacoraInsertProducto='http://localhost:3000/api/bitacora/insertoproducto';
-  const urlBitacoraActualizoProducto='http://localhost:3000/api/bitacora/actualizoproducto';
+  const urlBitacoraInsertProducto='http://194.163.45.55:4000/api/bitacora/insertoproducto';
+  const urlBitacoraActualizoProducto='http://194.163.45.55:4000/api/bitacora/actualizoproducto';
 //para la modal 
 ReactModal.setAppElement('#root');
 

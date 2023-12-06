@@ -31,13 +31,13 @@ export const Bitacora = (props, idRol) => {
   const [cambio, setCambio] = useState(0)
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
-  const urlBitacora = "http://localhost:3000/api/bitacora";
+  const urlBitacora = "http://194.163.45.55:4000/api/bitacora";
 
-  const urlOnOffBitacora = "http://localhost:3000/api/parametro/bitacora"
+  const urlOnOffBitacora = "http://194.163.45.55:4000/api/parametro/bitacora"
 
-  const urlSalirListaBitacora = "http://localhost:3000/api/bitacora/SalirListaBitacora";
+  const urlSalirListaBitacora = "http://194.163.45.55:4000/api/bitacora/SalirListaBitacora";
 
-  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/eliminar';
+  const urlBorrarBitacora = 'http://194.163.45.55:4000/api/bitacora/eliminar';
 
 
   const [tableData, setTableData] = useState([]);
@@ -59,7 +59,7 @@ export const Bitacora = (props, idRol) => {
   const navegate = useNavigate();
 
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: idRol,
     idObj: 2

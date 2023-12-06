@@ -21,10 +21,10 @@ import axios from 'axios';
 import { Bitacora } from '../../Components/bitacora';
 
  //API DE GENERO
- const urlInsetGenero = 'http://localhost:3000/api/Genero/insertar';
- const urlUpdateGenero = 'http://localhost:3000/api/Genero/actualizar';
- const urlInsertBitacora = 'http://localhost:3000/api/bitacora/insertGenero';
- const urlUpdateBitacora= 'http://localhost:3000/api/bitacora/actualizarGenero';
+ const urlInsetGenero = 'http://194.163.45.55:4000/api/Genero/insertar';
+ const urlUpdateGenero = 'http://194.163.45.55:4000/api/Genero/actualizar';
+ const urlInsertBitacora = 'http://194.163.45.55:4000/api/bitacora/insertGenero';
+ const urlUpdateBitacora= 'http://194.163.45.55:4000/api/bitacora/actualizarGenero';
 
 export const RegistroGenero = (props) => {
 

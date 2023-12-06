@@ -12,9 +12,9 @@ import React from 'react';
 import swal from '@sweetalert/with-react';
 
 export const Backup = props => {
-  const urlBackup = 'http://localhost:3000/api/backup';
-  const urlArchivos = 'http://localhost:3000/api/archivos';
-  const urlRestore = 'http://localhost:3000/api/restore'
+  const urlBackup = 'http://194.163.45.55:4000/api/backup';
+  const urlArchivos = 'http://194.163.45.55:4000/api/archivos';
+  const urlRestore = 'http://194.163.45.55:4000/api/restore'
 
   const [Archivos, setArchivos] = useState([]);
 

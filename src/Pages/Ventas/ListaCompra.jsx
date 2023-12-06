@@ -30,9 +30,9 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
 
 export const ListaCompra = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
-  const urlAnularCompra = "http://localhost:3000/api/compra/anular"
-  const urlFacturaCompra = 'http://localhost:3000/api/facturaCompra'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
+  const urlAnularCompra = "http://194.163.45.55:4000/api/compra/anular"
+  const urlFacturaCompra = 'http://194.163.45.55:4000/api/facturaCompra'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 3
@@ -40,7 +40,7 @@ export const ListaCompra = (props) => {
   useEffect(() => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
   }, [])
-  const urlCompras = 'http://localhost:3000/api/compra';
+  const urlCompras = 'http://194.163.45.55:4000/api/compra';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

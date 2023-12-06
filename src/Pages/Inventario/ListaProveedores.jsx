@@ -26,7 +26,7 @@ import { TextCustom } from '../../Components/TextCustom';
 import { Bitacora } from '../../Components/bitacora.jsx';
 
 export const ListaProveedores = (props) => {
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:3
@@ -44,9 +44,9 @@ export const ListaProveedores = (props) => {
   const [pageSize, setPageSize] = useState(5);
   
   //URLS
-  const urlProveedores = 'http://localhost:3000/api/proveedor';
-  const urlProveedoresInactivos = 'http://localhost:3000/api/ProveedoresInactivos';
-  const urlDelProveedor = 'http://localhost:3000/api/proveedor/EliminarProveedor';
+  const urlProveedores = 'http://194.163.45.55:4000/api/proveedor';
+  const urlProveedoresInactivos = 'http://194.163.45.55:4000/api/ProveedoresInactivos';
+  const urlDelProveedor = 'http://194.163.45.55:4000/api/proveedor/EliminarProveedor';
 
   const [tableData, setTableData] = useState([]);
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
@@ -56,8 +56,8 @@ export const ListaProveedores = (props) => {
   const [Ciudad, setCiudad] = useState([]);
 
   //BITACORAS
- const urlBitacoraDeleteProveedor='http://localhost:3000/api/bitacora/eliminarproveedores';
- const urlBitacoraSalirListaProveedor='http://localhost:3000/api/bitacora/saliolistaproveedores';
+ const urlBitacoraDeleteProveedor='http://194.163.45.55:4000/api/bitacora/eliminarproveedores';
+ const urlBitacoraSalirListaProveedor='http://194.163.45.55:4000/api/bitacora/saliolistaproveedores';
 
   //-------------------------------------------------------------------
 

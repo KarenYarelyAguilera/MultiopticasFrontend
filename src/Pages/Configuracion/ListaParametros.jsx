@@ -34,7 +34,7 @@ export const ListaParametros = ({props,data,update}) => {
   const [cambio, setCambio] = useState(0)
   const [marcah, setMarcah] = useState()
   
-  const urlParametros ='http://localhost:3000/api/parametros';
+  const urlParametros ='http://194.163.45.55:4000/api/parametros';
 
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

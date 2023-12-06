@@ -36,7 +36,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaDescuento = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -50,12 +50,12 @@ export const ListaDescuento = (props) => {
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
 //URL DE DESCUENTO
-const urlListaDescuentos = 'http://localhost:3000/api/Descuento';
-const urlListaDescuentosInactivos = 'http://localhost:3000/api/DescuentosInactivos';
-const urlDelDescuento = 'http://localhost:3000/api/Descuento/BorrarDescuento';
+const urlListaDescuentos = 'http://194.163.45.55:4000/api/Descuento';
+const urlListaDescuentosInactivos = 'http://194.163.45.55:4000/api/DescuentosInactivos';
+const urlDelDescuento = 'http://194.163.45.55:4000/api/Descuento/BorrarDescuento';
 
-const urlBorrarDescuentoB ='http://localhost:3000/api/bitacora/EliminarDescuento';
-const urlSalirListaDescuento ='http://localhost:3000/api/bitacora/salirlistadescuento';
+const urlBorrarDescuentoB ='http://194.163.45.55:4000/api/bitacora/EliminarDescuento';
+const urlSalirListaDescuento ='http://194.163.45.55:4000/api/bitacora/salirlistadescuento';
 
 const [tableData, setTableData] = useState([]);
 const [tableDataInactivos, setTableDataInactivos] = useState([]);

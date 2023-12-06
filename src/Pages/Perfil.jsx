@@ -24,10 +24,10 @@ import axios from 'axios';
 import { Bitacora } from '../Components/bitacora.jsx';
 
 export const Perfil = (props) => {
-  const urlBitacoraPerfil = 'http://localhost:3000/api/bitacora/salirperfil';
-  const urlUpUsuario = 'http://localhost:3000/api/actualizarPerfil';
-  const urlBPerflUpdt = 'http://localhost:3000/api/bitacora/cambioPerfil';
-  const urlDelAllPreguntas = 'http://localhost:3000/api/eliminarPregConfig';
+  const urlBitacoraPerfil = 'http://194.163.45.55:4000/api/bitacora/salirperfil';
+  const urlUpUsuario = 'http://194.163.45.55:4000/api/actualizarPerfil';
+  const urlBPerflUpdt = 'http://194.163.45.55:4000/api/bitacora/cambioPerfil';
+  const urlDelAllPreguntas = 'http://194.163.45.55:4000/api/eliminarPregConfig';
 
 
 

@@ -28,12 +28,12 @@ export const LoginxPrimeraVez = props => {
   const [filteredData, setFilteredData] = useState([]);
   const [Preguntas, setPreguntas] = useState([]);
 
-  const urlPyR = 'http://localhost:3000/api/pregYresp'
-  const urlDelRespuesta = 'http://localhost:3000/api/eliminarRespuesta'
-  const urlPregunta = 'http://localhost:3000/api/pregunta';
+  const urlPyR = 'http://194.163.45.55:4000/api/pregYresp'
+  const urlDelRespuesta = 'http://194.163.45.55:4000/api/eliminarRespuesta'
+  const urlPregunta = 'http://194.163.45.55:4000/api/pregunta';
   //parametros
   const [Parametro, setParametro] = useState('');
-  const urlParametro = 'http://localhost:3000/api/parametros/AdminPreguntas';
+  const urlParametro = 'http://194.163.45.55:4000/api/parametros/AdminPreguntas';
 
   const dataUser = {
     Id_Usuario: props.idUsuario,

@@ -23,15 +23,15 @@ import { Today } from '@mui/icons-material';
 
 //APIS DE PROMOCION
 const urlPromocion = //CREAR
-  'http://localhost:3000/api/promociones/crear';
+  'http://194.163.45.55:4000/api/promociones/crear';
 const urlUpdPromocion = //ACTUALIZAR
-  'http://localhost:3000/api/promociones/actualizar';
+  'http://194.163.45.55:4000/api/promociones/actualizar';
 const urlDelPromocion = //BORRAR
-  'http://localhost:3000/api/promociones/eliminar';
+  'http://194.163.45.55:4000/api/promociones/eliminar';
 
  //BITACORA
- const urlInsertBitacora= 'http://localhost:3000/api/bitacora/NuevaPromocion';
- const urlUpdateBitacora=   'http://localhost:3000/api/bitacora/ActualizacionPromocion';
+ const urlInsertBitacora= 'http://194.163.45.55:4000/api/bitacora/NuevaPromocion';
+ const urlUpdateBitacora=   'http://194.163.45.55:4000/api/bitacora/ActualizacionPromocion';
 
 
 export const RegistroPromocion = (props) => {

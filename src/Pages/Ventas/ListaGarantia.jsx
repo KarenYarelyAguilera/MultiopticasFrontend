@@ -38,7 +38,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaGarantia = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 8
@@ -53,12 +53,12 @@ export const ListaGarantia = (props) => {
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
   //URL DE GARANTIA GET Y DELETE 
-  const urlGarantias = 'http://localhost:3000/api/garantias';
-  const urlGarantiasInactivas = 'http://localhost:3000/api/garantiasInactivas';
-  const urlDelGarantias = 'http://localhost:3000/api/garantias/eliminar';
+  const urlGarantias = 'http://194.163.45.55:4000/api/garantias';
+  const urlGarantiasInactivas = 'http://194.163.45.55:4000/api/garantiasInactivas';
+  const urlDelGarantias = 'http://194.163.45.55:4000/api/garantias/eliminar';
 
-  const urlBorrarBitacora = 'http://localhost:3000/api/bitacora/EliminarGarantia';
-  const urlListaSalirBitacora = 'http://localhost:3000/api/bitacora/SalirListaGarantia';
+  const urlBorrarBitacora = 'http://194.163.45.55:4000/api/bitacora/EliminarGarantia';
+  const urlListaSalirBitacora = 'http://194.163.45.55:4000/api/bitacora/SalirListaGarantia';
 
 
   const [tableData, setTableData] = useState([]);

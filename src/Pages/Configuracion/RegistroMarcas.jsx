@@ -21,10 +21,10 @@ import { Bitacora } from '../../Components/bitacora.jsx';
 import { MarkChatReadOutlined } from '@mui/icons-material';
 
 //URL DE INSERTAR Y ACTUALIZAR 
-const urlInsertMarca = 'http://localhost:3000/api/marcas/crear';
-const urlUpdateMarca = 'http://localhost:3000/api/marcas/actualizar';
-const urlInsertBitacora = 'http://localhost:3000/api//bitacora/insertmarca';
-const urlUpdateBitacora = 'http://localhost:3000/api/bitacora/actualizarmarca';
+const urlInsertMarca = 'http://194.163.45.55:4000/api/marcas/crear';
+const urlUpdateMarca = 'http://194.163.45.55:4000/api/marcas/actualizar';
+const urlInsertBitacora = 'http://194.163.45.55:4000/api//bitacora/insertmarca';
+const urlUpdateBitacora = 'http://194.163.45.55:4000/api/bitacora/actualizarmarca';
 
 export const RegistroMarcas = (props) => {
   const navegate = useNavigate();

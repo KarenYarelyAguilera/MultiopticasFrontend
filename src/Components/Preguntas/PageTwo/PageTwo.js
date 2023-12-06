@@ -13,8 +13,8 @@ export const PageTwo = ({ onButtonClick, correo, id, autor }) => {
   const [textoCorreo, setTextoCorreo] = useState("");
   const [errorCorreo, setErrorCorreo] = useState(false);
 
-  const urlUserExist = 'http://localhost:3000/api/login';
-  const urlPreguntas = 'http://localhost:3000/api/preguntas';
+  const urlUserExist = 'http://194.163.45.55:4000/api/login';
+  const urlPreguntas = 'http://194.163.45.55:4000/api/preguntas';
 
   //const [email,setEmail]=useState('');
   const [pasar, setPasar] = useState(false)

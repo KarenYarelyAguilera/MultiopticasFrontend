@@ -31,7 +31,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics'; //para el boton de ex
 export const InventarioDisponible = (props) => {
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 3
@@ -40,7 +40,7 @@ export const InventarioDisponible = (props) => {
     axios.post(urlPermisos, dataPermiso).then((response) => setPermisos(response.data))
   }, [])
 
-  const urlInventario = 'http://localhost:3000/api/inventarios';
+  const urlInventario = 'http://194.163.45.55:4000/api/inventarios';
 
   const [cambio, setcambio] = useState(0)
   const [tableData, setTableData] = useState([]);

@@ -34,8 +34,8 @@ export const CambioContraseniaPV = ({ correo, idUsuario, autor, loginpvez, id, p
   const navegate = useNavigate()
   const handleClick = () => {
 
-    const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
-    const urlEstadoA = 'http://localhost:3000/api/usuario/EstadoActivo';
+    const urlUpdPassword = "http://194.163.45.55:4000/api/usuario/UpdContra"
+    const urlEstadoA = 'http://194.163.45.55:4000/api/usuario/EstadoActivo';
 
 
 

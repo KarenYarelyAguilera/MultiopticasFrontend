@@ -22,10 +22,10 @@ import { DataGrid, esES } from '@mui/x-data-grid';
 import axios from 'axios';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const urlCompra = 'http://localhost:3000/api/compra/NuevaCompra';
-const urlProducto = "http://localhost:3000/api/productos";
-const urlProveedor = "http://localhost:3000/api/proveedor";
-const urlInsertCompraB = 'http://localhost:3000/api/bitacora/insertcompra';
+const urlCompra = 'http://194.163.45.55:4000/api/compra/NuevaCompra';
+const urlProducto = "http://194.163.45.55:4000/api/productos";
+const urlProveedor = "http://194.163.45.55:4000/api/proveedor";
+const urlInsertCompraB = 'http://194.163.45.55:4000/api/bitacora/insertcompra';
 
 
 ReactModal.setAppElement('#root');

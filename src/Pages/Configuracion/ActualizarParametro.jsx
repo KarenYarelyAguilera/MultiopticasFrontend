@@ -15,7 +15,7 @@ import { TextField } from '@mui/material';
 import axios from 'axios'; //Agregarlo siempre porque se necesita para exportar Axios para que se puedan consumir las Apis 
 
 //URL DE ACTUALIZAR 
-const urlUpdateParametro = 'http://localhost:3000/api/parametros/actualizacion';//API DE ACTUALIZAR
+const urlUpdateParametro = 'http://194.163.45.55:4000/api/parametros/actualizacion';//API DE ACTUALIZAR
 
 export const ActualizarParametro = (props) => {
 

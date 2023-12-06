@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 export const PageThree = ({ onButtonClick, correo, id }) => {
-  const urlVerificar = 'http://localhost:3000/api/token/verificar';
+  const urlVerificar = 'http://194.163.45.55:4000/api/token/verificar';
   const [pasar, setPasar] = useState(false)
 
 

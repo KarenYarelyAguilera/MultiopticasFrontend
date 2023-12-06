@@ -34,7 +34,7 @@ import { generatePDF } from '../../Components/generatePDF';
 
 export const ListaDepartamentos = ({idRol,data,update}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -48,9 +48,9 @@ export const ListaDepartamentos = ({idRol,data,update}) => {
   //Filtracion de fechas
   const [pageSize, setPageSize] = useState(5); // Puedes establecer un valor predeterminado
 
-  const urlDepartamento = 'http://localhost:3000/api/departamentos';
-  const urlDeleteDepartamento = 'http://localhost:3000/api/departamento/eliminar';
-  const urlListaDepartamentoInactivos = 'http://localhost:3000/api/departamentos/departamentoInactivo';
+  const urlDepartamento = 'http://194.163.45.55:4000/api/departamentos';
+  const urlDeleteDepartamento = 'http://194.163.45.55:4000/api/departamento/eliminar';
+  const urlListaDepartamentoInactivos = 'http://194.163.45.55:4000/api/departamentos/departamentoInactivo';
 
 
   const [tableData, setTableData] = useState([]);

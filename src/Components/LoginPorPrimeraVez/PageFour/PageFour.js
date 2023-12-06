@@ -24,13 +24,13 @@ export const PageFour = ({correo,id,autor }) => {
   const [showPasswordConfi, setShowPasswordConfi] = useState(false);
 
   
-  const urlUpdEstadoA  = "http://localhost:3000/api/Estado/Activo"
+  const urlUpdEstadoA  = "http://194.163.45.55:4000/api/Estado/Activo"
 
   const navegate = useNavigate()
   
   const handleClick = async ()=>{
 
-    const urlUpdPassword = "http://localhost:3000/api/usuario/UpdContra"
+    const urlUpdPassword = "http://194.163.45.55:4000/api/usuario/UpdContra"
     const contra1 = document.getElementById("contra1").value
     const contra2 = document.getElementById("contra2").value
 

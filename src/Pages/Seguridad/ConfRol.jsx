@@ -14,23 +14,23 @@ import axios from 'axios';
 
 export const ConfigRol = props => {
   const urlRoles =
-    'http://localhost:3000/api/Rol';
+    'http://194.163.45.55:4000/api/Rol';
 
-  const urlPermisos = "http://localhost:3000/api/permisosRol";
+  const urlPermisos = "http://194.163.45.55:4000/api/permisosRol";
 
   // const urlURol =
   //   'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=updRol';
   // const urlNRol =
   //   'http://localhost/APIS-Multioptica/Rol/controller/Rol.php?op=nRol';
 
-  const urlUsuario = "http://localhost:3000/api/permisosOBJ2"
-  const urlInventario = "http://localhost:3000/api/permisosOBJ3"
-  const urlClientes = "http://localhost:3000/api/permisosOBJ4"
-  const urlRecordatorio = "http://localhost:3000/api/permisosOBJ5"
-  const urlCompras = "http://localhost:3000/api/permisosOBJ6"
-  const urlSeguridad = "http://localhost:3000/api/permisosOBJ7"
-  const urlConfig = "http://localhost:3000/api/permisosOBJ8"
-  const urlVentas = "http://localhost:3000/api/permisosOBJ9"
+  const urlUsuario = "http://194.163.45.55:4000/api/permisosOBJ2"
+  const urlInventario = "http://194.163.45.55:4000/api/permisosOBJ3"
+  const urlClientes = "http://194.163.45.55:4000/api/permisosOBJ4"
+  const urlRecordatorio = "http://194.163.45.55:4000/api/permisosOBJ5"
+  const urlCompras = "http://194.163.45.55:4000/api/permisosOBJ6"
+  const urlSeguridad = "http://194.163.45.55:4000/api/permisosOBJ7"
+  const urlConfig = "http://194.163.45.55:4000/api/permisosOBJ8"
+  const urlVentas = "http://194.163.45.55:4000/api/permisosOBJ9"
 
 
   const [roles, setRoles] = useState([]);

@@ -35,7 +35,7 @@ import { BiotechTwoTone } from '@mui/icons-material';
 
 export const ListaMetodosDePago = ({idRol,data,update,props}) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:idRol,
     idObj:8
@@ -52,10 +52,10 @@ export const ListaMetodosDePago = ({idRol,data,update,props}) => {
   
 
   //URL DE LAS APIS DE METODOS DE PAGO
-    const urlMetodosPago = 'http://localhost:3000/api/tipopago';
-    const urlDelMetodosPago = 'http://localhost:3000/api/tipopago/eliminar';
-    const urlLisTipoPagoInactivos = 'http://localhost:3000/api/tipopago/PagoInactivo';
-  //const urlBorrarMetodoPagoB = 'http://localhost:3000/api/bitacora/eliminarMetodopago';
+    const urlMetodosPago = 'http://194.163.45.55:4000/api/tipopago';
+    const urlDelMetodosPago = 'http://194.163.45.55:4000/api/tipopago/eliminar';
+    const urlLisTipoPagoInactivos = 'http://194.163.45.55:4000/api/tipopago/PagoInactivo';
+  //const urlBorrarMetodoPagoB = 'http://194.163.45.55:4000/api/bitacora/eliminarMetodopago';
     
   const [tableData, setTableData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');

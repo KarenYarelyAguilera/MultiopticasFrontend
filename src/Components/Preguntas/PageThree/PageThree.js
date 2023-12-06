@@ -12,11 +12,11 @@ import { toBePartiallyChecked } from '@testing-library/jest-dom/matchers';
 export const PageThree = ({ onButtonClick, correo, id, props }) => {
 
   const [Preguntas, setPreguntas] = useState([]);
-  const urlPreguntas = 'http://localhost:3000/api/preguntas';
-  const urlRespuestas = 'http://localhost:3000/api/preguntas/compararR';
-  const urlBloquearUsu = "http://localhost:3000/api/usuario/estado"
-  // const urlId = 'http://localhost:3000/api/token/id';
-  const urlIntentos = 'http://localhost:3000/api/parametros/AdminIntentos'; //URL para obtener el valor del parametro
+  const urlPreguntas = 'http://194.163.45.55:4000/api/preguntas';
+  const urlRespuestas = 'http://194.163.45.55:4000/api/preguntas/compararR';
+  const urlBloquearUsu = "http://194.163.45.55:4000/api/usuario/estado"
+  // const urlId = 'http://194.163.45.55:4000/api/token/id';
+  const urlIntentos = 'http://194.163.45.55:4000/api/parametros/AdminIntentos'; //URL para obtener el valor del parametro
 
   const [NumInt, setNumInt] = useState(0); 
   const [Contador, setContador] = useState(1);

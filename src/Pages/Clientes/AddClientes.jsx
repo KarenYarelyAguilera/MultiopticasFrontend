@@ -18,16 +18,16 @@ import { Bitacora } from '../../Components/bitacora';
 
 
 const urlGenero = 
-    'http://localhost:3000/api/Genero';
+    'http://194.163.45.55:4000/api/Genero';
 
 const urlInsertCliente =
-  'http://localhost:3000/api/clientes/clienteNuevo';
+  'http://194.163.45.55:4000/api/clientes/clienteNuevo';
 //insertar usuario
 const urlClienteActualizar =
-  'http://localhost:3000/api/clientes/actualizar';
+  'http://194.163.45.55:4000/api/clientes/actualizar';
 //actualizar usuario
 
-const urlBitacoraInsertC = 'http://localhost:3000/api/bitacora/Nuevacliente';
+const urlBitacoraInsertC = 'http://194.163.45.55:4000/api/bitacora/Nuevacliente';
 
 export const AddClientes = (props) => {
   const [procesoEnCurso, setProcesoEnCurso] = useState(true)

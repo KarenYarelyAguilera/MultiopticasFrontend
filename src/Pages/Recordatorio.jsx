@@ -76,7 +76,7 @@ const events = [
 
 export const Recordatorio = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso = {
     idRol: props.idRol,
     idObj: 5
@@ -99,11 +99,11 @@ export const Recordatorio = (props) => {
   const navegate = useNavigate();
 
 
-  const urlGetCitas = 'http://localhost:3000/api/recordatorios';
-  const urlGetCita = 'http://localhost:3000/api/recordatorio';
-  const urlDelCita = 'http://localhost:3000/api/eliminarCita'
-  const urlBitacoraDelCita = 'http://localhost:3000/api/bitacora/eliminarcita';
-  const urlBSalirPantalla = 'http://localhost:3000/api/bitacora/citasSalir';
+  const urlGetCitas = 'http://194.163.45.55:4000/api/recordatorios';
+  const urlGetCita = 'http://194.163.45.55:4000/api/recordatorio';
+  const urlDelCita = 'http://194.163.45.55:4000/api/eliminarCita'
+  const urlBitacoraDelCita = 'http://194.163.45.55:4000/api/bitacora/eliminarcita';
+  const urlBSalirPantalla = 'http://194.163.45.55:4000/api/bitacora/citasSalir';
 
   //Primer dia del mes
   const todayf = new Date();

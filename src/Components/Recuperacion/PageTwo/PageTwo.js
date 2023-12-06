@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const PageTwo = ({ onButtonClick, correo1, id, autor }) => {
   const navigate = useNavigate();
-  const urlUserExist = 'http://localhost:3000/api/login';
-  const urlEnviarCodigo = 'http://localhost:3000/api/token/enviarCodigo';
+  const urlUserExist = 'http://194.163.45.55:4000/api/login';
+  const urlEnviarCodigo = 'http://194.163.45.55:4000/api/token/enviarCodigo';
 
   const handleClick = async () => {
     const respuesta = document.getElementById('respuesta').value;

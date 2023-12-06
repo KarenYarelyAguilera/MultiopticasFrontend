@@ -32,7 +32,7 @@ import { TextCustom } from '../../Components/TextCustom';
 
 export const ListaPromocion = (props) => {
   const [permisos, setPermisos] = useState([]);
-  const urlPermisos = 'http://localhost:3000/api/permiso/consulta'
+  const urlPermisos = 'http://194.163.45.55:4000/api/permiso/consulta'
   const dataPermiso={
     idRol:props.idRol,
     idObj:8
@@ -44,17 +44,17 @@ export const ListaPromocion = (props) => {
   const [inactivo, setInactivo] = useState(false)
   const [marcah, setMarcah] = useState()
 
-  const urlPromociones ='http://localhost:3000/api/promociones';
-  const urlPromocionesInactivas ='http://localhost:3000/api/promocionesInactivas';
-  const urlDelPromocion = 'http://localhost:3000/api/promociones/eliminar';
+  const urlPromociones ='http://194.163.45.55:4000/api/promociones';
+  const urlPromocionesInactivas ='http://194.163.45.55:4000/api/promocionesInactivas';
+  const urlDelPromocion = 'http://194.163.45.55:4000/api/promociones/eliminar';
 
   const [tableData, setTableData] = useState([]);
   const [tableDataInactivos, setTableDataInactivos] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   //COLOCAR APIS DE BITACORA AQUI---
-  const urlDelBitacora ='http://localhost:3000/api/bitacora/EliminarPromocion';
-  const urlSalirLista ='http://localhost:3000/api/bitacora/SalirListaPromocion';
+  const urlDelBitacora ='http://194.163.45.55:4000/api/bitacora/EliminarPromocion';
+  const urlSalirLista ='http://194.163.45.55:4000/api/bitacora/SalirListaPromocion';
 
   //-------------------------------------------------------------------
   
