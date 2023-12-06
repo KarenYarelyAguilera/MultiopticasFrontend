@@ -13,7 +13,6 @@ import jsPDF from 'jspdf';
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 import swal from '@sweetalert/with-react';
-
 //Styles
 import '../../Styles/Usuarios.css';
 
@@ -407,6 +406,32 @@ const [Rlentes, setRlentes] = useState([]);
     closeLenteModal()
   };
 
+  //filtrar datos
+  const filteredData = clientes.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+  //filtrar datos
+  const filtrardatos = Producto.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+  const filtrolentes = Lente.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
      
 
   return (
@@ -460,9 +485,23 @@ const [Rlentes, setRlentes] = useState([]);
               ariaHideApp={false} >
               <div>
                 <h2>Seleccione un Cliente</h2>
+                <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
-                  rows={clientes}
+                  rows={filteredData}
                   getRowId={clientes => clientes.idCliente}
                   pagination
                   autoHeight
@@ -600,10 +639,24 @@ const [Rlentes, setRlentes] = useState([]);
               ariaHideApp={false} >
               <div>
                 <h2>Seleccione el producto</h2>
+<div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
           getRowId={Productos => Productos.IdProducto}
-          rows={Producto}
+          rows={filtrardatos}
           columnas={columns}
           onCellClick={handleCellClic}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
@@ -739,11 +792,25 @@ const [Rlentes, setRlentes] = useState([]);
               <div>
           
               <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el lente</h2>
+              <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
               
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
           getRowId={Lentecitos => Lentecitos.IdLente}
-          rows={Lente}
+          rows={filtrolentes}
           columnas={columns}
           onCellClick={handleCellClickLentes}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}

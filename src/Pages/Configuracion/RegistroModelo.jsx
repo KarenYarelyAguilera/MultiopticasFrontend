@@ -9,7 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //Imports para modal
 import ReactModal from 'react-modal';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
-
+import SearchIcon from '@mui/icons-material/Search';
 //Styles
 import '../../Styles/Usuarios.css';
 
@@ -45,7 +45,7 @@ export const RegistroModelo = (props) => {
   const [erroranio, setErroranio] = React.useState(false);
 
   const [estado, setEstado] = useState(props.data.estado || null)
-
+  const [searchTerm, setSearchTerm] = useState('');
   const navegate = useNavigate();
 
     //hooks para la modal
@@ -108,6 +108,7 @@ export const RegistroModelo = (props) => {
      dataB: dataB
    }; 
    console.log(data);
+
 
   //Consumo de API y lanzamiento se alerta
   axios.post(urlInsertModelo, data).then(response => {
@@ -220,7 +221,13 @@ const actualizarModelo = async () => {
   
   ];
 
-  
+  const filteredData = Marca.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
   return (
     <div className="ContUsuarios">
       <Button className="btnBack" onClick={handleBack}>
@@ -257,12 +264,26 @@ const actualizarModelo = async () => {
               <div>
           
               <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione la marca</h2>
-              
+              <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
+
           
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
           getRowId={Marquitas => Marquitas.IdMarca}
-          rows={Marca}
+          rows={filteredData}
           columnas={columns}
           onCellClick={handleCellClic}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
