@@ -136,9 +136,6 @@ const handleBack = () => {
       </Button>
       <div className="titleAddUser">
       {props.actualizar ? <h2>Actualizar Ciudad</h2> : <h2>Registro de Ciudad</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar las ciudades.
-        </h3>
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

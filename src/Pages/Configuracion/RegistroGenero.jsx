@@ -139,10 +139,7 @@ const handleBack = () => {
         className="iconBack" />
       </Button>
       <div className="titleAddUser">
-      {props.actualizar ? <h2>Actualizacion de Género</h2> : <h2>Registro de Género</h2>}
-        <h3>
-          Complete todos los puntos para poder registrar el Género.
-        </h3>
+      {props.actualizar ? <h2>Actualización de Género</h2> : <h2>Registro de Género</h2>}
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

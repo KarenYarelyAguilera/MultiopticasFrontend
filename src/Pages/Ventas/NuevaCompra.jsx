@@ -195,16 +195,27 @@ export const NuevaCompra = ({
     }, 0);
 
     swal({
-      title: "Confirme la Compra",
-      content: {
-        element: "div",
-        attributes: {
-          innerHTML: `
+      content: (
+        <div className="contMod">
+          <div className="logoModal1">
+            Confirmar la Compra
+          </div>
+          <div className="infoMod">
+            <h3>Total: <h4>L.{total}</h4></h3>
+          </div>
+      </div>
+      ),
+      // ),
+      // title: "Confirme la Compra",
+      // content: {
+      //   element: "div",
+      //   attributes: {
+      //     innerHTML: `
             
-            <h3>Total a Pagar ${total}</h3>
-          `,
-        },
-      },
+      //       <h3>Total a Pagar ${total}</h3>
+      //     `,
+      //   },
+      // },
       buttons: {
         cancel: {
           text: "Cancelar",
@@ -302,7 +313,7 @@ export const NuevaCompra = ({
             </div>
             <div className="contInput">
               <TextCustom text="Proveedor" className="titleInput1" />
-              <select name="" className="selectCustom" id="proveedor" onChange={handleSelectChange}>
+              <select name="" className="selectCustom7" id="proveedor" onChange={handleSelectChange}>
                 {proveedor.length ? (
                   proveedor.map(pre => (
                     <option key={pre.IdProveedor} value={pre.IdProveedor}>
@@ -328,7 +339,7 @@ export const NuevaCompra = ({
                   disabled
                   onChange={handleCellClic}
                   value={productos.Modelo}
-                  style={{ width: '300px' }}
+                  style={{ width: '350px' }}
                 />
                 <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
               </div>
@@ -586,7 +597,12 @@ export const NuevaCompra = ({
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
-          <label htmlFor="">Total de la compra: {compras.reduce((total,compra)=>(total+compra.costo).toFixed(2),0)}</label>
+        <div className="resultados">
+          <div className="contResultados">
+          <TextCustom text="Total" className="titlePResult" />
+          <label htmlFor="" className='titleSResultT'>L {compras.reduce((total,compra)=>total+compra.costo,0).toFixed(2)}</label>
+          </div>
+        </div>
         </div>
       </div>
     </div>
