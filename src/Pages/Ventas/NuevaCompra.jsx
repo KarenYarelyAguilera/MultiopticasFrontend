@@ -201,7 +201,7 @@ export const NuevaCompra = ({
             Confirmar la Compra
           </div>
           <div className="infoMod">
-            <h3>Total: <h4>${total}</h4></h3>
+            <h3>Total: <h4>L.{total}</h4></h3>
           </div>
       </div>
       ),
@@ -600,7 +600,7 @@ export const NuevaCompra = ({
         <div className="resultados">
           <div className="contResultados">
           <TextCustom text="Total" className="titlePResult" />
-          <label htmlFor="" className='titleSResultT'> {compras.reduce((total,compra)=>total+compra.costo,0).toFixed(2)}</label>
+          <label htmlFor="" className='titleSResultT'>L {compras.reduce((total,compra)=>total+compra.costo,0).toFixed(2)}</label>
           </div>
         </div>
         </div>
