@@ -71,8 +71,8 @@ export const RegistroPreguntaDeSeguridad = props => {
 
             const data = {
                 pregunta: Resp,
-                creadoPor: props.infoPerfil.nombre,
-                FechaCrea: new Date()
+                creadoPor: props.infoPerfil.nombre
+               
             };
             console.log(data);
 
@@ -95,10 +95,10 @@ export const RegistroPreguntaDeSeguridad = props => {
         try {
             const Resp =  document.getElementById("preguntaSeg").value;
 
+
             const data = {
                 pregunta: Resp,
                 modificado_por: props.infoPerfil.nombre,
-                fecha_modificacion: new Date(),
                 Id_Pregunta: props.data.Id_Pregunta,
             };
             console.log(data);

@@ -249,22 +249,29 @@ export const AddUsers = (props) => {
                 )}
               </select> */}
               {props.update ? <>
-                <Select isDisabled={true}
+                <Select
+                isDisabled={true}
                   styles={{
                     control: (base) => ({
                       ...base,
-                      width: "300px", // Ajusta el ancho según tus necesidades
+                      width: "500px", // Ajusta el ancho según tus necesidades
                     }),
                   }}
                   id="empleado"
                   options={optionsEmpleados}
-                  value={selectedOption}
+                  value={props.data.idEmpleado || selectedOption }
                   onChange={setSelectedOption}
-                  placeholder="Seleccione un empleado"
+                  placeholder=  {props.data.nombre===undefined?'': `${props.data.nombre} - ${props.data.apellido}` || "Seleccione un empleado"}
                 /></>
                 : <>
                   <Select
                     id="empleado"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        width: "500px", // Ajusta el ancho según tus necesidades
+                      }),
+                    }}
                     options={optionsEmpleados}
                     value={selectedOption}
                     onChange={setSelectedOption}
@@ -484,7 +491,7 @@ export const AddUsers = (props) => {
                   var password2 = document.getElementById("contra2").value;
 
 
-                  if (usuario === "" || correo === "" || password === "" || password2 === "") {
+                  if (usuario === "" || correo === "") {
                     swal("No deje campos vacíos.", "", "error");
                   } else if (!/^[A-Z]+$/.test(usuario)) {
                     setErrorNombreusuario(true)
@@ -497,16 +504,6 @@ export const AddUsers = (props) => {
                   }  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
                     setErrorCorreo(true)
                     swal("El campo correo debe contener un correo válido.", "", "error");
-                  } else if (password.length < 8 ) {
-                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
-                  } else if (password2.length < 8 ) {
-                    swal('La longitud de contraseña debe ser mínimo 8 caracteres.', '', 'error');
-                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password2)) {
-                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
-                  } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/.test(password)) {
-                    swal("La contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un carácter especial.", "", "error");
-                  }else if (password !== password2) {
-                    swal("Las contraseñas deben coincidir.", "", "error");
                   } else {
                     actualizar()
                   }

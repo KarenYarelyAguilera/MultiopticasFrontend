@@ -13,7 +13,6 @@ import jsPDF from 'jspdf';
 import Select from 'react-select'; //select para concatenar el idCiente y el nombre
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';//icono para el boton de bucasr cliente
 import swal from '@sweetalert/with-react';
-
 //Styles
 import '../../Styles/Usuarios.css';
 
@@ -282,18 +281,33 @@ const [Rlentes, setRlentes] = useState([]);
     }
     await axios.post(urlTotalAPagar, data).then((response) => {
       swal({
-        title: "Confirme la venta",
-        content: {
-          element: "div",
-          attributes: {
-            innerHTML: `
-              <h1>Confirme la venta</h1>
-              <h3>Subtotal ${response.data.subtotal}</h3>
-              <h3>Rebajas ${response.data.rebajas}</h3>
-              <h3>Total a Pagar ${response.data.total}</h3>
-            `,
-          },
-        },
+        content: (
+          <div className="contMod">
+            <div className="logoModal1">
+              Confirmar la Venta
+            </div>
+        <div className="infoMod">
+        <h3>SubTotal: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.subtotal)}</h4></h3>
+        <h3>Rebajas: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.rebajas)}</h4></h3>
+        <h3>Total a Pagar: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.total)}</h4></h3>
+      </div>
+
+        </div>
+        ),
+// content: {
+//   element: 'div',
+//           attributes: {
+//             innerHTML: `
+//             <div className=`${logoModal}`>
+//             ¿Desea actualizar la Promocion de Producto?
+//           </div>
+//               <h3>Subtotal ${response.data.subtotal}</h3>
+//               <h3>Rebajas ${response.data.rebajas}</h3>
+//               <h3>Total a Pagar ${response.data.total}</h3>
+//             `,
+//           },
+//         },
+        
         buttons: {
           cancel: {
             text: "Cancelar",
@@ -393,6 +407,32 @@ const [Rlentes, setRlentes] = useState([]);
     closeLenteModal()
   };
 
+  //filtrar datos
+  const filteredData = clientes.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+  //filtrar datos
+  const filtrardatos = Producto.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
+  const filtrolentes = Lente.filter(row =>
+    Object.values(row).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().indexOf(searchTerm.toLowerCase()) > -1,
+    ),
+  );
+
      
 
   return (
@@ -415,21 +455,23 @@ const [Rlentes, setRlentes] = useState([]);
               </div>
             </div> */}
 
-            <div className="contNewCita"  >
+            <div className="contInput"  >
               <TextCustom text="Cliente" className="titleInput" />
               <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
 
                 <input
                   type="text"
                   //onClick={openModal}
-                  className="inputCustomText"
+                  className="inputCustom"
                   placeholder="Seleccione un cliente"
                   disabled
                   onChange={handleCellClick}
-                  value={Cliente.nombre}
+                  value={Cliente.nombre===undefined?'': `${Cliente.nombre} - ${Cliente.apellido}`}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openClienteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openClienteModal}>
+                  <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
 
 
@@ -444,9 +486,23 @@ const [Rlentes, setRlentes] = useState([]);
               ariaHideApp={false} >
               <div>
                 <h2>Seleccione un Cliente</h2>
+                <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
-                  rows={clientes}
+                  rows={filteredData}
                   getRowId={clientes => clientes.idCliente}
                   pagination
                   autoHeight
@@ -568,10 +624,12 @@ const [Rlentes, setRlentes] = useState([]);
                   placeholder="Seleccione el aro"
                   disabled
                   onChange={handleCellClic}
-                  value={productos.Modelo}
+                  value={productos.Modelo===undefined?'': `${productos.Modelo} - ${productos.Marca}`}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openProductoModal}>
+                <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
             </div>
             <ReactModal
@@ -582,10 +640,24 @@ const [Rlentes, setRlentes] = useState([]);
               ariaHideApp={false} >
               <div>
                 <h2>Seleccione el producto</h2>
+<div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
           getRowId={Productos => Productos.IdProducto}
-          rows={Producto}
+          rows={filtrardatos}
           columnas={columns}
           onCellClick={handleCellClic}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
@@ -647,7 +719,7 @@ const [Rlentes, setRlentes] = useState([]);
                 <Select
                   id="promocion"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${(pre.descPorcent) * 100}%` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
@@ -694,7 +766,7 @@ const [Rlentes, setRlentes] = useState([]);
               </div>
             </div> */}
 
-          <div className="contNewCita">
+          <div className="contInput">
               <TextCustom text="Lentes" className="titleInput" />
               <div className='inputContainer' style={{ display: 'flex', alignItems: 'center' }}>
                 <input
@@ -707,7 +779,9 @@ const [Rlentes, setRlentes] = useState([]);
                   value={Rlentes.lente}
                   style={{ width: '300px' }}
                 />
-                <Button className="btnClearFilter" onClick={openLenteModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
+                <Button className="btnClearFilter" onClick={openLenteModal}>
+                  <PersonSearchIcon className='iconSearchP'/>
+                </Button>
               </div>
             </div>
             <ReactModal
@@ -719,11 +793,25 @@ const [Rlentes, setRlentes] = useState([]);
               <div>
           
               <h2 style={{ fontSize: '2.5rem',marginBottom: '10px' }}>Seleccione el lente</h2>
+              <div className="contFilter1">
+                      {/* <div className="buscador"> */}
+                      <SearchIcon
+                        style={{ position: 'absolute', color: 'gray', paddingLeft: '10px' }}
+                      />
+                      <input
+                        type="text"
+                        className="inputSearch"
+                        placeholder="Buscar"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+
+                      />
+                    </div>
               
                 {/* Tabla o cualquier otro componente para mostrar la lista de clientes */}
                 <DataGrid
           getRowId={Lentecitos => Lentecitos.IdLente}
-          rows={Lente}
+          rows={filtrolentes}
           columnas={columns}
           onCellClick={handleCellClickLentes}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
@@ -765,41 +853,45 @@ const [Rlentes, setRlentes] = useState([]);
 
 
             <div className="contBtnStepper2">
-              <Button
-                className="btnStepper"
+            <Button
+  className="btnStepper"
+  onClick={() => {
+    let fechaEntrega = document.getElementById("fechaEntrega").value;
+    let fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
+    let Cliente = selectedOption ? selectedOption.value : null;
+    let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
+    var producto = selectedAros ? selectedAros.value : null;
+    var Descuento = selectedDescuento ? selectedDescuento.value : null;
+    var Promocion = selectedPromocion ? selectedPromocion.value : null;
+    var Garantia = selectedGarantia ? selectedGarantia.value : null;
+    var cantidad = parseInt(document.getElementById("Cantidad").value, 10); // Parse as integer
+    var lente = selectedLente ? selectedLente.value : null;
 
-                onClick={() => {
-                  let fechaEntrega = document.getElementById("fechaEntrega").value;
-                  let fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  let Cliente = selectedOption ? selectedOption.value : null;
-                  let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
-                  var producto = selectedAros ? selectedAros.value : null;
-                  var Descuento = selectedDescuento ? selectedDescuento.value : null;
-                  var Promocion = selectedPromocion ? selectedPromocion.value : null;
-                  var Garantia = selectedGarantia ? selectedGarantia.value : null;
-                  var cantidad = parseInt(document.getElementById("Cantidad").value)
-                  var lente = selectedLente ? selectedLente.value : null;
+    if (fechaLimiteEntrega < fechaEntrega) {
+      swal("Porfavor ingrese correctamente las fechas", "", "error");
+    } else if (
+      fechaEntrega === "" ||
+      fechaLimiteEntrega === "" ||
+      Cliente === "" ||
+      Empleado === "" ||
+      isNaN(cantidad) || // Check if it's not a number
+      cantidad <= 0 || // Check if it's not a positive integer
+      lente === "" ||
+      producto === "" ||
+      Descuento === "" ||
+      Promocion === "" ||
+      Garantia === ""
+    ) {
+      swal("No deje campos vacíos.", "", "error");
+    } else {
+      AggDataGrid();
+      document.getElementById("Cantidad").value = "";
+    }
+  }}
+>
+  <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+</Button>
 
-                  if (fechaLimiteEntrega < fechaEntrega) {
-                    swal("Porfavor ingrese correctamente las fechas", "", "error")
-                  } else if ((fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "" || cantidad === "" || lente === "" || producto === "" || Descuento === "" || Promocion === "" || Garantia === "")) {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else {
-                    AggDataGrid();
-                    //document.getElementById(selectedAros).value = "";
-                    //document.getElementById(selectedLente).value = ""
-                    //document.getElementById("producto").value = "";
-                    document.getElementById("Cantidad").value = "";
-                    //document.getElementById("costo").value = ""
-                    //handleNext();
-                  }
-
-                }
-                }
-              >
-                {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
-              </Button>
             </div>
           </div>
         </div>
@@ -851,9 +943,22 @@ const [Rlentes, setRlentes] = useState([]);
             pageSize={5}
             rowsPerPageOptions={[5]}
           />
-          <label htmlFor="">Subtotal: {totales.subtotal.toFixed(2)}</label><br />
-          <label htmlFor="">Rebajas: {totales.rebajas.toFixed(2)}</label><br />
-          <label htmlFor="">Total: {totales.total.toFixed(2)}</label><br />
+          <div className="resultados">
+            <div className="contResultados">
+              <TextCustom text="SubTotal" className="titlePResult" />
+              <label htmlFor="" className='titleSResult'>L  {totales.subtotal.toFixed(2)}</label>
+            </div>
+
+            <div className="contResultados">
+              <TextCustom text="Rebajas" className="titlePResult" />
+              <label htmlFor="" className='titleSResult'>L  {totales.rebajas.toFixed(2)}</label>
+            </div>
+
+            <div className="contResultados">
+              <TextCustom text="Total" className="titlePResult" />
+              <label htmlFor="" className='titleSResultT'>L  {totales.total.toFixed(2)}</label>
+            </div>
+          </div>
 
           {/* <img
           src={

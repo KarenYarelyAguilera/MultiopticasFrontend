@@ -141,8 +141,6 @@ const handleBack = () => {
 
       <div className="titleAddUser">
       {props.actualizar ? <h2>Actualizar Marca</h2> : <h2>Registro de Marca</h2>}
-
-        <h3>Complete todos los puntos para poder registrar los datos de la Marca.</h3>
       </div>
 
       <div className="infoAddUser">

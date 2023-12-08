@@ -525,8 +525,8 @@ export const DatosEmpleado = (props) => {
               <select id="estado" className="selectCustom" value={estado} onChange={(e)=>{
                 setEstado(e.target.value)
               }}>
-                <option value={"Activo"}>Activo</option>
-                <option value={"Inactivo"}>Inactivo</option>
+                <option value={"A"}>Activo</option>
+                <option value={"I"}>Inactivo</option>
               </select>
             </div>
 

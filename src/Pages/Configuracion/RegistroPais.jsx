@@ -135,8 +135,7 @@ export const RegistroPais = (props) => {
         <ArrowBackIcon className="iconBack" />
       </Button>
       <div className="titleAddUser">
-        {props.actualizar ? <h2>Actualizacion de Pais</h2> : <h2>Registro de Pais</h2>}
-        <h3>Complete todos los puntos para poder registrar el pais.</h3>
+        {props.actualizar ? <h2>Actualización de País</h2> : <h2>Registro de País</h2>}
       </div>
       <div className="infoAddUser">
         <div className="PanelInfo">

@@ -54,7 +54,7 @@ export const PerfilStepper = props => {
       <div className="divInfoQuestion">
         <div className="titleRecuPassword">
           <h2>Cambiar contraseña</h2>
-          <h3>Contesta cada paso, para poder autenticar tu usuario.</h3>
+         
         </div>
         <MultiProgressPerfil page={page} onPageNumberClick={nextPageNumber} />
         {

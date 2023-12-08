@@ -10,12 +10,12 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { generatePDF } from '../../Components/generatePDF';
 
-
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import swal from '@sweetalert/with-react';
 
 //Mui-Material-Icons
-
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
@@ -135,9 +135,9 @@ export const ListaVenta = (props) => {
       // Datos para el archivo Excel
       const dataForExcel = filteredData.map((row, index) => ({
         'IdVenta': row.IdVenta,
-        //'Fecha': row.fecha,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'),
         'Cliente': row.Cliente,
-        'ValorVenta': row.ValorVenta,
+        'ValorVenta':row.ValorVenta,
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdVenta', 'Cliente', 'ValorVenta'] });
@@ -149,35 +149,38 @@ export const ListaVenta = (props) => {
     }
   };
 
+    //IMPRIMIR PDF
+    const handleGenerarReporte = () => {
+      if (permisos[0].consultar==="n") {
+        swal("No cuenta con los permisos para realizar esta accion","","error")
+      } else {
+        const formatDataForPDF = () => {
+          const formattedData = filteredData.map((row) => {
+            const fechaCre = new Date(row.fechaNacimiento);
+            const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+              String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+              fechaCre.getFullYear();
+            return {
+              'IdVenta': row.IdVenta,
+              'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'),
+              'Cliente': row.Cliente,
+              'ValorVenta': `L.${parseFloat(row.ValorVenta).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            };
+          });
+          return formattedData;
+        };
+    
+        const urlPDF = 'Reporte_Ventas.pdf';
+        const subTitulo = "LISTA DE VENTAS"
+        const orientation = "landscape";
+    
+        generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+      }
+   
+    };
 
-  const handleGenerarReporte = () => {
-    if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
-      const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fechaYHora);
-          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
-          return {
-            'IdVenta': row.IdVenta,
-            //'Fecha': row.fecha,
-            'Cliente': row.Cliente,
-            'ValorVenta': row.ValorVenta,
 
-          };
-        });
-        return formattedData;
-      };
-
-      const urlPDF = 'Reporte_ventas.pdf';
-      const subTitulo = "LISTA DE VENTAS"
-
-      generatePDF(formatDataForPDF, urlPDF, subTitulo);
-    }
-
-  };
+  
 
   const columns = [
     { field: 'IdVenta', headerName: 'ID', width: 210 },
@@ -189,7 +192,16 @@ export const ListaVenta = (props) => {
       },
     },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
-    { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
+    {
+      field: 'ValorVenta',
+      headerName: 'Valor de la Venta',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
     {
       field: 'estado',
       headerName: 'Estado',
@@ -253,36 +265,29 @@ export const ListaVenta = (props) => {
       swal("No cuenta con los permisos para realizar esta accion", "", "error")
     } else {
       const informacionventa = await axios.post(urlVentaDetalle, { id: id })
+      console.log(informacionventa.data);
       const documento = new jsPDF();
       documento.text(`---------------------MULTIOPTICAS, S.DE R.L. DE C.V.---------------------`, 20, 10);
 
       //documento.text(`Fecha: ${informacionventa.data[0].fecha}`, 20, 20);
       documento.text(`RTN:  08011998014780`, 20, 30);
-      documento.text(`NumeroCAI: ${informacionventa.data[0].NumeroCAI}`, 20, 40);
-      documento.text(`Direccion: ${informacionventa.data[0].direccion}`, 20, 50);
-      documento.text(`Cels: 95304100 // 99237123 `, 20, 60);
-      documento.text(`Email: multioptica9@gmail.com`, 20, 70);
-      documento.text(`Barrio El Centro, Calle Peatonal, Frente a Lady lee`, 20, 80);
-      documento.text(`Tegucigalpa, Honduras, C.A`, 20, 90);
+      documento.text(`Cels: 95304100 // 99237123 `, 20, 40);
+      documento.text(`Tegucigalpa, Honduras, C.A`, 20, 50);
 
-      documento.text(`Cliente: ${informacionventa.data[0].Cliente}`, 20, 110);
-      documento.text(`RTN: ${informacionventa.data[0].RTN}`, 20, 120);
-      documento.text(`Empleado: ${informacionventa.data[0].Empleado}`, 20, 130);
-      documento.text(`Fecha de Entrega: ${informacionventa.data[0].fechaEntrega}`, 20, 140);
-      documento.text(`Fecha Limite Entrega: ${informacionventa.data[0].fechaLimiteEntrega}`, 20, 150);
-      documento.text(`Tipo de Pago: ${informacionventa.data[0].TipoDePago}`, 20, 170);
-      documento.text(`Promocion: ${informacionventa.data[0].Promocion}`, 20, 180);
-      documento.text(`Producto: ${informacionventa.data[0].Producto}`, 20, 190);
-      documento.text(`Garantia: ${informacionventa.data[0].Garantia}`, 20, 200);
-      documento.text(`Meses: ${informacionventa.data[0].Meses}`, 20, 210);
+      documento.text(`Cliente: ${informacionventa.data[0].cliente}`, 20, 80);
+      documento.text(`RTN: ${informacionventa.data[0].RTN}`, 20, 90);
+      documento.text(`Empleado: ${informacionventa.data[0].empleado}`, 20, 100);
+      documento.text(`Fecha de Entrega: ${informacionventa.data[0].fecha}`, 20, 110);
+      documento.text(`Promocion: ${informacionventa.data[0].promocion}`, 20, 120);
+      documento.text(`Producto: ${informacionventa.data[0].aro}`, 20, 130);
+      documento.text(`Garantia: ${informacionventa.data[0].garantia}`, 20, 140);
 
-
-      documento.text(`Precio Aro: ${informacionventa.data[0].precioAro}`, 20, 230);
-      documento.text(`Precio Lente: ${informacionventa.data[0].precioLente}`, 20, 260);
-      documento.text(`Cantidad: ${informacionventa.data[0].cantidad}`, 20, 270);
-      documento.text(`Subtotal: ${informacionventa.data[0].subtotal}`, 20, 280);
-      documento.text(`Rebajas por promocion: ${informacionventa.data[0].rebaja}`, 20, 290);
-      documento.text(`Total a Pagar: ${informacionventa.data[0].totalVenta}`, 20, 300);
+      documento.text(`Precio Aro: L.${informacionventa.data[0].precio.toFixed(2)}`, 20, 150);
+      documento.text(`Precio Lente: L.${informacionventa.data[0].precLente.toFixed(2)}`, 20, 160);
+      documento.text(`Cantidad: ${informacionventa.data[0].cantidad}`, 20, 170);
+      documento.text(`Subtotal: L.${informacionventa.data[0].subtotal.toFixed(2)}`, 20, 180);
+      documento.text(`Rebajas por promocion: L.${informacionventa.data[0].rebaja.toFixed(2)}`, 20, 190);
+      documento.text(`Total a Pagar: L.${informacionventa.data[0].valorVenta.toFixed(2)}`, 20, 200);
 
 
       documento.save('ventadetalle_factura.pdf');
@@ -290,6 +295,9 @@ export const ListaVenta = (props) => {
     }
 
   };
+  
+  
+
   function formatearFecha(fecha) {
     const año = fecha.getUTCFullYear();
     const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
@@ -298,78 +306,80 @@ export const ListaVenta = (props) => {
     return `${año}-${mes}-${dia}`;
   }
 
+  // ... código previo
 
-  //PANTALLA MODAL---------------------------------------------------------------------------
-  async function handleFactVenta(id) {
-    let data = {
-      idVenta: id
-    }
-    if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
-      axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
-        axios.post(urlHistPago, data).then((histPago) => {
-          const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
-          const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
-
-          swal(
-            <div>
-              <div className="logoModal">DATOS DE LA VENTA</div>
-              <div className="contEditModal">
-                <div className="contInput">
-                  <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-                  <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
-                  <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
-                  <label><b>Cliente: {detalle.data[0].cliente}</b></label>
-                  <label><b>RTN: {detalle.data[0].RTN}</b></label>
-                  <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
-
-                  <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
-                    histPago.data.map((pago, index) => (
-                      <div key={index}>
-                        <label htmlFor="">fecha: {pago.fecha}</label><br />
-                        <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
-                        <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
-                        <label> Saldo Restante: {pago.saldoRestante}</label>
-                        <br />
-                      </div>
-                    ))
-                  }</label>
-
-
-                  {detalle.data.map((detallito) => (
-                    <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
-                      <hr />
-                      <label><b>Aro:  {detallito.aro} </b></label>
-                      <label><b>Lente: {detallito.lente}</b></label>
-                      <label><b>Promocion: {detallito.promocion}</b></label>
-                      <label><b>Garantia: {detallito.garantia}</b></label>
-                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
-                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
-                      <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
-                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
-                    </React.Fragment>
-                  ))}
-                  <br />
-                  <hr style={{ width: '50%', marginLeft: 'auto' }} />
-                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
-                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
-                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
-                </div>
-
-              </div>
-            </div>,
-          )
-        })
-      })
-
-
-
-
-    }
-    //setinformacionventa.data[0](id);
+//PANTALLA MODAL---------------------------------------------------------------------------
+async function handleFactVenta(id) {
+  let data = {
+    idVenta: id
   }
+  if (permisos[0].consultar === "n") {
+    swal("No cuenta con los permisos para realizar esta accion", "", "error")
+  } else {
+    axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
+      axios.post(urlHistPago, data).then((histPago) => {
+        const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+        const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
+
+        swal(
+          <div>
+            <div className="logoModal">DATOS DE LA VENTA</div>
+            <div className="contEditModal">
+              <div className="contInput">
+                <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+                <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+                <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+                <label><b>Cliente: {detalle.data[0].cliente}</b></label>
+                <label><b>RTN: {detalle.data[0].RTN}</b></label>
+                <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
+
+                <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
+                  histPago.data.map((pago, index) => (
+                    <div key={index}>
+                      <label htmlFor="">
+                    Fecha: {new Date(pago.fecha).toLocaleDateString('es-ES')}
+                    </label><br />
+                     <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
+                      <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
+                      <label> Saldo Restante: {pago.saldoRestante}</label>
+                      <br />
+                    </div>
+                  ))
+                }</label>
+
+
+                {detalle.data.map((detallito) => (
+                  <React.Fragment key={detallito.id}>
+                    <hr />
+                    <label><b>Aro:  {detallito.aro} </b></label>
+                    <label><b>Lente: {detallito.lente}</b></label>
+                    <label><b>Promocion: {detallito.promocion}</b></label>
+                    <label><b>Garantia: {detallito.garantia}</b></label>
+                    <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precLente.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precio.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                    <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.subtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.rebaja.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                  </React.Fragment>
+                ))}
+                <br />
+                <hr style={{ width: '50%', marginLeft: 'auto' }} />
+                <label><b>Subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalSubtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalRebajas.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].valorVenta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+              </div>
+            </div>
+          </div>,
+        )
+      })
+    })
+  }
+  //setinformacionventa.data[0](id);
+}
+// ... código posterior
+
+
+
 
 
   const handleBack = () => {

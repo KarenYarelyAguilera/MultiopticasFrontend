@@ -79,7 +79,6 @@ export const PreguntasPerfil = props => {
         respuesta: respuestap.toUpperCase(),
         idUser: props.idUsuario,
         creadoPor: props.infoPerfil.nombre.toUpperCase(),
-        fechaCrea: new Date(),
       };
 
       const dataId = {
@@ -127,12 +126,11 @@ export const PreguntasPerfil = props => {
       <div className="divInfoQuestion">
         <div className="titleRecuPassword">
           <h2>Preguntas de seguridad</h2>
-          <h3>Responda una de las preguntas para poder configurar su perfil</h3>
         </div>
         <form className="measure">
           <br />
           <br />
-          <div className='divInfoQuestionResp'>
+          <div className='divInfoQuestionResp' style={{fontSize:'17px'}}>
             <label className="titleInput">Preguntas de configuración:</label>
             <div className="contInput">
               <select id="Id_preguntas" className="inputCustomPreguntas">
@@ -152,7 +150,7 @@ export const PreguntasPerfil = props => {
           </div>
           <br />
           <br />
-          <div className='divInfoQuestionResp'>
+          <div className='divInfoQuestionResp' style={{fontSize:'17px'}}>
             <label className="titleInput">Ingrese su respuesta:</label>
             <div className="contInput">
               <input
