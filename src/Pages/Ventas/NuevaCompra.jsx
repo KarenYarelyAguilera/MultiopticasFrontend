@@ -338,7 +338,7 @@ export const NuevaCompra = ({
                   placeholder="Seleccione el aro"
                   disabled
                   onChange={handleCellClic}
-                  value={productos.Modelo}
+                  value={productos.Modelo===undefined?'': `${productos.Marca} - ${productos.Modelo}` }
                   style={{ width: '350px' }}
                 />
                 <Button className="btnClearFilter" onClick={openProductoModal}><PersonSearchIcon style={{ fontSize: '3rem'}}></PersonSearchIcon></Button>
