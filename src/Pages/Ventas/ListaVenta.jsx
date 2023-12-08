@@ -10,12 +10,12 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { generatePDF } from '../../Components/generatePDF';
 
-
+import fondoPDF from '../../IMG/FondoPDFH.jpg'
 
 import swal from '@sweetalert/with-react';
 
 //Mui-Material-Icons
-
+import logoImg from "../../IMG/MultiopticaBlanco.png";
 
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
@@ -135,9 +135,9 @@ export const ListaVenta = (props) => {
       // Datos para el archivo Excel
       const dataForExcel = filteredData.map((row, index) => ({
         'IdVenta': row.IdVenta,
-        //'Fecha': row.fecha,
+        'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'),
         'Cliente': row.Cliente,
-        'ValorVenta': row.ValorVenta,
+        'ValorVenta':row.ValorVenta,
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['IdVenta', 'Cliente', 'ValorVenta'] });
@@ -149,35 +149,38 @@ export const ListaVenta = (props) => {
     }
   };
 
+    //IMPRIMIR PDF
+    const handleGenerarReporte = () => {
+      if (permisos[0].consultar==="n") {
+        swal("No cuenta con los permisos para realizar esta accion","","error")
+      } else {
+        const formatDataForPDF = () => {
+          const formattedData = filteredData.map((row) => {
+            const fechaCre = new Date(row.fechaNacimiento);
+            const fechaNacimiento = String(fechaCre.getDate()).padStart(2, '0') + "/" +
+              String(fechaCre.getMonth()).padStart(2, '0') + "/" +
+              fechaCre.getFullYear();
+            return {
+              'IdVenta': row.IdVenta,
+              'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'),
+              'Cliente': row.Cliente,
+              'ValorVenta': `L.${parseFloat(row.ValorVenta).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            };
+          });
+          return formattedData;
+        };
+    
+        const urlPDF = 'Reporte_Ventas.pdf';
+        const subTitulo = "LISTA DE VENTAS"
+        const orientation = "landscape";
+    
+        generatePDF(formatDataForPDF, urlPDF, subTitulo, orientation, fondoPDF);
+      }
+   
+    };
 
-  const handleGenerarReporte = () => {
-    if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
-      const formatDataForPDF = () => {
-        const formattedData = filteredData.map((row) => {
-          const fechaCre = new Date(row.fechaYHora);
-          const fechaYHora = String(fechaCre.getDate()).padStart(2, '0') + "/" +
-            String(fechaCre.getMonth()).padStart(2, '0') + "/" +
-            fechaCre.getFullYear();
-          return {
-            'IdVenta': row.IdVenta,
-            //'Fecha': row.fecha,
-            'Cliente': row.Cliente,
-            'ValorVenta': row.ValorVenta,
 
-          };
-        });
-        return formattedData;
-      };
-
-      const urlPDF = 'Reporte_ventas.pdf';
-      const subTitulo = "LISTA DE VENTAS"
-
-      generatePDF(formatDataForPDF, urlPDF, subTitulo);
-    }
-
-  };
+  
 
   const columns = [
     { field: 'IdVenta', headerName: 'ID', width: 210 },
@@ -189,7 +192,16 @@ export const ListaVenta = (props) => {
       },
     },
     { field: 'Cliente', headerName: 'Cliente', width: 310 },
-    { field: 'ValorVenta', headerName: 'Valor de la Venta', width: 310 },
+    {
+      field: 'ValorVenta',
+      headerName: 'Valor de la Venta',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
     {
       field: 'estado',
       headerName: 'Estado',
@@ -290,6 +302,9 @@ export const ListaVenta = (props) => {
     }
 
   };
+  
+  
+
   function formatearFecha(fecha) {
     const año = fecha.getUTCFullYear();
     const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
@@ -298,78 +313,80 @@ export const ListaVenta = (props) => {
     return `${año}-${mes}-${dia}`;
   }
 
+  // ... código previo
 
-  //PANTALLA MODAL---------------------------------------------------------------------------
-  async function handleFactVenta(id) {
-    let data = {
-      idVenta: id
-    }
-    if (permisos[0].consultar === "n") {
-      swal("No cuenta con los permisos para realizar esta accion", "", "error")
-    } else {
-      axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
-        axios.post(urlHistPago, data).then((histPago) => {
-          const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
-          const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
-
-          swal(
-            <div>
-              <div className="logoModal">DATOS DE LA VENTA</div>
-              <div className="contEditModal">
-                <div className="contInput">
-                  <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
-                  <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
-                  <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
-                  <label><b>Cliente: {detalle.data[0].cliente}</b></label>
-                  <label><b>RTN: {detalle.data[0].RTN}</b></label>
-                  <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
-
-                  <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
-                    histPago.data.map((pago, index) => (
-                      <div key={index}>
-                        <label htmlFor="">fecha: {pago.fecha}</label><br />
-                        <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
-                        <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
-                        <label> Saldo Restante: {pago.saldoRestante}</label>
-                        <br />
-                      </div>
-                    ))
-                  }</label>
-
-
-                  {detalle.data.map((detallito) => (
-                    <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
-                      <hr />
-                      <label><b>Aro:  {detallito.aro} </b></label>
-                      <label><b>Lente: {detallito.lente}</b></label>
-                      <label><b>Promocion: {detallito.promocion}</b></label>
-                      <label><b>Garantia: {detallito.garantia}</b></label>
-                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
-                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
-                      <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
-                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
-                    </React.Fragment>
-                  ))}
-                  <br />
-                  <hr style={{ width: '50%', marginLeft: 'auto' }} />
-                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
-                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
-                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
-                </div>
-
-              </div>
-            </div>,
-          )
-        })
-      })
-
-
-
-
-    }
-    //setinformacionventa.data[0](id);
+//PANTALLA MODAL---------------------------------------------------------------------------
+async function handleFactVenta(id) {
+  let data = {
+    idVenta: id
   }
+  if (permisos[0].consultar === "n") {
+    swal("No cuenta con los permisos para realizar esta accion", "", "error")
+  } else {
+    axios.post(urlVentaDetalle, { id: id }).then((detalle) => {
+      axios.post(urlHistPago, data).then((histPago) => {
+        const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
+        const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
+
+        swal(
+          <div>
+            <div className="logoModal">DATOS DE LA VENTA</div>
+            <div className="contEditModal">
+              <div className="contInput">
+                <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
+                <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
+                <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
+                <label><b>Cliente: {detalle.data[0].cliente}</b></label>
+                <label><b>RTN: {detalle.data[0].RTN}</b></label>
+                <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
+
+                <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
+                  histPago.data.map((pago, index) => (
+                    <div key={index}>
+                      <label htmlFor="">
+                    Fecha: {new Date(pago.fecha).toLocaleDateString('es-ES')}
+                    </label><br />
+                     <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
+                      <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
+                      <label> Saldo Restante: {pago.saldoRestante}</label>
+                      <br />
+                    </div>
+                  ))
+                }</label>
+
+
+                {detalle.data.map((detallito) => (
+                  <React.Fragment key={detallito.id}>
+                    <hr />
+                    <label><b>Aro:  {detallito.aro} </b></label>
+                    <label><b>Lente: {detallito.lente}</b></label>
+                    <label><b>Promocion: {detallito.promocion}</b></label>
+                    <label><b>Garantia: {detallito.garantia}</b></label>
+                    <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precLente.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precio.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                    <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.subtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                    <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.rebaja.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                  </React.Fragment>
+                ))}
+                <br />
+                <hr style={{ width: '50%', marginLeft: 'auto' }} />
+                <label><b>Subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalSubtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalRebajas.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].valorVenta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+              </div>
+            </div>
+          </div>,
+        )
+      })
+    })
+  }
+  //setinformacionventa.data[0](id);
+}
+// ... código posterior
+
+
+
 
 
   const handleBack = () => {

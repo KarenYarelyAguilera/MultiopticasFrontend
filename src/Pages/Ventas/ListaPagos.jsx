@@ -116,8 +116,9 @@ export const ListaPagos = (props) => {
             'Tipo de Pago': row.MetodoDePago,
             'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
             'Estado': row.estado,
-            'Saldo Abonado': row.saldoAbono,
-            'Saldo Restante': row.saldoRestante,
+            'Saldo Abonado': `L.${parseFloat(row.saldoAbono).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            'Saldo Restante': `L.${parseFloat(row.saldoRestante).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            //'Saldo Restante': row.saldoRestante,
           };
         });
         return formattedData;
@@ -165,8 +166,28 @@ export const ListaPagos = (props) => {
     },
 
     { field: 'estado', headerName: 'Estado', width: 200 },
-    { field: 'saldoAbono', headerName: 'Saldo abonado', width: 110 },
-    { field: 'saldoRestante', headerName: 'Saldo restante', width: 110 },
+    //{ field: 'saldoAbono', headerName: 'Saldo abonado', width: 110 },
+    {
+      field: 'saldoAbono',
+      headerName: 'Saldo abonado',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
+    {
+      field: 'saldoRestante',
+      headerName: 'Saldo restante',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
+   // { field: 'saldoRestante', headerName: 'Saldo restante', width: 110 },
 
     {
 
