@@ -193,12 +193,13 @@ export const BarraLateral = props => {
           <ul>
 
             <Usuario></Usuario>  
+            <Ventas></Ventas>
+            <Inventario/>
             <Clientes></Clientes>
             <Recordatorios></Recordatorios>
-            <Inventario/>
-            <Ventas></Ventas>
-            <Configuracion></Configuracion>
             <Seguridad></Seguridad>
+            <Configuracion></Configuracion>
+           
   
             
 
