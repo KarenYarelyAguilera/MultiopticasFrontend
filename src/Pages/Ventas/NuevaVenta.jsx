@@ -466,7 +466,7 @@ const [Rlentes, setRlentes] = useState([]);
                   placeholder="Seleccione un cliente"
                   disabled
                   onChange={handleCellClick}
-                  value={Cliente.nombre}
+                  value={Cliente.nombre===undefined?'': `${Cliente.nombre} - ${Cliente.apellido}`}
                   style={{ width: '300px' }}
                 />
                 <Button className="btnClearFilter" onClick={openClienteModal}>
@@ -624,7 +624,7 @@ const [Rlentes, setRlentes] = useState([]);
                   placeholder="Seleccione el aro"
                   disabled
                   onChange={handleCellClic}
-                  value={productos.Modelo}
+                  value={productos.Modelo===undefined?'': `${productos.Modelo} - ${productos.Marca}`}
                   style={{ width: '300px' }}
                 />
                 <Button className="btnClearFilter" onClick={openProductoModal}>
@@ -719,7 +719,7 @@ const [Rlentes, setRlentes] = useState([]);
                 <Select
                   id="promocion"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${(pre.descPorcent) * 100}%` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
