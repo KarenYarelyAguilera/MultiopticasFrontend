@@ -79,7 +79,6 @@ export const PreguntasPerfil = props => {
         respuesta: respuestap.toUpperCase(),
         idUser: props.idUsuario,
         creadoPor: props.infoPerfil.nombre.toUpperCase(),
-        fechaCrea: new Date(),
       };
 
       const dataId = {

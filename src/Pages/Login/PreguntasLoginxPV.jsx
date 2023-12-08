@@ -68,7 +68,6 @@ export const PreguntasLoginxPV = props => {
         respuesta: respuestap,
         idUser: props.idUsuario,
         creadoPor: props.user,
-        fechaCrea: new Date(),
       };
       //console.log(data);
 
