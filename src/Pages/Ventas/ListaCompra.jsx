@@ -221,7 +221,11 @@ export const ListaCompra = (props) => {
       ),
     },
     //{ field: 'fechaCompra', headerName: 'Fecha', width: 380 },
-    { field: 'totalCompra', headerName: 'Total', width: 200 },
+    { field: 'totalCompra', headerName: 'Total', width: 200, renderCell: (params) => (
+      <div>
+        L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+      </div>
+    ), },
     {
       field: 'Estado',
       headerName: 'Estado',
