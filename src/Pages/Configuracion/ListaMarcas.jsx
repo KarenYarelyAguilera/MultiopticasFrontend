@@ -131,9 +131,9 @@ const handleGenerarExcel = () => {
   );
 
   const columns = [
-    { field: 'IdMarca', headerName: 'ID', width: 500 },
-    { field: 'descripcion', headerName: 'Marca', width: 500 },
-    { field: 'estado', headerName: 'Estado', width: 120 },
+    { field: 'IdMarca', headerName: 'ID', width: 100 },
+    { field: 'descripcion', headerName: 'Marca', width: 400 },
+    { field: 'estado', headerName: 'Estado', width: 400 },
 
     {
       field: 'borrar',

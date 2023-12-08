@@ -80,14 +80,17 @@ export const Kardex = (props) => {
       // Datos para el archivo Excel
       const dataForExcel = filteredData.map((row, index) => ({
 
-        'ID': row.IdKardex,
-        'Tipo Movimiento': row.TipoMovimiento,
-        'Producto': row.Producto,
-        'Cantidad': row.cantidad,
-        'Fecha': new Date(row.fechaYHora).toLocaleDateString('es-ES'), // Formatea la fecha
+        'ID': row.idKardex,
+        'Tipo Movimiento': row.movimiento,
+        'Producto': row.producto,
+        'Cantidad (compra)': row.total_compra,
+        'Cantidad (venta)': row.total_venta,
+        'Fecha': new Date(row.fechayHora).toLocaleDateString('es-ES'), // Formatea la fecha
+        'Descripcion': row.descripcion,
+
       }));
 
-      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Tipo Movimiento', 'Producto', 'Cantidad', 'Fecha'] });
+      const worksheet = XLSX.utils.json_to_sheet(dataForExcel, { header: ['ID', 'Tipo Movimiento', 'Producto', 'Cantidad (compra)', 'Cantidad (venta)', 'Fecha','Descripcion' ] });
 
 
 
@@ -105,15 +108,17 @@ export const Kardex = (props) => {
     } else {
       const formatDataForPDF = () => {
         const formattedData = filteredData.map((row) => {
-          const date = new Date(row.fechaYHora);
+          const date = new Date(row.fechayHora);
           const formattedDate = date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
 
           return {
-            'ID': row.IdKardex,
-            'Tipo Movimiento': row.TipoMovimiento,
-            'Producto': row.Producto,
-            'Cantidad': row.cantidad,
+            'ID': row.idKardex,
+            'Tipo Movimiento': row.movimiento,
+            'Producto': row.producto,
+            'Cantidad (compra)': row.total_compra,
+            'Cantidad (venta)': row.total_venta,
             'Fecha': formattedDate,
+            'Descripcion': row.descripcion,
           };
         });
         return formattedData;
@@ -130,15 +135,15 @@ export const Kardex = (props) => {
 
   const columns = [
     { field: 'idKardex', headerName: 'ID', width: 50 },
-    { field: 'Usuario', headerName: 'Usuario', width: 50 },
-    { field: 'movimiento', headerName: 'Tipo de Movimiento', width: 300 },
+    { field: 'Usuario', headerName: 'Usuario', width: 100 },
+    { field: 'movimiento', headerName: 'Tipo de Movimiento', width: 200 },
     { field: 'producto', headerName: 'Producto', width: 200 },
-    { field: 'total_compra', headerName: 'Cantidad (compra)', width: 150 },
-    { field: 'total_venta', headerName: 'Cantidad (venta)', width: 150 },
+    { field: 'total_compra', headerName: 'Cantidad (compra)', width: 110 },
+    { field: 'total_venta', headerName: 'Cantidad (venta)', width: 100 },
     {
-      field: 'fechaYHora', headerName: 'Fecha', width: 200,
+      field: 'fechayHora', headerName: 'Fecha', width: 80,
       valueGetter: (params) => {
-        const date = new Date(params.row.fechaYHora);
+        const date = new Date(params.row.fechayHora);
         return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
       },
     },

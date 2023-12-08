@@ -165,8 +165,8 @@ const handleGenerarReporte = () => {
 
   const columns = [
     { field: 'IdSucursal', headerName: 'ID Sucursal', width: 100 },
-    { field: 'departamento', headerName: 'Departamento', width: 225 },
-    { field: 'ciudad', headerName: 'Ciudad', width: 250 },
+    { field: 'departamento', headerName: 'Departamento', width: 205 },
+    { field: 'ciudad', headerName: 'Ciudad', width: 200 },
     { field: 'direccion', headerName: 'Dirección', width: 250 },
     { field: 'telefono', headerName: 'Teléfono', width: 225 },
     { field: 'estado', headerName: 'Estado', width: 120 },
