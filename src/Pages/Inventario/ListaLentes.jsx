@@ -139,7 +139,11 @@ const handleGenerarExcel = () => {
   const columns = [
     { field: 'IdLente', headerName: 'ID', width: 380 },
     { field: 'lente', headerName: 'Tipo de lente', width: 380 },
-    { field: 'precio', headerName: 'Precio', width: 280 },
+    { field: 'precio', headerName: 'Precio', width: 280,renderCell: (params) => (
+      <div>
+        L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+      </div>
+    ), },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
    
     

@@ -116,8 +116,9 @@ export const ListaPagos = (props) => {
             'Tipo de Pago': row.MetodoDePago,
             'Fecha': new Date(row.fecha).toLocaleDateString('es-ES'), // Formatea la fecha
             'Estado': row.estado,
-            'Saldo Abonado': row.saldoAbono,
-            'Saldo Restante': row.saldoRestante,
+            'Saldo Abonado': `L.${parseFloat(row.saldoAbono).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            'Saldo Restante': `L.${parseFloat(row.saldoRestante).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+            //'Saldo Restante': row.saldoRestante,
           };
         });
         return formattedData;
@@ -156,7 +157,7 @@ export const ListaPagos = (props) => {
     { field: 'IdVenta', headerName: 'Número de venta', width: 110 },
     { field: 'MetodoDePago', headerName: 'Tipo de pago', width: 200 },
     {
-      field: 'fecha', headerName: 'Fecha', width: 90,
+      field: 'fecha', headerName: 'Fecha', width: 120,
       valueGetter: (params) => {
         const date = new Date(params.row.fecha);
         return date.toLocaleDateString('es-ES'); // Formato de fecha corto en español
@@ -165,8 +166,28 @@ export const ListaPagos = (props) => {
     },
 
     { field: 'estado', headerName: 'Estado', width: 200 },
-    { field: 'saldoAbono', headerName: 'Saldo abonado', width: 110 },
-    { field: 'saldoRestante', headerName: 'Saldo restante', width: 110 },
+    //{ field: 'saldoAbono', headerName: 'Saldo abonado', width: 110 },
+    {
+      field: 'saldoAbono',
+      headerName: 'Saldo abonado',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
+    {
+      field: 'saldoRestante',
+      headerName: 'Saldo restante',
+      width: 310,
+      renderCell: (params) => (
+        <div>
+          L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+        </div>
+      ),
+    },
+   // { field: 'saldoRestante', headerName: 'Saldo restante', width: 110 },
 
     {
 
@@ -210,7 +231,7 @@ export const ListaPagos = (props) => {
         axios.post(urlHistPago, data).then((histPago) => {
           const totalSubtotal = detalle.data.reduce((total, item) => total + item.subtotal, 0);
           const totalRebajas = detalle.data.reduce((rebaja, item) => rebaja + item.rebaja, 0);
-
+  
           swal(
             <div>
               <div className="logoModal">DATOS DE LA VENTA</div>
@@ -219,50 +240,52 @@ export const ListaPagos = (props) => {
                   <label><b>---------------- MULTIOPTICAS ---------------- </b></label>
                   <label><b>Venta#{detalle.data[0].IdVenta}</b></label>
                   <label><b>Fecha:{new Date(detalle.data[0].fecha).toLocaleDateString()}</b></label>
-                  <label><b>Cliente: {detalle.data[0].cliente}</b> </label>
+                  <label><b>Cliente: {detalle.data[0].cliente}</b></label>
                   <label><b>RTN: {detalle.data[0].RTN}</b></label>
                   <label><b>Empleado: {detalle.data[0].empleado}</b></label><br /><br />
-
+  
                   <label>Historial de pago: {histPago.data.estado === "Pagado" ? <><br /><label htmlFor="">Estado: Pagado</label></> :
                     histPago.data.map((pago, index) => (
                       <div key={index}>
-                        <label htmlFor="">fecha: {pago.fecha}</label><br />
-                        <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
+                        <label htmlFor="">
+                      Fecha: {new Date(pago.fecha).toLocaleDateString('es-ES')}
+                      </label><br />
+                       <label htmlFor="">tipo pago: {pago.descripcion}</label><br />
                         <label htmlFor="">Saldo abonado: {pago.saldoAbono}</label>
                         <label> Saldo Restante: {pago.saldoRestante}</label>
                         <br />
                       </div>
                     ))
                   }</label>
-
-
+  
+  
                   {detalle.data.map((detallito) => (
-                    <React.Fragment key={detallito.id}> {/* Agrega un key único para cada elemento del mapeo */}
+                    <React.Fragment key={detallito.id}>
                       <hr />
                       <label><b>Aro:  {detallito.aro} </b></label>
                       <label><b>Lente: {detallito.lente}</b></label>
                       <label><b>Promocion: {detallito.promocion}</b></label>
                       <label><b>Garantia: {detallito.garantia}</b></label>
-                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
-                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
-                      <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
-                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
+                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precLente.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precio.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                      <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
+                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.subtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.rebaja.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
                     </React.Fragment>
                   ))}
                   <br />
                   <hr style={{ width: '50%', marginLeft: 'auto' }} />
-                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
-                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
-                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+                  <label><b>Subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalSubtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalRebajas.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
+                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].valorVenta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div></b></label>
                 </div>
-
               </div>
             </div>,
           )
         })
       })
     }
+    //setinformacionventa.data[0](id);
   }
 
   const seguimientoPago = (pago) => {

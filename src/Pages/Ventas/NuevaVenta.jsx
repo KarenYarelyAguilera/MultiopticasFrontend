@@ -286,11 +286,12 @@ const [Rlentes, setRlentes] = useState([]);
             <div className="logoModal1">
               Confirmar la Venta
             </div>
-            <div className="infoMod">
-              <h3>SubTotal: <h4>L.{response.data.subtotal}</h4></h3>
-              <h3>Rebajas: <h4>L.{response.data.rebajas}</h4></h3>
-              <h3>Total a Pagar: <h4>L.{response.data.total}</h4></h3>
-            </div>
+        <div className="infoMod">
+        <h3>SubTotal: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.subtotal)}</h4></h3>
+        <h3>Rebajas: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.rebajas)}</h4></h3>
+        <h3>Total a Pagar: <h4>L.{new Intl.NumberFormat('es-HN').format(response.data.total)}</h4></h3>
+      </div>
+
         </div>
         ),
 // content: {
@@ -465,7 +466,7 @@ const [Rlentes, setRlentes] = useState([]);
                   placeholder="Seleccione un cliente"
                   disabled
                   onChange={handleCellClick}
-                  value={Cliente.nombre}
+                  value={Cliente.nombre===undefined?'': `${Cliente.nombre} - ${Cliente.apellido}`}
                   style={{ width: '300px' }}
                 />
                 <Button className="btnClearFilter" onClick={openClienteModal}>
@@ -623,7 +624,7 @@ const [Rlentes, setRlentes] = useState([]);
                   placeholder="Seleccione el aro"
                   disabled
                   onChange={handleCellClic}
-                  value={productos.Modelo}
+                  value={productos.Modelo===undefined?'': `${productos.Modelo} - ${productos.Marca}`}
                   style={{ width: '300px' }}
                 />
                 <Button className="btnClearFilter" onClick={openProductoModal}>
@@ -718,7 +719,7 @@ const [Rlentes, setRlentes] = useState([]);
                 <Select
                   id="promocion"
 
-                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${(pre.descPorcent) * 100}%` }))}
+                  options={Promocion.map(pre => ({ value: pre.IdPromocion, label: `${pre.descripcion} - ${(pre.descPorcent) * 100}%` }))}
                   value={selectedPromocion}
                   onChange={setSelectedPromocion}
                   placeholder="Seleccione una Promocion"
@@ -852,41 +853,45 @@ const [Rlentes, setRlentes] = useState([]);
 
 
             <div className="contBtnStepper2">
-              <Button
-                className="btnStepper"
+            <Button
+  className="btnStepper"
+  onClick={() => {
+    let fechaEntrega = document.getElementById("fechaEntrega").value;
+    let fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
+    let Cliente = selectedOption ? selectedOption.value : null;
+    let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
+    var producto = selectedAros ? selectedAros.value : null;
+    var Descuento = selectedDescuento ? selectedDescuento.value : null;
+    var Promocion = selectedPromocion ? selectedPromocion.value : null;
+    var Garantia = selectedGarantia ? selectedGarantia.value : null;
+    var cantidad = parseInt(document.getElementById("Cantidad").value, 10); // Parse as integer
+    var lente = selectedLente ? selectedLente.value : null;
 
-                onClick={() => {
-                  let fechaEntrega = document.getElementById("fechaEntrega").value;
-                  let fechaLimiteEntrega = document.getElementById("fechaLimiteEntrega").value;
-                  let Cliente = selectedOption ? selectedOption.value : null;
-                  let Empleado = selectedEmpleado ? selectedEmpleado.value : null;
-                  var producto = selectedAros ? selectedAros.value : null;
-                  var Descuento = selectedDescuento ? selectedDescuento.value : null;
-                  var Promocion = selectedPromocion ? selectedPromocion.value : null;
-                  var Garantia = selectedGarantia ? selectedGarantia.value : null;
-                  var cantidad = parseInt(document.getElementById("Cantidad").value)
-                  var lente = selectedLente ? selectedLente.value : null;
+    if (fechaLimiteEntrega < fechaEntrega) {
+      swal("Porfavor ingrese correctamente las fechas", "", "error");
+    } else if (
+      fechaEntrega === "" ||
+      fechaLimiteEntrega === "" ||
+      Cliente === "" ||
+      Empleado === "" ||
+      isNaN(cantidad) || // Check if it's not a number
+      cantidad <= 0 || // Check if it's not a positive integer
+      lente === "" ||
+      producto === "" ||
+      Descuento === "" ||
+      Promocion === "" ||
+      Garantia === ""
+    ) {
+      swal("No deje campos vacíos.", "", "error");
+    } else {
+      AggDataGrid();
+      document.getElementById("Cantidad").value = "";
+    }
+  }}
+>
+  <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
+</Button>
 
-                  if (fechaLimiteEntrega < fechaEntrega) {
-                    swal("Porfavor ingrese correctamente las fechas", "", "error")
-                  } else if ((fechaEntrega === "" || fechaLimiteEntrega === "" || Cliente === "" || Empleado === "" || cantidad === "" || lente === "" || producto === "" || Descuento === "" || Promocion === "" || Garantia === "")) {
-                    swal("No deje campos vacíos.", "", "error");
-                  } else {
-                    AggDataGrid();
-                    //document.getElementById(selectedAros).value = "";
-                    //document.getElementById(selectedLente).value = ""
-                    //document.getElementById("producto").value = "";
-                    document.getElementById("Cantidad").value = "";
-                    //document.getElementById("costo").value = ""
-                    //handleNext();
-                  }
-
-                }
-                }
-              >
-                {/*      <h1>{'Finish' ? 'Siguiente' : 'Finish'}</h1> */}
-                <h1>{'Finish' ? 'Agregar' : 'Finish'}</h1>
-              </Button>
             </div>
           </div>
         </div>

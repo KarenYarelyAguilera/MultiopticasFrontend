@@ -162,7 +162,11 @@ export const ListaProductos = (props) => {
     { field: 'Modelo', headerName: 'Modelo', width: 190 },
     { field: 'Marca', headerName: 'Marca', width: 190 },
     { field: 'descripcion', headerName: 'Descripción', width: 190 },
-    { field: 'precio', headerName: 'Precio', width: 120 },
+    { field: 'precio', headerName: 'Precio', width: 120,renderCell: (params) => (
+      <div>
+        L.{parseFloat(params.value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+      </div>
+    ), },
     { field: 'cantidadMin', headerName: 'Cantidad minima', width: 150 },
     { field: 'cantidadMax', headerName: 'Cantidad máxima', width: 150 },
     { field: 'estado', headerName: 'Estado', width: 100, headerAlign: 'center' },
