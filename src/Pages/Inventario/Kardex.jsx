@@ -242,18 +242,18 @@ export const Kardex = (props) => {
                       <label><b>Lente: {detallito.lente}</b></label>
                       <label><b>Promocion: {detallito.promocion}</b></label>
                       <label><b>Garantia: {detallito.garantia}</b></label>
-                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precLente.toFixed(2)}</div></b></label>
-                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.precio.toFixed(2)}</div></b></label>
+                      <label><b>Precio del lente: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precLente.toFixed(2)}</div></b></label>
+                      <label><b>Precio del aro: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.precio.toFixed(2)}</div></b></label>
                       <label><b>cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.subtotal.toFixed(2)}</div></b></label>
-                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.rebaja.toFixed(2)}</div></b></label>
+                      <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.subtotal.toFixed(2)}</div></b></label>
+                      <label><b>Rebaja de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.rebaja.toFixed(2)}</div></b></label>
                     </React.Fragment>
                   ))}
                   <br />
                   <hr style={{ width: '50%', marginLeft: 'auto' }} />
-                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}> {totalSubtotal.toFixed(2)}</div></b></label>
-                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>{totalRebajas.toFixed(2)}</div></b></label>
-                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
+                  <label><b>subtotal: <div style={{ textAlign: 'right', marginRight: '20px' }}>L. {totalSubtotal.toFixed(2)}</div></b></label>
+                  <label><b>Rebajas: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{totalRebajas.toFixed(2)}</div></b></label>
+                  <label><b>Total a pagar: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].valorVenta.toFixed(2)}</div></b></label>
                 </div>
 
               </div>
@@ -289,11 +289,11 @@ export const Kardex = (props) => {
                   <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
                   <label><b>Aro:  {detallito.Aros} </b></label>
                   <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                  <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.costoCompra.toFixed(2)}</div></b></label>
+                  <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.costoCompra.toFixed(2)}</div></b></label>
                 </React.Fragment>
               ))}
               <hr style={{ width: '50%', marginLeft: 'auto' }} />
-              <label><b>Total de la compra: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
+              <label><b>Total de la compra: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
             </div>
 
           </div>

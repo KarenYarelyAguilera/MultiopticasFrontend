@@ -136,11 +136,11 @@ export const ListaCompra = (props) => {
                   <label><b>CIA Proveedora:  {detallito.CiaProveedora} </b></label>
                   <label><b>Aro:  {detallito.Aros} </b></label>
                   <label><b>Cantidad: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.cantidad}</div></b></label>
-                  <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detallito.costoCompra.toFixed(2)}</div></b></label>
+                  <label><b>Total de los lentes y aros: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detallito.costoCompra.toFixed(2)}</div></b></label>
                 </React.Fragment>
               ))}
               <hr style={{ width: '50%', marginLeft: 'auto' }} />
-              <label><b>Total de la compra: <div style={{ textAlign: 'right', marginRight: '20px' }}>{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
+              <label><b>Total de la compra: <div style={{ textAlign: 'right', marginRight: '20px' }}>L.{detalle.data[0].totalCompra.toFixed(2)}</div></b></label>
             </div>
 
           </div>

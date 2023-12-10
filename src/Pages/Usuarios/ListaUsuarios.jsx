@@ -168,7 +168,7 @@ export const ListUsuarios = ({ idRol, data, update, }) => {
     },
   ];
   const handleBack = () => {
-    navegate('/usuarios');
+    navegate('/seguridad');
   };
 
   function handleDel(id) {

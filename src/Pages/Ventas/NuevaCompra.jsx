@@ -200,9 +200,9 @@ export const NuevaCompra = ({
           <div className="logoModal1">
             Confirmar la Compra
           </div>
-          <div className="infoMod">
+          {/* <div className="infoMod">
             <h3>Total: <h4>L.{total}</h4></h3>
-          </div>
+          </div> */}
       </div>
       ),
       // ),
