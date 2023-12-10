@@ -99,7 +99,7 @@ export const RegistroPreguntaDeSeguridad = props => {
             const data = {
                 pregunta: Resp,
                 modificado_por: props.infoPerfil.nombre,
-              /*   Id_Pregunta: props.data.Id_Pregunta, */
+                Id_Pregunta: props.data.Id_Pregunta, 
             };
             console.log(data);
 
@@ -112,16 +112,15 @@ export const RegistroPreguntaDeSeguridad = props => {
 
             if (response.data.estado === "ya_existe") {
                 swal('¡Error al Actualizar! Compruebe si la pregunta ya existe.', '', 'error');
-                props.limpiarData({});
-                props.limpiarUpdate(false)
+
             } else {
                 swal("Pregunta actualizada correctamente", "", "success").then(() => navigate('/config/PreguntasSeguridad'));
+                props.limpiarData({});
+                props.limpiarUpdate(false)
             }
 
         } catch (error) {
             console.error(error);
-            props.limpiarData({});
-            props.limpiarUpdate(false)
             swal('¡Error al Actualizar! Verifique si la pregunta ya existe.', '', 'error');
         }
     };
