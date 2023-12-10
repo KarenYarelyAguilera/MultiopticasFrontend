@@ -99,7 +99,7 @@ export const RegistroPreguntaDeSeguridad = props => {
             const data = {
                 pregunta: Resp,
                 modificado_por: props.infoPerfil.nombre,
-                Id_Pregunta: props.data.Id_Pregunta,
+              /*   Id_Pregunta: props.data.Id_Pregunta, */
             };
             console.log(data);
 
